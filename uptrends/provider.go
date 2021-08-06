@@ -2,17 +2,17 @@ package uptrends
 
 import (
 	"context"
-	uptrendsClient "github.com/wasfree/uptrends-go-sdk"
 	"net/http"
 	"time"
 
 	"github.com/hashicorp/go-cty/cty"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	v4 "github.com/wasfree/uptrends-go-sdk"
 )
 
-type ProviderConfiguration struct {
-	Client      *uptrendsClient.APIClient
+type Uptrends struct {
+	Client      *v4.APIClient
 	AuthContext context.Context
 }
 
@@ -34,7 +34,9 @@ func Provider() *schema.Provider {
 				ValidateDiagFunc: stringIsNotEmpty,
 			},
 		},
-		ResourcesMap:         map[string]*schema.Resource{},
+		ResourcesMap: map[string]*schema.Resource{
+			"uptrends_monitor_ping": ResourceMonitorPingSchema(),
+		},
 		DataSourcesMap:       map[string]*schema.Resource{},
 		ConfigureContextFunc: providerConfigure,
 	}
@@ -44,20 +46,21 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	config := uptrendsClient.NewConfiguration()
+	config := v4.NewConfiguration()
 	config.HTTPClient = &http.Client{Timeout: 10 * time.Second}
-	client := uptrendsClient.NewAPIClient(config)
+	config.Debug = true
+	client := v4.NewAPIClient(config)
 
 	authContext := context.WithValue(
 		context.Background(),
-		uptrendsClient.ContextBasicAuth,
-		uptrendsClient.BasicAuth{
+		v4.ContextBasicAuth,
+		v4.BasicAuth{
 			UserName: d.Get("username").(string),
 			Password: d.Get("password").(string),
 		},
 	)
 
-	return &ProviderConfiguration{
+	return &Uptrends{
 		Client:      client,
 		AuthContext: authContext,
 	}, diags
