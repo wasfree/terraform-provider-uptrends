@@ -2,7 +2,6 @@ package uptrends
 
 import (
 	"context"
-
 	uptrends "github.com/wasfree/uptrends-go-sdk"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -14,7 +13,7 @@ func ResourceMonitorPingSchema() *schema.Resource {
 	return &schema.Resource{
 		CreateContext: monitorPingCreate,
 		ReadContext:   monitorPingRead,
-		UpdateContext: monitorPingCreate,
+		UpdateContext: monitorPingUpdate,
 		DeleteContext: monitorPingDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
@@ -72,7 +71,6 @@ func ResourceMonitorPingSchema() *schema.Resource {
 						"checkpoints": {
 							Type:     schema.TypeSet,
 							Optional: true,
-							MinItems: 1,
 							Elem: &schema.Schema{
 								Type: schema.TypeInt,
 							},
@@ -80,7 +78,6 @@ func ResourceMonitorPingSchema() *schema.Resource {
 						"regions": {
 							Type:     schema.TypeSet,
 							Optional: true,
-							MinItems: 1,
 							Elem: &schema.Schema{
 								Type: schema.TypeInt,
 							},
@@ -88,7 +85,6 @@ func ResourceMonitorPingSchema() *schema.Resource {
 						"exclude_locations": {
 							Type:     schema.TypeSet,
 							Optional: true,
-							MinItems: 1,
 							Elem: &schema.Schema{
 								Type: schema.TypeInt,
 							},
@@ -152,6 +148,52 @@ func ResourceMonitorPingSchema() *schema.Resource {
 	}
 }
 
+func expandSelectedCheckpoints(sc []interface{}) *uptrends.SelectedCheckpoints {
+	if len(sc) == 0 {
+		return &uptrends.SelectedCheckpoints{}
+	}
+	v := sc[0].(map[string]interface{})
+
+	selectedCheckpoints := uptrends.SelectedCheckpoints{}
+	if v["checkpoints"].(*schema.Set).Len() != 0 {
+		c := SliceInterfaceToSliceInt32(v["checkpoints"].(*schema.Set).List())
+		selectedCheckpoints.Checkpoints = c
+	}
+
+	if v["regions"].(*schema.Set).Len() != 0 {
+		r := SliceInterfaceToSliceInt32(v["regions"].(*schema.Set).List())
+		selectedCheckpoints.Regions = r
+	}
+
+	if v["exclude_locations"].(*schema.Set).Len() != 0 {
+		el := SliceInterfaceToSliceInt32(v["exclude_locations"].(*schema.Set).List())
+		selectedCheckpoints.Checkpoints = el
+	}
+
+	return &selectedCheckpoints
+}
+
+func flattenSelectedCheckpoints(sc *uptrends.SelectedCheckpoints) []interface{} {
+	if sc == nil {
+		return []interface{}{}
+	}
+
+	selectedCheckpoints := make(map[string]interface{})
+	if v := sc.Checkpoints; v != nil {
+		selectedCheckpoints["checkpoints"] = *v
+	}
+
+	if v := sc.Regions; v != nil {
+		selectedCheckpoints["regions"] = *v
+	}
+
+	if v := sc.ExcludeLocations; v != nil {
+		selectedCheckpoints["exclude_locations"] = *v
+	}
+
+	return []interface{}{selectedCheckpoints}
+}
+
 func buildMonitorPingStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	monitorMode, err := uptrends.NewMonitorModeFromValue(d.Get("mode").(string))
 	if err != nil {
@@ -166,12 +208,6 @@ func buildMonitorPingStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	ipVersion, err := uptrends.NewIpVersionFromValue(d.Get("ip_version").(string))
 	if err != nil {
 		return nil, err
-	}
-
-	regions := []int32{1004}
-
-	checkpoint := uptrends.SelectedCheckpoints{
-		Regions: &regions,
 	}
 
 	customFields := []uptrends.CustomField{}
@@ -192,7 +228,7 @@ func buildMonitorPingStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 		LoadTimeLimit1:            Int32(int32(d.Get("load_time_limit_1").(int))),
 		AlertOnLoadTimeLimit2:     Bool(d.Get("alert_on_load_time_limit_2").(bool)),
 		LoadTimeLimit2:            Int32(int32(d.Get("load_time_limit_2").(int))),
-		SelectedCheckpoints:       &checkpoint,
+		SelectedCheckpoints:       expandSelectedCheckpoints(d.Get("selected_checkpoints").([]interface{})),
 	}
 
 	if attr, ok := d.GetOk("notes"); ok {
@@ -225,9 +261,8 @@ func monitorPingCreate(ctx context.Context, d *schema.ResourceData, meta interfa
 	return monitorPingRead(ctx, d, meta)
 }
 
-func readMonitorPingStruct(monitor *uptrends.Monitor, d *schema.ResourceData) error {
+func readMonitorPingStruct(monitor uptrends.Monitor, d *schema.ResourceData) error {
 	d.Set("name", monitor.Name)
-	d.Set("mode", monitor.MonitorMode)
 	d.Set("is_active", monitor.IsActive)
 	d.Set("network_address", monitor.NetworkAddress)
 	d.Set("generate_alert", monitor.GenerateAlert)
@@ -241,6 +276,12 @@ func readMonitorPingStruct(monitor *uptrends.Monitor, d *schema.ResourceData) er
 	d.Set("load_time_limit_1", monitor.LoadTimeLimit1)
 	d.Set("alert_on_load_time_limit_2", monitor.AlertOnLoadTimeLimit2)
 	d.Set("load_time_limit_2", monitor.LoadTimeLimit2)
+
+	// objects in pointer object nil so object not nil
+	var empty uptrends.SelectedCheckpoints
+	if sc := monitor.SelectedCheckpoints; *sc != empty {
+		d.Set("selected_checkpoints", flattenSelectedCheckpoints(monitor.SelectedCheckpoints))	
+	}
 
 	return nil
 }
@@ -256,12 +297,89 @@ func monitorPingRead(ctx context.Context, d *schema.ResourceData, meta interface
 		return diag.FromErr(err)
 	}
 
-	err = readMonitorPingStruct(&resp, d)
+	err = readMonitorPingStruct(resp, d)
 	if err != nil {
 		return diag.FromErr(err)
 	}
 
 	return nil
+}
+
+func monitorPingUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*Uptrends).Client.MonitorApi
+	auth := meta.(*Uptrends).AuthContext
+
+	id := d.Id()
+
+	monitor := uptrends.Monitor{}
+
+	if d.HasChange("name") {
+		monitor.Name = String(d.Get("name").(string))
+	}
+
+	if d.HasChange("is_active") {
+		monitor.IsActive = Bool(d.Get("is_active").(bool))
+	}
+
+	if d.HasChange("network_address") {
+		monitor.NetworkAddress = String(d.Get("network_address").(string))
+	}
+
+	if d.HasChange("generate_alert") {
+		monitor.GenerateAlert = Bool(d.Get("generate_alert").(bool))
+	}
+
+	if d.HasChange("check_interval") {
+		monitor.CheckInterval = Int32(int32(d.Get("check_interval").(int)))
+	}
+
+	if d.HasChange("primary_checkpoints_only") {
+		monitor.UsePrimaryCheckpointsOnly = Bool(d.Get("primary_checkpoints_only").(bool))
+	}
+
+	if d.HasChange("notes") {
+		monitor.Notes = String(d.Get("notes").(string))
+	}
+
+	if d.HasChange("name_for_phone_alerts") {
+		monitor.NameForPhoneAlerts = String(d.Get("name_for_phone_alerts").(string))
+	}
+
+	if d.HasChange("ip_version") {
+		monitor.NameForPhoneAlerts = String(d.Get("ip_version").(string))
+	}
+
+	if d.HasChange("native_ipv6_only") {
+		monitor.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
+	}
+
+	if d.HasChange("alert_on_load_time_limit_1") {
+		monitor.AlertOnLoadTimeLimit1 = Bool(d.Get("alert_on_load_time_limit_1").(bool))
+	}
+
+	if d.HasChange("load_time_limit_1") {
+		monitor.LoadTimeLimit1 = Int32(int32(d.Get("load_time_limit_1").(int)))
+	}
+
+	if d.HasChange("alert_on_load_time_limit_2") {
+		monitor.AlertOnLoadTimeLimit1 = Bool(d.Get("alert_on_load_time_limit_2").(bool))
+	}
+
+	if d.HasChange("load_time_limit_2") {
+		monitor.LoadTimeLimit1 = Int32(int32(d.Get("load_time_limit_2").(int)))
+	}
+
+	if d.HasChange("selected_checkpoints") {
+		monitor.SelectedCheckpoints = expandSelectedCheckpoints(d.Get("selected_checkpoints").([]interface{}))
+	}
+
+	_, err := client.MonitorPatchMonitor(auth, id).Monitor(monitor).Execute()
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+
+	return monitorPingRead(ctx, d, meta)
 }
 
 func monitorPingDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {

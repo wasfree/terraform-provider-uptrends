@@ -22,7 +22,7 @@ func TestAccUptrendsMonitorPing_Basic(t *testing.T) {
 			{
 				Config: r.basic(randInt),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckUserGroupExists("uptrends_monitor_ping.test"),
+					testAccCheckUptrendsMonitorPingDestroyExists("uptrends_monitor_ping.test"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "name", fmt.Sprintf("acctest-uptrends-monitor-ping-%d", randInt)),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "network_address", "8.8.8.8"),
 				),
@@ -30,7 +30,7 @@ func TestAccUptrendsMonitorPing_Basic(t *testing.T) {
 			{
 				Config: r.update(randInt),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckUserGroupExists("uptrends_monitor_ping.test"),
+					testAccCheckUptrendsMonitorPingDestroyExists("uptrends_monitor_ping.test"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "name", fmt.Sprintf("acctest-uptrends-monitor-ping-%d", randInt)),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "network_address", "8.8.4.4"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "mode", "Staging"),
@@ -63,7 +63,7 @@ func testAccUptrendsMonitorPingDestroyCheck(s *terraform.State) error {
 	return nil
 }
 
-func testAccCheckUserGroupExists(n string) resource.TestCheckFunc {
+func testAccCheckUptrendsMonitorPingDestroyExists(n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		client := testAccProvider.Meta().(*Uptrends).Client.MonitorApi
 		auth := testAccProvider.Meta().(*Uptrends).AuthContext
@@ -108,6 +108,10 @@ resource "uptrends_monitor_ping" "test" {
 	generate_alert  = false
 	check_interval  = 10
 	notes           = "AccTest Uptrends Monitor Ping Resource"
+
+	selected_checkpoints {
+		regions = [1004]
+	}
 }
 `, randInt)
 }

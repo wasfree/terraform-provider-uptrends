@@ -23,3 +23,13 @@ func Float(input float64) *float64 {
 func String(input string) *string {
 	return &input
 }
+
+func SliceInterfaceToSliceInt32(input []interface{}) *[]int32 {
+	ret := make([]int32, len(input))
+
+	for i, x := range input {
+		ret[i] = int32(x.(int))
+	}
+
+	return &ret
+}
