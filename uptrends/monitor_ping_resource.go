@@ -277,9 +277,7 @@ func readMonitorPingStruct(monitor uptrends.Monitor, d *schema.ResourceData) err
 	d.Set("alert_on_load_time_limit_2", monitor.AlertOnLoadTimeLimit2)
 	d.Set("load_time_limit_2", monitor.LoadTimeLimit2)
 
-	// objects in pointer object nil so object not nil
-	var empty uptrends.SelectedCheckpoints
-	if sc := monitor.SelectedCheckpoints; *sc != empty {
+	if sc := monitor.SelectedCheckpoints; *sc != (uptrends.SelectedCheckpoints{}) {
 		d.Set("selected_checkpoints", flattenSelectedCheckpoints(monitor.SelectedCheckpoints))	
 	}
 

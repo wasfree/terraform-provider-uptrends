@@ -47,7 +47,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	var diags diag.Diagnostics
 
 	config := v4.NewConfiguration()
-	config.HTTPClient = &http.Client{Timeout: 10 * time.Second}
+	config.HTTPClient = &http.Client{Timeout: 30 * time.Second}
 	config.Debug = true
 	client := v4.NewAPIClient(config)
 
