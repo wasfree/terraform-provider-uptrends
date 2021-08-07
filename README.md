@@ -3,6 +3,16 @@
 Register a new API Account
 curl -X POST "https://api.uptrends.com/v4/Register" -H  "accept: application/json"
 
+Regions:
+
+Africa > 1001
+Asia -> 1002
+Australia -> 1003
+Europe -> 1004
+North America -> 1005
+South America -> 1006
+Middle East -> 1007
+
 
 {
     "MonitorGuid": "e4751047-7a43-4b00-be88-acf3a2d9a2e8",

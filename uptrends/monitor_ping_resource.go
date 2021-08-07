@@ -22,7 +22,7 @@ func ResourceMonitorPingSchema() *schema.Resource {
 			"name": {
 				Type:         schema.TypeString,
 				Required:     true,
-				Description:  "Display name for the Monitor.",
+				Description:  "Display name for the Monitor Ping resource.",
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"network_address": {
