@@ -48,6 +48,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 
 	config := v4.NewConfiguration()
 	config.HTTPClient = &http.Client{Timeout: 30 * time.Second}
+	// enable debug for http client
 	config.Debug = true
 	client := v4.NewAPIClient(config)
 

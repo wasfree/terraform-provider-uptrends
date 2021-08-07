@@ -38,7 +38,10 @@ func TestAccUptrendsMonitorPing_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "check_interval", "10"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "notes", "AccTest Uptrends Monitor Ping Resource"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "alert_on_load_time_limit_1", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "load_time_limit_1", "3000"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "alert_on_load_time_limit_2", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "load_time_limit_2", "7000"),
+					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "primary_checkpoints_only", "false"),
 				),
 			},
 		},
@@ -111,8 +114,11 @@ resource "uptrends_monitor_ping" "test" {
 	check_interval  = 10
 	notes           = "AccTest Uptrends Monitor Ping Resource"
 	is_active       = false
+	primary_checkpoints_only = false
 	alert_on_load_time_limit_1 = true
+	load_time_limit_1 = 3000
 	alert_on_load_time_limit_2 = true
+	load_time_limit_2 = 7000
 
 	selected_checkpoints {
 		regions = [1004]

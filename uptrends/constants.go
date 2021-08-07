@@ -1,10 +1,10 @@
 package uptrends
 
 var regionIDToRegionDisplayName = map[string]string{
-	"13": "Austria",
-	"20": "Belgium",
-	"53": "Czech Republic",
-	"56": "Denmark",
+	"13":  "Austria",
+	"20":  "Belgium",
+	"53":  "Czech Republic",
+	"56":  "Denmark",
 	"256": "Bulgaria",
 	"263": "Estonia",
 	// Continent - Begin

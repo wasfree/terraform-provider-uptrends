@@ -185,6 +185,8 @@ github.com/jmespath/go-jmespath
 github.com/jstemmer/go-junit-report
 github.com/jstemmer/go-junit-report/formatter
 github.com/jstemmer/go-junit-report/parser
+# github.com/kisielk/errcheck v1.6.0
+## explicit
 # github.com/klauspost/compress v1.13.3
 ## explicit
 github.com/klauspost/compress

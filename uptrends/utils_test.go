@@ -1,8 +1,8 @@
 package uptrends
 
 import (
-	"testing"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestSliceInterfaceToSliceInt32(t *testing.T) {

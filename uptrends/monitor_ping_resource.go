@@ -58,9 +58,9 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				ValidateFunc: validation.IntBetween(1, 240),
 			},
 			"notes": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "Your notes for this monitor.",
+				Type:         schema.TypeString,
+				Optional:     true,
+				Description:  "Your notes for this monitor.",
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 
@@ -71,16 +71,16 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"checkpoints": {
-							Type:     schema.TypeSet,
-							Optional: true,
+							Type:        schema.TypeSet,
+							Optional:    true,
 							Description: "A checkpoint is a geographic location from which you can have your service uptime and performance checked periodically.",
 							Elem: &schema.Schema{
 								Type: schema.TypeInt,
 							},
 						},
 						"regions": {
-							Type:     schema.TypeSet,
-							Optional: true,
+							Type:        schema.TypeSet,
+							Optional:    true,
 							Description: "A Region contains one or more checkpoints, just define a region if all checkpoints in a region should be used.",
 							Elem: &schema.Schema{
 								Type: schema.TypeInt,
@@ -91,8 +91,8 @@ func ResourceMonitorPingSchema() *schema.Resource {
 							},
 						},
 						"exclude_locations": {
-							Type:     schema.TypeSet,
-							Optional: true,
+							Type:        schema.TypeSet,
+							Optional:    true,
 							Description: "Exclude locations e.g. single checkpoints if a entire region was specified.",
 							Elem: &schema.Schema{
 								Type: schema.TypeInt,
@@ -105,7 +105,7 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,
-				Description: "The recommended value is True. Only set this to False when you’re sure you want to execute your monitor on non-primary checkpoints.",
+				Description: "Only set this to False when you’re sure you want to execute your monitor on non-primary checkpoints.",
 			},
 			"is_locked": {
 				Type:        schema.TypeBool,
@@ -113,16 +113,16 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Description: "It specifies whether the monitor is currently locked for editing. This happens if the Support team is reviewing your monitor.",
 			},
 			"name_for_phone_alerts": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Description: "The value for the speech-friendly monitor name, if applicable. This is the monitor name we’ll use in text-to-speech phone alerting, provided that the ‘Use alternate monitor names’ option has been enabled in the phone alert integration.",
+				Type:         schema.TypeString,
+				Optional:     true,
+				Description:  "The value for the speech-friendly monitor name, if applicable. This is the monitor name we’ll use in text-to-speech phone alerting, provided that the ‘Use alternate monitor names’ option has been enabled in the phone alert integration.",
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"ip_version": {
-				Type:        schema.TypeString,
-				Optional:    true,
-				Default:     "IpV4",
-				Description: "IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6.",
+				Type:         schema.TypeString,
+				Optional:     true,
+				Default:      "IpV4",
+				Description:  "IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6.",
 				ValidateFunc: validation.StringInSlice([]string{"IpV4", "IpV6"}, false),
 			},
 			"native_ipv6_only": {
@@ -132,38 +132,40 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Description: "True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity.",
 			},
 			"alert_on_load_time_limit_1": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Default:  false,
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     false,
+				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_1 treshold. Shows a yellow status in performance monitor.",
 			},
 			"load_time_limit_1": {
 				Type:         schema.TypeInt,
 				Optional:     true,
 				Default:      2500,
 				ValidateFunc: validation.IntBetween(1, 300000),
-				Description:  "Time in ms", // Todo improve description
+				Description:  "Set treshold time in ms for alert_on_load_time_limit_1.",
 			},
 			"alert_on_load_time_limit_2": {
-				Type:     schema.TypeBool,
-				Optional: true,
-				Default:  false,
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     false,
+				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_2. Shows a red status in performance monitor.",
 			},
 			"load_time_limit_2": {
 				Type:         schema.TypeInt,
 				Optional:     true,
 				Default:      5000,
 				ValidateFunc: validation.IntBetween(1, 300000),
-				Description:  "Time in ms", // Todo improve description
+				Description:  "Set treshold time in ms for alert_on_load_time_limit_2.",
 			},
 		},
 	}
 }
 
-func expandSelectedCheckpoints(sc []interface{}) *uptrends.SelectedCheckpoints {
-	if len(sc) == 0 {
+func expandSelectedCheckpoints(input []interface{}) *uptrends.SelectedCheckpoints {
+	if len(input) == 0 {
 		return &uptrends.SelectedCheckpoints{}
 	}
-	v := sc[0].(map[string]interface{})
+	v := input[0].(map[string]interface{})
 
 	selectedCheckpoints := uptrends.SelectedCheckpoints{}
 	if v["checkpoints"].(*schema.Set).Len() != 0 {
@@ -184,21 +186,21 @@ func expandSelectedCheckpoints(sc []interface{}) *uptrends.SelectedCheckpoints {
 	return &selectedCheckpoints
 }
 
-func flattenSelectedCheckpoints(sc *uptrends.SelectedCheckpoints) []interface{} {
-	if sc == nil {
+func flattenSelectedCheckpoints(input *uptrends.SelectedCheckpoints) []interface{} {
+	if input == nil {
 		return []interface{}{}
 	}
 
 	selectedCheckpoints := make(map[string]interface{})
-	if v := sc.Checkpoints; v != nil {
+	if v := input.Checkpoints; v != nil {
 		selectedCheckpoints["checkpoints"] = *v
 	}
 
-	if v := sc.Regions; v != nil {
+	if v := input.Regions; v != nil {
 		selectedCheckpoints["regions"] = *v
 	}
 
-	if v := sc.ExcludeLocations; v != nil {
+	if v := input.ExcludeLocations; v != nil {
 		selectedCheckpoints["exclude_locations"] = *v
 	}
 
@@ -206,12 +208,10 @@ func flattenSelectedCheckpoints(sc *uptrends.SelectedCheckpoints) []interface{} 
 }
 
 func buildMonitorPingStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
-	monitorMode, err := uptrends.NewMonitorModeFromValue(d.Get("mode").(string))
-	if err != nil {
-		return nil, err
-	}
+	// Set the monitoring Type to Ping
+	monitorType := uptrends.MONITORTYPE_PING
 
-	monitorType, err := uptrends.NewMonitorTypeFromValue("Ping")
+	monitorMode, err := uptrends.NewMonitorModeFromValue(d.Get("mode").(string))
 	if err != nil {
 		return nil, err
 	}
@@ -221,12 +221,13 @@ func buildMonitorPingStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 		return nil, err
 	}
 
+	// ToDo: not implemented yet
 	customFields := []uptrends.CustomField{}
 
 	monitor := &uptrends.Monitor{
 		Name:                      String(d.Get("name").(string)),
 		MonitorMode:               monitorMode,
-		MonitorType:               monitorType,
+		MonitorType:               &monitorType,
 		NetworkAddress:            String(d.Get("network_address").(string)),
 		CustomFields:              &customFields,
 		IsActive:                  Bool(d.Get("is_active").(bool)),
@@ -272,24 +273,54 @@ func monitorPingCreate(ctx context.Context, d *schema.ResourceData, meta interfa
 	return monitorPingRead(ctx, d, meta)
 }
 
-func readMonitorPingStruct(monitor uptrends.Monitor, d *schema.ResourceData) error {
-	d.Set("name", monitor.Name)
-	d.Set("is_active", monitor.IsActive)
-	d.Set("network_address", monitor.NetworkAddress)
-	d.Set("generate_alert", monitor.GenerateAlert)
-	d.Set("check_interval", monitor.CheckInterval)
-	d.Set("primary_checkpoints_only", monitor.UsePrimaryCheckpointsOnly)
-	d.Set("notes", monitor.Notes)
-	d.Set("name_for_phone_alerts", monitor.NameForPhoneAlerts)
-	d.Set("ip_version", monitor.IpVersion)
-	d.Set("native_ipv6_only", monitor.NativeIPv6Only)
-	d.Set("alert_on_load_time_limit_1", monitor.AlertOnLoadTimeLimit1)
-	d.Set("load_time_limit_1", monitor.LoadTimeLimit1)
-	d.Set("alert_on_load_time_limit_2", monitor.AlertOnLoadTimeLimit2)
-	d.Set("load_time_limit_2", monitor.LoadTimeLimit2)
+func readMonitorPingStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
+	if err := d.Set("name", monitor.Name); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("is_active", monitor.IsActive); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("network_address", monitor.NetworkAddress); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("generate_alert", monitor.GenerateAlert); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("check_interval", monitor.CheckInterval); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("primary_checkpoints_only", monitor.UsePrimaryCheckpointsOnly); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("notes", monitor.Notes); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("name_for_phone_alerts", monitor.NameForPhoneAlerts); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("ip_version", monitor.IpVersion); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("native_ipv6_only", monitor.NativeIPv6Only); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("alert_on_load_time_limit_1", monitor.AlertOnLoadTimeLimit1); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("load_time_limit_1", monitor.LoadTimeLimit1); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("alert_on_load_time_limit_2", monitor.AlertOnLoadTimeLimit2); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("load_time_limit_2", monitor.LoadTimeLimit2); err != nil {
+		return diag.FromErr(err)
+	}
 
 	if sc := monitor.SelectedCheckpoints; *sc != (uptrends.SelectedCheckpoints{}) {
-		d.Set("selected_checkpoints", flattenSelectedCheckpoints(monitor.SelectedCheckpoints))	
+		if err := d.Set("selected_checkpoints", flattenSelectedCheckpoints(monitor.SelectedCheckpoints)); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	return nil
@@ -306,12 +337,7 @@ func monitorPingRead(ctx context.Context, d *schema.ResourceData, meta interface
 		return diag.FromErr(err)
 	}
 
-	err = readMonitorPingStruct(resp, d)
-	if err != nil {
-		return diag.FromErr(err)
-	}
-
-	return nil
+	return readMonitorPingStruct(&resp, d)
 }
 
 func monitorPingUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
@@ -386,7 +412,6 @@ func monitorPingUpdate(ctx context.Context, d *schema.ResourceData, meta interfa
 	if err != nil {
 		return diag.FromErr(err)
 	}
-
 
 	return monitorPingRead(ctx, d, meta)
 }
