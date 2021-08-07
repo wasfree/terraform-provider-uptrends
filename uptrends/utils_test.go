@@ -6,9 +6,9 @@ import (
 )
 
 func TestSliceInterfaceToSliceInt32(t *testing.T) {
-	slice := []interface{}{123, 456, 789}
+	slice := []interface{}{123, 456, 789, "1234"}
 	result := SliceInterfaceToSliceInt32(slice)
 
-	final := []int32{123, 456, 789}
+	final := []int32{123, 456, 789, 1234}
 	assert.Equal(t, &final, result)
 }
