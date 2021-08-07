@@ -54,12 +54,14 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Type:         schema.TypeInt,
 				Optional:     true,
 				Default:      5,
+				Description:  "Numeric value for the time interval between individual checks, in minutes. The maximum value is 240 (4 hours). The minimum value depends on the type of monitor.",
 				ValidateFunc: validation.IntBetween(1, 240),
 			},
 			"notes": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "The monitor mode, either Development, Staging or Production. See this article for more information.",
+				Description: "Your notes for this monitor.",
+				ValidateFunc: validation.StringIsNotEmpty,
 			},
 
 			"selected_checkpoints": {
@@ -71,6 +73,7 @@ func ResourceMonitorPingSchema() *schema.Resource {
 						"checkpoints": {
 							Type:     schema.TypeSet,
 							Optional: true,
+							Description: "A checkpoint is a geographic location from which you can have your service uptime and performance checked periodically.",
 							Elem: &schema.Schema{
 								Type: schema.TypeInt,
 							},
@@ -78,13 +81,19 @@ func ResourceMonitorPingSchema() *schema.Resource {
 						"regions": {
 							Type:     schema.TypeSet,
 							Optional: true,
+							Description: "A Region contains one or more checkpoints, just define a region if all checkpoints in a region should be used.",
 							Elem: &schema.Schema{
 								Type: schema.TypeInt,
+								// Todo normalize regionsid to region names
+								// StateFunc: func(val interface{}) string {
+								// 	return profileID(val.(string))
+								// },
 							},
 						},
 						"exclude_locations": {
 							Type:     schema.TypeSet,
 							Optional: true,
+							Description: "Exclude locations e.g. single checkpoints if a entire region was specified.",
 							Elem: &schema.Schema{
 								Type: schema.TypeInt,
 							},
@@ -98,15 +107,16 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Default:     true,
 				Description: "The recommended value is True. Only set this to False when you’re sure you want to execute your monitor on non-primary checkpoints.",
 			},
-			"locked": {
-				Type:        schema.TypeString,
+			"is_locked": {
+				Type:        schema.TypeBool,
 				Computed:    true,
 				Description: "It specifies whether the monitor is currently locked for editing. This happens if the Support team is reviewing your monitor.",
 			},
 			"name_for_phone_alerts": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Description: "It specifies whether the monitor is currently locked for editing. This happens if the Support team is reviewing your monitor.",
+				Description: "The value for the speech-friendly monitor name, if applicable. This is the monitor name we’ll use in text-to-speech phone alerting, provided that the ‘Use alternate monitor names’ option has been enabled in the phone alert integration.",
+				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"ip_version": {
 				Type:        schema.TypeString,
