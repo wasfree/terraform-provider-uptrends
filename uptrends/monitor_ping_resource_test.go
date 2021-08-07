@@ -3,7 +3,6 @@ package uptrends
 import (
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -38,7 +37,8 @@ func TestAccUptrendsMonitorPing_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "generate_alert", "false"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "check_interval", "10"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "notes", "AccTest Uptrends Monitor Ping Resource"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "is_active", "false"),
+					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "alert_on_load_time_limit_1", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "alert_on_load_time_limit_2", "true"),
 				),
 			},
 		},
@@ -69,8 +69,6 @@ func testAccCheckUptrendsMonitorPingDestroyExists(n string) resource.TestCheckFu
 	return func(s *terraform.State) error {
 		client := testAccProvider.Meta().(*Uptrends).Client.MonitorApi
 		auth := testAccProvider.Meta().(*Uptrends).AuthContext
-
-		time.Sleep(1 * time.Minute)
 
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
@@ -113,6 +111,8 @@ resource "uptrends_monitor_ping" "test" {
 	check_interval  = 10
 	notes           = "AccTest Uptrends Monitor Ping Resource"
 	is_active       = false
+	alert_on_load_time_limit_1 = true
+	alert_on_load_time_limit_2 = true
 
 	selected_checkpoints {
 		regions = [1004]

@@ -113,6 +113,7 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Optional:    true,
 				Default:     "IpV4",
 				Description: "IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6.",
+				ValidateFunc: validation.StringInSlice([]string{"IpV4", "IpV6"}, false),
 			},
 			"native_ipv6_only": {
 				Type:        schema.TypeBool,
@@ -123,7 +124,7 @@ func ResourceMonitorPingSchema() *schema.Resource {
 			"alert_on_load_time_limit_1": {
 				Type:     schema.TypeBool,
 				Optional: true,
-				Default:  true,
+				Default:  false,
 			},
 			"load_time_limit_1": {
 				Type:         schema.TypeInt,
@@ -135,7 +136,7 @@ func ResourceMonitorPingSchema() *schema.Resource {
 			"alert_on_load_time_limit_2": {
 				Type:     schema.TypeBool,
 				Optional: true,
-				Default:  true,
+				Default:  false,
 			},
 			"load_time_limit_2": {
 				Type:         schema.TypeInt,
@@ -360,11 +361,11 @@ func monitorPingUpdate(ctx context.Context, d *schema.ResourceData, meta interfa
 	}
 
 	if d.HasChange("alert_on_load_time_limit_2") {
-		monitor.AlertOnLoadTimeLimit1 = Bool(d.Get("alert_on_load_time_limit_2").(bool))
+		monitor.AlertOnLoadTimeLimit2 = Bool(d.Get("alert_on_load_time_limit_2").(bool))
 	}
 
 	if d.HasChange("load_time_limit_2") {
-		monitor.LoadTimeLimit1 = Int32(int32(d.Get("load_time_limit_2").(int)))
+		monitor.LoadTimeLimit2 = Int32(int32(d.Get("load_time_limit_2").(int)))
 	}
 
 	if d.HasChange("selected_checkpoints") {
