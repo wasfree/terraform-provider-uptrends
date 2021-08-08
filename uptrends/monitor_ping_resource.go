@@ -2,6 +2,8 @@ package uptrends
 
 import (
 	"context"
+	"fmt"
+
 	uptrends "github.com/wasfree/uptrends-go-sdk"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
@@ -75,7 +77,10 @@ func ResourceMonitorPingSchema() *schema.Resource {
 							Optional:    true,
 							Description: "A checkpoint is a geographic location from which you can have your service uptime and performance checked periodically.",
 							Elem: &schema.Schema{
-								Type: schema.TypeInt,
+								Type: schema.TypeString,
+								StateFunc: func(v interface{}) string {
+									return CheckpointID(v.(string))
+								},
 							},
 						},
 						"regions": {
@@ -83,11 +88,10 @@ func ResourceMonitorPingSchema() *schema.Resource {
 							Optional:    true,
 							Description: "A Region contains one or more checkpoints, just define a region if all checkpoints in a region should be used.",
 							Elem: &schema.Schema{
-								Type: schema.TypeInt,
-								// Todo normalize regionsid to region names
-								// StateFunc: func(val interface{}) string {
-								// 	return profileID(val.(string))
-								// },
+								Type: schema.TypeString,
+								StateFunc: func(v interface{}) string {
+									return RegionID(v.(string))
+								},
 							},
 						},
 						"exclude_locations": {
@@ -168,19 +172,16 @@ func expandSelectedCheckpoints(input []interface{}) *uptrends.SelectedCheckpoint
 	v := input[0].(map[string]interface{})
 
 	selectedCheckpoints := uptrends.SelectedCheckpoints{}
-	if v["checkpoints"].(*schema.Set).Len() != 0 {
-		c := SliceInterfaceToSliceInt32(v["checkpoints"].(*schema.Set).List())
-		selectedCheckpoints.Checkpoints = c
+	if len(v["checkpoints"].(*schema.Set).List()) != 0 {
+		selectedCheckpoints.Checkpoints = SliceInterfaceToSliceInt32(v["checkpoints"].(*schema.Set).List())
 	}
 
 	if v["regions"].(*schema.Set).Len() != 0 {
-		r := SliceInterfaceToSliceInt32(v["regions"].(*schema.Set).List())
-		selectedCheckpoints.Regions = r
+		selectedCheckpoints.Regions = SliceInterfaceToSliceInt32(v["regions"].(*schema.Set).List())
 	}
 
 	if v["exclude_locations"].(*schema.Set).Len() != 0 {
-		el := SliceInterfaceToSliceInt32(v["exclude_locations"].(*schema.Set).List())
-		selectedCheckpoints.Checkpoints = el
+		selectedCheckpoints.Checkpoints = SliceInterfaceToSliceInt32(v["exclude_locations"].(*schema.Set).List())
 	}
 
 	return &selectedCheckpoints
@@ -193,11 +194,11 @@ func flattenSelectedCheckpoints(input *uptrends.SelectedCheckpoints) []interface
 
 	selectedCheckpoints := make(map[string]interface{})
 	if v := input.Checkpoints; v != nil {
-		selectedCheckpoints["checkpoints"] = *v
+		selectedCheckpoints["checkpoints"] = SliceInt32ToSliceString(*v)
 	}
 
 	if v := input.Regions; v != nil {
-		selectedCheckpoints["regions"] = *v
+		selectedCheckpoints["regions"] = SliceInt32ToSliceString(*v)
 	}
 
 	if v := input.ExcludeLocations; v != nil {

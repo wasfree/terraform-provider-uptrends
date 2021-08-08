@@ -1,6 +1,6 @@
 package uptrends
 
-var checkpointRegionIDToCheckpointRegionDisplayName = map[string]string{
+var RegionIDToRegionName = map[string]string{
 	"13":  "Austria",
 	"20":  "Belgium",
 	"53":  "Czech Republic",
@@ -20,7 +20,9 @@ var checkpointRegionIDToCheckpointRegionDisplayName = map[string]string{
 	"1014": "Bosnia and Herzegovina",
 }
 
-var checkpointsIDToCheckpointsDisplayName = map[string]string{
+var RegionNameToRegionID = reverseMap(RegionIDToRegionName)
+
+var checkpointsIDToCheckpointsName = map[string]string{
 	"0":   "Amsterdam",
 	"1":   "London",
 	"2":   "San Antonio",
@@ -249,3 +251,5 @@ var checkpointsIDToCheckpointsDisplayName = map[string]string{
 	"225": "Malaga",
 	"226": "The Hague",
 }
+
+var CheckpointsNameToCheckpointsID = reverseMap(checkpointsIDToCheckpointsName)

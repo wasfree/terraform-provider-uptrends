@@ -121,7 +121,8 @@ resource "uptrends_monitor_ping" "test" {
 	load_time_limit_2 = 7000
 
 	selected_checkpoints {
-		regions = [1004]
+		regions = ["Asia", "1005"]
+		checkpoints = ["Salzburg"]
 	}
 }
 `, randInt)

@@ -28,6 +28,7 @@ func String(input string) *string {
 	return &input
 }
 
+// SliceInterfaceToSliceInt32 convert []interface{} to *[]int32
 func SliceInterfaceToSliceInt32(input []interface{}) *[]int32 {
 	ret := make([]int32, len(input))
 
@@ -44,6 +45,7 @@ func SliceInterfaceToSliceInt32(input []interface{}) *[]int32 {
 	return &ret
 }
 
+// SliceInterfaceToSliceString convert []interface{} to *[]string
 func SliceInterfaceToSliceString(input []interface{}) *[]string {
 	ret := make([]string, len(input))
 
@@ -54,7 +56,8 @@ func SliceInterfaceToSliceString(input []interface{}) *[]string {
 	return &ret
 }
 
-func SliceInt32ToSliceString(input []int32) *[]string {
+// SliceInt32ToSliceString convert []int32 to []string
+func SliceInt32ToSliceString(input []int32) []string {
 	ret := make([]string, len(input))
 
 	for i, x := range input {
@@ -62,5 +65,15 @@ func SliceInt32ToSliceString(input []int32) *[]string {
 		ret[i] = s
 	}
 
-	return &ret
-} 
+	return ret
+}
+
+// reverseMap takes a map[string]string and reverse
+// key and value order
+func reverseMap(m map[string]string) map[string]string {
+	n := make(map[string]string)
+	for k, v := range m {
+		n[v] = k
+	}
+	return n
+}
