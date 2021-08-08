@@ -2,7 +2,6 @@ package uptrends
 
 import (
 	"context"
-	"fmt"
 
 	uptrends "github.com/wasfree/uptrends-go-sdk"
 
@@ -90,16 +89,19 @@ func ResourceMonitorPingSchema() *schema.Resource {
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 								StateFunc: func(v interface{}) string {
-									return RegionID(v.(string))
+							      return RegionID(v.(string))
 								},
 							},
 						},
 						"exclude_locations": {
 							Type:        schema.TypeSet,
 							Optional:    true,
-							Description: "Exclude locations e.g. single checkpoints if a entire region was specified.",
+							Description: "It is possible to keep an entire region of checkpoints (e.g. Canada) selected (with the benefit of automatically getting new checkpoints as they are added to that region) but have additional control over individual checkpoint locations that you want to skip.",
 							Elem: &schema.Schema{
-								Type: schema.TypeInt,
+								Type: schema.TypeString,
+								StateFunc: func(v interface{}) string {
+									return CheckpointID(v.(string))
+								},
 							},
 						},
 					},
@@ -173,15 +175,15 @@ func expandSelectedCheckpoints(input []interface{}) *uptrends.SelectedCheckpoint
 
 	selectedCheckpoints := uptrends.SelectedCheckpoints{}
 	if len(v["checkpoints"].(*schema.Set).List()) != 0 {
-		selectedCheckpoints.Checkpoints = SliceInterfaceToSliceInt32(v["checkpoints"].(*schema.Set).List())
+		selectedCheckpoints.Checkpoints = DeduplicateCheckpointIDs(v["checkpoints"].(*schema.Set).List())
 	}
 
 	if v["regions"].(*schema.Set).Len() != 0 {
-		selectedCheckpoints.Regions = SliceInterfaceToSliceInt32(v["regions"].(*schema.Set).List())
+		selectedCheckpoints.Regions = DeduplicateRegionIDs(v["regions"].(*schema.Set).List())
 	}
 
 	if v["exclude_locations"].(*schema.Set).Len() != 0 {
-		selectedCheckpoints.Checkpoints = SliceInterfaceToSliceInt32(v["exclude_locations"].(*schema.Set).List())
+		selectedCheckpoints.ExcludeLocations = DeduplicateCheckpointIDs(v["exclude_locations"].(*schema.Set).List())
 	}
 
 	return &selectedCheckpoints
@@ -202,7 +204,7 @@ func flattenSelectedCheckpoints(input *uptrends.SelectedCheckpoints) []interface
 	}
 
 	if v := input.ExcludeLocations; v != nil {
-		selectedCheckpoints["exclude_locations"] = *v
+		selectedCheckpoints["exclude_locations"] = SliceInt32ToSliceString(*v)
 	}
 
 	return []interface{}{selectedCheckpoints}

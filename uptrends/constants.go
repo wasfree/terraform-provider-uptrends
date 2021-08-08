@@ -1,5 +1,9 @@
 package uptrends
 
+import (
+	"strconv"
+)
+
 var RegionIDToRegionName = map[string]string{
 	"13":  "Austria",
 	"20":  "Belgium",
@@ -253,3 +257,48 @@ var checkpointsIDToCheckpointsName = map[string]string{
 }
 
 var CheckpointsNameToCheckpointsID = reverseMap(checkpointsIDToCheckpointsName)
+
+// CheckpointID accepts ID or checkpoint name and lookup ID 
+func CheckpointID(input string) string {
+	if id, found := CheckpointsNameToCheckpointsID[input]; found {
+		return id
+	}
+	return input
+}
+
+func DeduplicateCheckpointIDs(input []interface{}) *[]int32 {
+	ids := make([]int32, 0)
+	keys := make(map[int]bool)
+
+	for _, v := range input {
+		id, _ := strconv.Atoi(CheckpointID(v.(string)))
+		if _, value := keys[id]; !value {
+			keys[id] = true
+			ids = append(ids, int32(id))
+		}
+	}
+
+	return &ids
+}
+
+func RegionID(idOrName string) string {
+	if id, found := RegionNameToRegionID[idOrName]; found {
+		return id
+	}
+	return idOrName
+}
+
+func DeduplicateRegionIDs(input []interface{}) *[]int32 {
+	ids := make([]int32, 0)
+	keys := make(map[int]bool)
+
+	for _, v := range input {
+		id, _ := strconv.Atoi(RegionID(v.(string)))
+		if _, value := keys[id]; !value {
+			keys[id] = true
+			ids = append(ids, int32(id))
+		}
+	}
+
+	return &ids
+}
