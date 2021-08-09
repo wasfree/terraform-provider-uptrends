@@ -175,7 +175,7 @@ func expandSelectedCheckpoints(input []interface{}) *uptrends.SelectedCheckpoint
 	v := input[0].(map[string]interface{})
 
 	selectedCheckpoints := uptrends.SelectedCheckpoints{}
-	if len(v["checkpoints"].(*schema.Set).List()) != 0 {
+	if v["checkpoints"].(*schema.Set).Len() != 0 {
 		selectedCheckpoints.Checkpoints = DeduplicateCheckpointIDs(v["checkpoints"].(*schema.Set).List())
 	}
 

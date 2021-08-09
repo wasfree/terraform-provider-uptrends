@@ -1,4 +1,4 @@
 provider "uptrends" {
-  username = var.username # optionally use UPTRENDS_USERNAME env var
-  password = var.password # optionally use UPTRENDS_PASSWORD env var
+  username = "usernamehere" # optionally use UPTRENDS_USERNAME environment variable
+  password = "passwordhere" # optionally use UPTRENDS_PASSWORD environment variable
 }

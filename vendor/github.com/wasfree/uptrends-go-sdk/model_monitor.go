@@ -36,7 +36,8 @@ type Monitor struct {
 	Notes *string `json:"Notes,omitempty"`
 	// Hash corresponding with this monitor.
 	Hash *string `json:"Hash,omitempty"`
-	SelfServiceTransactionScript *string `json:"SelfServiceTransactionScript,omitempty"`
+	// Only valid for Transaction monitors: the data structure that specifies the transaction steps (and sub steps) to execute.
+	TransactionStepDefinition *TransactionStepDefinition `json:"TransactionStepDefinition,omitempty"`
 	BlockUptrendsRum *bool `json:"BlockUptrendsRum,omitempty"`
 	BlockGoogleAnalytics *bool `json:"BlockGoogleAnalytics,omitempty"`
 	BlockUrls *[]string `json:"BlockUrls,omitempty"`
@@ -55,11 +56,10 @@ type Monitor struct {
 	MsaSteps *[]MsaStep `json:"MsaSteps,omitempty"`
 	UserDefinedFunctions *[]UserDefinedFunction `json:"UserDefinedFunctions,omitempty"`
 	CustomMetrics *[]CustomMetric `json:"CustomMetrics,omitempty"`
+	SelfServiceTransactionScript *string `json:"SelfServiceTransactionScript,omitempty"`
 	Password *string `json:"Password,omitempty"`
 	NameForPhoneAlerts *string `json:"NameForPhoneAlerts,omitempty"`
 	ThrottlingOptions *ThrottlingOptions `json:"ThrottlingOptions,omitempty"`
-	// Only valid for Transaction monitors: the data structure that specifies the transaction steps (and sub steps) to execute.
-	TransactionStepDefinition *TransactionStepDefinition `json:"TransactionStepDefinition,omitempty"`
 	CertificateName *string `json:"CertificateName,omitempty"`
 	CertificateOrganization *string `json:"CertificateOrganization,omitempty"`
 	CertificateOrganizationalUnit *string `json:"CertificateOrganizationalUnit,omitempty"`
@@ -546,36 +546,36 @@ func (o *Monitor) SetHash(v string) {
 	o.Hash = &v
 }
 
-// GetSelfServiceTransactionScript returns the SelfServiceTransactionScript field value if set, zero value otherwise.
-func (o *Monitor) GetSelfServiceTransactionScript() string {
-	if o == nil || o.SelfServiceTransactionScript == nil {
-		var ret string
+// GetTransactionStepDefinition returns the TransactionStepDefinition field value if set, zero value otherwise.
+func (o *Monitor) GetTransactionStepDefinition() TransactionStepDefinition {
+	if o == nil || o.TransactionStepDefinition == nil {
+		var ret TransactionStepDefinition
 		return ret
 	}
-	return *o.SelfServiceTransactionScript
+	return *o.TransactionStepDefinition
 }
 
-// GetSelfServiceTransactionScriptOk returns a tuple with the SelfServiceTransactionScript field value if set, nil otherwise
+// GetTransactionStepDefinitionOk returns a tuple with the TransactionStepDefinition field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Monitor) GetSelfServiceTransactionScriptOk() (*string, bool) {
-	if o == nil || o.SelfServiceTransactionScript == nil {
+func (o *Monitor) GetTransactionStepDefinitionOk() (*TransactionStepDefinition, bool) {
+	if o == nil || o.TransactionStepDefinition == nil {
 		return nil, false
 	}
-	return o.SelfServiceTransactionScript, true
+	return o.TransactionStepDefinition, true
 }
 
-// HasSelfServiceTransactionScript returns a boolean if a field has been set.
-func (o *Monitor) HasSelfServiceTransactionScript() bool {
-	if o != nil && o.SelfServiceTransactionScript != nil {
+// HasTransactionStepDefinition returns a boolean if a field has been set.
+func (o *Monitor) HasTransactionStepDefinition() bool {
+	if o != nil && o.TransactionStepDefinition != nil {
 		return true
 	}
 
 	return false
 }
 
-// SetSelfServiceTransactionScript gets a reference to the given string and assigns it to the SelfServiceTransactionScript field.
-func (o *Monitor) SetSelfServiceTransactionScript(v string) {
-	o.SelfServiceTransactionScript = &v
+// SetTransactionStepDefinition gets a reference to the given TransactionStepDefinition and assigns it to the TransactionStepDefinition field.
+func (o *Monitor) SetTransactionStepDefinition(v TransactionStepDefinition) {
+	o.TransactionStepDefinition = &v
 }
 
 // GetBlockUptrendsRum returns the BlockUptrendsRum field value if set, zero value otherwise.
@@ -1154,6 +1154,38 @@ func (o *Monitor) SetCustomMetrics(v []CustomMetric) {
 	o.CustomMetrics = &v
 }
 
+// GetSelfServiceTransactionScript returns the SelfServiceTransactionScript field value if set, zero value otherwise.
+func (o *Monitor) GetSelfServiceTransactionScript() string {
+	if o == nil || o.SelfServiceTransactionScript == nil {
+		var ret string
+		return ret
+	}
+	return *o.SelfServiceTransactionScript
+}
+
+// GetSelfServiceTransactionScriptOk returns a tuple with the SelfServiceTransactionScript field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetSelfServiceTransactionScriptOk() (*string, bool) {
+	if o == nil || o.SelfServiceTransactionScript == nil {
+		return nil, false
+	}
+	return o.SelfServiceTransactionScript, true
+}
+
+// HasSelfServiceTransactionScript returns a boolean if a field has been set.
+func (o *Monitor) HasSelfServiceTransactionScript() bool {
+	if o != nil && o.SelfServiceTransactionScript != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSelfServiceTransactionScript gets a reference to the given string and assigns it to the SelfServiceTransactionScript field.
+func (o *Monitor) SetSelfServiceTransactionScript(v string) {
+	o.SelfServiceTransactionScript = &v
+}
+
 // GetPassword returns the Password field value if set, zero value otherwise.
 func (o *Monitor) GetPassword() string {
 	if o == nil || o.Password == nil {
@@ -1248,38 +1280,6 @@ func (o *Monitor) HasThrottlingOptions() bool {
 // SetThrottlingOptions gets a reference to the given ThrottlingOptions and assigns it to the ThrottlingOptions field.
 func (o *Monitor) SetThrottlingOptions(v ThrottlingOptions) {
 	o.ThrottlingOptions = &v
-}
-
-// GetTransactionStepDefinition returns the TransactionStepDefinition field value if set, zero value otherwise.
-func (o *Monitor) GetTransactionStepDefinition() TransactionStepDefinition {
-	if o == nil || o.TransactionStepDefinition == nil {
-		var ret TransactionStepDefinition
-		return ret
-	}
-	return *o.TransactionStepDefinition
-}
-
-// GetTransactionStepDefinitionOk returns a tuple with the TransactionStepDefinition field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetTransactionStepDefinitionOk() (*TransactionStepDefinition, bool) {
-	if o == nil || o.TransactionStepDefinition == nil {
-		return nil, false
-	}
-	return o.TransactionStepDefinition, true
-}
-
-// HasTransactionStepDefinition returns a boolean if a field has been set.
-func (o *Monitor) HasTransactionStepDefinition() bool {
-	if o != nil && o.TransactionStepDefinition != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetTransactionStepDefinition gets a reference to the given TransactionStepDefinition and assigns it to the TransactionStepDefinition field.
-func (o *Monitor) SetTransactionStepDefinition(v TransactionStepDefinition) {
-	o.TransactionStepDefinition = &v
 }
 
 // GetCertificateName returns the CertificateName field value if set, zero value otherwise.
@@ -2699,8 +2699,8 @@ func (o Monitor) MarshalJSON() ([]byte, error) {
 	if o.Hash != nil {
 		toSerialize["Hash"] = o.Hash
 	}
-	if o.SelfServiceTransactionScript != nil {
-		toSerialize["SelfServiceTransactionScript"] = o.SelfServiceTransactionScript
+	if o.TransactionStepDefinition != nil {
+		toSerialize["TransactionStepDefinition"] = o.TransactionStepDefinition
 	}
 	if o.BlockUptrendsRum != nil {
 		toSerialize["BlockUptrendsRum"] = o.BlockUptrendsRum
@@ -2756,6 +2756,9 @@ func (o Monitor) MarshalJSON() ([]byte, error) {
 	if o.CustomMetrics != nil {
 		toSerialize["CustomMetrics"] = o.CustomMetrics
 	}
+	if o.SelfServiceTransactionScript != nil {
+		toSerialize["SelfServiceTransactionScript"] = o.SelfServiceTransactionScript
+	}
 	if o.Password != nil {
 		toSerialize["Password"] = o.Password
 	}
@@ -2764,9 +2767,6 @@ func (o Monitor) MarshalJSON() ([]byte, error) {
 	}
 	if o.ThrottlingOptions != nil {
 		toSerialize["ThrottlingOptions"] = o.ThrottlingOptions
-	}
-	if o.TransactionStepDefinition != nil {
-		toSerialize["TransactionStepDefinition"] = o.TransactionStepDefinition
 	}
 	if o.CertificateName != nil {
 		toSerialize["CertificateName"] = o.CertificateName
