@@ -19,10 +19,10 @@ require (
 	github.com/hashicorp/go-plugin v1.4.2 // indirect
 	github.com/hashicorp/go-uuid v1.0.2 // indirect
 	github.com/hashicorp/hcl/v2 v2.10.1 // indirect
+	github.com/hashicorp/terraform-plugin-docs v0.4.0
 	github.com/hashicorp/terraform-plugin-go v0.3.1 // indirect
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.7.0
 	github.com/hashicorp/yamux v0.0.0-20210707203944-259a57b3608c // indirect
-	github.com/kisielk/errcheck v1.6.0 // indirect
 	github.com/klauspost/compress v1.13.3 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect
 	github.com/mitchellh/go-testing-interface v1.14.1 // indirect

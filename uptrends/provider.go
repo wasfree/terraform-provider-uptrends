@@ -22,15 +22,17 @@ func Provider() *schema.Provider {
 		Schema: map[string]*schema.Schema{
 			"username": {
 				Type:             schema.TypeString,
-				Optional:         true,
+				Required:         true,
 				DefaultFunc:      schema.EnvDefaultFunc("UPTRENDS_USERNAME", nil),
+				Description:      "Username for the uptrends API. Can be specified with the UPTRENDS_USERNAME environment variable.",
 				ValidateDiagFunc: stringIsNotEmpty,
 			},
 			"password": {
 				Type:             schema.TypeString,
-				Optional:         true,
+				Required:         true,
 				Sensitive:        true,
 				DefaultFunc:      schema.EnvDefaultFunc("UPTRENDS_PASSWORD", nil),
+				Description:      "Password for the uptrends API. Can be specified with the UPTRENDS_PASSWORD environment variable.",
 				ValidateDiagFunc: stringIsNotEmpty,
 			},
 		},

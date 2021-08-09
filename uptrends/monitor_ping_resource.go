@@ -12,6 +12,7 @@ import (
 
 func ResourceMonitorPingSchema() *schema.Resource {
 	return &schema.Resource{
+		Description:   "Manages an Uptrends Ping Monitor.",
 		CreateContext: monitorPingCreate,
 		ReadContext:   monitorPingRead,
 		UpdateContext: monitorPingUpdate,
@@ -23,7 +24,7 @@ func ResourceMonitorPingSchema() *schema.Resource {
 			"name": {
 				Type:         schema.TypeString,
 				Required:     true,
-				Description:  "Display name for the Monitor Ping resource.",
+				Description:  "Display name for the Ping Monitor resource.",
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"network_address": {
@@ -36,26 +37,26 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Type:         schema.TypeString,
 				Optional:     true,
 				Default:      "Production",
-				Description:  "The monitor mode, either Development, Staging or Production.",
+				Description:  "The monitor mode, either Development, Staging or Production. Defaults to `Production`.",
 				ValidateFunc: validation.StringInSlice([]string{"Development", "Staging", "Production"}, false),
 			},
 			"is_active": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,
-				Description: "Indicates whether the monitor is actively running in the account.",
+				Description: "Indicates whether the monitor is actively running in the account. Defaults to `true`.",
 			},
 			"generate_alert": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,
-				Description: "When set to false, no alerts will be generated for this monitor in case of an error.",
+				Description: "When set to false, no alerts will be generated for this monitor in case of an error. Defaults to `true`.",
 			},
 			"check_interval": {
 				Type:         schema.TypeInt,
 				Optional:     true,
 				Default:      5,
-				Description:  "Numeric value for the time interval between individual checks, in minutes. The maximum value is 240 (4 hours). The minimum value depends on the type of monitor.",
+				Description:  "Numeric value for the time interval between individual checks, in minutes. The maximum value is 240 (4 hours). The minimum value depends on the type of monitor. Defaults to `5`.",
 				ValidateFunc: validation.IntBetween(1, 240),
 			},
 			"notes": {
@@ -74,7 +75,7 @@ func ResourceMonitorPingSchema() *schema.Resource {
 						"checkpoints": {
 							Type:        schema.TypeSet,
 							Optional:    true,
-							Description: "A checkpoint is a geographic location from which you can have your service uptime and performance checked periodically.",
+							Description: "A checkpoint is a geographic location from which you can have your service uptime and performance checked periodically. Provide checkpoint ids or names.",
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 								StateFunc: func(v interface{}) string {
@@ -85,18 +86,18 @@ func ResourceMonitorPingSchema() *schema.Resource {
 						"regions": {
 							Type:        schema.TypeSet,
 							Optional:    true,
-							Description: "A Region contains one or more checkpoints, just define a region if all checkpoints in a region should be used.",
+							Description: "A Region contains one or more checkpoints, just define a region if all checkpoints in a region should be used. Provide region id or name.",
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 								StateFunc: func(v interface{}) string {
-							      return RegionID(v.(string))
+									return RegionID(v.(string))
 								},
 							},
 						},
 						"exclude_locations": {
 							Type:        schema.TypeSet,
 							Optional:    true,
-							Description: "It is possible to keep an entire region of checkpoints (e.g. Canada) selected (with the benefit of automatically getting new checkpoints as they are added to that region) but have additional control over individual checkpoint locations that you want to skip.",
+							Description: "It is possible to keep an entire region of checkpoints (e.g. Canada) selected (with the benefit of automatically getting new checkpoints as they are added to that region) but have additional control over individual checkpoint locations that you want to skip. Provide checkpoint ids or names.",
 							Elem: &schema.Schema{
 								Type: schema.TypeString,
 								StateFunc: func(v interface{}) string {
@@ -111,7 +112,7 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,
-				Description: "Only set this to False when you’re sure you want to execute your monitor on non-primary checkpoints.",
+				Description: "Only set this to False when you’re sure you want to execute your monitor on non-primary checkpoints. Defaults to `true`.",
 			},
 			"is_locked": {
 				Type:        schema.TypeBool,
@@ -128,40 +129,40 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Type:         schema.TypeString,
 				Optional:     true,
 				Default:      "IpV4",
-				Description:  "IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6.",
+				Description:  "IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6. Defaults to `IpV4`.",
 				ValidateFunc: validation.StringInSlice([]string{"IpV4", "IpV6"}, false),
 			},
 			"native_ipv6_only": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity.",
+				Description: "True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity. Defaults to `false`.",
 			},
 			"alert_on_load_time_limit_1": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_1 treshold. Shows a yellow status in performance monitor.",
+				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_1 threshold. Shows a yellow status in performance monitor. Defaults to `false`.",
 			},
 			"load_time_limit_1": {
 				Type:         schema.TypeInt,
 				Optional:     true,
 				Default:      2500,
 				ValidateFunc: validation.IntBetween(1, 300000),
-				Description:  "Set treshold time in ms for alert_on_load_time_limit_1.",
+				Description:  "Set threshold time in ms for requires `alert_on_load_time_limit_1` to be enabled. Defaults to `2500`.",
 			},
 			"alert_on_load_time_limit_2": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_2. Shows a red status in performance monitor.",
+				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_2. Shows a red status in performance monitor. Defaults to `false`.",
 			},
 			"load_time_limit_2": {
 				Type:         schema.TypeInt,
 				Optional:     true,
 				Default:      5000,
 				ValidateFunc: validation.IntBetween(1, 300000),
-				Description:  "Set treshold time in ms for alert_on_load_time_limit_2.",
+				Description:  "Set threshold time in ms for requires `alert_on_load_time_limit_2` to be enabled. Defaults to `5000`.",
 			},
 		},
 	}

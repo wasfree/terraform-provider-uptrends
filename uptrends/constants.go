@@ -258,7 +258,7 @@ var checkpointsIDToCheckpointsName = map[string]string{
 
 var CheckpointsNameToCheckpointsID = reverseMap(checkpointsIDToCheckpointsName)
 
-// CheckpointID accepts ID or checkpoint name and lookup ID 
+// CheckpointID accepts ID or checkpoint name and lookup ID
 func CheckpointID(input string) string {
 	if id, found := CheckpointsNameToCheckpointsID[input]; found {
 		return id
