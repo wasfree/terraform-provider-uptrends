@@ -10,6 +10,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
+var (
+	monitorPingType = uptrends.MONITORTYPE_PING
+)
+
 func ResourceMonitorPingSchema() *schema.Resource {
 	return &schema.Resource{
 		Description:   "Manages an Uptrends Ping Monitor.",
@@ -212,9 +216,6 @@ func flattenSelectedCheckpoints(input *uptrends.SelectedCheckpoints) []interface
 }
 
 func buildMonitorPingStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
-	// Set the monitoring Type to Ping
-	monitorType := uptrends.MONITORTYPE_PING
-
 	monitorMode, err := uptrends.NewMonitorModeFromValue(d.Get("mode").(string))
 	if err != nil {
 		return nil, err
@@ -225,15 +226,11 @@ func buildMonitorPingStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 		return nil, err
 	}
 
-	// ToDo: not implemented yet
-	customFields := []uptrends.CustomField{}
-
 	monitor := &uptrends.Monitor{
 		Name:                      String(d.Get("name").(string)),
 		MonitorMode:               monitorMode,
-		MonitorType:               &monitorType,
+		MonitorType:               &monitorPingType,
 		NetworkAddress:            String(d.Get("network_address").(string)),
-		CustomFields:              &customFields,
 		IsActive:                  Bool(d.Get("is_active").(bool)),
 		GenerateAlert:             Bool(d.Get("generate_alert").(bool)),
 		CheckInterval:             Int32(int32(d.Get("check_interval").(int))),
