@@ -16,7 +16,6 @@ type Uptrends struct {
 	AuthContext context.Context
 }
 
-// Provider -
 func Provider() *schema.Provider {
 	return &schema.Provider{
 		Schema: map[string]*schema.Schema{

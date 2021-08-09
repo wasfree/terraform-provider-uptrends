@@ -1,5 +1,5 @@
 resource "uptrends_monitor_ping" "example" {
-  name                       = "example-monitor-ping-%d"
+  name                       = "example"
   network_address            = "8.8.8.8"
   check_interval             = 10
   alert_on_load_time_limit_1 = true

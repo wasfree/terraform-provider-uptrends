@@ -24,7 +24,7 @@ func ResourceMonitorGroupSchema() *schema.Resource {
 			"description": {
 				Type:         schema.TypeString,
 				Required:     true,
-				Description:  "Description for the Monitor Group resource.",
+				Description:  "Set an descriptive name for the Monitor Group resource.",
 				ValidateFunc: validation.StringLenBetween(1, 128),
 			},
 			"is_all": {

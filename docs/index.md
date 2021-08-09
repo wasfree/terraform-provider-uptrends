@@ -2,16 +2,14 @@
 page_title: "Uptends Provider"
 subcategory: ""
 description: |-
-  The Uptrends provider is used to manage monitoring resources via Uptrends API. The provider requires proper configured credentials before it can be used.
+  The Uptrends Terraform provider is used to manage monitoring resources via Uptrends API. The provider requires proper configured credentials before it can be used.
 ---
 
 # Uptrends Provider
 
-The Uptrends provider is used to manage monitoring resources via Uptrends API. The provider requires proper configured credentials before it can be used.
+The Uptrends Terraform provider is used to manage monitoring resources via Uptrends API. The provider requires proper configured credentials before it can be used.
 
 Use the navigation to the left to read about the available resources.
-
-https://www.uptrends.com/support/kb/api/authentication-v4
 
 ## Example Usage
 
