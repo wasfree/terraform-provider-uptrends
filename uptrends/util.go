@@ -1,6 +1,7 @@
 package uptrends
 
 import (
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"strconv"
 )
 
@@ -76,4 +77,14 @@ func reverseMap(m map[string]string) map[string]string {
 		n[v] = k
 	}
 	return n
+}
+
+// MergeSchema will merge schemaA into schemaB and
+// return a schema consist of both schemas
+func MergeSchema(schemaA, schemaB map[string]*schema.Schema) map[string]*schema.Schema {
+	for k, v := range schemaA {
+		schemaB[k] = v
+	}
+
+	return schemaB
 }
