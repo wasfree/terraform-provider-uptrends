@@ -1,9 +1,9 @@
 package uptrends
 
 import (
-	uptrends "github.com/wasfree/uptrends-go-sdk"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	uptrends "github.com/wasfree/uptrends-go-sdk"
 )
 
 var MonitorGenericSchema = map[string]*schema.Schema{
@@ -147,4 +147,63 @@ func flattenSelectedCheckpoints(input *uptrends.SelectedCheckpoints) []interface
 	}
 
 	return []interface{}{selectedCheckpoints}
+}
+
+func buildMonitorGenericStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
+	monitorMode, err := uptrends.NewMonitorModeFromValue(d.Get("mode").(string))
+	if err != nil {
+		return nil, err
+	}
+
+	monitor := &uptrends.Monitor{
+		Name:                      String(d.Get("name").(string)),
+		MonitorMode:               monitorMode,
+		IsActive:                  Bool(d.Get("is_active").(bool)),
+		GenerateAlert:             Bool(d.Get("generate_alert").(bool)),
+		CheckInterval:             Int32(int32(d.Get("check_interval").(int))),
+		UsePrimaryCheckpointsOnly: Bool(d.Get("primary_checkpoints_only").(bool)),
+		SelectedCheckpoints:       expandSelectedCheckpoints(d.Get("selected_checkpoints").([]interface{})),
+	}
+
+	if attr, ok := d.GetOk("notes"); ok {
+		monitor.Notes = String(attr.(string))
+	}
+
+	if attr, ok := d.GetOk("name_for_phone_alerts"); ok {
+		monitor.NameForPhoneAlerts = String(attr.(string))
+	}
+
+	return monitor, nil
+}
+
+func readMonitorGenericStruct(monitor *uptrends.Monitor, d *schema.ResourceData) error {
+	if err := d.Set("name", monitor.Name); err != nil {
+		return err
+	}
+	if err := d.Set("is_active", monitor.IsActive); err != nil {
+		return err
+	}
+	if err := d.Set("generate_alert", monitor.GenerateAlert); err != nil {
+		return err
+	}
+	if err := d.Set("check_interval", monitor.CheckInterval); err != nil {
+		return err
+	}
+	if err := d.Set("primary_checkpoints_only", monitor.UsePrimaryCheckpointsOnly); err != nil {
+		return err
+	}
+	if err := d.Set("notes", monitor.Notes); err != nil {
+		return err
+	}
+	if err := d.Set("name_for_phone_alerts", monitor.NameForPhoneAlerts); err != nil {
+		return err
+	}
+
+	if sc := monitor.SelectedCheckpoints; *sc != (uptrends.SelectedCheckpoints{}) {
+		if err := d.Set("selected_checkpoints", flattenSelectedCheckpoints(monitor.SelectedCheckpoints)); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
