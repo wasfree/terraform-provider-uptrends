@@ -183,6 +183,9 @@ func readMonitorGenericStruct(monitor *uptrends.Monitor, d *schema.ResourceData)
 	if err := d.Set("is_active", monitor.IsActive); err != nil {
 		return err
 	}
+	if err := d.Set("is_locked", monitor.IsLocked); err != nil {
+		return err
+	}
 	if err := d.Set("generate_alert", monitor.GenerateAlert); err != nil {
 		return err
 	}

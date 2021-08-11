@@ -31,6 +31,12 @@ fmt:
 fmtcheck:
 	@sh -c "'$(CURDIR)/scripts/gofmtcheck.sh'"
 
+terrafmt:
+	@echo "==> Fixing acceptance test terraform blocks code with terrafmt..."
+	@find uptrends | egrep "_test.go" | sort | while read f; do terrafmt fmt -f $$f; done
+	@echo "==> Fixing website terraform blocks code with terrafmt..."
+	@find . | egrep html.markdown | sort | while read f; do terrafmt fmt $$f; done
+
 errcheck:
 	@sh -c "'$(CURDIR)/scripts/errcheck.sh'"
 

@@ -36,7 +36,7 @@ func TestAccUptrendsMonitorPing_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "mode", "Staging"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "generate_alert", "false"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "check_interval", "10"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "notes", "AccTest Uptrends Monitor Ping Resource"),
+					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "notes", "Managed by Terraform"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "alert_on_load_time_limit_1", "true"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "load_time_limit_1", "3000"),
 					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "alert_on_load_time_limit_2", "true"),
@@ -98,8 +98,8 @@ func testAccCheckUptrendsMonitorPingDestroyExists(n string) resource.TestCheckFu
 func (r UptrendsMonitorPingResource) basic(randInt int) string {
 	return fmt.Sprintf(`
 resource "uptrends_monitor_ping" "test" {
-	name            = "acctest-uptrends-monitor-ping-%d"
-	network_address = "8.8.8.8"
+  name            = "acctest-uptrends-monitor-ping-%d"
+  network_address = "8.8.8.8"
 }
 `, randInt)
 }
@@ -107,24 +107,24 @@ resource "uptrends_monitor_ping" "test" {
 func (r UptrendsMonitorPingResource) update(randInt int) string {
 	return fmt.Sprintf(`
 resource "uptrends_monitor_ping" "test" {
-	name            = "acctest-uptrends-monitor-ping-%d"
-	network_address = "8.8.4.4"
-	mode            = "Staging"
-	generate_alert  = false
-	check_interval  = 10
-	notes           = "AccTest Uptrends Monitor Ping Resource"
-	is_active       = false
-	primary_checkpoints_only = false
-	alert_on_load_time_limit_1 = true
-	load_time_limit_1 = 3000
-	alert_on_load_time_limit_2 = true
-	load_time_limit_2 = 7000
+  name                       = "acctest-uptrends-monitor-ping-%d"
+  network_address            = "8.8.4.4"
+  mode                       = "Staging"
+  generate_alert             = false
+  check_interval             = 10
+  notes                      = "Managed by Terraform"
+  is_active                  = false
+  primary_checkpoints_only   = false
+  alert_on_load_time_limit_1 = true
+  load_time_limit_1          = 3000
+  alert_on_load_time_limit_2 = true
+  load_time_limit_2          = 7000
 
-	selected_checkpoints {
-		regions     = ["Asia", "1005"]
-		checkpoints = ["Salzburg", "1"]
-		exclude_locations = ["Vancouver"]
-	}
+  selected_checkpoints {
+    regions           = ["Asia", "1005"]
+    checkpoints       = ["Salzburg", "1"]
+    exclude_locations = ["Vancouver"]
+  }
 }
 `, randInt)
 }

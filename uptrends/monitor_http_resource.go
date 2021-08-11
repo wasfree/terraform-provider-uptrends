@@ -16,15 +16,21 @@ var (
 
 func ResourceMonitorHttpSchema() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Manages an Uptrends Http Monitor.",
+		Description:   "Manages an Uptrends HTTP Monitor.",
 		CreateContext: monitorHttpCreate,
-		ReadContext:   monitorHttpCreate,
-		UpdateContext: monitorHttpCreate,
-		DeleteContext: monitorHttpCreate,
+		ReadContext:   monitorHttpRead,
+		UpdateContext: monitorHttpUpdate,
+		DeleteContext: monitorHttpDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
 		Schema: MergeSchema(MonitorGenericSchema, map[string]*schema.Schema{
+			"url": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "The full URL of the appropriate website, page or service that you want to monitor. The URL should include “http://” or “https://”. If relevant, please also include a port number if you are using a non-default port number, e.g. https://your-domain.com:8080/your-page. You can also use a fixed IP address as part of the URL instead of a host name, if your server listens to incoming requests without a host name.",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
 			"ip_version": {
 				Type:         schema.TypeString,
 				Optional:     true,
@@ -38,18 +44,12 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 				Default:     false,
 				Description: "True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity. Defaults to `false`.",
 			},
-			"url": {
-				Type:         schema.TypeString,
-				Required:     true,
-				Description:  "The full URL of the appropriate website, page or service that you want to monitor. The URL should include “http://” or “https://”. If relevant, please also include a port number if you are using a non-default port number, e.g. https://your-domain.com:8080/your-page. You can also use a fixed IP address as part of the URL instead of a host name, if your server listens to incoming requests without a host name.",
-				ValidateFunc: validation.StringIsNotEmpty,
-			},
 			"http_method": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				Default:      "GET",
+				Default:      "Get",
 				Description:  "Specifies the HTTP methode for your monitor. Defaults to `GET`.",
-				ValidateFunc: validation.StringInSlice([]string{"GET", "POST"}, false),
+				ValidateFunc: validation.StringInSlice([]string{"Get", "Post"}, false),
 			},
 
 			// "RequestHeaders": [
@@ -75,27 +75,19 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"expected_http_status_code": {
-				Type:         schema.TypeBool,
+				Type:         schema.TypeInt,
 				Optional:     true,
-				Description:  "Check for specific HTTP status code, any other than the specified status code, will generate an error. Requires `expected_http_status_code_specified` to be enabled.",
+				Description:  "Check for specific HTTP status code, any other than the specified status code, will generate an error.",
 				ValidateFunc: validation.IntInSlice(validHttpCodes),
 			},
-			"expected_http_status_code_specified": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Description: "Enable check for specific HTTP status code defined in `expected_http_status_code`.",
-			},
-			// Is this also for HTTP connections required?
-			// "tls_version": {
-			// 	Type: schema.TypeString,
-			// 	Optional: true,
-			// 	Default: "Tls12_Tls11_Tls10",
-			// 	Description: "The TLS version the Monitor should support when setting up the secure HTTPS connection.",
-			// },
 			"user_agent": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Description:  "A string value that identifies which HTTP client is making the HTTP request. A browser typically sends a value that identifies the browser type and version.",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "chrome83",
+				Description: "A string value that identifies which HTTP client is making the HTTP request. A browser typically sends a value that identifies the browser type and version.",
+				StateFunc: func(v interface{}) string {
+					return UserAgent(v.(string))
+				},
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"auth_type": {
@@ -148,7 +140,7 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "Enable this option if you want to check that the response of the Server contains at least `min_bytes` of bytes",
+				Description: "Enable this option if you want to check that the response of the Server contains at least `min_bytes` of bytes. Defaults to `false`",
 			},
 			"min_bytes": {
 				Type:         schema.TypeInt,
@@ -167,8 +159,181 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 }
 
 func monitorHttpCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	_ = meta.(*Uptrends).Client.MonitorApi
-	_ = meta.(*Uptrends).AuthContext
+	client := meta.(*Uptrends).Client.MonitorApi
+	auth := meta.(*Uptrends).AuthContext
+
+	monitor, err := buildMonitorHttpStruct(d)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	resp, _, err := client.MonitorPostMonitor(auth).Monitor(*monitor).Execute()
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	d.SetId(*resp.MonitorGuid)
+
+	return monitorHttpRead(ctx, d, meta)
+}
+
+func monitorHttpRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*Uptrends).Client.MonitorApi
+	auth := meta.(*Uptrends).AuthContext
+
+	id := d.Id()
+
+	resp, _, err := client.MonitorGetMonitor(auth, id).Execute()
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	return readMonitorHttpStruct(&resp, d)
+}
+
+func monitorHttpUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*Uptrends).Client.MonitorApi
+	auth := meta.(*Uptrends).AuthContext
+
+	id := d.Id()
+
+	monitor, err := buildMonitorHttpStruct(d)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	if d.HasChange("password") {
+		monitor.Password = String(d.Get("password").(string))
+	}
+
+	_, err = client.MonitorPatchMonitor(auth, id).Monitor(*monitor).Execute()
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	return monitorHttpRead(ctx, d, meta)
+}
+
+func monitorHttpDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*Uptrends).Client.MonitorApi
+	auth := meta.(*Uptrends).AuthContext
+
+	id := d.Id()
+
+	_, err := client.MonitorDeleteMonitor(auth, id).Execute()
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	return nil
+}
+
+func buildMonitorHttpStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
+	monitor, err := buildMonitorGenericStruct(d)
+	if err != nil {
+		return nil, err
+	}
+	ipVersion, err := uptrends.NewIpVersionFromValue(d.Get("ip_version").(string))
+	if err != nil {
+		return nil, err
+	}
+	httpMethod, err := uptrends.NewHttpMethodFromValue(d.Get("http_method").(string))
+	if err != nil {
+		return nil, err
+	}
+	authType, err := uptrends.NewApiHttpAuthenticationTypeFromValue(d.Get("auth_type").(string))
+	if err != nil {
+		return nil, err
+	}
+
+	monitor.MonitorType = &monitorHttpType
+	monitor.IpVersion = ipVersion
+	monitor.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
+	monitor.Url = String(d.Get("url").(string))
+	monitor.HttpMethod = httpMethod
+	// request_headers
+	// request_body
+	monitor.AuthenticationType = authType
+	monitor.UserAgent = String(UserAgent(d.Get("user_agent").(string)))
+	monitor.Username = String(d.Get("username").(string))
+	monitor.AlertOnLoadTimeLimit1 = Bool(d.Get("alert_on_load_time_limit_1").(bool))
+	monitor.LoadTimeLimit1 = Int32(int32(d.Get("load_time_limit_1").(int)))
+	monitor.AlertOnLoadTimeLimit2 = Bool(d.Get("alert_on_load_time_limit_2").(bool))
+	monitor.LoadTimeLimit2 = Int32(int32(d.Get("load_time_limit_2").(int)))
+	monitor.AlertOnMinimumBytes = Bool(d.Get("alert_on_min_bytes").(bool))
+	monitor.MinimumBytes = Int32(int32(d.Get("min_bytes").(int)))
+
+	// Optional without defaults
+	if attr, ok := d.GetOk("expected_http_status_code"); ok {
+		monitor.ExpectedHttpStatusCode = Int32(int32(attr.(int)))
+	}
+
+	if attr, ok := d.GetOk("password"); ok {
+		monitor.Password = String(attr.(string))
+	}
+
+	// Is a List of maps
+	// if attr, ok := d.GetOk("match_pattern"); ok {
+	// 	uptrends.patter
+	// 	monitor.MatchPatterns = String(attr.(string))
+	// }
+	// "MatchPatterns": [
+	// 	{
+	// 	  "Pattern": "'!error'",
+	// 	  "IsPositive": true
+	// 	}
+	//   ],
+
+	return monitor, nil
+}
+
+func readMonitorHttpStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
+	err := readMonitorGenericStruct(monitor, d)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("ip_version", monitor.IpVersion); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("http_method", monitor.HttpMethod); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("auth_type", monitor.AuthenticationType); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("native_ipv6_only", monitor.NativeIPv6Only); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("url", monitor.Url); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("expected_http_status_code", monitor.ExpectedHttpStatusCode); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("user_agent", monitor.UserAgent); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("auth_type", monitor.AuthenticationType); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("alert_on_load_time_limit_1", monitor.AlertOnLoadTimeLimit1); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("load_time_limit_1", monitor.LoadTimeLimit1); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("alert_on_load_time_limit_2", monitor.AlertOnLoadTimeLimit2); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("load_time_limit_2", monitor.LoadTimeLimit2); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("alert_on_min_bytes", monitor.AlertOnMinimumBytes); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("min_bytes", monitor.MinimumBytes); err != nil {
+		return diag.FromErr(err)
+	}
 
 	return nil
 }

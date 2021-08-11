@@ -4,6 +4,34 @@ import (
 	"strconv"
 )
 
+var browserToUserAgent = map[string]string{
+	"chrome83":          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
+	"chrome83_android":  "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.101 Mobile Safari/537.36",
+	"chrome67":          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36",
+	"chrome49":          "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.87 Safari/537.36",
+	"firefox77":         "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:77.0) Gecko/20100101 Firefox/77.0",
+	"firefox68_android": "Mozilla/5.0 (Android 10; Mobile; rv:68.0) Gecko/68.0 Firefox/68.0",
+	"firefox60":         "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:60.0) Gecko/20100101 Firefox/60.0",
+	"firefox55":         "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:55.0) Gecko/20100101 Firefox/55.0",
+	"ms_ie11":           "Mozilla/5.0 (Windows NT 10.0; Trident/7.0; rv:11.0) like Gecko",
+	"ms_ie10":           "Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0)",
+	"ms_edge83":         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36 Edg/83.0.478.45",
+	"ms_edge18":         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.102 Safari/537.36 Edge/18.18363",
+	"opera68":           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36 OPR/68.0.3618.125",
+	"opera12":           "Opera/9.80 (Windows NT 6.1; U; en-US) Presto/2.9.181 Version/12.00",
+	"safari13_macos":    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
+	"safari13_iphone":   "Mozilla/5.0 (iPhone; CPU iPhone OS 13_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/83.0.4103.88 Mobile/15E148 Safari/604.1",
+	"safari13_ipad":     "Mozilla/5.0 (iPad; CPU OS 13_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) CriOS/83.0.4103.88 Mobile/15E148 Safari/604.1",
+}
+
+// UserAgent accepts browser name or user agent and lookup user agent in map
+func UserAgent(input string) string {
+	if id, found := browserToUserAgent[input]; found {
+		return id
+	}
+	return input
+}
+
 var validHttpCodes = []int{
 	100, // Continue
 	101, // Switching Protocol
@@ -72,7 +100,7 @@ var RegionIDToRegionName = map[string]string{
 
 var RegionNameToRegionID = reverseMap(RegionIDToRegionName)
 
-var checkpointsIDToCheckpointsName = map[string]string{
+var checkpointIDToCheckpointName = map[string]string{
 	"0":   "Amsterdam",
 	"1":   "London",
 	"2":   "San Antonio",
@@ -302,11 +330,11 @@ var checkpointsIDToCheckpointsName = map[string]string{
 	"226": "The Hague",
 }
 
-var CheckpointsNameToCheckpointsID = reverseMap(checkpointsIDToCheckpointsName)
+var CheckpointNameToCheckpointID = reverseMap(checkpointIDToCheckpointName)
 
 // CheckpointID accepts ID or checkpoint name and lookup ID
 func CheckpointID(input string) string {
-	if id, found := CheckpointsNameToCheckpointsID[input]; found {
+	if id, found := CheckpointNameToCheckpointID[input]; found {
 		return id
 	}
 	return input

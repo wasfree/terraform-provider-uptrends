@@ -89,7 +89,7 @@ func testAccCheckUptrendsMonitorGroupDestroyExists(n string) resource.TestCheckF
 func (r UptrendsMonitorGroupResource) basic(randInt int) string {
 	return fmt.Sprintf(`
 resource "uptrends_monitor_group" "test" {
-	description = "acctest-uptrends-monitor-group-%d"
+  description = "acctest-uptrends-monitor-group-%d"
 }
 `, randInt)
 }
@@ -97,7 +97,7 @@ resource "uptrends_monitor_group" "test" {
 func (r UptrendsMonitorGroupResource) update(randInt int) string {
 	return fmt.Sprintf(`
 resource "uptrends_monitor_group" "test" {
-	description = "acctest-uptrends-monitor-group-updated-%d"
+  description = "acctest-uptrends-monitor-group-updated-%d"
 }
 `, randInt)
 }
