@@ -8,11 +8,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	uptends "github.com/wasfree/uptrends-go-sdk"
+	"github.com/wasfree/uptrends-go-sdk"
 )
 
 type Uptrends struct {
-	Client      *uptends.APIClient
+	Client      *uptrends.APIClient
 	AuthContext context.Context
 }
 
@@ -50,16 +50,16 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	// Warning or errors can be collected in a slice type
 	var diags diag.Diagnostics
 
-	config := uptends.NewConfiguration()
+	config := uptrends.NewConfiguration()
 	config.HTTPClient = &http.Client{Timeout: 30 * time.Second}
 	// enable debug for http client
 	config.Debug = true
-	client := uptends.NewAPIClient(config)
+	client := uptrends.NewAPIClient(config)
 
 	authContext := context.WithValue(
 		context.Background(),
-		uptends.ContextBasicAuth,
-		uptends.BasicAuth{
+		uptrends.ContextBasicAuth,
+		uptrends.BasicAuth{
 			UserName: d.Get("username").(string),
 			Password: d.Get("password").(string),
 		},

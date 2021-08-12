@@ -3,11 +3,10 @@ package uptrends
 import (
 	"context"
 
-	uptrends "github.com/wasfree/uptrends-go-sdk"
-
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
+	"github.com/wasfree/uptrends-go-sdk"
 )
 
 func ResourceMonitorHttpSchema() *schema.Resource {

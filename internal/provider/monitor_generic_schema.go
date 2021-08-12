@@ -3,7 +3,7 @@ package uptrends
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	uptrends "github.com/wasfree/uptrends-go-sdk"
+	"github.com/wasfree/uptrends-go-sdk"
 )
 
 var MonitorGenericSchema = map[string]*schema.Schema{
