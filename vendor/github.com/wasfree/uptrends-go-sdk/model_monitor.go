@@ -20,46 +20,44 @@ type Monitor struct {
 	MonitorGuid *string `json:"MonitorGuid,omitempty"`
 	// The name of this monitor.
 	Name *string `json:"Name,omitempty"`
-	MonitorType *MonitorType `json:"MonitorType,omitempty"`
-	// Indicates whether this monitor should generate alerts.
-	GenerateAlert *bool `json:"GenerateAlert,omitempty"`
 	// Indicates whether this monitor is actively running according to the monitoring interval.
 	IsActive *bool `json:"IsActive,omitempty"`
-	// Indicates whether this monitor is locked.
-	IsLocked *bool `json:"IsLocked,omitempty"`
-	CustomFields *[]CustomField `json:"CustomFields,omitempty"`
-	SelectedCheckpoints *SelectedCheckpoints `json:"SelectedCheckpoints,omitempty"`
-	UsePrimaryCheckpointsOnly *bool `json:"UsePrimaryCheckpointsOnly,omitempty"`
-	// Indicates the interval in seconds
-	CheckInterval *int32 `json:"CheckInterval,omitempty"`
-	MonitorMode *MonitorMode `json:"MonitorMode,omitempty"`
-	Notes *string `json:"Notes,omitempty"`
 	// Hash corresponding with this monitor.
 	Hash *string `json:"Hash,omitempty"`
-	// Only valid for Transaction monitors: the data structure that specifies the transaction steps (and sub steps) to execute.
-	TransactionStepDefinition *TransactionStepDefinition `json:"TransactionStepDefinition,omitempty"`
-	BlockUptrendsRum *bool `json:"BlockUptrendsRum,omitempty"`
-	BlockGoogleAnalytics *bool `json:"BlockGoogleAnalytics,omitempty"`
-	BlockUrls *[]string `json:"BlockUrls,omitempty"`
-	RequestHeaders *[]RequestHeader `json:"RequestHeaders,omitempty"`
-	UserAgent *string `json:"UserAgent,omitempty"`
-	LoadTimeLimit1 *int32 `json:"LoadTimeLimit1,omitempty"`
-	AlertOnLoadTimeLimit1 *bool `json:"AlertOnLoadTimeLimit1,omitempty"`
-	LoadTimeLimit2 *int32 `json:"LoadTimeLimit2,omitempty"`
-	AlertOnLoadTimeLimit2 *bool `json:"AlertOnLoadTimeLimit2,omitempty"`
-	Username *string `json:"Username,omitempty"`
-	AuthenticationType *ApiHttpAuthenticationType `json:"AuthenticationType,omitempty"`
-	BrowserType *BrowserType `json:"BrowserType,omitempty"`
-	BrowserWindowDimensions *BrowserWindowDimensions `json:"BrowserWindowDimensions,omitempty"`
+	// Indicates whether this monitor should generate alerts.
+	GenerateAlert *bool `json:"GenerateAlert,omitempty"`
+	// Indicates whether this monitor is locked.
+	IsLocked *bool `json:"IsLocked,omitempty"`
+	// Indicates the interval in seconds
+	CheckInterval *int32 `json:"CheckInterval,omitempty"`
 	Credits *int32 `json:"Credits,omitempty"`
+	MonitorMode *MonitorMode `json:"MonitorMode,omitempty"`
 	PredefinedVariables *[]PredefinedVariable `json:"PredefinedVariables,omitempty"`
 	MsaSteps *[]MsaStep `json:"MsaSteps,omitempty"`
 	UserDefinedFunctions *[]UserDefinedFunction `json:"UserDefinedFunctions,omitempty"`
 	CustomMetrics *[]CustomMetric `json:"CustomMetrics,omitempty"`
+	CustomFields *[]CustomField `json:"CustomFields,omitempty"`
+	SelectedCheckpoints *SelectedCheckpoints `json:"SelectedCheckpoints,omitempty"`
+	UsePrimaryCheckpointsOnly *bool `json:"UsePrimaryCheckpointsOnly,omitempty"`
 	SelfServiceTransactionScript *string `json:"SelfServiceTransactionScript,omitempty"`
+	MonitorType *MonitorType `json:"MonitorType,omitempty"`
+	Notes *string `json:"Notes,omitempty"`
+	AlertOnLoadTimeLimit1 *bool `json:"AlertOnLoadTimeLimit1,omitempty"`
+	LoadTimeLimit1 *int32 `json:"LoadTimeLimit1,omitempty"`
+	AlertOnLoadTimeLimit2 *bool `json:"AlertOnLoadTimeLimit2,omitempty"`
+	LoadTimeLimit2 *int32 `json:"LoadTimeLimit2,omitempty"`
+	BlockGoogleAnalytics *bool `json:"BlockGoogleAnalytics,omitempty"`
+	BlockUptrendsRum *bool `json:"BlockUptrendsRum,omitempty"`
+	BlockUrls *[]string `json:"BlockUrls,omitempty"`
+	RequestHeaders *[]RequestHeader `json:"RequestHeaders,omitempty"`
+	UserAgent *string `json:"UserAgent,omitempty"`
+	Username *string `json:"Username,omitempty"`
 	Password *string `json:"Password,omitempty"`
 	NameForPhoneAlerts *string `json:"NameForPhoneAlerts,omitempty"`
+	AuthenticationType *ApiHttpAuthenticationType `json:"AuthenticationType,omitempty"`
 	ThrottlingOptions *ThrottlingOptions `json:"ThrottlingOptions,omitempty"`
+	// Only valid for Transaction monitors: the data structure that specifies the transaction steps (and sub steps) to execute.
+	TransactionStepDefinition *TransactionStepDefinition `json:"TransactionStepDefinition,omitempty"`
 	CertificateName *string `json:"CertificateName,omitempty"`
 	CertificateOrganization *string `json:"CertificateOrganization,omitempty"`
 	CertificateOrganizationalUnit *string `json:"CertificateOrganizationalUnit,omitempty"`
@@ -100,6 +98,8 @@ type Monitor struct {
 	RequestBody *string `json:"RequestBody,omitempty"`
 	MatchPatterns *[]PatternMatch `json:"MatchPatterns,omitempty"`
 	Url *string `json:"Url,omitempty"`
+	BrowserType *BrowserType `json:"BrowserType,omitempty"`
+	BrowserWindowDimensions *BrowserWindowDimensions `json:"BrowserWindowDimensions,omitempty"`
 	UseConcurrentMonitoring *bool `json:"UseConcurrentMonitoring,omitempty"`
 	ConcurrentUnconfirmedErrorThreshold *int32 `json:"ConcurrentUnconfirmedErrorThreshold,omitempty"`
 	ConcurrentConfirmedErrorThreshold *int32 `json:"ConcurrentConfirmedErrorThreshold,omitempty"`
@@ -111,10 +111,10 @@ type Monitor struct {
 // will change when the set of required properties is changed
 func NewMonitor() *Monitor {
 	this := Monitor{}
-	var generateAlert bool = true
-	this.GenerateAlert = &generateAlert
 	var isActive bool = true
 	this.IsActive = &isActive
+	var generateAlert bool = true
+	this.GenerateAlert = &generateAlert
 	return &this
 }
 
@@ -123,10 +123,10 @@ func NewMonitor() *Monitor {
 // but it doesn't guarantee that properties required by API are set
 func NewMonitorWithDefaults() *Monitor {
 	this := Monitor{}
-	var generateAlert bool = true
-	this.GenerateAlert = &generateAlert
 	var isActive bool = true
 	this.IsActive = &isActive
+	var generateAlert bool = true
+	this.GenerateAlert = &generateAlert
 	return &this
 }
 
@@ -194,70 +194,6 @@ func (o *Monitor) SetName(v string) {
 	o.Name = &v
 }
 
-// GetMonitorType returns the MonitorType field value if set, zero value otherwise.
-func (o *Monitor) GetMonitorType() MonitorType {
-	if o == nil || o.MonitorType == nil {
-		var ret MonitorType
-		return ret
-	}
-	return *o.MonitorType
-}
-
-// GetMonitorTypeOk returns a tuple with the MonitorType field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetMonitorTypeOk() (*MonitorType, bool) {
-	if o == nil || o.MonitorType == nil {
-		return nil, false
-	}
-	return o.MonitorType, true
-}
-
-// HasMonitorType returns a boolean if a field has been set.
-func (o *Monitor) HasMonitorType() bool {
-	if o != nil && o.MonitorType != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetMonitorType gets a reference to the given MonitorType and assigns it to the MonitorType field.
-func (o *Monitor) SetMonitorType(v MonitorType) {
-	o.MonitorType = &v
-}
-
-// GetGenerateAlert returns the GenerateAlert field value if set, zero value otherwise.
-func (o *Monitor) GetGenerateAlert() bool {
-	if o == nil || o.GenerateAlert == nil {
-		var ret bool
-		return ret
-	}
-	return *o.GenerateAlert
-}
-
-// GetGenerateAlertOk returns a tuple with the GenerateAlert field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetGenerateAlertOk() (*bool, bool) {
-	if o == nil || o.GenerateAlert == nil {
-		return nil, false
-	}
-	return o.GenerateAlert, true
-}
-
-// HasGenerateAlert returns a boolean if a field has been set.
-func (o *Monitor) HasGenerateAlert() bool {
-	if o != nil && o.GenerateAlert != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetGenerateAlert gets a reference to the given bool and assigns it to the GenerateAlert field.
-func (o *Monitor) SetGenerateAlert(v bool) {
-	o.GenerateAlert = &v
-}
-
 // GetIsActive returns the IsActive field value if set, zero value otherwise.
 func (o *Monitor) GetIsActive() bool {
 	if o == nil || o.IsActive == nil {
@@ -288,230 +224,6 @@ func (o *Monitor) HasIsActive() bool {
 // SetIsActive gets a reference to the given bool and assigns it to the IsActive field.
 func (o *Monitor) SetIsActive(v bool) {
 	o.IsActive = &v
-}
-
-// GetIsLocked returns the IsLocked field value if set, zero value otherwise.
-func (o *Monitor) GetIsLocked() bool {
-	if o == nil || o.IsLocked == nil {
-		var ret bool
-		return ret
-	}
-	return *o.IsLocked
-}
-
-// GetIsLockedOk returns a tuple with the IsLocked field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetIsLockedOk() (*bool, bool) {
-	if o == nil || o.IsLocked == nil {
-		return nil, false
-	}
-	return o.IsLocked, true
-}
-
-// HasIsLocked returns a boolean if a field has been set.
-func (o *Monitor) HasIsLocked() bool {
-	if o != nil && o.IsLocked != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetIsLocked gets a reference to the given bool and assigns it to the IsLocked field.
-func (o *Monitor) SetIsLocked(v bool) {
-	o.IsLocked = &v
-}
-
-// GetCustomFields returns the CustomFields field value if set, zero value otherwise.
-func (o *Monitor) GetCustomFields() []CustomField {
-	if o == nil || o.CustomFields == nil {
-		var ret []CustomField
-		return ret
-	}
-	return *o.CustomFields
-}
-
-// GetCustomFieldsOk returns a tuple with the CustomFields field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetCustomFieldsOk() (*[]CustomField, bool) {
-	if o == nil || o.CustomFields == nil {
-		return nil, false
-	}
-	return o.CustomFields, true
-}
-
-// HasCustomFields returns a boolean if a field has been set.
-func (o *Monitor) HasCustomFields() bool {
-	if o != nil && o.CustomFields != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetCustomFields gets a reference to the given []CustomField and assigns it to the CustomFields field.
-func (o *Monitor) SetCustomFields(v []CustomField) {
-	o.CustomFields = &v
-}
-
-// GetSelectedCheckpoints returns the SelectedCheckpoints field value if set, zero value otherwise.
-func (o *Monitor) GetSelectedCheckpoints() SelectedCheckpoints {
-	if o == nil || o.SelectedCheckpoints == nil {
-		var ret SelectedCheckpoints
-		return ret
-	}
-	return *o.SelectedCheckpoints
-}
-
-// GetSelectedCheckpointsOk returns a tuple with the SelectedCheckpoints field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetSelectedCheckpointsOk() (*SelectedCheckpoints, bool) {
-	if o == nil || o.SelectedCheckpoints == nil {
-		return nil, false
-	}
-	return o.SelectedCheckpoints, true
-}
-
-// HasSelectedCheckpoints returns a boolean if a field has been set.
-func (o *Monitor) HasSelectedCheckpoints() bool {
-	if o != nil && o.SelectedCheckpoints != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetSelectedCheckpoints gets a reference to the given SelectedCheckpoints and assigns it to the SelectedCheckpoints field.
-func (o *Monitor) SetSelectedCheckpoints(v SelectedCheckpoints) {
-	o.SelectedCheckpoints = &v
-}
-
-// GetUsePrimaryCheckpointsOnly returns the UsePrimaryCheckpointsOnly field value if set, zero value otherwise.
-func (o *Monitor) GetUsePrimaryCheckpointsOnly() bool {
-	if o == nil || o.UsePrimaryCheckpointsOnly == nil {
-		var ret bool
-		return ret
-	}
-	return *o.UsePrimaryCheckpointsOnly
-}
-
-// GetUsePrimaryCheckpointsOnlyOk returns a tuple with the UsePrimaryCheckpointsOnly field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetUsePrimaryCheckpointsOnlyOk() (*bool, bool) {
-	if o == nil || o.UsePrimaryCheckpointsOnly == nil {
-		return nil, false
-	}
-	return o.UsePrimaryCheckpointsOnly, true
-}
-
-// HasUsePrimaryCheckpointsOnly returns a boolean if a field has been set.
-func (o *Monitor) HasUsePrimaryCheckpointsOnly() bool {
-	if o != nil && o.UsePrimaryCheckpointsOnly != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetUsePrimaryCheckpointsOnly gets a reference to the given bool and assigns it to the UsePrimaryCheckpointsOnly field.
-func (o *Monitor) SetUsePrimaryCheckpointsOnly(v bool) {
-	o.UsePrimaryCheckpointsOnly = &v
-}
-
-// GetCheckInterval returns the CheckInterval field value if set, zero value otherwise.
-func (o *Monitor) GetCheckInterval() int32 {
-	if o == nil || o.CheckInterval == nil {
-		var ret int32
-		return ret
-	}
-	return *o.CheckInterval
-}
-
-// GetCheckIntervalOk returns a tuple with the CheckInterval field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetCheckIntervalOk() (*int32, bool) {
-	if o == nil || o.CheckInterval == nil {
-		return nil, false
-	}
-	return o.CheckInterval, true
-}
-
-// HasCheckInterval returns a boolean if a field has been set.
-func (o *Monitor) HasCheckInterval() bool {
-	if o != nil && o.CheckInterval != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetCheckInterval gets a reference to the given int32 and assigns it to the CheckInterval field.
-func (o *Monitor) SetCheckInterval(v int32) {
-	o.CheckInterval = &v
-}
-
-// GetMonitorMode returns the MonitorMode field value if set, zero value otherwise.
-func (o *Monitor) GetMonitorMode() MonitorMode {
-	if o == nil || o.MonitorMode == nil {
-		var ret MonitorMode
-		return ret
-	}
-	return *o.MonitorMode
-}
-
-// GetMonitorModeOk returns a tuple with the MonitorMode field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetMonitorModeOk() (*MonitorMode, bool) {
-	if o == nil || o.MonitorMode == nil {
-		return nil, false
-	}
-	return o.MonitorMode, true
-}
-
-// HasMonitorMode returns a boolean if a field has been set.
-func (o *Monitor) HasMonitorMode() bool {
-	if o != nil && o.MonitorMode != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetMonitorMode gets a reference to the given MonitorMode and assigns it to the MonitorMode field.
-func (o *Monitor) SetMonitorMode(v MonitorMode) {
-	o.MonitorMode = &v
-}
-
-// GetNotes returns the Notes field value if set, zero value otherwise.
-func (o *Monitor) GetNotes() string {
-	if o == nil || o.Notes == nil {
-		var ret string
-		return ret
-	}
-	return *o.Notes
-}
-
-// GetNotesOk returns a tuple with the Notes field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetNotesOk() (*string, bool) {
-	if o == nil || o.Notes == nil {
-		return nil, false
-	}
-	return o.Notes, true
-}
-
-// HasNotes returns a boolean if a field has been set.
-func (o *Monitor) HasNotes() bool {
-	if o != nil && o.Notes != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetNotes gets a reference to the given string and assigns it to the Notes field.
-func (o *Monitor) SetNotes(v string) {
-	o.Notes = &v
 }
 
 // GetHash returns the Hash field value if set, zero value otherwise.
@@ -546,452 +258,100 @@ func (o *Monitor) SetHash(v string) {
 	o.Hash = &v
 }
 
-// GetTransactionStepDefinition returns the TransactionStepDefinition field value if set, zero value otherwise.
-func (o *Monitor) GetTransactionStepDefinition() TransactionStepDefinition {
-	if o == nil || o.TransactionStepDefinition == nil {
-		var ret TransactionStepDefinition
-		return ret
-	}
-	return *o.TransactionStepDefinition
-}
-
-// GetTransactionStepDefinitionOk returns a tuple with the TransactionStepDefinition field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetTransactionStepDefinitionOk() (*TransactionStepDefinition, bool) {
-	if o == nil || o.TransactionStepDefinition == nil {
-		return nil, false
-	}
-	return o.TransactionStepDefinition, true
-}
-
-// HasTransactionStepDefinition returns a boolean if a field has been set.
-func (o *Monitor) HasTransactionStepDefinition() bool {
-	if o != nil && o.TransactionStepDefinition != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetTransactionStepDefinition gets a reference to the given TransactionStepDefinition and assigns it to the TransactionStepDefinition field.
-func (o *Monitor) SetTransactionStepDefinition(v TransactionStepDefinition) {
-	o.TransactionStepDefinition = &v
-}
-
-// GetBlockUptrendsRum returns the BlockUptrendsRum field value if set, zero value otherwise.
-func (o *Monitor) GetBlockUptrendsRum() bool {
-	if o == nil || o.BlockUptrendsRum == nil {
+// GetGenerateAlert returns the GenerateAlert field value if set, zero value otherwise.
+func (o *Monitor) GetGenerateAlert() bool {
+	if o == nil || o.GenerateAlert == nil {
 		var ret bool
 		return ret
 	}
-	return *o.BlockUptrendsRum
+	return *o.GenerateAlert
 }
 
-// GetBlockUptrendsRumOk returns a tuple with the BlockUptrendsRum field value if set, nil otherwise
+// GetGenerateAlertOk returns a tuple with the GenerateAlert field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Monitor) GetBlockUptrendsRumOk() (*bool, bool) {
-	if o == nil || o.BlockUptrendsRum == nil {
+func (o *Monitor) GetGenerateAlertOk() (*bool, bool) {
+	if o == nil || o.GenerateAlert == nil {
 		return nil, false
 	}
-	return o.BlockUptrendsRum, true
+	return o.GenerateAlert, true
 }
 
-// HasBlockUptrendsRum returns a boolean if a field has been set.
-func (o *Monitor) HasBlockUptrendsRum() bool {
-	if o != nil && o.BlockUptrendsRum != nil {
+// HasGenerateAlert returns a boolean if a field has been set.
+func (o *Monitor) HasGenerateAlert() bool {
+	if o != nil && o.GenerateAlert != nil {
 		return true
 	}
 
 	return false
 }
 
-// SetBlockUptrendsRum gets a reference to the given bool and assigns it to the BlockUptrendsRum field.
-func (o *Monitor) SetBlockUptrendsRum(v bool) {
-	o.BlockUptrendsRum = &v
+// SetGenerateAlert gets a reference to the given bool and assigns it to the GenerateAlert field.
+func (o *Monitor) SetGenerateAlert(v bool) {
+	o.GenerateAlert = &v
 }
 
-// GetBlockGoogleAnalytics returns the BlockGoogleAnalytics field value if set, zero value otherwise.
-func (o *Monitor) GetBlockGoogleAnalytics() bool {
-	if o == nil || o.BlockGoogleAnalytics == nil {
+// GetIsLocked returns the IsLocked field value if set, zero value otherwise.
+func (o *Monitor) GetIsLocked() bool {
+	if o == nil || o.IsLocked == nil {
 		var ret bool
 		return ret
 	}
-	return *o.BlockGoogleAnalytics
+	return *o.IsLocked
 }
 
-// GetBlockGoogleAnalyticsOk returns a tuple with the BlockGoogleAnalytics field value if set, nil otherwise
+// GetIsLockedOk returns a tuple with the IsLocked field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Monitor) GetBlockGoogleAnalyticsOk() (*bool, bool) {
-	if o == nil || o.BlockGoogleAnalytics == nil {
+func (o *Monitor) GetIsLockedOk() (*bool, bool) {
+	if o == nil || o.IsLocked == nil {
 		return nil, false
 	}
-	return o.BlockGoogleAnalytics, true
+	return o.IsLocked, true
 }
 
-// HasBlockGoogleAnalytics returns a boolean if a field has been set.
-func (o *Monitor) HasBlockGoogleAnalytics() bool {
-	if o != nil && o.BlockGoogleAnalytics != nil {
+// HasIsLocked returns a boolean if a field has been set.
+func (o *Monitor) HasIsLocked() bool {
+	if o != nil && o.IsLocked != nil {
 		return true
 	}
 
 	return false
 }
 
-// SetBlockGoogleAnalytics gets a reference to the given bool and assigns it to the BlockGoogleAnalytics field.
-func (o *Monitor) SetBlockGoogleAnalytics(v bool) {
-	o.BlockGoogleAnalytics = &v
+// SetIsLocked gets a reference to the given bool and assigns it to the IsLocked field.
+func (o *Monitor) SetIsLocked(v bool) {
+	o.IsLocked = &v
 }
 
-// GetBlockUrls returns the BlockUrls field value if set, zero value otherwise.
-func (o *Monitor) GetBlockUrls() []string {
-	if o == nil || o.BlockUrls == nil {
-		var ret []string
-		return ret
-	}
-	return *o.BlockUrls
-}
-
-// GetBlockUrlsOk returns a tuple with the BlockUrls field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetBlockUrlsOk() (*[]string, bool) {
-	if o == nil || o.BlockUrls == nil {
-		return nil, false
-	}
-	return o.BlockUrls, true
-}
-
-// HasBlockUrls returns a boolean if a field has been set.
-func (o *Monitor) HasBlockUrls() bool {
-	if o != nil && o.BlockUrls != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetBlockUrls gets a reference to the given []string and assigns it to the BlockUrls field.
-func (o *Monitor) SetBlockUrls(v []string) {
-	o.BlockUrls = &v
-}
-
-// GetRequestHeaders returns the RequestHeaders field value if set, zero value otherwise.
-func (o *Monitor) GetRequestHeaders() []RequestHeader {
-	if o == nil || o.RequestHeaders == nil {
-		var ret []RequestHeader
-		return ret
-	}
-	return *o.RequestHeaders
-}
-
-// GetRequestHeadersOk returns a tuple with the RequestHeaders field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetRequestHeadersOk() (*[]RequestHeader, bool) {
-	if o == nil || o.RequestHeaders == nil {
-		return nil, false
-	}
-	return o.RequestHeaders, true
-}
-
-// HasRequestHeaders returns a boolean if a field has been set.
-func (o *Monitor) HasRequestHeaders() bool {
-	if o != nil && o.RequestHeaders != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetRequestHeaders gets a reference to the given []RequestHeader and assigns it to the RequestHeaders field.
-func (o *Monitor) SetRequestHeaders(v []RequestHeader) {
-	o.RequestHeaders = &v
-}
-
-// GetUserAgent returns the UserAgent field value if set, zero value otherwise.
-func (o *Monitor) GetUserAgent() string {
-	if o == nil || o.UserAgent == nil {
-		var ret string
-		return ret
-	}
-	return *o.UserAgent
-}
-
-// GetUserAgentOk returns a tuple with the UserAgent field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetUserAgentOk() (*string, bool) {
-	if o == nil || o.UserAgent == nil {
-		return nil, false
-	}
-	return o.UserAgent, true
-}
-
-// HasUserAgent returns a boolean if a field has been set.
-func (o *Monitor) HasUserAgent() bool {
-	if o != nil && o.UserAgent != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetUserAgent gets a reference to the given string and assigns it to the UserAgent field.
-func (o *Monitor) SetUserAgent(v string) {
-	o.UserAgent = &v
-}
-
-// GetLoadTimeLimit1 returns the LoadTimeLimit1 field value if set, zero value otherwise.
-func (o *Monitor) GetLoadTimeLimit1() int32 {
-	if o == nil || o.LoadTimeLimit1 == nil {
+// GetCheckInterval returns the CheckInterval field value if set, zero value otherwise.
+func (o *Monitor) GetCheckInterval() int32 {
+	if o == nil || o.CheckInterval == nil {
 		var ret int32
 		return ret
 	}
-	return *o.LoadTimeLimit1
+	return *o.CheckInterval
 }
 
-// GetLoadTimeLimit1Ok returns a tuple with the LoadTimeLimit1 field value if set, nil otherwise
+// GetCheckIntervalOk returns a tuple with the CheckInterval field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Monitor) GetLoadTimeLimit1Ok() (*int32, bool) {
-	if o == nil || o.LoadTimeLimit1 == nil {
+func (o *Monitor) GetCheckIntervalOk() (*int32, bool) {
+	if o == nil || o.CheckInterval == nil {
 		return nil, false
 	}
-	return o.LoadTimeLimit1, true
+	return o.CheckInterval, true
 }
 
-// HasLoadTimeLimit1 returns a boolean if a field has been set.
-func (o *Monitor) HasLoadTimeLimit1() bool {
-	if o != nil && o.LoadTimeLimit1 != nil {
+// HasCheckInterval returns a boolean if a field has been set.
+func (o *Monitor) HasCheckInterval() bool {
+	if o != nil && o.CheckInterval != nil {
 		return true
 	}
 
 	return false
 }
 
-// SetLoadTimeLimit1 gets a reference to the given int32 and assigns it to the LoadTimeLimit1 field.
-func (o *Monitor) SetLoadTimeLimit1(v int32) {
-	o.LoadTimeLimit1 = &v
-}
-
-// GetAlertOnLoadTimeLimit1 returns the AlertOnLoadTimeLimit1 field value if set, zero value otherwise.
-func (o *Monitor) GetAlertOnLoadTimeLimit1() bool {
-	if o == nil || o.AlertOnLoadTimeLimit1 == nil {
-		var ret bool
-		return ret
-	}
-	return *o.AlertOnLoadTimeLimit1
-}
-
-// GetAlertOnLoadTimeLimit1Ok returns a tuple with the AlertOnLoadTimeLimit1 field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetAlertOnLoadTimeLimit1Ok() (*bool, bool) {
-	if o == nil || o.AlertOnLoadTimeLimit1 == nil {
-		return nil, false
-	}
-	return o.AlertOnLoadTimeLimit1, true
-}
-
-// HasAlertOnLoadTimeLimit1 returns a boolean if a field has been set.
-func (o *Monitor) HasAlertOnLoadTimeLimit1() bool {
-	if o != nil && o.AlertOnLoadTimeLimit1 != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetAlertOnLoadTimeLimit1 gets a reference to the given bool and assigns it to the AlertOnLoadTimeLimit1 field.
-func (o *Monitor) SetAlertOnLoadTimeLimit1(v bool) {
-	o.AlertOnLoadTimeLimit1 = &v
-}
-
-// GetLoadTimeLimit2 returns the LoadTimeLimit2 field value if set, zero value otherwise.
-func (o *Monitor) GetLoadTimeLimit2() int32 {
-	if o == nil || o.LoadTimeLimit2 == nil {
-		var ret int32
-		return ret
-	}
-	return *o.LoadTimeLimit2
-}
-
-// GetLoadTimeLimit2Ok returns a tuple with the LoadTimeLimit2 field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetLoadTimeLimit2Ok() (*int32, bool) {
-	if o == nil || o.LoadTimeLimit2 == nil {
-		return nil, false
-	}
-	return o.LoadTimeLimit2, true
-}
-
-// HasLoadTimeLimit2 returns a boolean if a field has been set.
-func (o *Monitor) HasLoadTimeLimit2() bool {
-	if o != nil && o.LoadTimeLimit2 != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetLoadTimeLimit2 gets a reference to the given int32 and assigns it to the LoadTimeLimit2 field.
-func (o *Monitor) SetLoadTimeLimit2(v int32) {
-	o.LoadTimeLimit2 = &v
-}
-
-// GetAlertOnLoadTimeLimit2 returns the AlertOnLoadTimeLimit2 field value if set, zero value otherwise.
-func (o *Monitor) GetAlertOnLoadTimeLimit2() bool {
-	if o == nil || o.AlertOnLoadTimeLimit2 == nil {
-		var ret bool
-		return ret
-	}
-	return *o.AlertOnLoadTimeLimit2
-}
-
-// GetAlertOnLoadTimeLimit2Ok returns a tuple with the AlertOnLoadTimeLimit2 field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetAlertOnLoadTimeLimit2Ok() (*bool, bool) {
-	if o == nil || o.AlertOnLoadTimeLimit2 == nil {
-		return nil, false
-	}
-	return o.AlertOnLoadTimeLimit2, true
-}
-
-// HasAlertOnLoadTimeLimit2 returns a boolean if a field has been set.
-func (o *Monitor) HasAlertOnLoadTimeLimit2() bool {
-	if o != nil && o.AlertOnLoadTimeLimit2 != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetAlertOnLoadTimeLimit2 gets a reference to the given bool and assigns it to the AlertOnLoadTimeLimit2 field.
-func (o *Monitor) SetAlertOnLoadTimeLimit2(v bool) {
-	o.AlertOnLoadTimeLimit2 = &v
-}
-
-// GetUsername returns the Username field value if set, zero value otherwise.
-func (o *Monitor) GetUsername() string {
-	if o == nil || o.Username == nil {
-		var ret string
-		return ret
-	}
-	return *o.Username
-}
-
-// GetUsernameOk returns a tuple with the Username field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetUsernameOk() (*string, bool) {
-	if o == nil || o.Username == nil {
-		return nil, false
-	}
-	return o.Username, true
-}
-
-// HasUsername returns a boolean if a field has been set.
-func (o *Monitor) HasUsername() bool {
-	if o != nil && o.Username != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetUsername gets a reference to the given string and assigns it to the Username field.
-func (o *Monitor) SetUsername(v string) {
-	o.Username = &v
-}
-
-// GetAuthenticationType returns the AuthenticationType field value if set, zero value otherwise.
-func (o *Monitor) GetAuthenticationType() ApiHttpAuthenticationType {
-	if o == nil || o.AuthenticationType == nil {
-		var ret ApiHttpAuthenticationType
-		return ret
-	}
-	return *o.AuthenticationType
-}
-
-// GetAuthenticationTypeOk returns a tuple with the AuthenticationType field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetAuthenticationTypeOk() (*ApiHttpAuthenticationType, bool) {
-	if o == nil || o.AuthenticationType == nil {
-		return nil, false
-	}
-	return o.AuthenticationType, true
-}
-
-// HasAuthenticationType returns a boolean if a field has been set.
-func (o *Monitor) HasAuthenticationType() bool {
-	if o != nil && o.AuthenticationType != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetAuthenticationType gets a reference to the given ApiHttpAuthenticationType and assigns it to the AuthenticationType field.
-func (o *Monitor) SetAuthenticationType(v ApiHttpAuthenticationType) {
-	o.AuthenticationType = &v
-}
-
-// GetBrowserType returns the BrowserType field value if set, zero value otherwise.
-func (o *Monitor) GetBrowserType() BrowserType {
-	if o == nil || o.BrowserType == nil {
-		var ret BrowserType
-		return ret
-	}
-	return *o.BrowserType
-}
-
-// GetBrowserTypeOk returns a tuple with the BrowserType field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetBrowserTypeOk() (*BrowserType, bool) {
-	if o == nil || o.BrowserType == nil {
-		return nil, false
-	}
-	return o.BrowserType, true
-}
-
-// HasBrowserType returns a boolean if a field has been set.
-func (o *Monitor) HasBrowserType() bool {
-	if o != nil && o.BrowserType != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetBrowserType gets a reference to the given BrowserType and assigns it to the BrowserType field.
-func (o *Monitor) SetBrowserType(v BrowserType) {
-	o.BrowserType = &v
-}
-
-// GetBrowserWindowDimensions returns the BrowserWindowDimensions field value if set, zero value otherwise.
-func (o *Monitor) GetBrowserWindowDimensions() BrowserWindowDimensions {
-	if o == nil || o.BrowserWindowDimensions == nil {
-		var ret BrowserWindowDimensions
-		return ret
-	}
-	return *o.BrowserWindowDimensions
-}
-
-// GetBrowserWindowDimensionsOk returns a tuple with the BrowserWindowDimensions field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *Monitor) GetBrowserWindowDimensionsOk() (*BrowserWindowDimensions, bool) {
-	if o == nil || o.BrowserWindowDimensions == nil {
-		return nil, false
-	}
-	return o.BrowserWindowDimensions, true
-}
-
-// HasBrowserWindowDimensions returns a boolean if a field has been set.
-func (o *Monitor) HasBrowserWindowDimensions() bool {
-	if o != nil && o.BrowserWindowDimensions != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetBrowserWindowDimensions gets a reference to the given BrowserWindowDimensions and assigns it to the BrowserWindowDimensions field.
-func (o *Monitor) SetBrowserWindowDimensions(v BrowserWindowDimensions) {
-	o.BrowserWindowDimensions = &v
+// SetCheckInterval gets a reference to the given int32 and assigns it to the CheckInterval field.
+func (o *Monitor) SetCheckInterval(v int32) {
+	o.CheckInterval = &v
 }
 
 // GetCredits returns the Credits field value if set, zero value otherwise.
@@ -1024,6 +384,38 @@ func (o *Monitor) HasCredits() bool {
 // SetCredits gets a reference to the given int32 and assigns it to the Credits field.
 func (o *Monitor) SetCredits(v int32) {
 	o.Credits = &v
+}
+
+// GetMonitorMode returns the MonitorMode field value if set, zero value otherwise.
+func (o *Monitor) GetMonitorMode() MonitorMode {
+	if o == nil || o.MonitorMode == nil {
+		var ret MonitorMode
+		return ret
+	}
+	return *o.MonitorMode
+}
+
+// GetMonitorModeOk returns a tuple with the MonitorMode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetMonitorModeOk() (*MonitorMode, bool) {
+	if o == nil || o.MonitorMode == nil {
+		return nil, false
+	}
+	return o.MonitorMode, true
+}
+
+// HasMonitorMode returns a boolean if a field has been set.
+func (o *Monitor) HasMonitorMode() bool {
+	if o != nil && o.MonitorMode != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMonitorMode gets a reference to the given MonitorMode and assigns it to the MonitorMode field.
+func (o *Monitor) SetMonitorMode(v MonitorMode) {
+	o.MonitorMode = &v
 }
 
 // GetPredefinedVariables returns the PredefinedVariables field value if set, zero value otherwise.
@@ -1154,6 +546,102 @@ func (o *Monitor) SetCustomMetrics(v []CustomMetric) {
 	o.CustomMetrics = &v
 }
 
+// GetCustomFields returns the CustomFields field value if set, zero value otherwise.
+func (o *Monitor) GetCustomFields() []CustomField {
+	if o == nil || o.CustomFields == nil {
+		var ret []CustomField
+		return ret
+	}
+	return *o.CustomFields
+}
+
+// GetCustomFieldsOk returns a tuple with the CustomFields field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetCustomFieldsOk() (*[]CustomField, bool) {
+	if o == nil || o.CustomFields == nil {
+		return nil, false
+	}
+	return o.CustomFields, true
+}
+
+// HasCustomFields returns a boolean if a field has been set.
+func (o *Monitor) HasCustomFields() bool {
+	if o != nil && o.CustomFields != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetCustomFields gets a reference to the given []CustomField and assigns it to the CustomFields field.
+func (o *Monitor) SetCustomFields(v []CustomField) {
+	o.CustomFields = &v
+}
+
+// GetSelectedCheckpoints returns the SelectedCheckpoints field value if set, zero value otherwise.
+func (o *Monitor) GetSelectedCheckpoints() SelectedCheckpoints {
+	if o == nil || o.SelectedCheckpoints == nil {
+		var ret SelectedCheckpoints
+		return ret
+	}
+	return *o.SelectedCheckpoints
+}
+
+// GetSelectedCheckpointsOk returns a tuple with the SelectedCheckpoints field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetSelectedCheckpointsOk() (*SelectedCheckpoints, bool) {
+	if o == nil || o.SelectedCheckpoints == nil {
+		return nil, false
+	}
+	return o.SelectedCheckpoints, true
+}
+
+// HasSelectedCheckpoints returns a boolean if a field has been set.
+func (o *Monitor) HasSelectedCheckpoints() bool {
+	if o != nil && o.SelectedCheckpoints != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSelectedCheckpoints gets a reference to the given SelectedCheckpoints and assigns it to the SelectedCheckpoints field.
+func (o *Monitor) SetSelectedCheckpoints(v SelectedCheckpoints) {
+	o.SelectedCheckpoints = &v
+}
+
+// GetUsePrimaryCheckpointsOnly returns the UsePrimaryCheckpointsOnly field value if set, zero value otherwise.
+func (o *Monitor) GetUsePrimaryCheckpointsOnly() bool {
+	if o == nil || o.UsePrimaryCheckpointsOnly == nil {
+		var ret bool
+		return ret
+	}
+	return *o.UsePrimaryCheckpointsOnly
+}
+
+// GetUsePrimaryCheckpointsOnlyOk returns a tuple with the UsePrimaryCheckpointsOnly field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetUsePrimaryCheckpointsOnlyOk() (*bool, bool) {
+	if o == nil || o.UsePrimaryCheckpointsOnly == nil {
+		return nil, false
+	}
+	return o.UsePrimaryCheckpointsOnly, true
+}
+
+// HasUsePrimaryCheckpointsOnly returns a boolean if a field has been set.
+func (o *Monitor) HasUsePrimaryCheckpointsOnly() bool {
+	if o != nil && o.UsePrimaryCheckpointsOnly != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUsePrimaryCheckpointsOnly gets a reference to the given bool and assigns it to the UsePrimaryCheckpointsOnly field.
+func (o *Monitor) SetUsePrimaryCheckpointsOnly(v bool) {
+	o.UsePrimaryCheckpointsOnly = &v
+}
+
 // GetSelfServiceTransactionScript returns the SelfServiceTransactionScript field value if set, zero value otherwise.
 func (o *Monitor) GetSelfServiceTransactionScript() string {
 	if o == nil || o.SelfServiceTransactionScript == nil {
@@ -1184,6 +672,390 @@ func (o *Monitor) HasSelfServiceTransactionScript() bool {
 // SetSelfServiceTransactionScript gets a reference to the given string and assigns it to the SelfServiceTransactionScript field.
 func (o *Monitor) SetSelfServiceTransactionScript(v string) {
 	o.SelfServiceTransactionScript = &v
+}
+
+// GetMonitorType returns the MonitorType field value if set, zero value otherwise.
+func (o *Monitor) GetMonitorType() MonitorType {
+	if o == nil || o.MonitorType == nil {
+		var ret MonitorType
+		return ret
+	}
+	return *o.MonitorType
+}
+
+// GetMonitorTypeOk returns a tuple with the MonitorType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetMonitorTypeOk() (*MonitorType, bool) {
+	if o == nil || o.MonitorType == nil {
+		return nil, false
+	}
+	return o.MonitorType, true
+}
+
+// HasMonitorType returns a boolean if a field has been set.
+func (o *Monitor) HasMonitorType() bool {
+	if o != nil && o.MonitorType != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMonitorType gets a reference to the given MonitorType and assigns it to the MonitorType field.
+func (o *Monitor) SetMonitorType(v MonitorType) {
+	o.MonitorType = &v
+}
+
+// GetNotes returns the Notes field value if set, zero value otherwise.
+func (o *Monitor) GetNotes() string {
+	if o == nil || o.Notes == nil {
+		var ret string
+		return ret
+	}
+	return *o.Notes
+}
+
+// GetNotesOk returns a tuple with the Notes field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetNotesOk() (*string, bool) {
+	if o == nil || o.Notes == nil {
+		return nil, false
+	}
+	return o.Notes, true
+}
+
+// HasNotes returns a boolean if a field has been set.
+func (o *Monitor) HasNotes() bool {
+	if o != nil && o.Notes != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetNotes gets a reference to the given string and assigns it to the Notes field.
+func (o *Monitor) SetNotes(v string) {
+	o.Notes = &v
+}
+
+// GetAlertOnLoadTimeLimit1 returns the AlertOnLoadTimeLimit1 field value if set, zero value otherwise.
+func (o *Monitor) GetAlertOnLoadTimeLimit1() bool {
+	if o == nil || o.AlertOnLoadTimeLimit1 == nil {
+		var ret bool
+		return ret
+	}
+	return *o.AlertOnLoadTimeLimit1
+}
+
+// GetAlertOnLoadTimeLimit1Ok returns a tuple with the AlertOnLoadTimeLimit1 field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetAlertOnLoadTimeLimit1Ok() (*bool, bool) {
+	if o == nil || o.AlertOnLoadTimeLimit1 == nil {
+		return nil, false
+	}
+	return o.AlertOnLoadTimeLimit1, true
+}
+
+// HasAlertOnLoadTimeLimit1 returns a boolean if a field has been set.
+func (o *Monitor) HasAlertOnLoadTimeLimit1() bool {
+	if o != nil && o.AlertOnLoadTimeLimit1 != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAlertOnLoadTimeLimit1 gets a reference to the given bool and assigns it to the AlertOnLoadTimeLimit1 field.
+func (o *Monitor) SetAlertOnLoadTimeLimit1(v bool) {
+	o.AlertOnLoadTimeLimit1 = &v
+}
+
+// GetLoadTimeLimit1 returns the LoadTimeLimit1 field value if set, zero value otherwise.
+func (o *Monitor) GetLoadTimeLimit1() int32 {
+	if o == nil || o.LoadTimeLimit1 == nil {
+		var ret int32
+		return ret
+	}
+	return *o.LoadTimeLimit1
+}
+
+// GetLoadTimeLimit1Ok returns a tuple with the LoadTimeLimit1 field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetLoadTimeLimit1Ok() (*int32, bool) {
+	if o == nil || o.LoadTimeLimit1 == nil {
+		return nil, false
+	}
+	return o.LoadTimeLimit1, true
+}
+
+// HasLoadTimeLimit1 returns a boolean if a field has been set.
+func (o *Monitor) HasLoadTimeLimit1() bool {
+	if o != nil && o.LoadTimeLimit1 != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetLoadTimeLimit1 gets a reference to the given int32 and assigns it to the LoadTimeLimit1 field.
+func (o *Monitor) SetLoadTimeLimit1(v int32) {
+	o.LoadTimeLimit1 = &v
+}
+
+// GetAlertOnLoadTimeLimit2 returns the AlertOnLoadTimeLimit2 field value if set, zero value otherwise.
+func (o *Monitor) GetAlertOnLoadTimeLimit2() bool {
+	if o == nil || o.AlertOnLoadTimeLimit2 == nil {
+		var ret bool
+		return ret
+	}
+	return *o.AlertOnLoadTimeLimit2
+}
+
+// GetAlertOnLoadTimeLimit2Ok returns a tuple with the AlertOnLoadTimeLimit2 field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetAlertOnLoadTimeLimit2Ok() (*bool, bool) {
+	if o == nil || o.AlertOnLoadTimeLimit2 == nil {
+		return nil, false
+	}
+	return o.AlertOnLoadTimeLimit2, true
+}
+
+// HasAlertOnLoadTimeLimit2 returns a boolean if a field has been set.
+func (o *Monitor) HasAlertOnLoadTimeLimit2() bool {
+	if o != nil && o.AlertOnLoadTimeLimit2 != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAlertOnLoadTimeLimit2 gets a reference to the given bool and assigns it to the AlertOnLoadTimeLimit2 field.
+func (o *Monitor) SetAlertOnLoadTimeLimit2(v bool) {
+	o.AlertOnLoadTimeLimit2 = &v
+}
+
+// GetLoadTimeLimit2 returns the LoadTimeLimit2 field value if set, zero value otherwise.
+func (o *Monitor) GetLoadTimeLimit2() int32 {
+	if o == nil || o.LoadTimeLimit2 == nil {
+		var ret int32
+		return ret
+	}
+	return *o.LoadTimeLimit2
+}
+
+// GetLoadTimeLimit2Ok returns a tuple with the LoadTimeLimit2 field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetLoadTimeLimit2Ok() (*int32, bool) {
+	if o == nil || o.LoadTimeLimit2 == nil {
+		return nil, false
+	}
+	return o.LoadTimeLimit2, true
+}
+
+// HasLoadTimeLimit2 returns a boolean if a field has been set.
+func (o *Monitor) HasLoadTimeLimit2() bool {
+	if o != nil && o.LoadTimeLimit2 != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetLoadTimeLimit2 gets a reference to the given int32 and assigns it to the LoadTimeLimit2 field.
+func (o *Monitor) SetLoadTimeLimit2(v int32) {
+	o.LoadTimeLimit2 = &v
+}
+
+// GetBlockGoogleAnalytics returns the BlockGoogleAnalytics field value if set, zero value otherwise.
+func (o *Monitor) GetBlockGoogleAnalytics() bool {
+	if o == nil || o.BlockGoogleAnalytics == nil {
+		var ret bool
+		return ret
+	}
+	return *o.BlockGoogleAnalytics
+}
+
+// GetBlockGoogleAnalyticsOk returns a tuple with the BlockGoogleAnalytics field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetBlockGoogleAnalyticsOk() (*bool, bool) {
+	if o == nil || o.BlockGoogleAnalytics == nil {
+		return nil, false
+	}
+	return o.BlockGoogleAnalytics, true
+}
+
+// HasBlockGoogleAnalytics returns a boolean if a field has been set.
+func (o *Monitor) HasBlockGoogleAnalytics() bool {
+	if o != nil && o.BlockGoogleAnalytics != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBlockGoogleAnalytics gets a reference to the given bool and assigns it to the BlockGoogleAnalytics field.
+func (o *Monitor) SetBlockGoogleAnalytics(v bool) {
+	o.BlockGoogleAnalytics = &v
+}
+
+// GetBlockUptrendsRum returns the BlockUptrendsRum field value if set, zero value otherwise.
+func (o *Monitor) GetBlockUptrendsRum() bool {
+	if o == nil || o.BlockUptrendsRum == nil {
+		var ret bool
+		return ret
+	}
+	return *o.BlockUptrendsRum
+}
+
+// GetBlockUptrendsRumOk returns a tuple with the BlockUptrendsRum field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetBlockUptrendsRumOk() (*bool, bool) {
+	if o == nil || o.BlockUptrendsRum == nil {
+		return nil, false
+	}
+	return o.BlockUptrendsRum, true
+}
+
+// HasBlockUptrendsRum returns a boolean if a field has been set.
+func (o *Monitor) HasBlockUptrendsRum() bool {
+	if o != nil && o.BlockUptrendsRum != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBlockUptrendsRum gets a reference to the given bool and assigns it to the BlockUptrendsRum field.
+func (o *Monitor) SetBlockUptrendsRum(v bool) {
+	o.BlockUptrendsRum = &v
+}
+
+// GetBlockUrls returns the BlockUrls field value if set, zero value otherwise.
+func (o *Monitor) GetBlockUrls() []string {
+	if o == nil || o.BlockUrls == nil {
+		var ret []string
+		return ret
+	}
+	return *o.BlockUrls
+}
+
+// GetBlockUrlsOk returns a tuple with the BlockUrls field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetBlockUrlsOk() (*[]string, bool) {
+	if o == nil || o.BlockUrls == nil {
+		return nil, false
+	}
+	return o.BlockUrls, true
+}
+
+// HasBlockUrls returns a boolean if a field has been set.
+func (o *Monitor) HasBlockUrls() bool {
+	if o != nil && o.BlockUrls != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBlockUrls gets a reference to the given []string and assigns it to the BlockUrls field.
+func (o *Monitor) SetBlockUrls(v []string) {
+	o.BlockUrls = &v
+}
+
+// GetRequestHeaders returns the RequestHeaders field value if set, zero value otherwise.
+func (o *Monitor) GetRequestHeaders() []RequestHeader {
+	if o == nil || o.RequestHeaders == nil {
+		var ret []RequestHeader
+		return ret
+	}
+	return *o.RequestHeaders
+}
+
+// GetRequestHeadersOk returns a tuple with the RequestHeaders field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetRequestHeadersOk() (*[]RequestHeader, bool) {
+	if o == nil || o.RequestHeaders == nil {
+		return nil, false
+	}
+	return o.RequestHeaders, true
+}
+
+// HasRequestHeaders returns a boolean if a field has been set.
+func (o *Monitor) HasRequestHeaders() bool {
+	if o != nil && o.RequestHeaders != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetRequestHeaders gets a reference to the given []RequestHeader and assigns it to the RequestHeaders field.
+func (o *Monitor) SetRequestHeaders(v []RequestHeader) {
+	o.RequestHeaders = &v
+}
+
+// GetUserAgent returns the UserAgent field value if set, zero value otherwise.
+func (o *Monitor) GetUserAgent() string {
+	if o == nil || o.UserAgent == nil {
+		var ret string
+		return ret
+	}
+	return *o.UserAgent
+}
+
+// GetUserAgentOk returns a tuple with the UserAgent field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetUserAgentOk() (*string, bool) {
+	if o == nil || o.UserAgent == nil {
+		return nil, false
+	}
+	return o.UserAgent, true
+}
+
+// HasUserAgent returns a boolean if a field has been set.
+func (o *Monitor) HasUserAgent() bool {
+	if o != nil && o.UserAgent != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUserAgent gets a reference to the given string and assigns it to the UserAgent field.
+func (o *Monitor) SetUserAgent(v string) {
+	o.UserAgent = &v
+}
+
+// GetUsername returns the Username field value if set, zero value otherwise.
+func (o *Monitor) GetUsername() string {
+	if o == nil || o.Username == nil {
+		var ret string
+		return ret
+	}
+	return *o.Username
+}
+
+// GetUsernameOk returns a tuple with the Username field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetUsernameOk() (*string, bool) {
+	if o == nil || o.Username == nil {
+		return nil, false
+	}
+	return o.Username, true
+}
+
+// HasUsername returns a boolean if a field has been set.
+func (o *Monitor) HasUsername() bool {
+	if o != nil && o.Username != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetUsername gets a reference to the given string and assigns it to the Username field.
+func (o *Monitor) SetUsername(v string) {
+	o.Username = &v
 }
 
 // GetPassword returns the Password field value if set, zero value otherwise.
@@ -1250,6 +1122,38 @@ func (o *Monitor) SetNameForPhoneAlerts(v string) {
 	o.NameForPhoneAlerts = &v
 }
 
+// GetAuthenticationType returns the AuthenticationType field value if set, zero value otherwise.
+func (o *Monitor) GetAuthenticationType() ApiHttpAuthenticationType {
+	if o == nil || o.AuthenticationType == nil {
+		var ret ApiHttpAuthenticationType
+		return ret
+	}
+	return *o.AuthenticationType
+}
+
+// GetAuthenticationTypeOk returns a tuple with the AuthenticationType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetAuthenticationTypeOk() (*ApiHttpAuthenticationType, bool) {
+	if o == nil || o.AuthenticationType == nil {
+		return nil, false
+	}
+	return o.AuthenticationType, true
+}
+
+// HasAuthenticationType returns a boolean if a field has been set.
+func (o *Monitor) HasAuthenticationType() bool {
+	if o != nil && o.AuthenticationType != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetAuthenticationType gets a reference to the given ApiHttpAuthenticationType and assigns it to the AuthenticationType field.
+func (o *Monitor) SetAuthenticationType(v ApiHttpAuthenticationType) {
+	o.AuthenticationType = &v
+}
+
 // GetThrottlingOptions returns the ThrottlingOptions field value if set, zero value otherwise.
 func (o *Monitor) GetThrottlingOptions() ThrottlingOptions {
 	if o == nil || o.ThrottlingOptions == nil {
@@ -1280,6 +1184,38 @@ func (o *Monitor) HasThrottlingOptions() bool {
 // SetThrottlingOptions gets a reference to the given ThrottlingOptions and assigns it to the ThrottlingOptions field.
 func (o *Monitor) SetThrottlingOptions(v ThrottlingOptions) {
 	o.ThrottlingOptions = &v
+}
+
+// GetTransactionStepDefinition returns the TransactionStepDefinition field value if set, zero value otherwise.
+func (o *Monitor) GetTransactionStepDefinition() TransactionStepDefinition {
+	if o == nil || o.TransactionStepDefinition == nil {
+		var ret TransactionStepDefinition
+		return ret
+	}
+	return *o.TransactionStepDefinition
+}
+
+// GetTransactionStepDefinitionOk returns a tuple with the TransactionStepDefinition field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetTransactionStepDefinitionOk() (*TransactionStepDefinition, bool) {
+	if o == nil || o.TransactionStepDefinition == nil {
+		return nil, false
+	}
+	return o.TransactionStepDefinition, true
+}
+
+// HasTransactionStepDefinition returns a boolean if a field has been set.
+func (o *Monitor) HasTransactionStepDefinition() bool {
+	if o != nil && o.TransactionStepDefinition != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetTransactionStepDefinition gets a reference to the given TransactionStepDefinition and assigns it to the TransactionStepDefinition field.
+func (o *Monitor) SetTransactionStepDefinition(v TransactionStepDefinition) {
+	o.TransactionStepDefinition = &v
 }
 
 // GetCertificateName returns the CertificateName field value if set, zero value otherwise.
@@ -2562,6 +2498,70 @@ func (o *Monitor) SetUrl(v string) {
 	o.Url = &v
 }
 
+// GetBrowserType returns the BrowserType field value if set, zero value otherwise.
+func (o *Monitor) GetBrowserType() BrowserType {
+	if o == nil || o.BrowserType == nil {
+		var ret BrowserType
+		return ret
+	}
+	return *o.BrowserType
+}
+
+// GetBrowserTypeOk returns a tuple with the BrowserType field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetBrowserTypeOk() (*BrowserType, bool) {
+	if o == nil || o.BrowserType == nil {
+		return nil, false
+	}
+	return o.BrowserType, true
+}
+
+// HasBrowserType returns a boolean if a field has been set.
+func (o *Monitor) HasBrowserType() bool {
+	if o != nil && o.BrowserType != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBrowserType gets a reference to the given BrowserType and assigns it to the BrowserType field.
+func (o *Monitor) SetBrowserType(v BrowserType) {
+	o.BrowserType = &v
+}
+
+// GetBrowserWindowDimensions returns the BrowserWindowDimensions field value if set, zero value otherwise.
+func (o *Monitor) GetBrowserWindowDimensions() BrowserWindowDimensions {
+	if o == nil || o.BrowserWindowDimensions == nil {
+		var ret BrowserWindowDimensions
+		return ret
+	}
+	return *o.BrowserWindowDimensions
+}
+
+// GetBrowserWindowDimensionsOk returns a tuple with the BrowserWindowDimensions field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Monitor) GetBrowserWindowDimensionsOk() (*BrowserWindowDimensions, bool) {
+	if o == nil || o.BrowserWindowDimensions == nil {
+		return nil, false
+	}
+	return o.BrowserWindowDimensions, true
+}
+
+// HasBrowserWindowDimensions returns a boolean if a field has been set.
+func (o *Monitor) HasBrowserWindowDimensions() bool {
+	if o != nil && o.BrowserWindowDimensions != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetBrowserWindowDimensions gets a reference to the given BrowserWindowDimensions and assigns it to the BrowserWindowDimensions field.
+func (o *Monitor) SetBrowserWindowDimensions(v BrowserWindowDimensions) {
+	o.BrowserWindowDimensions = &v
+}
+
 // GetUseConcurrentMonitoring returns the UseConcurrentMonitoring field value if set, zero value otherwise.
 func (o *Monitor) GetUseConcurrentMonitoring() bool {
 	if o == nil || o.UseConcurrentMonitoring == nil {
@@ -2666,83 +2666,26 @@ func (o Monitor) MarshalJSON() ([]byte, error) {
 	if o.Name != nil {
 		toSerialize["Name"] = o.Name
 	}
-	if o.MonitorType != nil {
-		toSerialize["MonitorType"] = o.MonitorType
-	}
-	if o.GenerateAlert != nil {
-		toSerialize["GenerateAlert"] = o.GenerateAlert
-	}
 	if o.IsActive != nil {
 		toSerialize["IsActive"] = o.IsActive
-	}
-	if o.IsLocked != nil {
-		toSerialize["IsLocked"] = o.IsLocked
-	}
-	if o.CustomFields != nil {
-		toSerialize["CustomFields"] = o.CustomFields
-	}
-	if o.SelectedCheckpoints != nil {
-		toSerialize["SelectedCheckpoints"] = o.SelectedCheckpoints
-	}
-	if o.UsePrimaryCheckpointsOnly != nil {
-		toSerialize["UsePrimaryCheckpointsOnly"] = o.UsePrimaryCheckpointsOnly
-	}
-	if o.CheckInterval != nil {
-		toSerialize["CheckInterval"] = o.CheckInterval
-	}
-	if o.MonitorMode != nil {
-		toSerialize["MonitorMode"] = o.MonitorMode
-	}
-	if o.Notes != nil {
-		toSerialize["Notes"] = o.Notes
 	}
 	if o.Hash != nil {
 		toSerialize["Hash"] = o.Hash
 	}
-	if o.TransactionStepDefinition != nil {
-		toSerialize["TransactionStepDefinition"] = o.TransactionStepDefinition
+	if o.GenerateAlert != nil {
+		toSerialize["GenerateAlert"] = o.GenerateAlert
 	}
-	if o.BlockUptrendsRum != nil {
-		toSerialize["BlockUptrendsRum"] = o.BlockUptrendsRum
+	if o.IsLocked != nil {
+		toSerialize["IsLocked"] = o.IsLocked
 	}
-	if o.BlockGoogleAnalytics != nil {
-		toSerialize["BlockGoogleAnalytics"] = o.BlockGoogleAnalytics
-	}
-	if o.BlockUrls != nil {
-		toSerialize["BlockUrls"] = o.BlockUrls
-	}
-	if o.RequestHeaders != nil {
-		toSerialize["RequestHeaders"] = o.RequestHeaders
-	}
-	if o.UserAgent != nil {
-		toSerialize["UserAgent"] = o.UserAgent
-	}
-	if o.LoadTimeLimit1 != nil {
-		toSerialize["LoadTimeLimit1"] = o.LoadTimeLimit1
-	}
-	if o.AlertOnLoadTimeLimit1 != nil {
-		toSerialize["AlertOnLoadTimeLimit1"] = o.AlertOnLoadTimeLimit1
-	}
-	if o.LoadTimeLimit2 != nil {
-		toSerialize["LoadTimeLimit2"] = o.LoadTimeLimit2
-	}
-	if o.AlertOnLoadTimeLimit2 != nil {
-		toSerialize["AlertOnLoadTimeLimit2"] = o.AlertOnLoadTimeLimit2
-	}
-	if o.Username != nil {
-		toSerialize["Username"] = o.Username
-	}
-	if o.AuthenticationType != nil {
-		toSerialize["AuthenticationType"] = o.AuthenticationType
-	}
-	if o.BrowserType != nil {
-		toSerialize["BrowserType"] = o.BrowserType
-	}
-	if o.BrowserWindowDimensions != nil {
-		toSerialize["BrowserWindowDimensions"] = o.BrowserWindowDimensions
+	if o.CheckInterval != nil {
+		toSerialize["CheckInterval"] = o.CheckInterval
 	}
 	if o.Credits != nil {
 		toSerialize["Credits"] = o.Credits
+	}
+	if o.MonitorMode != nil {
+		toSerialize["MonitorMode"] = o.MonitorMode
 	}
 	if o.PredefinedVariables != nil {
 		toSerialize["PredefinedVariables"] = o.PredefinedVariables
@@ -2756,8 +2699,53 @@ func (o Monitor) MarshalJSON() ([]byte, error) {
 	if o.CustomMetrics != nil {
 		toSerialize["CustomMetrics"] = o.CustomMetrics
 	}
+	if o.CustomFields != nil {
+		toSerialize["CustomFields"] = o.CustomFields
+	}
+	if o.SelectedCheckpoints != nil {
+		toSerialize["SelectedCheckpoints"] = o.SelectedCheckpoints
+	}
+	if o.UsePrimaryCheckpointsOnly != nil {
+		toSerialize["UsePrimaryCheckpointsOnly"] = o.UsePrimaryCheckpointsOnly
+	}
 	if o.SelfServiceTransactionScript != nil {
 		toSerialize["SelfServiceTransactionScript"] = o.SelfServiceTransactionScript
+	}
+	if o.MonitorType != nil {
+		toSerialize["MonitorType"] = o.MonitorType
+	}
+	if o.Notes != nil {
+		toSerialize["Notes"] = o.Notes
+	}
+	if o.AlertOnLoadTimeLimit1 != nil {
+		toSerialize["AlertOnLoadTimeLimit1"] = o.AlertOnLoadTimeLimit1
+	}
+	if o.LoadTimeLimit1 != nil {
+		toSerialize["LoadTimeLimit1"] = o.LoadTimeLimit1
+	}
+	if o.AlertOnLoadTimeLimit2 != nil {
+		toSerialize["AlertOnLoadTimeLimit2"] = o.AlertOnLoadTimeLimit2
+	}
+	if o.LoadTimeLimit2 != nil {
+		toSerialize["LoadTimeLimit2"] = o.LoadTimeLimit2
+	}
+	if o.BlockGoogleAnalytics != nil {
+		toSerialize["BlockGoogleAnalytics"] = o.BlockGoogleAnalytics
+	}
+	if o.BlockUptrendsRum != nil {
+		toSerialize["BlockUptrendsRum"] = o.BlockUptrendsRum
+	}
+	if o.BlockUrls != nil {
+		toSerialize["BlockUrls"] = o.BlockUrls
+	}
+	if o.RequestHeaders != nil {
+		toSerialize["RequestHeaders"] = o.RequestHeaders
+	}
+	if o.UserAgent != nil {
+		toSerialize["UserAgent"] = o.UserAgent
+	}
+	if o.Username != nil {
+		toSerialize["Username"] = o.Username
 	}
 	if o.Password != nil {
 		toSerialize["Password"] = o.Password
@@ -2765,8 +2753,14 @@ func (o Monitor) MarshalJSON() ([]byte, error) {
 	if o.NameForPhoneAlerts != nil {
 		toSerialize["NameForPhoneAlerts"] = o.NameForPhoneAlerts
 	}
+	if o.AuthenticationType != nil {
+		toSerialize["AuthenticationType"] = o.AuthenticationType
+	}
 	if o.ThrottlingOptions != nil {
 		toSerialize["ThrottlingOptions"] = o.ThrottlingOptions
+	}
+	if o.TransactionStepDefinition != nil {
+		toSerialize["TransactionStepDefinition"] = o.TransactionStepDefinition
 	}
 	if o.CertificateName != nil {
 		toSerialize["CertificateName"] = o.CertificateName
@@ -2887,6 +2881,12 @@ func (o Monitor) MarshalJSON() ([]byte, error) {
 	}
 	if o.Url != nil {
 		toSerialize["Url"] = o.Url
+	}
+	if o.BrowserType != nil {
+		toSerialize["BrowserType"] = o.BrowserType
+	}
+	if o.BrowserWindowDimensions != nil {
+		toSerialize["BrowserWindowDimensions"] = o.BrowserWindowDimensions
 	}
 	if o.UseConcurrentMonitoring != nil {
 		toSerialize["UseConcurrentMonitoring"] = o.UseConcurrentMonitoring

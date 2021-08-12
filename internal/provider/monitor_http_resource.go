@@ -62,18 +62,34 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 			// 	  "Value": "Bar"
 			// 	}
 			//   ],
+			"request_headers": {
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"name": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"value": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+					},
+				},
+			},
 			// "request_headers": {
 			// 	Type:         schema.TypeString,
 			// 	Optional:     true,
 			// 	Description:  "Specify HTTP Headers allowed are predefined and custom headers. Each header should appear on a separated line.",
 			// 	ValidateFunc: validation.StringIsNotEmpty,
 			// },
-			"request_body": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Description:  "If `http_method` POST was specified it's possible post a form e.g. XML or JSON.",
-				ValidateFunc: validation.StringIsNotEmpty,
-			},
+			// "request_body": {
+			// 	Type:         schema.TypeString,
+			// 	Optional:     true,
+			// 	Description:  "If `http_method` POST was specified it's possible post a form e.g. XML or JSON.",
+			// 	ValidateFunc: validation.StringIsNotEmpty,
+			// },
 			"expected_http_status_code": {
 				Type:         schema.TypeInt,
 				Optional:     true,
@@ -272,6 +288,10 @@ func buildMonitorHttpStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 		monitor.Password = String(attr.(string))
 	}
 
+	if attr, ok := d.Get("request_headers").([]interface{}); ok {
+		monitor.RequestHeaders = SliceInterfaceToSliceRequestHeader(attr)
+	}
+
 	// Is a List of maps
 	// if attr, ok := d.GetOk("match_pattern"); ok {
 	// 	uptrends.patter
@@ -332,6 +352,9 @@ func readMonitorHttpStruct(monitor *uptrends.Monitor, d *schema.ResourceData) di
 		return diag.FromErr(err)
 	}
 	if err := d.Set("min_bytes", monitor.MinimumBytes); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("request_headers", SliceRequestHeaderToSliceInterface(*monitor.RequestHeaders)); err != nil {
 		return diag.FromErr(err)
 	}
 

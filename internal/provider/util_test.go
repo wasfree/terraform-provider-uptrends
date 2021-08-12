@@ -5,6 +5,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/stretchr/testify/assert"
+	"github.com/wasfree/uptrends-go-sdk"
 )
 
 func TestSliceInterfaceToSliceInt32(t *testing.T) {
@@ -36,4 +37,28 @@ func TestMergeSchema(t *testing.T) {
 	assert.Len(t, final, 2)
 	assert.Contains(t, final, "example1")
 	assert.Contains(t, final, "example2")
+}
+
+func TestRequestHeaderHelpers(t *testing.T) {
+	requestHeaderInterfaceTestData := []interface{}{
+		map[string]interface{}{
+			"name":  "Content-Type",
+			"value": "text/html; charset=UTF-8",
+		},
+	}
+	requestHeaderTestData := []uptrends.RequestHeader{
+		{
+			Name:  String("Content-Type"),
+			Value: String("text/html; charset=UTF-8"),
+		},
+	}
+
+	t.Run("Test func SliceInterfaceToSliceRequestHeader", func(t *testing.T) {
+		headers := SliceInterfaceToSliceRequestHeader(requestHeaderInterfaceTestData)
+		assert.Equal(t, &requestHeaderTestData, headers)
+	})
+	t.Run("Test func SliceInterfaceToSliceRequestHeader", func(t *testing.T) {
+		headers := SliceRequestHeaderToSliceInterface(requestHeaderTestData)
+		assert.Equal(t, requestHeaderInterfaceTestData, headers)
+	})
 }

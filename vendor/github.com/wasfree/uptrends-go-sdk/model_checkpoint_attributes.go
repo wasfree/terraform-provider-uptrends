@@ -23,7 +23,7 @@ type CheckpointAttributes struct {
 	// Ipv4 addresses of the checkpoint 
 	Ipv4Addresses *[]string `json:"Ipv4Addresses,omitempty"`
 	// Ipv6 addresses of the checkpoint
-	IpV6Addresses *[]string `json:"IpV6Addresses,omitempty"`
+	IpV6Addresses *[]Ipv6Address `json:"IpV6Addresses,omitempty"`
 	// Checkpoint is primary
 	IsPrimaryCheckpoint bool `json:"IsPrimaryCheckpoint"`
 	// Checkpoint supports IPv6
@@ -149,9 +149,9 @@ func (o *CheckpointAttributes) SetIpv4Addresses(v []string) {
 }
 
 // GetIpV6Addresses returns the IpV6Addresses field value if set, zero value otherwise.
-func (o *CheckpointAttributes) GetIpV6Addresses() []string {
+func (o *CheckpointAttributes) GetIpV6Addresses() []Ipv6Address {
 	if o == nil || o.IpV6Addresses == nil {
-		var ret []string
+		var ret []Ipv6Address
 		return ret
 	}
 	return *o.IpV6Addresses
@@ -159,7 +159,7 @@ func (o *CheckpointAttributes) GetIpV6Addresses() []string {
 
 // GetIpV6AddressesOk returns a tuple with the IpV6Addresses field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckpointAttributes) GetIpV6AddressesOk() (*[]string, bool) {
+func (o *CheckpointAttributes) GetIpV6AddressesOk() (*[]Ipv6Address, bool) {
 	if o == nil || o.IpV6Addresses == nil {
 		return nil, false
 	}
@@ -175,8 +175,8 @@ func (o *CheckpointAttributes) HasIpV6Addresses() bool {
 	return false
 }
 
-// SetIpV6Addresses gets a reference to the given []IPv6Address and assigns it to the IpV6Addresses field.
-func (o *CheckpointAttributes) SetIpV6Addresses(v []string) {
+// SetIpV6Addresses gets a reference to the given []Ipv6Address and assigns it to the IpV6Addresses field.
+func (o *CheckpointAttributes) SetIpV6Addresses(v []Ipv6Address) {
 	o.IpV6Addresses = &v
 }
 

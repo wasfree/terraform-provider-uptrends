@@ -1,8 +1,10 @@
 package uptrends
 
 import (
-	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"strconv"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/wasfree/uptrends-go-sdk"
 )
 
 func Bool(input bool) *bool {
@@ -87,4 +89,27 @@ func MergeSchema(schemaA, schemaB map[string]*schema.Schema) map[string]*schema.
 	}
 
 	return schemaB
+}
+
+func SliceInterfaceToSliceRequestHeader(input []interface{}) *[]uptrends.RequestHeader {
+	headers := []uptrends.RequestHeader{}
+	for _, v := range input {
+		newHeader := uptrends.NewRequestHeader()
+		header := v.(map[string]interface{})
+		newHeader.SetName(header["name"].(string))
+		newHeader.SetValue(header["value"].(string))
+		headers = append(headers, *newHeader)
+	}
+	return &headers
+}
+
+func SliceRequestHeaderToSliceInterface(input []uptrends.RequestHeader) []interface{} {
+	headers := []interface{}{}
+	for _, v := range input {
+		newHeader := make(map[string]interface{})
+		newHeader["name"] = v.GetName()
+		newHeader["value"] = v.GetValue()
+		headers = append(headers, newHeader)
+	}
+	return headers
 }

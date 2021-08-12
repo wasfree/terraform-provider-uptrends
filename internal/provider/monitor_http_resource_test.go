@@ -3,7 +3,6 @@ package uptrends
 import (
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -76,8 +75,6 @@ func testAccCheckUptrendsMonitorHttpDestroyExists(n string) resource.TestCheckFu
 		client := testAccProvider.Meta().(*Uptrends).Client.MonitorApi
 		auth := testAccProvider.Meta().(*Uptrends).AuthContext
 
-		time.Sleep(1 * time.Minute)
-
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
 			return fmt.Errorf("monitor not found: %s", n)
@@ -132,6 +129,16 @@ resource "uptrends_monitor_http" "test" {
   auth_type                 = "Basic"
   username                  = "user"
   password                  = "secret"
+
+  request_headers {
+    name  = "Content-Type"
+    value = "application/json"
+  }
+
+  request_headers {
+    name  = "Content-Length"
+    value = "6553"
+  }
 
   selected_checkpoints {
     regions           = ["Asia", "1005"]

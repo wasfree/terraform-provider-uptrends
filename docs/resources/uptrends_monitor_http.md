@@ -75,7 +75,7 @@ resource "uptrends_monitor_http" "test" {
 - **notes** (String) Your notes for this monitor.
 - **password** (String, Sensitive) See the Username field. Specify the corresponding password value here.
 - **primary_checkpoints_only** (Boolean) Only set this to False when you’re sure you want to execute your monitor on non-primary checkpoints. Defaults to `true`.
-- **request_body** (String) If `http_method` POST was specified it's possible post a form e.g. XML or JSON.
+- **request_headers** (Block List) (see [below for nested schema](#nestedblock--request_headers))
 - **selected_checkpoints** (Block List, Max: 1) (see [below for nested schema](#nestedblock--selected_checkpoints))
 - **user_agent** (String) A string value that identifies which HTTP client is making the HTTP request. A browser typically sends a value that identifies the browser type and version.
 - **username** (String) Specify the username of the appropriate credentials here.
@@ -83,6 +83,15 @@ resource "uptrends_monitor_http" "test" {
 ### Read-Only
 
 - **is_locked** (Boolean) It specifies whether the monitor is currently locked for editing. This happens if the Support team is reviewing your monitor.
+
+<a id="nestedblock--request_headers"></a>
+### Nested Schema for `request_headers`
+
+Required:
+
+- **name** (String)
+- **value** (String)
+
 
 <a id="nestedblock--selected_checkpoints"></a>
 ### Nested Schema for `selected_checkpoints`
