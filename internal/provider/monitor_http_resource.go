@@ -28,17 +28,17 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"type": {
-				Type: schema.TypeString,
-				Optional: true,
-				ForceNew: true,
-				Default: "Http",
-				Description: "Select between `Http` and `Https` monitor type. Defaults to `Http`",
+				Type:         schema.TypeString,
+				Optional:     true,
+				ForceNew:     true,
+				Default:      "Http",
+				Description:  "Select between `Http` and `Https` monitor type. Defaults to `Http`",
 				ValidateFunc: validation.StringInSlice([]string{"Http", "Https"}, true),
 			},
 			"check_cert_errors": {
-				Type: schema.TypeBool,
-				Optional: true,
-				Default:  true,
+				Type:        schema.TypeBool,
+				Optional:    true,
+				Default:     true,
 				Description: "An HTTPS check will only pass our checks if the SSL certificate does not cause any errors. Only set this option to `false` if you really want to ignore SSL certificate issues. This parameter takes only effect if `type` has been set to `Https`.",
 			},
 			"ip_version": {
@@ -165,13 +165,13 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"pattern": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
 							Description: "Insert a word or phrase if you want to verify that your web page contains that text.",
 						},
 						"is_positive": {
-							Type:     schema.TypeBool,
-							Required: true,
+							Type:        schema.TypeBool,
+							Required:    true,
 							Description: "Set this value to `true` if you want to verify that your web page contains `pattern`. Set to false if you want to verify that your web page does not contain that text.",
 						},
 					},

@@ -36,9 +36,10 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"uptrends_monitor_ping":  ResourceMonitorPingSchema(),
-			"uptrends_monitor_group": ResourceMonitorGroupSchema(),
-			"uptrends_monitor_http":  ResourceMonitorHttpSchema(),
+			"uptrends_monitor_ping":    ResourceMonitorPingSchema(),
+			"uptrends_monitor_connect": ResourceMonitorConnectSchema(),
+			"uptrends_monitor_group":   ResourceMonitorGroupSchema(),
+			"uptrends_monitor_http":    ResourceMonitorHttpSchema(),
 		},
 		DataSourcesMap:       map[string]*schema.Resource{},
 		ConfigureContextFunc: providerConfigure,

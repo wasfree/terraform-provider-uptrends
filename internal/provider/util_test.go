@@ -66,7 +66,7 @@ func TestRequestHeaderHelpers(t *testing.T) {
 func TestPatternMatchHelper(t *testing.T) {
 	patternMatchInterfaceTestData := []interface{}{
 		map[string]interface{}{
-			"pattern":    "somepattern",
+			"pattern":     "somepattern",
 			"is_positive": true,
 		},
 	}
