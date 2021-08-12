@@ -10,14 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 )
 
-var (
-	monitorHttpType  = uptrends.MONITORTYPE_HTTP
-	monitorHttpsType = uptrends.MONITORTYPE_HTTPS
-)
-
 func ResourceMonitorHttpSchema() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Manages an Uptrends HTTP Monitor.",
+		Description:   "Manages Uptrends HTTP and HTTPS Monitor.",
 		CreateContext: monitorHttpCreate,
 		ReadContext:   monitorHttpRead,
 		UpdateContext: monitorHttpUpdate,
@@ -31,6 +26,20 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 				Required:     true,
 				Description:  "The full URL of the appropriate website, page or service that you want to monitor. The URL should include “http://” or “https://”. If relevant, please also include a port number if you are using a non-default port number, e.g. https://your-domain.com:8080/your-page. You can also use a fixed IP address as part of the URL instead of a host name, if your server listens to incoming requests without a host name.",
 				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"type": {
+				Type: schema.TypeString,
+				Optional: true,
+				ForceNew: true,
+				Default: "Http",
+				Description: "Select between `Http` and `Https` monitor type. Defaults to `Http`",
+				ValidateFunc: validation.StringInSlice([]string{"Http", "Https"}, true),
+			},
+			"check_cert_errors": {
+				Type: schema.TypeBool,
+				Optional: true,
+				Default:  true,
+				Description: "An HTTPS check will only pass our checks if the SSL certificate does not cause any errors. Only set this option to false if you really want to ignore SSL certificate issues.",
 			},
 			"ip_version": {
 				Type:         schema.TypeString,
@@ -73,7 +82,7 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 			"request_body": {
 				Type:         schema.TypeString,
 				Optional:     true,
-				Description:  "When posting a form, fill in the form variables, every form variable has to be on separated line e.g. `foo=bar\r\nbar=foo\r\n`",
+				Description:  "When posting a form, fill in the form variables, every form variable has to be on separated line e.g. `foo=bar\r\nbar=foo\r\n`. Requires `http_method` to be set to `Post`.",
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"expected_http_status_code": {
@@ -260,12 +269,17 @@ func buildMonitorHttpStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 		return nil, err
 	}
 
-	monitor.MonitorType = &monitorHttpType
+	monitorType, err := uptrends.NewMonitorTypeFromValue(d.Get("type").(string))
+	if err != nil {
+		return nil, err
+	}
+
+	monitor.MonitorType = monitorType
 	monitor.IpVersion = ipVersion
 	monitor.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
 	monitor.Url = String(d.Get("url").(string))
 	monitor.HttpMethod = httpMethod
-	// request_body
+	monitor.RequestBody = String(d.Get("request_body").(string))
 	monitor.AuthenticationType = authType
 	monitor.UserAgent = String(UserAgent(d.Get("user_agent").(string)))
 	monitor.Username = String(d.Get("username").(string))
@@ -275,6 +289,10 @@ func buildMonitorHttpStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	monitor.LoadTimeLimit2 = Int32(int32(d.Get("load_time_limit_2").(int)))
 	monitor.AlertOnMinimumBytes = Bool(d.Get("alert_on_min_bytes").(bool))
 	monitor.MinimumBytes = Int32(int32(d.Get("min_bytes").(int)))
+
+	if *monitorType == uptrends.MONITORTYPE_HTTPS {
+		monitor.CheckCertificateErrors = Bool(d.Get("check_cert_errors").(bool))
+	}
 
 	// Optional without defaults
 	if attr, ok := d.GetOk("expected_http_status_code"); ok {
@@ -348,6 +366,11 @@ func readMonitorHttpStruct(monitor *uptrends.Monitor, d *schema.ResourceData) di
 	}
 	if err := d.Set("match_pattern", SlicePatternMatchToSliceInterface(*monitor.MatchPatterns)); err != nil {
 		return diag.FromErr(err)
+	}
+	if *monitor.MonitorType == uptrends.MONITORTYPE_HTTPS {
+		if err := d.Set("check_cert_errors", monitor.CheckCertificateErrors); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	return nil

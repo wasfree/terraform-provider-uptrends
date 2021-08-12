@@ -3,7 +3,6 @@ package uptrends
 import (
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -36,7 +35,7 @@ func TestAccUptrendsMonitorHttp_Basic(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					testAccCheckUptrendsMonitorHttpDestroyExists("uptrends_monitor_http.test"),
 					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "name", fmt.Sprintf("acctest-uptrends-monitor-http-%d", randInt)),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "url", "http://example.org/"),
+					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "url", "https://example.org/"),
 					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "mode", "Staging"),
 					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "expected_http_status_code", "200"),
 					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "user_agent", UserAgent("chrome83_android")),
@@ -76,8 +75,6 @@ func testAccCheckUptrendsMonitorHttpDestroyExists(n string) resource.TestCheckFu
 		client := testAccProvider.Meta().(*Uptrends).Client.MonitorApi
 		auth := testAccProvider.Meta().(*Uptrends).AuthContext
 
-		time.Sleep(1 * time.Minute)
-
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
 			return fmt.Errorf("monitor not found: %s", n)
@@ -113,7 +110,8 @@ func (r UptrendsMonitorHttpResource) update(randInt int) string {
 	return fmt.Sprintf(`
 resource "uptrends_monitor_http" "test" {
   name                       = "acctest-uptrends-monitor-http-%d"
-  url                        = "http://example.org/"
+  type                       = "Http"
+  url                        = "https://example.org/"
   mode                       = "Staging"
   generate_alert             = false
   check_interval             = 10
@@ -133,13 +131,13 @@ resource "uptrends_monitor_http" "test" {
   password                  = "secret"
 
   request_headers {
-    name  = "Content-Type"
-    value = "application/json"
+    name  = "X-Test1-Header"
+    value = "true"
   }
 
   request_headers {
-    name  = "Content-Length"
-    value = "6553"
+    name  = "X-Test2-Header"
+    value = "true"
   }
 
   match_pattern {
