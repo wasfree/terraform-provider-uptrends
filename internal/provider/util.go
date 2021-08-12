@@ -71,8 +71,7 @@ func SliceInt32ToSliceString(input []int32) []string {
 	return ret
 }
 
-// reverseMap takes a map[string]string and reverse
-// key and value order
+// reverseMap takes a map[string]string and reverse key and value order
 func reverseMap(m map[string]string) map[string]string {
 	n := make(map[string]string)
 	for k, v := range m {
@@ -81,8 +80,7 @@ func reverseMap(m map[string]string) map[string]string {
 	return n
 }
 
-// MergeSchema will merge schemaA into schemaB and
-// return a schema consist of both schemas
+// MergeSchema will merge schemaA into schemaB and return a schema consist of both schemas
 func MergeSchema(schemaA, schemaB map[string]*schema.Schema) map[string]*schema.Schema {
 	for k, v := range schemaA {
 		schemaB[k] = v
@@ -91,6 +89,7 @@ func MergeSchema(schemaA, schemaB map[string]*schema.Schema) map[string]*schema.
 	return schemaB
 }
 
+// SliceInterfaceToSliceRequestHeader converts values from []interface{} to []uptrends.RequestHeader
 func SliceInterfaceToSliceRequestHeader(input []interface{}) *[]uptrends.RequestHeader {
 	headers := []uptrends.RequestHeader{}
 	for _, v := range input {
@@ -103,6 +102,7 @@ func SliceInterfaceToSliceRequestHeader(input []interface{}) *[]uptrends.Request
 	return &headers
 }
 
+// SliceRequestHeaderToSliceInterface converts values from []uptrends.RequestHeader to []interface{}
 func SliceRequestHeaderToSliceInterface(input []uptrends.RequestHeader) []interface{} {
 	headers := []interface{}{}
 	for _, v := range input {
@@ -112,4 +112,27 @@ func SliceRequestHeaderToSliceInterface(input []uptrends.RequestHeader) []interf
 		headers = append(headers, newHeader)
 	}
 	return headers
+}
+
+// SliceInterfaceToSlicePatternMatch converts values from []interface{} to []uptrends.PatternMatch
+func SliceInterfaceToSlicePatternMatch(input []interface{}) *[]uptrends.PatternMatch {
+	patterns := []uptrends.PatternMatch{}
+	for _, v := range input {
+		pattern := v.(map[string]interface{})
+		newPattern := uptrends.NewPatternMatch(pattern["is_positive"].(bool))
+		newPattern.SetPattern(pattern["pattern"].(string))
+		patterns = append(patterns, *newPattern)
+	}
+	return &patterns
+}
+
+func SlicePatternMatchToSliceInterface(input []uptrends.PatternMatch) []interface{} {
+	patterns := []interface{}{}
+	for _, v := range input {
+		newPattern := make(map[string]interface{})
+		newPattern["pattern"] = v.GetPattern()
+		newPattern["is_positive"] = v.IsPositive
+		patterns = append(patterns, newPattern)
+	}
+	return patterns
 }

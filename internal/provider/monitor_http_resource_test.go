@@ -3,6 +3,7 @@ package uptrends
 import (
 	"fmt"
 	"testing"
+	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -75,6 +76,8 @@ func testAccCheckUptrendsMonitorHttpDestroyExists(n string) resource.TestCheckFu
 		client := testAccProvider.Meta().(*Uptrends).Client.MonitorApi
 		auth := testAccProvider.Meta().(*Uptrends).AuthContext
 
+		time.Sleep(1 * time.Minute)
+
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
 			return fmt.Errorf("monitor not found: %s", n)
@@ -122,7 +125,6 @@ resource "uptrends_monitor_http" "test" {
   load_time_limit_2          = 7000
   alert_on_min_bytes         = true
   min_bytes                  = 1024
-  match_pattern              = "Example Domain"
 
   expected_http_status_code = 200
   user_agent                = "chrome83_android"
@@ -138,6 +140,16 @@ resource "uptrends_monitor_http" "test" {
   request_headers {
     name  = "Content-Length"
     value = "6553"
+  }
+
+  match_pattern {
+    pattern     = "example"
+    is_positive = true
+  }
+
+  match_pattern {
+    pattern     = "foo"
+    is_positive = false
   }
 
   selected_checkpoints {

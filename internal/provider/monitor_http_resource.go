@@ -11,7 +11,8 @@ import (
 )
 
 var (
-	monitorHttpType = uptrends.MONITORTYPE_HTTP
+	monitorHttpType  = uptrends.MONITORTYPE_HTTP
+	monitorHttpsType = uptrends.MONITORTYPE_HTTPS
 )
 
 func ResourceMonitorHttpSchema() *schema.Resource {
@@ -51,45 +52,30 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 				Description:  "Specifies the HTTP methode for your monitor. Defaults to `GET`.",
 				ValidateFunc: validation.StringInSlice([]string{"Get", "Post"}, false),
 			},
-
-			// "RequestHeaders": [
-			// 	{
-			// 	  "Name": "Content-Type",
-			// 	  "Value": "Application/Json"
-			// 	},
-			// 	{
-			// 	  "Name": "Foo",
-			// 	  "Value": "Bar"
-			// 	}
-			//   ],
 			"request_headers": {
 				Type:     schema.TypeList,
 				Optional: true,
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"name": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "Specify an HTTP header name used by your requests.",
 						},
 						"value": {
-							Type:     schema.TypeString,
-							Required: true,
+							Type:        schema.TypeString,
+							Required:    true,
+							Description: "Specify an HTTP header value used by your requests.",
 						},
 					},
 				},
 			},
-			// "request_headers": {
-			// 	Type:         schema.TypeString,
-			// 	Optional:     true,
-			// 	Description:  "Specify HTTP Headers allowed are predefined and custom headers. Each header should appear on a separated line.",
-			// 	ValidateFunc: validation.StringIsNotEmpty,
-			// },
-			// "request_body": {
-			// 	Type:         schema.TypeString,
-			// 	Optional:     true,
-			// 	Description:  "If `http_method` POST was specified it's possible post a form e.g. XML or JSON.",
-			// 	ValidateFunc: validation.StringIsNotEmpty,
-			// },
+			"request_body": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				Description:  "When posting a form, fill in the form variables, every form variable has to be on separated line e.g. `foo=bar\r\nbar=foo\r\n`",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
 			"expected_http_status_code": {
 				Type:         schema.TypeInt,
 				Optional:     true,
@@ -165,10 +151,22 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 				ValidateFunc: validation.IntBetween(0, 20000000),
 			},
 			"match_pattern": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Description:  "Insert a word or phrase here, if you want to verify that your web page contains this text.",
-				ValidateFunc: validation.StringLenBetween(0, 512),
+				Type:     schema.TypeList,
+				Optional: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"pattern": {
+							Type:     schema.TypeString,
+							Required: true,
+							Description: "Insert a word or phrase if you want to verify that your web page contains that text.",
+						},
+						"is_positive": {
+							Type:     schema.TypeBool,
+							Required: true,
+							Description: "Set this value to `true` if you want to verify that your web page contains `pattern`. Set to false if you want to verify that your web page does not contain that text.",
+						},
+					},
+				},
 			},
 		}),
 	}
@@ -267,7 +265,6 @@ func buildMonitorHttpStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	monitor.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
 	monitor.Url = String(d.Get("url").(string))
 	monitor.HttpMethod = httpMethod
-	// request_headers
 	// request_body
 	monitor.AuthenticationType = authType
 	monitor.UserAgent = String(UserAgent(d.Get("user_agent").(string)))
@@ -292,17 +289,9 @@ func buildMonitorHttpStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 		monitor.RequestHeaders = SliceInterfaceToSliceRequestHeader(attr)
 	}
 
-	// Is a List of maps
-	// if attr, ok := d.GetOk("match_pattern"); ok {
-	// 	uptrends.patter
-	// 	monitor.MatchPatterns = String(attr.(string))
-	// }
-	// "MatchPatterns": [
-	// 	{
-	// 	  "Pattern": "'!error'",
-	// 	  "IsPositive": true
-	// 	}
-	//   ],
+	if attr, ok := d.Get("match_pattern").([]interface{}); ok {
+		monitor.MatchPatterns = SliceInterfaceToSlicePatternMatch(attr)
+	}
 
 	return monitor, nil
 }
@@ -355,6 +344,9 @@ func readMonitorHttpStruct(monitor *uptrends.Monitor, d *schema.ResourceData) di
 		return diag.FromErr(err)
 	}
 	if err := d.Set("request_headers", SliceRequestHeaderToSliceInterface(*monitor.RequestHeaders)); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("match_pattern", SlicePatternMatchToSliceInterface(*monitor.MatchPatterns)); err != nil {
 		return diag.FromErr(err)
 	}
 

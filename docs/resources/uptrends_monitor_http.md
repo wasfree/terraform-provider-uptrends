@@ -67,7 +67,7 @@ resource "uptrends_monitor_http" "test" {
 - **is_active** (Boolean) Indicates whether the monitor is actively running in the account. Defaults to `true`.
 - **load_time_limit_1** (Number) Set threshold time in ms for requires `alert_on_load_time_limit_1` to be enabled. Defaults to `2500`.
 - **load_time_limit_2** (Number) Set threshold time in ms for requires `alert_on_load_time_limit_2` to be enabled. Defaults to `5000`.
-- **match_pattern** (String) Insert a word or phrase here, if you want to verify that your web page contains this text.
+- **match_pattern** (Block List) (see [below for nested schema](#nestedblock--match_pattern))
 - **min_bytes** (Number) Set threshold bytes that the response of the Server must at least contains. Required `alert_on_min_bytes` to be enabled.
 - **mode** (String) The monitor mode, either Development, Staging or Production. Defaults to `Production`.
 - **name_for_phone_alerts** (String) The value for the speech-friendly monitor name, if applicable. This is the monitor name we’ll use in text-to-speech phone alerting, provided that the ‘Use alternate monitor names’ option has been enabled in the phone alert integration.
@@ -75,6 +75,9 @@ resource "uptrends_monitor_http" "test" {
 - **notes** (String) Your notes for this monitor.
 - **password** (String, Sensitive) See the Username field. Specify the corresponding password value here.
 - **primary_checkpoints_only** (Boolean) Only set this to False when you’re sure you want to execute your monitor on non-primary checkpoints. Defaults to `true`.
+- **request_body** (String) When posting a form, fill in the form variables, every form variable has to be on separated line e.g. `foo=bar
+bar=foo
+`
 - **request_headers** (Block List) (see [below for nested schema](#nestedblock--request_headers))
 - **selected_checkpoints** (Block List, Max: 1) (see [below for nested schema](#nestedblock--selected_checkpoints))
 - **user_agent** (String) A string value that identifies which HTTP client is making the HTTP request. A browser typically sends a value that identifies the browser type and version.
@@ -84,13 +87,22 @@ resource "uptrends_monitor_http" "test" {
 
 - **is_locked** (Boolean) It specifies whether the monitor is currently locked for editing. This happens if the Support team is reviewing your monitor.
 
+<a id="nestedblock--match_pattern"></a>
+### Nested Schema for `match_pattern`
+
+Required:
+
+- **is_positive** (Boolean) Set this value to `true` if you want to verify that your web page contains `pattern`. Set to false if you want to verify that your web page does not contain that text.
+- **pattern** (String) Insert a word or phrase if you want to verify that your web page contains that text.
+
+
 <a id="nestedblock--request_headers"></a>
 ### Nested Schema for `request_headers`
 
 Required:
 
-- **name** (String)
-- **value** (String)
+- **name** (String) Specify an HTTP header name used by your requests.
+- **value** (String) Specify an HTTP header value used by your requests.
 
 
 <a id="nestedblock--selected_checkpoints"></a>
