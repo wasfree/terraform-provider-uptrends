@@ -39,7 +39,7 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 				Type: schema.TypeBool,
 				Optional: true,
 				Default:  true,
-				Description: "An HTTPS check will only pass our checks if the SSL certificate does not cause any errors. Only set this option to false if you really want to ignore SSL certificate issues.",
+				Description: "An HTTPS check will only pass our checks if the SSL certificate does not cause any errors. Only set this option to `false` if you really want to ignore SSL certificate issues. This parameter takes only effect if `type` has been set to `Https`.",
 			},
 			"ip_version": {
 				Type:         schema.TypeString,

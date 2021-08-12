@@ -3,12 +3,12 @@
 page_title: "uptrends_monitor_http Resource - terraform-provider-uptends"
 subcategory: ""
 description: |-
-  Manages an Uptrends HTTP Monitor.
+  Manages Uptrends HTTP and HTTPS Monitor.
 ---
 
 # uptrends_monitor_http (Resource)
 
-Manages an Uptrends HTTP Monitor.
+Manages Uptrends HTTP and HTTPS Monitor.
 
 ## Example Usage
 
@@ -58,6 +58,7 @@ resource "uptrends_monitor_http" "test" {
 - **alert_on_load_time_limit_2** (Boolean) Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_2. Shows a red status in performance monitor. Defaults to `false`.
 - **alert_on_min_bytes** (Boolean) Enable this option if you want to check that the response of the Server contains at least `min_bytes` of bytes. Defaults to `false`
 - **auth_type** (String) Specify the username of the appropriate credentials here. Defaults to `None`.
+- **check_cert_errors** (Boolean) An HTTPS check will only pass our checks if the SSL certificate does not cause any errors. Only set this option to `false` if you really want to ignore SSL certificate issues. This parameter takes only effect if `type` has been set to `Https`.
 - **check_interval** (Number) Numeric value for the time interval between individual checks, in minutes. The maximum value is 240 (4 hours). The minimum value depends on the type of monitor. Defaults to `5`.
 - **expected_http_status_code** (Number) Check for specific HTTP status code, any other than the specified status code, will generate an error.
 - **generate_alert** (Boolean) When set to false, no alerts will be generated for this monitor in case of an error. Defaults to `true`.
@@ -77,9 +78,10 @@ resource "uptrends_monitor_http" "test" {
 - **primary_checkpoints_only** (Boolean) Only set this to False when you’re sure you want to execute your monitor on non-primary checkpoints. Defaults to `true`.
 - **request_body** (String) When posting a form, fill in the form variables, every form variable has to be on separated line e.g. `foo=bar
 bar=foo
-`
+`. Requires `http_method` to be set to `Post`.
 - **request_headers** (Block List) (see [below for nested schema](#nestedblock--request_headers))
 - **selected_checkpoints** (Block List, Max: 1) (see [below for nested schema](#nestedblock--selected_checkpoints))
+- **type** (String) Select between `Http` and `Https` monitor type. Defaults to `Http`
 - **user_agent** (String) A string value that identifies which HTTP client is making the HTTP request. A browser typically sends a value that identifies the browser type and version.
 - **username** (String) Specify the username of the appropriate credentials here.
 
