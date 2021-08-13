@@ -15,7 +15,7 @@ var (
 
 func ResourceMonitorCertificateSchema() *schema.Resource {
 	return &schema.Resource{
-		Description: "Manages an Uptrends SSL Certificate Monitor.",
+		Description:   "Manages an Uptrends SSL Certificate Monitor.",
 		CreateContext: monitorCertificateCreate,
 		ReadContext:   monitorCertificateRead,
 		UpdateContext: monitorCertificateUpdate,
@@ -28,7 +28,7 @@ func ResourceMonitorCertificateSchema() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				Description:  "The full URL of the appropriate website, page or service that you want to monitor. The URL should include “https://”, please also include a port number if you are using a non-default port number, e.g. https://your-domain.com:8080/your-page. You can also use a fixed IP address as part of the URL instead of a host name, if your server listens to incoming requests without a host name.",
-				ValidateFunc: validation.StringIsNotEmpty,
+				ValidateFunc: validation.IsURLWithHTTPS,
 			},
 			"ip_version": {
 				Type:         schema.TypeString,
@@ -90,57 +90,57 @@ func ResourceMonitorCertificateSchema() *schema.Resource {
 				Description:  "Set threshold time in ms for requires `alert_on_load_time_limit_2` to be enabled. Defaults to `5000`.",
 			},
 			"cert_name": {
-				Type: schema.TypeString,
-				Optional: true,
-				Default: "",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "",
 				Description: "Specify the common name of the certificate. Defaults to empty string to not check this field.",
 			},
 			"cert_org": {
-				Type: schema.TypeString,
-				Optional: true,
-				Default: "",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "",
 				Description: "Specify the organization of the certificate. Defaults to empty string to not check this field.",
 			},
 			"cert_org_unit": {
-				Type: schema.TypeString,
-				Optional: true,
-				Default: "",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "",
 				Description: "Specify the organizational unit of the certificate. Defaults to empty string to not check this field.",
 			},
 			"cert_serial_number": {
-				Type: schema.TypeString,
-				Optional: true,
-				Default: "",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "",
 				Description: "Specify the serial number of the certificate. Defaults to empty string to not check this field.",
 			},
 			"cert_fingerprint": {
-				Type: schema.TypeString,
-				Optional: true,
-				Default: "",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "",
 				Description: "Specify the fingerprint of the certificate. Defaults to empty string to not check this field.",
 			},
 			"cert_issuer_name": {
-				Type: schema.TypeString,
-				Optional: true,
-				Default: "",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "",
 				Description: "Specify the issuer common name of the certificate. Defaults to empty string to not check this field.",
 			},
 			"cert_issuer_company_name": {
-				Type: schema.TypeString,
-				Optional: true,
-				Default: "",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "",
 				Description: "Specify the issuer company name of the certificate. Defaults to empty string to not check this field.",
 			},
 			"cert_issuer_org_unit": {
-				Type: schema.TypeString,
-				Optional: true,
-				Default: "",
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     "",
 				Description: "Specify the issuer org unit of the certificate. Defaults to empty string to not check this field.",
 			},
 			"cert_expiration_warning_days": {
-				Type: schema.TypeInt,
-				Optional: true,
-				Default: 7,
+				Type:        schema.TypeInt,
+				Optional:    true,
+				Default:     7,
 				Description: "Specify the expiration warning days of the certificate. Defaults to `7` days.",
 			},
 			"check_cert_errors": {
@@ -267,8 +267,7 @@ func buildMonitorCertificateStruct(d *schema.ResourceData) (*uptrends.Monitor, e
 }
 
 func readMonitorCertificateStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
-	err := readMonitorGenericStruct(monitor, d)
-	if err != nil {
+	if err := readMonitorGenericStruct(monitor, d); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("url", monitor.Url); err != nil {
@@ -281,9 +280,6 @@ func readMonitorCertificateStruct(monitor *uptrends.Monitor, d *schema.ResourceD
 		return diag.FromErr(err)
 	}
 	if err := d.Set("native_ipv6_only", monitor.NativeIPv6Only); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("auth_type", monitor.AuthenticationType); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("username", monitor.Username); err != nil {

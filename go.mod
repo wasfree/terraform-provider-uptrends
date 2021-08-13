@@ -7,7 +7,7 @@ require (
 	cloud.google.com/go/storage v1.16.0 // indirect
 	github.com/agext/levenshtein v1.2.3 // indirect
 	github.com/apparentlymart/go-cidr v1.1.0 // indirect
-	github.com/aws/aws-sdk-go v1.40.20 // indirect
+	github.com/aws/aws-sdk-go v1.40.21 // indirect
 	github.com/fatih/color v1.12.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/snappy v0.0.4 // indirect
@@ -32,7 +32,7 @@ require (
 	github.com/ulikunitz/xz v0.5.10 // indirect
 	github.com/wasfree/uptrends-go-sdk v1.0.3
 	github.com/zclconf/go-cty v1.9.0 // indirect
-	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
+	golang.org/x/crypto v0.0.0-20210812204632-0ba0e8f03122 // indirect
 	golang.org/x/oauth2 v0.0.0-20210810183815-faf39c7919d5 // indirect
 	golang.org/x/sys v0.0.0-20210809222454-d867a43fc93e // indirect
 	golang.org/x/text v0.3.7 // indirect

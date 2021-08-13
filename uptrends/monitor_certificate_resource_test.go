@@ -3,7 +3,6 @@ package uptrends
 import (
 	"fmt"
 	"testing"
-	"time"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
@@ -77,8 +76,6 @@ func testAccCheckUptrendsMonitorCertificateDestroyExists(n string) resource.Test
 		client := testAccProvider.Meta().(*Uptrends).Client.MonitorApi
 		auth := testAccProvider.Meta().(*Uptrends).AuthContext
 
-		time.Sleep(1 * time.Minute)
-
 		rs, ok := s.RootModule().Resources[n]
 		if !ok {
 			return fmt.Errorf("monitor not found: %s", n)
@@ -125,16 +122,16 @@ resource "uptrends_monitor_certificate" "test" {
   alert_on_load_time_limit_2 = true
   load_time_limit_2          = 7000
 
-  auth_type                 = "Basic"
-  username                  = "user"
-  password                  = "secret"
+  auth_type = "Basic"
+  username  = "user"
+  password  = "secret"
 
-  cert_name = "www.example.org"
-  cert_org = "Internet Corporation for Assigned Names and Numbers"
-  cert_serial_number = "0F:BE:08:B0:85:4D:05:73:8A:B0:CC:E1:C9:AF:EE:C9"
-  cert_fingerprint = "0A28A6EB176EA9CC596F4C73FD897EFBD32DCA2A"
-  cert_issuer_name = "DigiCert TLS RSA SHA256 2020 CA1"
-  cert_issuer_company_name = "DigiCert Inc"
+  cert_name                    = "www.example.org"
+  cert_org                     = "Internet Corporation for Assigned Names and Numbers"
+  cert_serial_number           = "0F:BE:08:B0:85:4D:05:73:8A:B0:CC:E1:C9:AF:EE:C9"
+  cert_fingerprint             = "0A28A6EB176EA9CC596F4C73FD897EFBD32DCA2A"
+  cert_issuer_name             = "DigiCert TLS RSA SHA256 2020 CA1"
+  cert_issuer_company_name     = "DigiCert Inc"
   cert_expiration_warning_days = 14
 
   selected_checkpoints {

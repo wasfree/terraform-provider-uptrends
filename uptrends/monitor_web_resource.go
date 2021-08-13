@@ -24,7 +24,7 @@ func ResourceMonitorWebSchema() *schema.Resource {
 				Type:         schema.TypeString,
 				Required:     true,
 				Description:  "The full URL of the appropriate website, page or service that you want to monitor. The URL should include “http://” or “https://”. If relevant, please also include a port number if you are using a non-default port number, e.g. https://your-domain.com:8080/your-page. You can also use a fixed IP address as part of the URL instead of a host name, if your server listens to incoming requests without a host name.",
-				ValidateFunc: validation.StringIsNotEmpty,
+				ValidateFunc: validation.IsURLWithHTTPorHTTPS,
 			},
 			"type": {
 				Type:         schema.TypeString,
@@ -312,8 +312,7 @@ func buildMonitorWebStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 }
 
 func readMonitorWebStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
-	err := readMonitorGenericStruct(monitor, d)
-	if err != nil {
+	if err := readMonitorGenericStruct(monitor, d); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("ip_version", monitor.IpVersion); err != nil {
@@ -335,9 +334,6 @@ func readMonitorWebStruct(monitor *uptrends.Monitor, d *schema.ResourceData) dia
 		return diag.FromErr(err)
 	}
 	if err := d.Set("user_agent", monitor.UserAgent); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("auth_type", monitor.AuthenticationType); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("alert_on_load_time_limit_1", monitor.AlertOnLoadTimeLimit1); err != nil {

@@ -9,35 +9,25 @@ import (
 	"github.com/wasfree/uptrends-go-sdk"
 )
 
-func ResourceMonitorNetworkSchema() *schema.Resource {
+var (
+	monitorDnsType = uptrends.MONITORTYPE_DNS
+)
+
+func ResourceMonitorDnsSchema() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Manages an Uptrends Ping and Connect Monitor.",
-		CreateContext: monitorNetworkCreate,
-		ReadContext:   monitorNetworkRead,
-		UpdateContext: monitorNetworkUpdate,
-		DeleteContext: monitorNetworkDelete,
+		Description:   "Manages an Uptrends DNS Monitor.",
+		CreateContext: monitorDnsCreate,
+		ReadContext:   monitorDnsRead,
+		UpdateContext: monitorDnsUpdate,
+		DeleteContext: monitorDnsDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
 		Schema: MergeSchema(MonitorGenericSchema, map[string]*schema.Schema{
-			"network_address": {
-				Type:         schema.TypeString,
-				Required:     true,
-				Description:  "The network address that should be used to connect to the server or service you want to monitor.",
-				ValidateFunc: validation.StringIsNotEmpty,
-			},
-			"type": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ForceNew:     true,
-				Default:      "Ping",
-				Description:  "Select between `Ping` and `Connect` monitor type. Defaults to `Ping`",
-				ValidateFunc: validation.StringInSlice([]string{"Ping", "Connect"}, true),
-			},
 			"port": {
 				Type:         schema.TypeInt,
-				Optional:     true,
-				Description:  "The TCP Port for the connect Monitor. Only used by connect Monitor, has to be between `1` and `65535`.",
+				Required:     true,
+				Description:  "The TCP Port for the dns Monitor, has to be between `1` and `65535`.",
 				ValidateFunc: validation.IntBetween(1, 65535),
 			},
 			"ip_version": {
@@ -52,6 +42,29 @@ func ResourceMonitorNetworkSchema() *schema.Resource {
 				Optional:    true,
 				Default:     false,
 				Description: "True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity. Defaults to `false`.",
+			},
+			"dns_server": {
+				Type:        schema.TypeString,
+				Optional:    true,
+				Description: "The DNS Server that contains the entries you want to test.",
+			},
+			"dns_query": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "The Type of DNS query you want to perform. Alloed values are `ARecord`, `CnameRecord`, `MxRecord`, `NsRecord`, `TxtRecord`, `SoaRecord`, `RootServer`, `AaaaRecord`, `SrvRecord`.",
+				ValidateFunc: validation.StringInSlice([]string{"ARecord", "CnameRecord", "MxRecord", "NsRecord", "TxtRecord", "SoaRecord", "RootServer", "AaaaRecord", "SrvRecord"}, false),
+			},
+			"dns_test_value": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "The value to test for.",
+				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"dns_expected_result": {
+				Type:         schema.TypeString,
+				Required:     true,
+				Description:  "The result you expect to get back from DNS query.",
+				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"alert_on_load_time_limit_1": {
 				Type:        schema.TypeBool,
@@ -83,11 +96,11 @@ func ResourceMonitorNetworkSchema() *schema.Resource {
 	}
 }
 
-func monitorNetworkCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorDnsCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
-	monitor, err := buildMonitorNetworkStruct(d)
+	monitor, err := buildMonitorDnsStruct(d)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -99,10 +112,10 @@ func monitorNetworkCreate(ctx context.Context, d *schema.ResourceData, meta inte
 
 	d.SetId(*resp.MonitorGuid)
 
-	return monitorNetworkRead(ctx, d, meta)
+	return monitorDnsRead(ctx, d, meta)
 }
 
-func monitorNetworkRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorDnsRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
@@ -113,16 +126,16 @@ func monitorNetworkRead(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(err)
 	}
 
-	return readMonitorNetworkStruct(&resp, d)
+	return readMonitorDnsStruct(&resp, d)
 }
 
-func monitorNetworkUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorDnsUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
 	id := d.Id()
 
-	monitor, err := buildMonitorNetworkStruct(d)
+	monitor, err := buildMonitorDnsStruct(d)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -132,10 +145,10 @@ func monitorNetworkUpdate(ctx context.Context, d *schema.ResourceData, meta inte
 		return diag.FromErr(err)
 	}
 
-	return monitorNetworkRead(ctx, d, meta)
+	return monitorDnsRead(ctx, d, meta)
 }
 
-func monitorNetworkDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorDnsDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
@@ -149,7 +162,7 @@ func monitorNetworkDelete(ctx context.Context, d *schema.ResourceData, meta inte
 	return nil
 }
 
-func buildMonitorNetworkStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
+func buildMonitorDnsStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	monitor, err := buildMonitorGenericStruct(d)
 	if err != nil {
 		return nil, err
@@ -158,32 +171,37 @@ func buildMonitorNetworkStruct(d *schema.ResourceData) (*uptrends.Monitor, error
 	if err != nil {
 		return nil, err
 	}
-	monitorType, err := uptrends.NewMonitorTypeFromValue(d.Get("type").(string))
+	authType, err := uptrends.NewApiHttpAuthenticationTypeFromValue(d.Get("auth_type").(string))
+	if err != nil {
+		return nil, err
+	}
+	dnsQuery, err := uptrends.NewDnsQueryFromValue(d.Get("dns_query").(string))
 	if err != nil {
 		return nil, err
 	}
 
-	monitor.MonitorType = monitorType
-	monitor.NetworkAddress = String(d.Get("network_address").(string))
+	monitor.MonitorType = &monitorDnsType
+	monitor.Port = Int32(int32(d.Get("port").(int)))
 	monitor.IpVersion = ipVersion
 	monitor.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
+	monitor.AuthenticationType = authType
 	monitor.AlertOnLoadTimeLimit1 = Bool(d.Get("alert_on_load_time_limit_1").(bool))
 	monitor.LoadTimeLimit1 = Int32(int32(d.Get("load_time_limit_1").(int)))
 	monitor.AlertOnLoadTimeLimit2 = Bool(d.Get("alert_on_load_time_limit_2").(bool))
 	monitor.LoadTimeLimit2 = Int32(int32(d.Get("load_time_limit_2").(int)))
-
-	if *monitorType == uptrends.MONITORTYPE_CONNECT {
-		monitor.Port = Int32(int32(d.Get("port").(int)))
-	}
+	monitor.DnsServer = String(d.Get("dns_server").(string))
+	monitor.DnsQuery = dnsQuery
+	monitor.DnsTestValue = String(d.Get("dns_test_value").(string))
+	monitor.DnsExpectedResult = String(d.Get("dns_expected_result").(string))
 
 	return monitor, nil
 }
 
-func readMonitorNetworkStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
+func readMonitorDnsStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
 	if err := readMonitorGenericStruct(monitor, d); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("network_address", monitor.NetworkAddress); err != nil {
+	if err := d.Set("port", monitor.Port); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("ip_version", monitor.IpVersion); err != nil {
@@ -204,10 +222,17 @@ func readMonitorNetworkStruct(monitor *uptrends.Monitor, d *schema.ResourceData)
 	if err := d.Set("load_time_limit_2", monitor.LoadTimeLimit2); err != nil {
 		return diag.FromErr(err)
 	}
-	if *monitor.MonitorType == uptrends.MONITORTYPE_CONNECT {
-		if err := d.Set("port", monitor.Port); err != nil {
-			return diag.FromErr(err)
-		}
+	if err := d.Set("dns_server", monitor.DnsServer); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("dns_query", monitor.DnsQuery); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("dns_test_value", monitor.DnsTestValue); err != nil {
+		return diag.FromErr(err)
+	}
+	if err := d.Set("dns_expected_result", monitor.DnsExpectedResult); err != nil {
+		return diag.FromErr(err)
 	}
 
 	return nil
