@@ -9,51 +9,51 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
-type UptrendsMonitorPingResource struct{}
+type UptrendsMonitorNetworkResource struct{}
 
-func TestAccUptrendsMonitorPing_Basic(t *testing.T) {
-	r := UptrendsMonitorPingResource{}
+func TestAccUptrendsMonitorNetwork_Basic(t *testing.T) {
+	r := UptrendsMonitorNetworkResource{}
 	randInt := acctest.RandIntRange(100000, 999999)
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
-		CheckDestroy:      testAccUptrendsMonitorPingDestroyCheck,
+		CheckDestroy:      testAccUptrendsMonitorNetworkDestroyCheck,
 		Steps: []resource.TestStep{
 			{
 				Config: r.basic(randInt),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckUptrendsMonitorPingDestroyExists("uptrends_monitor_ping.test"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "name", fmt.Sprintf("acctest-uptrends-monitor-ping-%d", randInt)),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "network_address", "8.8.8.8"),
+					testAccCheckUptrendsMonitorNetworkDestroyExists("uptrends_monitor_network.test"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "name", fmt.Sprintf("acctest-uptrends-monitor-network-%d", randInt)),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "network_address", "8.8.8.8"),
 				),
 			},
 			{
 				Config: r.update(randInt),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckUptrendsMonitorPingDestroyExists("uptrends_monitor_ping.test"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "name", fmt.Sprintf("acctest-uptrends-monitor-ping-%d", randInt)),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "network_address", "8.8.4.4"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "mode", "Staging"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "generate_alert", "false"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "check_interval", "10"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "notes", "Managed by Terraform"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "alert_on_load_time_limit_1", "true"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "load_time_limit_1", "3000"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "alert_on_load_time_limit_2", "true"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "load_time_limit_2", "7000"),
-					resource.TestCheckResourceAttr("uptrends_monitor_ping.test", "primary_checkpoints_only", "false"),
+					testAccCheckUptrendsMonitorNetworkDestroyExists("uptrends_monitor_network.test"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "name", fmt.Sprintf("acctest-uptrends-monitor-network-%d", randInt)),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "network_address", "8.8.4.4"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "mode", "Staging"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "generate_alert", "false"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "check_interval", "10"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "notes", "Managed by Terraform"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "alert_on_load_time_limit_1", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "load_time_limit_1", "3000"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "alert_on_load_time_limit_2", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "load_time_limit_2", "7000"),
+					resource.TestCheckResourceAttr("uptrends_monitor_network.test", "primary_checkpoints_only", "false"),
 				),
 			},
 		},
 	})
 }
 
-func testAccUptrendsMonitorPingDestroyCheck(s *terraform.State) error {
+func testAccUptrendsMonitorNetworkDestroyCheck(s *terraform.State) error {
 	client := testAccProvider.Meta().(*Uptrends).Client.MonitorApi
 	auth := testAccProvider.Meta().(*Uptrends).AuthContext
 
 	for _, r := range s.RootModule().Resources {
-		if r.Type != "uptrends_monitor_ping" {
+		if r.Type != "uptrends_monitor_network" {
 			continue
 		}
 
@@ -68,7 +68,7 @@ func testAccUptrendsMonitorPingDestroyCheck(s *terraform.State) error {
 	return nil
 }
 
-func testAccCheckUptrendsMonitorPingDestroyExists(n string) resource.TestCheckFunc {
+func testAccCheckUptrendsMonitorNetworkDestroyExists(n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		client := testAccProvider.Meta().(*Uptrends).Client.MonitorApi
 		auth := testAccProvider.Meta().(*Uptrends).AuthContext
@@ -95,19 +95,19 @@ func testAccCheckUptrendsMonitorPingDestroyExists(n string) resource.TestCheckFu
 	}
 }
 
-func (r UptrendsMonitorPingResource) basic(randInt int) string {
+func (r UptrendsMonitorNetworkResource) basic(randInt int) string {
 	return fmt.Sprintf(`
-resource "uptrends_monitor_ping" "test" {
-  name            = "acctest-uptrends-monitor-ping-%d"
+resource "uptrends_monitor_network" "test" {
+  name            = "acctest-uptrends-monitor-network-%d"
   network_address = "8.8.8.8"
 }
 `, randInt)
 }
 
-func (r UptrendsMonitorPingResource) update(randInt int) string {
+func (r UptrendsMonitorNetworkResource) update(randInt int) string {
 	return fmt.Sprintf(`
-resource "uptrends_monitor_ping" "test" {
-  name                       = "acctest-uptrends-monitor-ping-%d"
+resource "uptrends_monitor_network" "test" {
+  name                       = "acctest-uptrends-monitor-network-%d"
   network_address            = "8.8.4.4"
   mode                       = "Staging"
   generate_alert             = false

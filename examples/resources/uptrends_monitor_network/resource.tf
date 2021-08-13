@@ -1,7 +1,6 @@
-resource "uptrends_monitor_connect" "example" {
+resource "uptrends_monitor_network" "example" {
   name                       = "example"
   network_address            = "8.8.8.8"
-  port                       = 53
   check_interval             = 10
 
   alert_on_load_time_limit_1 = true

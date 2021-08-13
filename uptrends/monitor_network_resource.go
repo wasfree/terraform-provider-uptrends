@@ -9,17 +9,13 @@ import (
 	"github.com/wasfree/uptrends-go-sdk"
 )
 
-var (
-	monitorPingType = uptrends.MONITORTYPE_PING
-)
-
-func ResourceMonitorPingSchema() *schema.Resource {
+func ResourceMonitorNetworkSchema() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Manages an Uptrends Ping Monitor.",
-		CreateContext: monitorPingCreate,
-		ReadContext:   monitorPingRead,
-		UpdateContext: monitorPingUpdate,
-		DeleteContext: monitorPingDelete,
+		Description:   "Manages an Uptrends Ping and Connect Monitor.",
+		CreateContext: monitorNetworkCreate,
+		ReadContext:   monitorNetworkRead,
+		UpdateContext: monitorNetworkUpdate,
+		DeleteContext: monitorNetworkDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
@@ -29,6 +25,20 @@ func ResourceMonitorPingSchema() *schema.Resource {
 				Required:     true,
 				Description:  "The network address that should be used to connect to the server or service you want to monitor.",
 				ValidateFunc: validation.StringIsNotEmpty,
+			},
+			"type": {
+				Type:         schema.TypeString,
+				Optional:     true,
+				ForceNew:     true,
+				Default:      "Http",
+				Description:  "Select between `Ping` and `Connect` monitor type. Defaults to `Ping`",
+				ValidateFunc: validation.StringInSlice([]string{"Ping", "Connect"}, true),
+			},
+			"port": {
+				Type:         schema.TypeInt,
+				Optional:     true,
+				Description:  "The TCP Port for the connect Monitor. Only used by connect Monitor, has to be between `1` and `65535`.",
+				ValidateFunc: validation.IntBetween(1, 65535),
 			},
 			"ip_version": {
 				Type:         schema.TypeString,
@@ -73,11 +83,11 @@ func ResourceMonitorPingSchema() *schema.Resource {
 	}
 }
 
-func monitorPingCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorNetworkCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
-	monitor, err := buildMonitorPingStruct(d)
+	monitor, err := buildMonitorNetworkStruct(d)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -89,10 +99,10 @@ func monitorPingCreate(ctx context.Context, d *schema.ResourceData, meta interfa
 
 	d.SetId(*resp.MonitorGuid)
 
-	return monitorPingRead(ctx, d, meta)
+	return monitorNetworkRead(ctx, d, meta)
 }
 
-func monitorPingRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorNetworkRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
@@ -103,16 +113,16 @@ func monitorPingRead(ctx context.Context, d *schema.ResourceData, meta interface
 		return diag.FromErr(err)
 	}
 
-	return readMonitorPingStruct(&resp, d)
+	return readMonitorNetworkStruct(&resp, d)
 }
 
-func monitorPingUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorNetworkUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
 	id := d.Id()
 
-	monitor, err := buildMonitorPingStruct(d)
+	monitor, err := buildMonitorNetworkStruct(d)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -122,10 +132,10 @@ func monitorPingUpdate(ctx context.Context, d *schema.ResourceData, meta interfa
 		return diag.FromErr(err)
 	}
 
-	return monitorPingRead(ctx, d, meta)
+	return monitorNetworkRead(ctx, d, meta)
 }
 
-func monitorPingDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorNetworkDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
@@ -139,7 +149,7 @@ func monitorPingDelete(ctx context.Context, d *schema.ResourceData, meta interfa
 	return nil
 }
 
-func buildMonitorPingStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
+func buildMonitorNetworkStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	monitor, err := buildMonitorGenericStruct(d)
 	if err != nil {
 		return nil, err
@@ -148,7 +158,12 @@ func buildMonitorPingStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	if err != nil {
 		return nil, err
 	}
-	monitor.MonitorType = &monitorPingType
+	monitorType, err := uptrends.NewMonitorTypeFromValue(d.Get("type").(string))
+	if err != nil {
+		return nil, err
+	}
+
+	monitor.MonitorType = monitorType
 	monitor.NetworkAddress = String(d.Get("network_address").(string))
 	monitor.IpVersion = ipVersion
 	monitor.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
@@ -157,10 +172,14 @@ func buildMonitorPingStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	monitor.AlertOnLoadTimeLimit2 = Bool(d.Get("alert_on_load_time_limit_2").(bool))
 	monitor.LoadTimeLimit2 = Int32(int32(d.Get("load_time_limit_2").(int)))
 
+	if *monitorType == uptrends.MONITORTYPE_CONNECT {
+		monitor.Port = Int32(int32(d.Get("port").(int)))
+	}
+
 	return monitor, nil
 }
 
-func readMonitorPingStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
+func readMonitorNetworkStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
 	err := readMonitorGenericStruct(monitor, d)
 	if err != nil {
 		return diag.FromErr(err)
@@ -186,6 +205,11 @@ func readMonitorPingStruct(monitor *uptrends.Monitor, d *schema.ResourceData) di
 	}
 	if err := d.Set("load_time_limit_2", monitor.LoadTimeLimit2); err != nil {
 		return diag.FromErr(err)
+	}
+	if *monitor.MonitorType == uptrends.MONITORTYPE_CONNECT {
+		if err := d.Set("port", monitor.Port); err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	return nil
