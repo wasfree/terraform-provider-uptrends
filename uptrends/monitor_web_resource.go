@@ -9,13 +9,13 @@ import (
 	"github.com/wasfree/uptrends-go-sdk"
 )
 
-func ResourceMonitorHttpSchema() *schema.Resource {
+func ResourceMonitorWebSchema() *schema.Resource {
 	return &schema.Resource{
 		Description:   "Manages Uptrends HTTP and HTTPS Monitor.",
-		CreateContext: monitorHttpCreate,
-		ReadContext:   monitorHttpRead,
-		UpdateContext: monitorHttpUpdate,
-		DeleteContext: monitorHttpDelete,
+		CreateContext: monitorWebCreate,
+		ReadContext:   monitorWebRead,
+		UpdateContext: monitorWebUpdate,
+		DeleteContext: monitorWebDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
@@ -180,11 +180,11 @@ func ResourceMonitorHttpSchema() *schema.Resource {
 	}
 }
 
-func monitorHttpCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorWebCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
-	monitor, err := buildMonitorHttpStruct(d)
+	monitor, err := buildMonitorWebStruct(d)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -196,10 +196,10 @@ func monitorHttpCreate(ctx context.Context, d *schema.ResourceData, meta interfa
 
 	d.SetId(*resp.MonitorGuid)
 
-	return monitorHttpRead(ctx, d, meta)
+	return monitorWebRead(ctx, d, meta)
 }
 
-func monitorHttpRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorWebRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
@@ -210,16 +210,16 @@ func monitorHttpRead(ctx context.Context, d *schema.ResourceData, meta interface
 		return diag.FromErr(err)
 	}
 
-	return readMonitorHttpStruct(&resp, d)
+	return readMonitorWebStruct(&resp, d)
 }
 
-func monitorHttpUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorWebUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
 	id := d.Id()
 
-	monitor, err := buildMonitorHttpStruct(d)
+	monitor, err := buildMonitorWebStruct(d)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -233,10 +233,10 @@ func monitorHttpUpdate(ctx context.Context, d *schema.ResourceData, meta interfa
 		return diag.FromErr(err)
 	}
 
-	return monitorHttpRead(ctx, d, meta)
+	return monitorWebRead(ctx, d, meta)
 }
 
-func monitorHttpDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorWebDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
@@ -250,7 +250,7 @@ func monitorHttpDelete(ctx context.Context, d *schema.ResourceData, meta interfa
 	return nil
 }
 
-func buildMonitorHttpStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
+func buildMonitorWebStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	monitor, err := buildMonitorGenericStruct(d)
 	if err != nil {
 		return nil, err
@@ -313,7 +313,7 @@ func buildMonitorHttpStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	return monitor, nil
 }
 
-func readMonitorHttpStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
+func readMonitorWebStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
 	err := readMonitorGenericStruct(monitor, d)
 	if err != nil {
 		return diag.FromErr(err)

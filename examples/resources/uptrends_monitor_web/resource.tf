@@ -1,5 +1,5 @@
-resource "uptrends_monitor_http" "test" {
-  name                     = "acctest-uptrends-monitor-http-%d"
+resource "uptrends_monitor_web" "test" {
+  name                     = "example"
   mode                     = "Staging"
   check_interval           = 10
   notes                    = "Managed by Terraform"

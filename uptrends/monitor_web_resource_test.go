@@ -9,53 +9,53 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
-type UptrendsMonitorHttpResource struct{}
+type UptrendsMonitorWebResource struct{}
 
-func TestAccUptrendsMonitorHttp_Basic(t *testing.T) {
-	r := UptrendsMonitorHttpResource{}
+func TestAccUptrendsMonitorWeb_Basic(t *testing.T) {
+	r := UptrendsMonitorWebResource{}
 	randInt := acctest.RandIntRange(100000, 999999)
 	resource.Test(t, resource.TestCase{
 		PreCheck:          func() { testAccPreCheck(t) },
 		ProviderFactories: testAccProviderFactories,
-		CheckDestroy:      testAccUptrendsMonitorHttpDestroyCheck,
+		CheckDestroy:      testAccUptrendsMonitorWebDestroyCheck,
 		Steps: []resource.TestStep{
 			{
 				Config: r.basic(randInt),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckUptrendsMonitorHttpDestroyExists("uptrends_monitor_http.test"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "name", fmt.Sprintf("acctest-uptrends-monitor-http-%d", randInt)),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "url", "http://example.com/"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "mode", "Production"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "user_agent", UserAgent("chrome83")),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "auth_type", "None"),
+					testAccCheckUptrendsMonitorWebDestroyExists("uptrends_monitor_web.test"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "name", fmt.Sprintf("acctest-uptrends-monitor-web-%d", randInt)),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "url", "http://example.com/"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "mode", "Production"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "user_agent", UserAgent("chrome83")),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "auth_type", "None"),
 				),
 			},
 			{
 				Config: r.update(randInt),
 				Check: resource.ComposeTestCheckFunc(
-					testAccCheckUptrendsMonitorHttpDestroyExists("uptrends_monitor_http.test"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "name", fmt.Sprintf("acctest-uptrends-monitor-http-%d", randInt)),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "url", "https://example.org/"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "mode", "Staging"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "expected_http_status_code", "200"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "user_agent", UserAgent("chrome83_android")),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "auth_type", "Basic"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "username", "user"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "password", "secret"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "alert_on_min_bytes", "true"),
-					resource.TestCheckResourceAttr("uptrends_monitor_http.test", "min_bytes", "1024"),
+					testAccCheckUptrendsMonitorWebDestroyExists("uptrends_monitor_web.test"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "name", fmt.Sprintf("acctest-uptrends-monitor-web-%d", randInt)),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "url", "http://example.org/"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "mode", "Staging"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "expected_http_status_code", "200"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "user_agent", UserAgent("chrome83_android")),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "auth_type", "Basic"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "username", "user"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "password", "secret"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "alert_on_min_bytes", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.test", "min_bytes", "1024"),
 				),
 			},
 		},
 	})
 }
 
-func testAccUptrendsMonitorHttpDestroyCheck(s *terraform.State) error {
+func testAccUptrendsMonitorWebDestroyCheck(s *terraform.State) error {
 	client := testAccProvider.Meta().(*Uptrends).Client.MonitorApi
 	auth := testAccProvider.Meta().(*Uptrends).AuthContext
 
 	for _, r := range s.RootModule().Resources {
-		if r.Type != "uptrends_monitor_http" {
+		if r.Type != "uptrends_monitor_wev" {
 			continue
 		}
 
@@ -70,7 +70,7 @@ func testAccUptrendsMonitorHttpDestroyCheck(s *terraform.State) error {
 	return nil
 }
 
-func testAccCheckUptrendsMonitorHttpDestroyExists(n string) resource.TestCheckFunc {
+func testAccCheckUptrendsMonitorWebDestroyExists(n string) resource.TestCheckFunc {
 	return func(s *terraform.State) error {
 		client := testAccProvider.Meta().(*Uptrends).Client.MonitorApi
 		auth := testAccProvider.Meta().(*Uptrends).AuthContext
@@ -97,21 +97,21 @@ func testAccCheckUptrendsMonitorHttpDestroyExists(n string) resource.TestCheckFu
 	}
 }
 
-func (r UptrendsMonitorHttpResource) basic(randInt int) string {
+func (r UptrendsMonitorWebResource) basic(randInt int) string {
 	return fmt.Sprintf(`
-resource "uptrends_monitor_http" "test" {
-  name = "acctest-uptrends-monitor-http-%d"
+resource "uptrends_monitor_web" "test" {
+  name = "acctest-uptrends-monitor-web-%d"
   url  = "http://example.com/"
 }
 `, randInt)
 }
 
-func (r UptrendsMonitorHttpResource) update(randInt int) string {
+func (r UptrendsMonitorWebResource) update(randInt int) string {
 	return fmt.Sprintf(`
-resource "uptrends_monitor_http" "test" {
-  name                       = "acctest-uptrends-monitor-http-%d"
+resource "uptrends_monitor_web" "test" {
+  name                       = "acctest-uptrends-monitor-web-%d"
   type                       = "Http"
-  url                        = "https://example.org/"
+  url                        = "http://example.org/"
   mode                       = "Staging"
   generate_alert             = false
   check_interval             = 10

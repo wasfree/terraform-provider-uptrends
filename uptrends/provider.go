@@ -39,7 +39,7 @@ func Provider() *schema.Provider {
 			"uptrends_monitor_ping":    ResourceMonitorPingSchema(),
 			"uptrends_monitor_connect": ResourceMonitorConnectSchema(),
 			"uptrends_monitor_group":   ResourceMonitorGroupSchema(),
-			"uptrends_monitor_http":    ResourceMonitorHttpSchema(),
+			"uptrends_monitor_web":     ResourceMonitorWebSchema(),
 		},
 		DataSourcesMap:       map[string]*schema.Resource{},
 		ConfigureContextFunc: providerConfigure,

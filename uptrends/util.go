@@ -126,6 +126,7 @@ func SliceInterfaceToSlicePatternMatch(input []interface{}) *[]uptrends.PatternM
 	return &patterns
 }
 
+// SlicePatternMatchToSliceInterface converts values from []uptrends.PatternMatch to []interface{}
 func SlicePatternMatchToSliceInterface(input []uptrends.PatternMatch) []interface{} {
 	patterns := []interface{}{}
 	for _, v := range input {

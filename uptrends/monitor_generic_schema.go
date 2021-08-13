@@ -6,6 +6,7 @@ import (
 	"github.com/wasfree/uptrends-go-sdk"
 )
 
+// generic monitor fields - https://www.uptrends.com/support/kb/api/monitor-api-fields
 var MonitorGenericSchema = map[string]*schema.Schema{
 	"name": {
 		Type:         schema.TypeString,
