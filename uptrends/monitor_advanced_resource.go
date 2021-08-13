@@ -6,16 +6,12 @@ import (
 	_ "github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
-	"github.com/wasfree/uptrends-go-sdk"
-)
-
-var (
-	monitorCertType = uptrends.MONITORTYPE_CERTIFICATE
+	_ "github.com/wasfree/uptrends-go-sdk"
 )
 
 func ResourceMonitorCertificateSchema() *schema.Resource {
 	return &schema.Resource{
-		Description: "Manages an Uptrends SSL Certificate Monitor.",
+		Description: "Manages an Uptrends DNS, SSL Certificate, FTP and SFTP Monitor.",
 		// CreateContext: monitorCertificateCreate,
 		// ReadContext:   monitorCertificateRead,
 		// UpdateContext: monitorCertificateUpdate,

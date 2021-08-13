@@ -289,6 +289,7 @@ func buildMonitorWebStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	monitor.AlertOnMinimumBytes = Bool(d.Get("alert_on_min_bytes").(bool))
 	monitor.MinimumBytes = Int32(int32(d.Get("min_bytes").(int)))
 
+	// check_cert_errors should only be set if monitorType is Https
 	if *monitorType == uptrends.MONITORTYPE_HTTPS {
 		monitor.CheckCertificateErrors = Bool(d.Get("check_cert_errors").(bool))
 	}
@@ -297,15 +298,12 @@ func buildMonitorWebStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	if attr, ok := d.GetOk("expected_http_status_code"); ok {
 		monitor.ExpectedHttpStatusCode = Int32(int32(attr.(int)))
 	}
-
 	if attr, ok := d.GetOk("password"); ok {
 		monitor.Password = String(attr.(string))
 	}
-
 	if attr, ok := d.Get("request_headers").([]interface{}); ok {
 		monitor.RequestHeaders = SliceInterfaceToSliceRequestHeader(attr)
 	}
-
 	if attr, ok := d.Get("match_pattern").([]interface{}); ok {
 		monitor.MatchPatterns = SliceInterfaceToSlicePatternMatch(attr)
 	}
