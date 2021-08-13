@@ -40,6 +40,7 @@ func Provider() *schema.Provider {
 			"uptrends_monitor_web":         ResourceMonitorWebSchema(),
 			"uptrends_monitor_network":     ResourceMonitorNetworkSchema(),
 			"uptrends_monitor_certificate": ResourceMonitorCertificateSchema(),
+			"uptrends_monitor_dns":         ResourceMonitorDnsSchema(),
 		},
 		DataSourcesMap:       map[string]*schema.Resource{},
 		ConfigureContextFunc: providerConfigure,

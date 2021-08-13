@@ -11,7 +11,7 @@ import (
 
 type UptrendsMonitorCertificateResource struct{}
 
-func TestAccUptrendsMonitorSSLCertificate_Basic(t *testing.T) {
+func TestAccUptrendsMonitorCertificate_Basic(t *testing.T) {
 	r := UptrendsMonitorCertificateResource{}
 	randInt := acctest.RandIntRange(100000, 999999)
 	resource.Test(t, resource.TestCase{

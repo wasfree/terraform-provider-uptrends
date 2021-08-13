@@ -26,8 +26,9 @@ func ResourceMonitorDnsSchema() *schema.Resource {
 		Schema: MergeSchema(MonitorGenericSchema, map[string]*schema.Schema{
 			"port": {
 				Type:         schema.TypeInt,
-				Required:     true,
-				Description:  "The TCP Port for the dns Monitor, has to be between `1` and `65535`.",
+				Optional:     true,
+				Default:      53,
+				Description:  "The TCP Port for the dns Monitor, has to be between `1` and `65535`. Defaults to `53`.",
 				ValidateFunc: validation.IntBetween(1, 65535),
 			},
 			"ip_version": {
@@ -57,7 +58,7 @@ func ResourceMonitorDnsSchema() *schema.Resource {
 			"dns_test_value": {
 				Type:         schema.TypeString,
 				Required:     true,
-				Description:  "The value to test for.",
+				Description:  "The value to test for e.g. example.com.",
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"dns_expected_result": {
@@ -171,10 +172,6 @@ func buildMonitorDnsStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	if err != nil {
 		return nil, err
 	}
-	authType, err := uptrends.NewApiHttpAuthenticationTypeFromValue(d.Get("auth_type").(string))
-	if err != nil {
-		return nil, err
-	}
 	dnsQuery, err := uptrends.NewDnsQueryFromValue(d.Get("dns_query").(string))
 	if err != nil {
 		return nil, err
@@ -184,7 +181,6 @@ func buildMonitorDnsStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	monitor.Port = Int32(int32(d.Get("port").(int)))
 	monitor.IpVersion = ipVersion
 	monitor.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
-	monitor.AuthenticationType = authType
 	monitor.AlertOnLoadTimeLimit1 = Bool(d.Get("alert_on_load_time_limit_1").(bool))
 	monitor.LoadTimeLimit1 = Int32(int32(d.Get("load_time_limit_1").(int)))
 	monitor.AlertOnLoadTimeLimit2 = Bool(d.Get("alert_on_load_time_limit_2").(bool))
