@@ -39,6 +39,7 @@ func Provider() *schema.Provider {
 			"uptrends_monitor_group":   ResourceMonitorGroupSchema(),
 			"uptrends_monitor_web":     ResourceMonitorWebSchema(),
 			"uptrends_monitor_network": ResourceMonitorNetworkSchema(),
+			"uptrends_monitor_certificate": ResourceMonitorCertificateSchema(),
 		},
 		DataSourcesMap:       map[string]*schema.Resource{},
 		ConfigureContextFunc: providerConfigure,
