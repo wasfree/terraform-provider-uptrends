@@ -23,7 +23,7 @@ func ResourceMonitorCertificateSchema() *schema.Resource {
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
-		Schema: MergeSchema(MonitorGenericSchema, map[string]*schema.Schema{
+		Schema: MergeSchema(MonitorGenericSchema, MonitorLoadTimeSchema, map[string]*schema.Schema{
 			"url": {
 				Type:         schema.TypeString,
 				Required:     true,
@@ -62,32 +62,6 @@ func ResourceMonitorCertificateSchema() *schema.Resource {
 				Sensitive:    true,
 				Description:  "See the Username field. Specify the corresponding password value here.",
 				ValidateFunc: validation.StringIsNotEmpty,
-			},
-			"alert_on_load_time_limit_1": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     false,
-				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_1 threshold. Shows a yellow status in performance monitor. Defaults to `false`.",
-			},
-			"load_time_limit_1": {
-				Type:         schema.TypeInt,
-				Optional:     true,
-				Default:      2500,
-				ValidateFunc: validation.IntBetween(1, 300000),
-				Description:  "Set threshold time in ms for requires `alert_on_load_time_limit_1` to be enabled. Defaults to `2500`.",
-			},
-			"alert_on_load_time_limit_2": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     false,
-				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_2. Shows a red status in performance monitor. Defaults to `false`.",
-			},
-			"load_time_limit_2": {
-				Type:         schema.TypeInt,
-				Optional:     true,
-				Default:      5000,
-				ValidateFunc: validation.IntBetween(1, 300000),
-				Description:  "Set threshold time in ms for requires `alert_on_load_time_limit_2` to be enabled. Defaults to `5000`.",
 			},
 			"cert_name": {
 				Type:        schema.TypeString,
@@ -224,8 +198,12 @@ func monitorCertificateDelete(ctx context.Context, d *schema.ResourceData, meta 
 }
 
 func buildMonitorCertificateStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
-	monitor, err := buildMonitorGenericStruct(d)
-	if err != nil {
+	m := uptrends.NewMonitor()
+
+	if err := buildMonitorGenericStruct(m, d); err != nil {
+		return nil, err
+	}
+	if err := buildMonitorLoadTimeStruct(m, d); err != nil {
 		return nil, err
 	}
 	ipVersion, err := uptrends.NewIpVersionFromValue(d.Get("ip_version").(string))
@@ -237,97 +215,84 @@ func buildMonitorCertificateStruct(d *schema.ResourceData) (*uptrends.Monitor, e
 		return nil, err
 	}
 
-	monitor.MonitorType = &monitorCertificateType
-	monitor.Url = String(d.Get("url").(string))
-	monitor.IpVersion = ipVersion
-	monitor.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
-	monitor.AuthenticationType = authType
-	monitor.Username = String(d.Get("username").(string))
-	monitor.AlertOnLoadTimeLimit1 = Bool(d.Get("alert_on_load_time_limit_1").(bool))
-	monitor.LoadTimeLimit1 = Int32(int32(d.Get("load_time_limit_1").(int)))
-	monitor.AlertOnLoadTimeLimit2 = Bool(d.Get("alert_on_load_time_limit_2").(bool))
-	monitor.LoadTimeLimit2 = Int32(int32(d.Get("load_time_limit_2").(int)))
-	monitor.CertificateName = String(d.Get("cert_name").(string))
-	monitor.CertificateOrganization = String(d.Get("cert_org").(string))
-	monitor.CertificateOrganizationalUnit = String(d.Get("cert_org_unit").(string))
-	monitor.CertificateSerialNumber = String(d.Get("cert_serial_number").(string))
-	monitor.CertificateFingerprint = String(d.Get("cert_fingerprint").(string))
-	monitor.CertificateIssuerName = String(d.Get("cert_issuer_name").(string))
-	monitor.CertificateIssuerCompanyName = String(d.Get("cert_issuer_company_name").(string))
-	monitor.CertificateIssuerOrganizationalUnit = String(d.Get("cert_issuer_org_unit").(string))
-	monitor.CertificateExpirationWarningDays = Int32(int32(d.Get("cert_expiration_warning_days").(int)))
-	monitor.CheckCertificateErrors = Bool(d.Get("check_cert_errors").(bool))
+	m.MonitorType = &monitorCertificateType
+	m.Url = String(d.Get("url").(string))
+	m.IpVersion = ipVersion
+	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
+	m.AuthenticationType = authType
+	m.Username = String(d.Get("username").(string))
+	m.CertificateName = String(d.Get("cert_name").(string))
+	m.CertificateOrganization = String(d.Get("cert_org").(string))
+	m.CertificateOrganizationalUnit = String(d.Get("cert_org_unit").(string))
+	m.CertificateSerialNumber = String(d.Get("cert_serial_number").(string))
+	m.CertificateFingerprint = String(d.Get("cert_fingerprint").(string))
+	m.CertificateIssuerName = String(d.Get("cert_issuer_name").(string))
+	m.CertificateIssuerCompanyName = String(d.Get("cert_issuer_company_name").(string))
+	m.CertificateIssuerOrganizationalUnit = String(d.Get("cert_issuer_org_unit").(string))
+	m.CertificateExpirationWarningDays = Int32(int32(d.Get("cert_expiration_warning_days").(int)))
+	m.CheckCertificateErrors = Bool(d.Get("check_cert_errors").(bool))
 
 	// Optional without defaults
 	if attr, ok := d.GetOk("password"); ok {
-		monitor.Password = String(attr.(string))
+		m.Password = String(attr.(string))
 	}
 
-	return monitor, nil
+	return m, nil
 }
 
-func readMonitorCertificateStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
-	if err := readMonitorGenericStruct(monitor, d); err != nil {
+func readMonitorCertificateStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
+	if err := readMonitorGenericStruct(m, d); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("url", monitor.Url); err != nil {
+	if err := readMonitorLoadTimeStruct(m, d); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("ip_version", monitor.IpVersion); err != nil {
+	if err := d.Set("url", m.Url); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("auth_type", monitor.AuthenticationType); err != nil {
+	if err := d.Set("ip_version", m.IpVersion); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("native_ipv6_only", monitor.NativeIPv6Only); err != nil {
+	if err := d.Set("auth_type", m.AuthenticationType); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("username", monitor.Username); err != nil {
+	if err := d.Set("native_ipv6_only", m.NativeIPv6Only); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("alert_on_load_time_limit_1", monitor.AlertOnLoadTimeLimit1); err != nil {
+	if err := d.Set("username", m.Username); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("load_time_limit_1", monitor.LoadTimeLimit1); err != nil {
+	if err := d.Set("cert_name", m.CertificateName); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("alert_on_load_time_limit_2", monitor.AlertOnLoadTimeLimit2); err != nil {
+	if err := d.Set("cert_org", m.CertificateOrganization); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("load_time_limit_2", monitor.LoadTimeLimit2); err != nil {
+	if err := d.Set("cert_org_unit", m.CertificateOrganizationalUnit); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("cert_name", monitor.CertificateName); err != nil {
+	if err := d.Set("cert_serial_number", m.CertificateSerialNumber); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("cert_org", monitor.CertificateOrganization); err != nil {
+	if err := d.Set("cert_fingerprint", m.CertificateFingerprint); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("cert_org_unit", monitor.CertificateOrganizationalUnit); err != nil {
+	if err := d.Set("cert_issuer_name", m.CertificateIssuerName); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("cert_serial_number", monitor.CertificateSerialNumber); err != nil {
+	if err := d.Set("cert_issuer_company_name", m.CertificateIssuerCompanyName); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("cert_fingerprint", monitor.CertificateFingerprint); err != nil {
+	if err := d.Set("cert_issuer_org_unit", m.CertificateIssuerOrganizationalUnit); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("cert_issuer_name", monitor.CertificateIssuerName); err != nil {
+	if err := d.Set("cert_expiration_warning_days", m.CertificateExpirationWarningDays); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("cert_issuer_company_name", monitor.CertificateIssuerCompanyName); err != nil {
+	if err := d.Set("check_cert_errors", m.CheckCertificateErrors); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("cert_issuer_org_unit", monitor.CertificateIssuerOrganizationalUnit); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("cert_expiration_warning_days", monitor.CertificateExpirationWarningDays); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("check_cert_errors", monitor.CheckCertificateErrors); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("check_cert_errors", monitor.CheckCertificateErrors); err != nil {
+	if err := d.Set("check_cert_errors", m.CheckCertificateErrors); err != nil {
 		return diag.FromErr(err)
 	}
 

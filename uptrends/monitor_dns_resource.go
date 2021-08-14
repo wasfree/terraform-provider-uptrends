@@ -23,7 +23,7 @@ func ResourceMonitorDnsSchema() *schema.Resource {
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
-		Schema: MergeSchema(MonitorGenericSchema, map[string]*schema.Schema{
+		Schema: MergeSchema(MonitorGenericSchema, MonitorLoadTimeSchema, map[string]*schema.Schema{
 			"port": {
 				Type:         schema.TypeInt,
 				Optional:     true,
@@ -66,32 +66,6 @@ func ResourceMonitorDnsSchema() *schema.Resource {
 				Required:     true,
 				Description:  "The result you expect to get back from DNS query.",
 				ValidateFunc: validation.StringIsNotEmpty,
-			},
-			"alert_on_load_time_limit_1": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     false,
-				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_1 threshold. Shows a yellow status in performance monitor. Defaults to `false`.",
-			},
-			"load_time_limit_1": {
-				Type:         schema.TypeInt,
-				Optional:     true,
-				Default:      2500,
-				ValidateFunc: validation.IntBetween(1, 300000),
-				Description:  "Set threshold time in ms for requires `alert_on_load_time_limit_1` to be enabled. Defaults to `2500`.",
-			},
-			"alert_on_load_time_limit_2": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     false,
-				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_2. Shows a red status in performance monitor. Defaults to `false`.",
-			},
-			"load_time_limit_2": {
-				Type:         schema.TypeInt,
-				Optional:     true,
-				Default:      5000,
-				ValidateFunc: validation.IntBetween(1, 300000),
-				Description:  "Set threshold time in ms for requires `alert_on_load_time_limit_2` to be enabled. Defaults to `5000`.",
 			},
 		}),
 	}
@@ -164,8 +138,12 @@ func monitorDnsDelete(ctx context.Context, d *schema.ResourceData, meta interfac
 }
 
 func buildMonitorDnsStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
-	monitor, err := buildMonitorGenericStruct(d)
-	if err != nil {
+	m := uptrends.NewMonitor()
+
+	if err := buildMonitorGenericStruct(m, d); err != nil {
+		return nil, err
+	}
+	if err := buildMonitorLoadTimeStruct(m, d); err != nil {
 		return nil, err
 	}
 	ipVersion, err := uptrends.NewIpVersionFromValue(d.Get("ip_version").(string))
@@ -177,57 +155,44 @@ func buildMonitorDnsStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 		return nil, err
 	}
 
-	monitor.MonitorType = &monitorDnsType
-	monitor.Port = Int32(int32(d.Get("port").(int)))
-	monitor.IpVersion = ipVersion
-	monitor.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
-	monitor.AlertOnLoadTimeLimit1 = Bool(d.Get("alert_on_load_time_limit_1").(bool))
-	monitor.LoadTimeLimit1 = Int32(int32(d.Get("load_time_limit_1").(int)))
-	monitor.AlertOnLoadTimeLimit2 = Bool(d.Get("alert_on_load_time_limit_2").(bool))
-	monitor.LoadTimeLimit2 = Int32(int32(d.Get("load_time_limit_2").(int)))
-	monitor.DnsServer = String(d.Get("dns_server").(string))
-	monitor.DnsQuery = dnsQuery
-	monitor.DnsTestValue = String(d.Get("dns_test_value").(string))
-	monitor.DnsExpectedResult = String(d.Get("dns_expected_result").(string))
+	m.MonitorType = &monitorDnsType
+	m.Port = Int32(int32(d.Get("port").(int)))
+	m.IpVersion = ipVersion
+	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
+	m.DnsServer = String(d.Get("dns_server").(string))
+	m.DnsQuery = dnsQuery
+	m.DnsTestValue = String(d.Get("dns_test_value").(string))
+	m.DnsExpectedResult = String(d.Get("dns_expected_result").(string))
 
-	return monitor, nil
+	return m, nil
 }
 
-func readMonitorDnsStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
-	if err := readMonitorGenericStruct(monitor, d); err != nil {
+func readMonitorDnsStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
+	if err := readMonitorGenericStruct(m, d); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("port", monitor.Port); err != nil {
+	if err := readMonitorLoadTimeStruct(m, d); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("ip_version", monitor.IpVersion); err != nil {
+	if err := d.Set("port", m.Port); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("native_ipv6_only", monitor.NativeIPv6Only); err != nil {
+	if err := d.Set("ip_version", m.IpVersion); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("alert_on_load_time_limit_1", monitor.AlertOnLoadTimeLimit1); err != nil {
+	if err := d.Set("native_ipv6_only", m.NativeIPv6Only); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("load_time_limit_1", monitor.LoadTimeLimit1); err != nil {
+	if err := d.Set("dns_server", m.DnsServer); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("alert_on_load_time_limit_2", monitor.AlertOnLoadTimeLimit2); err != nil {
+	if err := d.Set("dns_query", m.DnsQuery); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("load_time_limit_2", monitor.LoadTimeLimit2); err != nil {
+	if err := d.Set("dns_test_value", m.DnsTestValue); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("dns_server", monitor.DnsServer); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("dns_query", monitor.DnsQuery); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("dns_test_value", monitor.DnsTestValue); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("dns_expected_result", monitor.DnsExpectedResult); err != nil {
+	if err := d.Set("dns_expected_result", m.DnsExpectedResult); err != nil {
 		return diag.FromErr(err)
 	}
 

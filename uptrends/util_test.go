@@ -31,12 +31,20 @@ func TestMergeSchema(t *testing.T) {
 			Description: "Just a example.",
 		},
 	}
+	schemaC := map[string]*schema.Schema{
+		"example3": {
+			Type:        schema.TypeString,
+			Required:    true,
+			Description: "Just a example.",
+		},
+	}
 
-	final := MergeSchema(schemaA, schemaB)
+	final := MergeSchema(schemaA, schemaB, schemaC)
 
-	assert.Len(t, final, 2)
+	assert.Len(t, final, 3)
 	assert.Contains(t, final, "example1")
 	assert.Contains(t, final, "example2")
+	assert.Contains(t, final, "example3")
 }
 
 func TestRequestHeaderHelpers(t *testing.T) {

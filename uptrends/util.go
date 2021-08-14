@@ -81,12 +81,18 @@ func reverseMap(m map[string]string) map[string]string {
 }
 
 // MergeSchema will merge schemaA into schemaB and return a schema consist of both schemas
-func MergeSchema(schemaA, schemaB map[string]*schema.Schema) map[string]*schema.Schema {
-	for k, v := range schemaA {
-		schemaB[k] = v
+func MergeSchema(input ...map[string]*schema.Schema) map[string]*schema.Schema {
+	newMap := make(map[string]*schema.Schema)
+	var keys int
+
+	for _, s := range input {
+		for k, v := range s {
+			keys++
+			newMap[k] = v
+		}
 	}
 
-	return schemaB
+	return newMap
 }
 
 // SliceInterfaceToSliceRequestHeader converts values from []interface{} to []uptrends.RequestHeader

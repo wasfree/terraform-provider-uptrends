@@ -150,61 +150,58 @@ func flattenSelectedCheckpoints(input *uptrends.SelectedCheckpoints) []interface
 	return []interface{}{selectedCheckpoints}
 }
 
-func buildMonitorGenericStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
+func buildMonitorGenericStruct(m *uptrends.Monitor, d *schema.ResourceData) error {
+
 	monitorMode, err := uptrends.NewMonitorModeFromValue(d.Get("mode").(string))
 	if err != nil {
-		return nil, err
+		return err
 	}
-
-	monitor := &uptrends.Monitor{
-		Name:                      String(d.Get("name").(string)),
-		MonitorMode:               monitorMode,
-		IsActive:                  Bool(d.Get("is_active").(bool)),
-		GenerateAlert:             Bool(d.Get("generate_alert").(bool)),
-		CheckInterval:             Int32(int32(d.Get("check_interval").(int))),
-		UsePrimaryCheckpointsOnly: Bool(d.Get("primary_checkpoints_only").(bool)),
-		SelectedCheckpoints:       expandSelectedCheckpoints(d.Get("selected_checkpoints").([]interface{})),
-	}
+	m.Name = String(d.Get("name").(string))
+	m.MonitorMode = monitorMode
+	m.IsActive = Bool(d.Get("is_active").(bool))
+	m.GenerateAlert = Bool(d.Get("generate_alert").(bool))
+	m.CheckInterval = Int32(int32(d.Get("check_interval").(int)))
+	m.UsePrimaryCheckpointsOnly = Bool(d.Get("primary_checkpoints_only").(bool))
+	m.SelectedCheckpoints = expandSelectedCheckpoints(d.Get("selected_checkpoints").([]interface{}))
 
 	if attr, ok := d.GetOk("notes"); ok {
-		monitor.Notes = String(attr.(string))
+		m.Notes = String(attr.(string))
 	}
 
 	if attr, ok := d.GetOk("name_for_phone_alerts"); ok {
-		monitor.NameForPhoneAlerts = String(attr.(string))
+		m.NameForPhoneAlerts = String(attr.(string))
 	}
 
-	return monitor, nil
+	return nil
 }
 
-func readMonitorGenericStruct(monitor *uptrends.Monitor, d *schema.ResourceData) error {
-	if err := d.Set("name", monitor.Name); err != nil {
+func readMonitorGenericStruct(m *uptrends.Monitor, d *schema.ResourceData) error {
+	if err := d.Set("name", m.Name); err != nil {
 		return err
 	}
-	if err := d.Set("is_active", monitor.IsActive); err != nil {
+	if err := d.Set("is_active", m.IsActive); err != nil {
 		return err
 	}
-	if err := d.Set("is_locked", monitor.IsLocked); err != nil {
+	if err := d.Set("is_locked", m.IsLocked); err != nil {
 		return err
 	}
-	if err := d.Set("generate_alert", monitor.GenerateAlert); err != nil {
+	if err := d.Set("generate_alert", m.GenerateAlert); err != nil {
 		return err
 	}
-	if err := d.Set("check_interval", monitor.CheckInterval); err != nil {
+	if err := d.Set("check_interval", m.CheckInterval); err != nil {
 		return err
 	}
-	if err := d.Set("primary_checkpoints_only", monitor.UsePrimaryCheckpointsOnly); err != nil {
+	if err := d.Set("primary_checkpoints_only", m.UsePrimaryCheckpointsOnly); err != nil {
 		return err
 	}
-	if err := d.Set("notes", monitor.Notes); err != nil {
+	if err := d.Set("notes", m.Notes); err != nil {
 		return err
 	}
-	if err := d.Set("name_for_phone_alerts", monitor.NameForPhoneAlerts); err != nil {
+	if err := d.Set("name_for_phone_alerts", m.NameForPhoneAlerts); err != nil {
 		return err
 	}
-
-	if sc := monitor.SelectedCheckpoints; *sc != (uptrends.SelectedCheckpoints{}) {
-		if err := d.Set("selected_checkpoints", flattenSelectedCheckpoints(monitor.SelectedCheckpoints)); err != nil {
+	if sc := m.SelectedCheckpoints; *sc != (uptrends.SelectedCheckpoints{}) {
+		if err := d.Set("selected_checkpoints", flattenSelectedCheckpoints(m.SelectedCheckpoints)); err != nil {
 			return err
 		}
 	}

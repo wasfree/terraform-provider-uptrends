@@ -9,35 +9,27 @@ import (
 	"github.com/wasfree/uptrends-go-sdk"
 )
 
-func ResourceMonitorNetworkSchema() *schema.Resource {
+var (
+	monitorMsSqlType = uptrends.MONITORTYPE_MSSQL
+	monitorMySqlType = uptrends.MONITORTYPE_MY_SQL
+)
+
+func ResourceMonitorDatabaseServerSchema() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Manages an Uptrends Ping and Connect Monitor.",
-		CreateContext: monitorNetworkCreate,
-		ReadContext:   monitorNetworkRead,
-		UpdateContext: monitorNetworkUpdate,
-		DeleteContext: monitorNetworkDelete,
+		Description:   "Manages an Uptrends Database Server Monitor.",
+		CreateContext: monitorDatabaseServerCreate,
+		ReadContext:   monitorDatabaseServerRead,
+		UpdateContext: monitorDatabaseServerUpdate,
+		DeleteContext: monitorDatabaseServerDelete,
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
 		Schema: MergeSchema(MonitorGenericSchema, MonitorLoadTimeSchema, map[string]*schema.Schema{
-			"network_address": {
-				Type:         schema.TypeString,
-				Required:     true,
-				Description:  "The network address that should be used to connect to the server or service you want to monitor.",
-				ValidateFunc: validation.StringIsNotEmpty,
-			},
-			"type": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ForceNew:     true,
-				Default:      "Ping",
-				Description:  "Select between `Ping` and `Connect` monitor type. Defaults to `Ping`",
-				ValidateFunc: validation.StringInSlice([]string{"Ping", "Connect"}, true),
-			},
 			"port": {
 				Type:         schema.TypeInt,
 				Optional:     true,
-				Description:  "The TCP Port for the connect Monitor. Only used by connect Monitor, has to be between `1` and `65535`.",
+				Default:      53,
+				Description:  "The TCP Port for the dns Monitor, has to be between `1` and `65535`. Defaults to `53`.",
 				ValidateFunc: validation.IntBetween(1, 65535),
 			},
 			"ip_version": {
@@ -57,11 +49,11 @@ func ResourceMonitorNetworkSchema() *schema.Resource {
 	}
 }
 
-func monitorNetworkCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorDatabaseServerCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
-	monitor, err := buildMonitorNetworkStruct(d)
+	monitor, err := buildMonitorDatabaseServerStruct(d)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -73,10 +65,10 @@ func monitorNetworkCreate(ctx context.Context, d *schema.ResourceData, meta inte
 
 	d.SetId(*resp.MonitorGuid)
 
-	return monitorNetworkRead(ctx, d, meta)
+	return monitorDatabaseServerRead(ctx, d, meta)
 }
 
-func monitorNetworkRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorDatabaseServerRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
@@ -87,16 +79,16 @@ func monitorNetworkRead(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(err)
 	}
 
-	return readMonitorNetworkStruct(&resp, d)
+	return readMonitorDatabaseServerStruct(&resp, d)
 }
 
-func monitorNetworkUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorDatabaseServerUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
 	id := d.Id()
 
-	monitor, err := buildMonitorNetworkStruct(d)
+	monitor, err := buildMonitorDatabaseServerStruct(d)
 	if err != nil {
 		return diag.FromErr(err)
 	}
@@ -106,10 +98,10 @@ func monitorNetworkUpdate(ctx context.Context, d *schema.ResourceData, meta inte
 		return diag.FromErr(err)
 	}
 
-	return monitorNetworkRead(ctx, d, meta)
+	return monitorDatabaseServerRead(ctx, d, meta)
 }
 
-func monitorNetworkDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+func monitorDatabaseServerDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*Uptrends).Client.MonitorApi
 	auth := meta.(*Uptrends).AuthContext
 
@@ -123,7 +115,7 @@ func monitorNetworkDelete(ctx context.Context, d *schema.ResourceData, meta inte
 	return nil
 }
 
-func buildMonitorNetworkStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
+func buildMonitorDatabaseServerStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	m := uptrends.NewMonitor()
 
 	if err := buildMonitorGenericStruct(m, d); err != nil {
@@ -136,31 +128,23 @@ func buildMonitorNetworkStruct(d *schema.ResourceData) (*uptrends.Monitor, error
 	if err != nil {
 		return nil, err
 	}
-	monitorType, err := uptrends.NewMonitorTypeFromValue(d.Get("type").(string))
-	if err != nil {
-		return nil, err
-	}
 
-	m.MonitorType = monitorType
-	m.NetworkAddress = String(d.Get("network_address").(string))
+	m.MonitorType = &monitorDnsType
+	m.Port = Int32(int32(d.Get("port").(int)))
 	m.IpVersion = ipVersion
 	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
-
-	if *monitorType == uptrends.MONITORTYPE_CONNECT {
-		m.Port = Int32(int32(d.Get("port").(int)))
-	}
 
 	return m, nil
 }
 
-func readMonitorNetworkStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
+func readMonitorDatabaseServerStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
 	if err := readMonitorGenericStruct(m, d); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := readMonitorLoadTimeStruct(m, d); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("network_address", m.NetworkAddress); err != nil {
+	if err := d.Set("port", m.Port); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("ip_version", m.IpVersion); err != nil {
@@ -168,11 +152,6 @@ func readMonitorNetworkStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.
 	}
 	if err := d.Set("native_ipv6_only", m.NativeIPv6Only); err != nil {
 		return diag.FromErr(err)
-	}
-	if *m.MonitorType == uptrends.MONITORTYPE_CONNECT {
-		if err := d.Set("port", m.Port); err != nil {
-			return diag.FromErr(err)
-		}
 	}
 
 	return nil

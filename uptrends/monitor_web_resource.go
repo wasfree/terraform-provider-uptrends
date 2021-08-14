@@ -19,7 +19,7 @@ func ResourceMonitorWebSchema() *schema.Resource {
 		Importer: &schema.ResourceImporter{
 			StateContext: schema.ImportStatePassthroughContext,
 		},
-		Schema: MergeSchema(MonitorGenericSchema, map[string]*schema.Schema{
+		Schema: MergeSchema(MonitorGenericSchema, MonitorLoadTimeSchema, map[string]*schema.Schema{
 			"url": {
 				Type:         schema.TypeString,
 				Required:     true,
@@ -119,32 +119,6 @@ func ResourceMonitorWebSchema() *schema.Resource {
 				Sensitive:    true,
 				Description:  "See the Username field. Specify the corresponding password value here.",
 				ValidateFunc: validation.StringIsNotEmpty,
-			},
-			"alert_on_load_time_limit_1": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     false,
-				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_1 threshold. Shows a yellow status in performance monitor. Defaults to `false`.",
-			},
-			"load_time_limit_1": {
-				Type:         schema.TypeInt,
-				Optional:     true,
-				Default:      2500,
-				ValidateFunc: validation.IntBetween(1, 300000),
-				Description:  "Set threshold time in ms for requires `alert_on_load_time_limit_1` to be enabled. Defaults to `2500`.",
-			},
-			"alert_on_load_time_limit_2": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     false,
-				Description: "Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_2. Shows a red status in performance monitor. Defaults to `false`.",
-			},
-			"load_time_limit_2": {
-				Type:         schema.TypeInt,
-				Optional:     true,
-				Default:      5000,
-				ValidateFunc: validation.IntBetween(1, 300000),
-				Description:  "Set threshold time in ms for requires `alert_on_load_time_limit_2` to be enabled. Defaults to `5000`.",
 			},
 			"alert_on_min_bytes": {
 				Type:        schema.TypeBool,
@@ -251,8 +225,12 @@ func monitorWebDelete(ctx context.Context, d *schema.ResourceData, meta interfac
 }
 
 func buildMonitorWebStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
-	monitor, err := buildMonitorGenericStruct(d)
-	if err != nil {
+	m := uptrends.NewMonitor()
+
+	if err := buildMonitorGenericStruct(m, d); err != nil {
+		return nil, err
+	}
+	if err := buildMonitorLoadTimeStruct(m, d); err != nil {
 		return nil, err
 	}
 	ipVersion, err := uptrends.NewIpVersionFromValue(d.Get("ip_version").(string))
@@ -267,101 +245,87 @@ func buildMonitorWebStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	monitorType, err := uptrends.NewMonitorTypeFromValue(d.Get("type").(string))
 	if err != nil {
 		return nil, err
 	}
 
-	monitor.MonitorType = monitorType
-	monitor.IpVersion = ipVersion
-	monitor.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
-	monitor.Url = String(d.Get("url").(string))
-	monitor.HttpMethod = httpMethod
-	monitor.RequestBody = String(d.Get("request_body").(string))
-	monitor.AuthenticationType = authType
-	monitor.UserAgent = String(UserAgent(d.Get("user_agent").(string)))
-	monitor.Username = String(d.Get("username").(string))
-	monitor.AlertOnLoadTimeLimit1 = Bool(d.Get("alert_on_load_time_limit_1").(bool))
-	monitor.LoadTimeLimit1 = Int32(int32(d.Get("load_time_limit_1").(int)))
-	monitor.AlertOnLoadTimeLimit2 = Bool(d.Get("alert_on_load_time_limit_2").(bool))
-	monitor.LoadTimeLimit2 = Int32(int32(d.Get("load_time_limit_2").(int)))
-	monitor.AlertOnMinimumBytes = Bool(d.Get("alert_on_min_bytes").(bool))
-	monitor.MinimumBytes = Int32(int32(d.Get("min_bytes").(int)))
+	m.MonitorType = monitorType
+	m.IpVersion = ipVersion
+	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
+	m.Url = String(d.Get("url").(string))
+	m.HttpMethod = httpMethod
+	m.RequestBody = String(d.Get("request_body").(string))
+	m.AuthenticationType = authType
+	m.UserAgent = String(UserAgent(d.Get("user_agent").(string)))
+	m.Username = String(d.Get("username").(string))
+	m.AlertOnMinimumBytes = Bool(d.Get("alert_on_min_bytes").(bool))
+	m.MinimumBytes = Int32(int32(d.Get("min_bytes").(int)))
 
 	// check_cert_errors should only be set if monitorType is Https
 	if *monitorType == uptrends.MONITORTYPE_HTTPS {
-		monitor.CheckCertificateErrors = Bool(d.Get("check_cert_errors").(bool))
+		m.CheckCertificateErrors = Bool(d.Get("check_cert_errors").(bool))
 	}
 
 	// Optional without defaults
 	if attr, ok := d.GetOk("expected_http_status_code"); ok {
-		monitor.ExpectedHttpStatusCode = Int32(int32(attr.(int)))
+		m.ExpectedHttpStatusCode = Int32(int32(attr.(int)))
 	}
 	if attr, ok := d.GetOk("password"); ok {
-		monitor.Password = String(attr.(string))
+		m.Password = String(attr.(string))
 	}
 	if attr, ok := d.Get("request_headers").([]interface{}); ok {
-		monitor.RequestHeaders = SliceInterfaceToSliceRequestHeader(attr)
+		m.RequestHeaders = SliceInterfaceToSliceRequestHeader(attr)
 	}
 	if attr, ok := d.Get("match_pattern").([]interface{}); ok {
-		monitor.MatchPatterns = SliceInterfaceToSlicePatternMatch(attr)
+		m.MatchPatterns = SliceInterfaceToSlicePatternMatch(attr)
 	}
 
-	return monitor, nil
+	return m, nil
 }
 
-func readMonitorWebStruct(monitor *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
-	if err := readMonitorGenericStruct(monitor, d); err != nil {
+func readMonitorWebStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.Diagnostics {
+	if err := readMonitorGenericStruct(m, d); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("ip_version", monitor.IpVersion); err != nil {
+	if err := readMonitorLoadTimeStruct(m, d); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("http_method", monitor.HttpMethod); err != nil {
+	if err := d.Set("ip_version", m.IpVersion); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("auth_type", monitor.AuthenticationType); err != nil {
+	if err := d.Set("http_method", m.HttpMethod); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("native_ipv6_only", monitor.NativeIPv6Only); err != nil {
+	if err := d.Set("auth_type", m.AuthenticationType); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("url", monitor.Url); err != nil {
+	if err := d.Set("native_ipv6_only", m.NativeIPv6Only); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("expected_http_status_code", monitor.ExpectedHttpStatusCode); err != nil {
+	if err := d.Set("url", m.Url); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("user_agent", monitor.UserAgent); err != nil {
+	if err := d.Set("expected_http_status_code", m.ExpectedHttpStatusCode); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("alert_on_load_time_limit_1", monitor.AlertOnLoadTimeLimit1); err != nil {
+	if err := d.Set("user_agent", m.UserAgent); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("load_time_limit_1", monitor.LoadTimeLimit1); err != nil {
+	if err := d.Set("alert_on_min_bytes", m.AlertOnMinimumBytes); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("alert_on_load_time_limit_2", monitor.AlertOnLoadTimeLimit2); err != nil {
+	if err := d.Set("min_bytes", m.MinimumBytes); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("load_time_limit_2", monitor.LoadTimeLimit2); err != nil {
+	if err := d.Set("request_headers", SliceRequestHeaderToSliceInterface(*m.RequestHeaders)); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("alert_on_min_bytes", monitor.AlertOnMinimumBytes); err != nil {
+	if err := d.Set("match_pattern", SlicePatternMatchToSliceInterface(*m.MatchPatterns)); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("min_bytes", monitor.MinimumBytes); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("request_headers", SliceRequestHeaderToSliceInterface(*monitor.RequestHeaders)); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("match_pattern", SlicePatternMatchToSliceInterface(*monitor.MatchPatterns)); err != nil {
-		return diag.FromErr(err)
-	}
-	if *monitor.MonitorType == uptrends.MONITORTYPE_HTTPS {
-		if err := d.Set("check_cert_errors", monitor.CheckCertificateErrors); err != nil {
+	if *m.MonitorType == uptrends.MONITORTYPE_HTTPS {
+		if err := d.Set("check_cert_errors", m.CheckCertificateErrors); err != nil {
 			return diag.FromErr(err)
 		}
 	}
