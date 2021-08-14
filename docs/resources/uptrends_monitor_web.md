@@ -15,10 +15,8 @@ Manages Uptrends HTTP and HTTPS Monitor.
 ```terraform
 resource "uptrends_monitor_web" "test" {
   name                     = "example"
-  mode                     = "Staging"
   check_interval           = 10
   notes                    = "Managed by Terraform"
-  generate_alert           = false
   primary_checkpoints_only = false
 
   url                       = "http://example.org/"

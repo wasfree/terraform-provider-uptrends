@@ -111,7 +111,7 @@ resource "uptrends_monitor_dns" "test" {
   load_time_limit_1          = 3000
   alert_on_load_time_limit_2 = true
   load_time_limit_2          = 7000
-  port = 53
+  port                       = 53
 
   dns_server          = "8.8.4.4"
   dns_query           = "ARecord"

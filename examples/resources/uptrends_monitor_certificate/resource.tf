@@ -1,8 +1,6 @@
 resource "uptrends_monitor_certificate" "example" {
   name                       = "example"
   url                        = "https://example.org/"
-  mode                       = "Staging"
-  generate_alert             = false
   check_interval             = 10
   notes                      = "Managed by Terraform"
   primary_checkpoints_only   = false

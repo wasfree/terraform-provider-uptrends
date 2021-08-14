@@ -300,6 +300,9 @@ func readMonitorWebStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.Diag
 	if err := d.Set("auth_type", m.AuthenticationType); err != nil {
 		return diag.FromErr(err)
 	}
+	if err := d.Set("username", m.Username); err != nil {
+		return diag.FromErr(err)
+	}
 	if err := d.Set("native_ipv6_only", m.NativeIPv6Only); err != nil {
 		return diag.FromErr(err)
 	}
