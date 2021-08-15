@@ -101,11 +101,16 @@ func ResourceMonitorWebSchema() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"auth_type": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Default:      "None",
-				Description:  "Specify the username of the appropriate credentials here. Defaults to `None`.",
-				ValidateFunc: validation.StringInSlice([]string{"None", "Basic", "NTLM", "Digest"}, false),
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     uptrends.APIHTTPAUTHENTICATIONTYPE_NONE,
+				Description: "Specify the username of the appropriate credentials here. Defaults to `None`.",
+				ValidateFunc: validation.StringInSlice([]string{
+					string(uptrends.APIHTTPAUTHENTICATIONTYPE_BASIC),
+					string(uptrends.APIHTTPAUTHENTICATIONTYPE_DIGEST),
+					string(uptrends.APIHTTPAUTHENTICATIONTYPE_NONE),
+					string(uptrends.APIHTTPAUTHENTICATIONTYPE_NTLM)},
+					false),
 			},
 			"username": {
 				Type:         schema.TypeString,
@@ -233,37 +238,21 @@ func buildMonitorWebStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	if err := buildMonitorLoadTimeStruct(m, d); err != nil {
 		return nil, err
 	}
-	ipVersion, err := uptrends.NewIpVersionFromValue(d.Get("ip_version").(string))
-	if err != nil {
-		return nil, err
-	}
-	httpMethod, err := uptrends.NewHttpMethodFromValue(d.Get("http_method").(string))
-	if err != nil {
-		return nil, err
-	}
-	authType, err := uptrends.NewApiHttpAuthenticationTypeFromValue(d.Get("auth_type").(string))
-	if err != nil {
-		return nil, err
-	}
-	monitorType, err := uptrends.NewMonitorTypeFromValue(d.Get("type").(string))
-	if err != nil {
-		return nil, err
-	}
 
-	m.MonitorType = monitorType
-	m.IpVersion = ipVersion
+	m.MonitorType = (*uptrends.MonitorType)(String(d.Get("type").(string)))
+	m.IpVersion = (*uptrends.IpVersion)(String(d.Get("ip_version").(string)))
 	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
 	m.Url = String(d.Get("url").(string))
-	m.HttpMethod = httpMethod
+	m.HttpMethod = (*uptrends.HttpMethod)(String(d.Get("http_method").(string)))
 	m.RequestBody = String(d.Get("request_body").(string))
-	m.AuthenticationType = authType
+	m.AuthenticationType = (*uptrends.ApiHttpAuthenticationType)(String(d.Get("auth_type").(string)))
 	m.UserAgent = String(UserAgent(d.Get("user_agent").(string)))
 	m.Username = String(d.Get("username").(string))
 	m.AlertOnMinimumBytes = Bool(d.Get("alert_on_min_bytes").(bool))
 	m.MinimumBytes = Int32(int32(d.Get("min_bytes").(int)))
 
 	// check_cert_errors should only be set if monitorType is Https
-	if *monitorType == uptrends.MONITORTYPE_HTTPS {
+	if *m.MonitorType == uptrends.MONITORTYPE_HTTPS {
 		m.CheckCertificateErrors = Bool(d.Get("check_cert_errors").(bool))
 	}
 
@@ -275,10 +264,10 @@ func buildMonitorWebStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 		m.Password = String(attr.(string))
 	}
 	if attr, ok := d.Get("request_headers").([]interface{}); ok {
-		m.RequestHeaders = SliceInterfaceToSliceRequestHeader(attr)
+		m.RequestHeaders = expandRequestHeader(attr)
 	}
 	if attr, ok := d.Get("match_pattern").([]interface{}); ok {
-		m.MatchPatterns = SliceInterfaceToSlicePatternMatch(attr)
+		m.MatchPatterns = expandPatternMatch(attr)
 	}
 
 	return m, nil
@@ -321,10 +310,10 @@ func readMonitorWebStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.Diag
 	if err := d.Set("min_bytes", m.MinimumBytes); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("request_headers", SliceRequestHeaderToSliceInterface(*m.RequestHeaders)); err != nil {
+	if err := d.Set("request_headers", flattenRequestHeader(m.RequestHeaders)); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("match_pattern", SlicePatternMatchToSliceInterface(*m.MatchPatterns)); err != nil {
+	if err := d.Set("match_pattern", flattenPatternMatch(m.MatchPatterns)); err != nil {
 		return diag.FromErr(err)
 	}
 	if *m.MonitorType == uptrends.MONITORTYPE_HTTPS {

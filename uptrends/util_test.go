@@ -61,12 +61,12 @@ func TestRequestHeaderHelpers(t *testing.T) {
 		},
 	}
 
-	t.Run("Test SliceInterfaceToSliceRequestHeader", func(t *testing.T) {
-		headers := SliceInterfaceToSliceRequestHeader(requestHeaderInterfaceTestData)
+	t.Run("Test expandRequestHeader", func(t *testing.T) {
+		headers := expandRequestHeader(requestHeaderInterfaceTestData)
 		assert.Equal(t, &requestHeaderTestData, headers)
 	})
-	t.Run("Test SliceInterfaceToSliceRequestHeader", func(t *testing.T) {
-		headers := SliceRequestHeaderToSliceInterface(requestHeaderTestData)
+	t.Run("Test flattenRequestHeader", func(t *testing.T) {
+		headers := flattenRequestHeader(&requestHeaderTestData)
 		assert.Equal(t, requestHeaderInterfaceTestData, headers)
 	})
 }
@@ -85,12 +85,12 @@ func TestPatternMatchHelper(t *testing.T) {
 		},
 	}
 
-	t.Run("Test SliceInterfaceToSlicePatternMatch", func(t *testing.T) {
-		patterns := SliceInterfaceToSlicePatternMatch(patternMatchInterfaceTestData)
+	t.Run("Test expandPatternMatch", func(t *testing.T) {
+		patterns := expandPatternMatch(patternMatchInterfaceTestData)
 		assert.Equal(t, &patternMatchTestData, patterns)
 	})
-	t.Run("Test SlicePatternMatchToSliceInterface", func(t *testing.T) {
-		patterns := SlicePatternMatchToSliceInterface(patternMatchTestData)
+	t.Run("Test flattenPatternMatch", func(t *testing.T) {
+		patterns := flattenPatternMatch(&patternMatchTestData)
 		assert.Equal(t, patternMatchInterfaceTestData, patterns)
 	})
 }

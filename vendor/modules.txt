@@ -26,7 +26,7 @@ github.com/apparentlymart/go-cidr/cidr
 github.com/apparentlymart/go-textseg/v13/textseg
 # github.com/armon/go-radix v0.0.0-20180808171621-7fddfc383310
 github.com/armon/go-radix
-# github.com/aws/aws-sdk-go v1.40.21
+# github.com/aws/aws-sdk-go v1.40.22
 ## explicit
 github.com/aws/aws-sdk-go/aws
 github.com/aws/aws-sdk-go/aws/arn
@@ -290,7 +290,7 @@ go.opencensus.io/trace
 go.opencensus.io/trace/internal
 go.opencensus.io/trace/propagation
 go.opencensus.io/trace/tracestate
-# golang.org/x/crypto v0.0.0-20210812204632-0ba0e8f03122
+# golang.org/x/crypto v0.0.0-20210813211128-0a44fdfbc16e
 ## explicit
 golang.org/x/crypto/blowfish
 golang.org/x/crypto/cast5
@@ -314,10 +314,13 @@ golang.org/x/crypto/ssh/internal/bcrypt_pbkdf
 # golang.org/x/lint v0.0.0-20210508222113-6edffad5e616
 golang.org/x/lint
 golang.org/x/lint/golint
-# golang.org/x/mod v0.4.2
+# golang.org/x/mod v0.5.0
+## explicit
+golang.org/x/mod/internal/lazyregexp
 golang.org/x/mod/module
 golang.org/x/mod/semver
-# golang.org/x/net v0.0.0-20210805182204-aaa1db679c0d
+# golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d
+## explicit
 golang.org/x/net/context
 golang.org/x/net/context/ctxhttp
 golang.org/x/net/http/httpguts
@@ -364,7 +367,7 @@ golang.org/x/tools/internal/typeparams
 # golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
 golang.org/x/xerrors
 golang.org/x/xerrors/internal
-# google.golang.org/api v0.53.0
+# google.golang.org/api v0.54.0
 ## explicit
 google.golang.org/api/googleapi
 google.golang.org/api/googleapi/transport
@@ -394,7 +397,7 @@ google.golang.org/appengine/internal/modules
 google.golang.org/appengine/internal/remote_api
 google.golang.org/appengine/internal/urlfetch
 google.golang.org/appengine/urlfetch
-# google.golang.org/genproto v0.0.0-20210811021853-ddbe55d93216
+# google.golang.org/genproto v0.0.0-20210813162853-db860fec028c
 ## explicit
 google.golang.org/genproto/googleapis/api/annotations
 google.golang.org/genproto/googleapis/iam/v1

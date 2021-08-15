@@ -59,6 +59,19 @@ func SliceInterfaceToSliceString(input []interface{}) *[]string {
 	return &ret
 }
 
+// SliceStringToSliceInterface convert *[]string to []interface{}
+func SliceStringToSliceInterface(input *[]string) []interface{} {
+	ret := make([]interface{}, 0)
+
+	if input != nil {
+		for _, v := range *input {
+			ret = append(ret, v)
+		}
+	}
+
+	return ret
+}
+
 // SliceInt32ToSliceString convert []int32 to []string
 func SliceInt32ToSliceString(input []int32) []string {
 	ret := make([]string, len(input))
@@ -95,8 +108,10 @@ func MergeSchema(input ...map[string]*schema.Schema) map[string]*schema.Schema {
 	return newMap
 }
 
-// SliceInterfaceToSliceRequestHeader converts values from []interface{} to []uptrends.RequestHeader
-func SliceInterfaceToSliceRequestHeader(input []interface{}) *[]uptrends.RequestHeader {
+// structure.go
+
+// expandRequestHeader converts values from []interface{} to *[]uptrends.RequestHeader
+func expandRequestHeader(input []interface{}) *[]uptrends.RequestHeader {
 	headers := []uptrends.RequestHeader{}
 	for _, v := range input {
 		newHeader := uptrends.NewRequestHeader()
@@ -108,10 +123,10 @@ func SliceInterfaceToSliceRequestHeader(input []interface{}) *[]uptrends.Request
 	return &headers
 }
 
-// SliceRequestHeaderToSliceInterface converts values from []uptrends.RequestHeader to []interface{}
-func SliceRequestHeaderToSliceInterface(input []uptrends.RequestHeader) []interface{} {
-	headers := []interface{}{}
-	for _, v := range input {
+// flattenRequestHeader converts values from []uptrends.RequestHeader to []interface{}
+func flattenRequestHeader(input *[]uptrends.RequestHeader) []interface{} {
+	headers := make([]interface{}, 0, len(*input))
+	for _, v := range *input {
 		newHeader := make(map[string]interface{})
 		newHeader["name"] = v.GetName()
 		newHeader["value"] = v.GetValue()
@@ -120,8 +135,8 @@ func SliceRequestHeaderToSliceInterface(input []uptrends.RequestHeader) []interf
 	return headers
 }
 
-// SliceInterfaceToSlicePatternMatch converts values from []interface{} to []uptrends.PatternMatch
-func SliceInterfaceToSlicePatternMatch(input []interface{}) *[]uptrends.PatternMatch {
+// expandPatternMatch converts values from []interface{} to *[]uptrends.PatternMatch
+func expandPatternMatch(input []interface{}) *[]uptrends.PatternMatch {
 	patterns := []uptrends.PatternMatch{}
 	for _, v := range input {
 		pattern := v.(map[string]interface{})
@@ -132,14 +147,50 @@ func SliceInterfaceToSlicePatternMatch(input []interface{}) *[]uptrends.PatternM
 	return &patterns
 }
 
-// SlicePatternMatchToSliceInterface converts values from []uptrends.PatternMatch to []interface{}
-func SlicePatternMatchToSliceInterface(input []uptrends.PatternMatch) []interface{} {
-	patterns := []interface{}{}
-	for _, v := range input {
+// flattenPatternMatch converts values from []uptrends.PatternMatch to []interface{}
+func flattenPatternMatch(input *[]uptrends.PatternMatch) []interface{} {
+	patterns := make([]interface{}, 0, len(*input))
+	for _, v := range *input {
 		newPattern := make(map[string]interface{})
 		newPattern["pattern"] = v.GetPattern()
 		newPattern["is_positive"] = v.IsPositive
 		patterns = append(patterns, newPattern)
 	}
 	return patterns
+}
+
+// expandBrowserWindowDimensions converts values from []interface{} to *uptrends.BrowserWindowDimensions
+func expandBrowserWindowDimensions(input []interface{}) *uptrends.BrowserWindowDimensions {
+	if len(input) == 0 {
+		return nil
+	}
+
+	v := input[0].(map[string]interface{})
+
+	return &uptrends.BrowserWindowDimensions{
+		IsMobile:     v["is_mobile"].(bool),
+		Width:        int32(v["width"].(int)),
+		Height:       int32(v["height"].(int)),
+		PixelRatio:   int32(v["pixel_ratio"].(int)),
+		MobileDevice: String(v["mobile_device"].(string)),
+	}
+}
+
+// flattenBrowserWindowDimensions converts values from uptrends.BrowserWindowDimensions to []interface{}
+func flattenBrowserWindowDimensions(input *uptrends.BrowserWindowDimensions) []interface{} {
+	result := make([]interface{}, 0)
+	if input == nil {
+		return result
+	}
+	v := make(map[string]interface{})
+
+	v["is_mobile"] = input.GetIsMobile()
+	v["width"] = input.GetWidth()
+	v["height"] = input.GetHeight()
+	v["pixel_ratio"] = input.GetPixelRatio()
+	v["mobile_device"] = input.GetMobileDevice()
+
+	result = append(result, v)
+
+	return result
 }

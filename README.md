@@ -25,3 +25,4 @@ curl -X POST "https://api.uptrends.com/v4/Register" -H  "accept: application/jso
     "NativeIPv6Only": false,
     "NetworkAddress": "8.8.8.8"
 }
+

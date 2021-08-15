@@ -151,13 +151,8 @@ func flattenSelectedCheckpoints(input *uptrends.SelectedCheckpoints) []interface
 }
 
 func buildMonitorGenericStruct(m *uptrends.Monitor, d *schema.ResourceData) error {
-
-	monitorMode, err := uptrends.NewMonitorModeFromValue(d.Get("mode").(string))
-	if err != nil {
-		return err
-	}
 	m.Name = String(d.Get("name").(string))
-	m.MonitorMode = monitorMode
+	m.MonitorMode = (*uptrends.MonitorMode)(String(d.Get("mode").(string)))
 	m.IsActive = Bool(d.Get("is_active").(bool))
 	m.GenerateAlert = Bool(d.Get("generate_alert").(bool))
 	m.CheckInterval = Int32(int32(d.Get("check_interval").(int)))
