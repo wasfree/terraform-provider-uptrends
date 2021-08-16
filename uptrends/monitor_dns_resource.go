@@ -146,21 +146,13 @@ func buildMonitorDnsStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	if err := buildMonitorLoadTimeStruct(m, d); err != nil {
 		return nil, err
 	}
-	ipVersion, err := uptrends.NewIpVersionFromValue(d.Get("ip_version").(string))
-	if err != nil {
-		return nil, err
-	}
-	dnsQuery, err := uptrends.NewDnsQueryFromValue(d.Get("dns_query").(string))
-	if err != nil {
-		return nil, err
-	}
 
 	m.MonitorType = &monitorDnsType
 	m.Port = Int32(int32(d.Get("port").(int)))
-	m.IpVersion = ipVersion
+	m.IpVersion = (*uptrends.IpVersion)(String(d.Get("ip_version").(string)))
 	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
 	m.DnsServer = String(d.Get("dns_server").(string))
-	m.DnsQuery = dnsQuery
+	m.DnsQuery = (*uptrends.DnsQuery)(String(d.Get("dns_query").(string)))
 	m.DnsTestValue = String(d.Get("dns_test_value").(string))
 	m.DnsExpectedResult = String(d.Get("dns_expected_result").(string))
 

@@ -163,18 +163,9 @@ func buildMonitorDatabaseServerStruct(d *schema.ResourceData) (*uptrends.Monitor
 		return nil, err
 	}
 
-	monitorType, err := uptrends.NewMonitorTypeFromValue(d.Get("type").(string))
-	if err != nil {
-		return nil, err
-	}
-	ipVersion, err := uptrends.NewIpVersionFromValue(d.Get("ip_version").(string))
-	if err != nil {
-		return nil, err
-	}
-
-	m.MonitorType = monitorType
+	m.MonitorType = (*uptrends.MonitorType)(String(d.Get("type").(string)))
 	m.Port = Int32(int32(d.Get("port").(int)))
-	m.IpVersion = ipVersion
+	m.IpVersion = (*uptrends.IpVersion)(String(d.Get("ip_version").(string)))
 	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
 	m.NetworkAddress = String(d.Get("network_address").(string))
 	m.DatabaseName = String(d.Get("db_name").(string))

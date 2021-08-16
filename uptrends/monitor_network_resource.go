@@ -132,21 +132,13 @@ func buildMonitorNetworkStruct(d *schema.ResourceData) (*uptrends.Monitor, error
 	if err := buildMonitorLoadTimeStruct(m, d); err != nil {
 		return nil, err
 	}
-	ipVersion, err := uptrends.NewIpVersionFromValue(d.Get("ip_version").(string))
-	if err != nil {
-		return nil, err
-	}
-	monitorType, err := uptrends.NewMonitorTypeFromValue(d.Get("type").(string))
-	if err != nil {
-		return nil, err
-	}
 
-	m.MonitorType = monitorType
+	m.MonitorType = (*uptrends.MonitorType)(String(d.Get("type").(string)))
 	m.NetworkAddress = String(d.Get("network_address").(string))
-	m.IpVersion = ipVersion
+	m.IpVersion = (*uptrends.IpVersion)(String(d.Get("ip_version").(string)))
 	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
 
-	if *monitorType == uptrends.MONITORTYPE_CONNECT {
+	if *m.MonitorType == uptrends.MONITORTYPE_CONNECT {
 		m.Port = Int32(int32(d.Get("port").(int)))
 	}
 

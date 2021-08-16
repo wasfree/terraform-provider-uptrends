@@ -206,20 +206,12 @@ func buildMonitorCertificateStruct(d *schema.ResourceData) (*uptrends.Monitor, e
 	if err := buildMonitorLoadTimeStruct(m, d); err != nil {
 		return nil, err
 	}
-	ipVersion, err := uptrends.NewIpVersionFromValue(d.Get("ip_version").(string))
-	if err != nil {
-		return nil, err
-	}
-	authType, err := uptrends.NewApiHttpAuthenticationTypeFromValue(d.Get("auth_type").(string))
-	if err != nil {
-		return nil, err
-	}
 
 	m.MonitorType = &monitorCertificateType
 	m.Url = String(d.Get("url").(string))
-	m.IpVersion = ipVersion
+	m.IpVersion = (*uptrends.IpVersion)(String(d.Get("ip_version").(string)))
 	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
-	m.AuthenticationType = authType
+	m.AuthenticationType = (*uptrends.ApiHttpAuthenticationType)(String(d.Get("auth_type").(string)))
 	m.Username = String(d.Get("username").(string))
 	m.CertificateName = String(d.Get("cert_name").(string))
 	m.CertificateOrganization = String(d.Get("cert_org").(string))

@@ -33,8 +33,7 @@ func ResourceMonitorFullPageCheckSchema() *schema.Resource {
 			"user_agent": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Default:     "chrome83",
-				Description: "",
+				Description: "A string value that identifies which HTTP client is making the HTTP request. A browser typically sends a value that identifies the browser type and version.",
 				StateFunc: func(v interface{}) string {
 					return UserAgent(v.(string))
 				},
@@ -71,9 +70,10 @@ func ResourceMonitorFullPageCheckSchema() *schema.Resource {
 				Elem: &schema.Resource{
 					Schema: map[string]*schema.Schema{
 						"pattern": {
-							Type:        schema.TypeString,
-							Required:    true,
-							Description: "Insert a word or phrase if you want to verify that your web page contains that text.",
+							Type:         schema.TypeString,
+							Required:     true,
+							Description:  "Insert a word or phrase if you want to verify that your web page contains that text.",
+							ValidateFunc: validation.StringIsNotEmpty,
 						},
 						"is_positive": {
 							Type:        schema.TypeBool,
@@ -147,19 +147,19 @@ func ResourceMonitorFullPageCheckSchema() *schema.Resource {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     false,
-				Description: "",
+				Description: "Enable this option if you want the time-, size-, or content-checks to generate alerts.",
 			},
 			"failed_object_percentage": {
 				Type:         schema.TypeInt,
 				Optional:     true,
-				Description:  "",
+				Description:  "Specify a percentage treshold on which your want to get alerted 0% will report all element load failures",
 				ValidateFunc: validation.IntBetween(0, 100),
 			},
 			"browser_type": {
 				Type:        schema.TypeString,
 				Optional:    true,
 				Default:     uptrends.BROWSERTYPE_CHROME,
-				Description: "",
+				Description: "The Type of Browser used to Load the Website. Allowed values are `Chrome`, `Firefox`, `IE`, `PhantomJS`, `PhantomJS20` and `Safari`. Defaults to `Chrome`.",
 				ValidateFunc: validation.StringInSlice([]string{
 					string(uptrends.BROWSERTYPE_CHROME),
 					string(uptrends.BROWSERTYPE_FIREFOX),
@@ -179,27 +179,29 @@ func ResourceMonitorFullPageCheckSchema() *schema.Resource {
 						"is_mobile": {
 							Type:        schema.TypeBool,
 							Optional:    true,
-							Description: "",
+							Description: "Enable for Mobile simulation.",
 						},
 						"width": {
-							Type:        schema.TypeInt,
-							Optional:    true,
-							Description: "",
+							Type:         schema.TypeInt,
+							Optional:     true,
+							Description:  "Set the width for resolution size.",
+							ValidateFunc: validation.IntBetween(1, 1600),
 						},
 						"height": {
-							Type:        schema.TypeInt,
-							Optional:    true,
-							Description: "",
+							Type:         schema.TypeInt,
+							Optional:     true,
+							Description:  "Set the height for resolution size.",
+							ValidateFunc: validation.IntBetween(1, 900),
 						},
 						"pixel_ratio": {
 							Type:        schema.TypeInt,
 							Optional:    true,
-							Description: "",
+							Description: "The device pixel ratio is the ratio between physical pixels and logical pixels.",
 						},
 						"mobile_device": {
 							Type:        schema.TypeString,
 							Optional:    true,
-							Description: "",
+							Description: "Define the mobile device if `is_mobile` set to true.",
 						},
 					},
 				},
@@ -208,20 +210,19 @@ func ResourceMonitorFullPageCheckSchema() *schema.Resource {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,
-				Description: "",
+				Description: "Enable this option if outgoing monitoring requests should block google analytics.",
 			},
 			"block_uptrends_rum": {
 				Type:        schema.TypeBool,
 				Optional:    true,
 				Default:     true,
-				Description: "",
+				Description: "Enable this option if outgoing monitoring requests should block uptrends rum.",
 			},
 			"block_urls": {
-				Type:     schema.TypeSet,
-				Optional: true,
-				Elem: &schema.Schema{
-					Type: schema.TypeString,
-				},
+				Type:        schema.TypeSet,
+				Optional:    true,
+				Description: "Set Urls which should be blocked by outgoing monitoring requests.",
+				Elem:        &schema.Schema{Type: schema.TypeString},
 			},
 		}),
 	}
@@ -320,7 +321,7 @@ func buildMonitorFullPageCheckStruct(d *schema.ResourceData) (*uptrends.Monitor,
 	m.ElementMaximumSize = Int32(int32(d.Get("max_element_bytes").(int)))
 	m.IgnoreExternalElements = Bool(d.Get("ignore_external_elements").(bool))
 	m.AlertOnPercentageFail = Bool(d.Get("alert_on_percentage_fail").(bool))
-	m.FailedObjectPercentage = Int32(int32(d.Get("failed_object_percentage").(int)))
+	m.FailedObjectPercentage = Int32(20) //Int32(int32(d.Get("failed_object_percentage").(int)))
 	m.BrowserType = (*uptrends.BrowserType)(String(d.Get("browser_type").(string)))
 	m.BlockGoogleAnalytics = Bool(d.Get("block_google_analytics").(bool))
 	m.BlockUptrendsRum = Bool(d.Get("block_uptrends_rum").(bool))

@@ -25,16 +25,32 @@ func TestAccUptrendsMonitorFullPageCheck_Basic(t *testing.T) {
 					testAccCheckUptrendsMonitorFullPageCheckDestroyExists("uptrends_monitor_fpc.test"),
 					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "name", fmt.Sprintf("acctest-uptrends-monitor-fpc-%d", randInt)),
 					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "mode", "Production"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "url", "https://example.com"),
 				),
 			},
-			// {
-			// 	Config: r.update(randInt),
-			// 	Check: resource.ComposeTestCheckFunc(
-			// 		testAccCheckUptrendsMonitorFullPageCheckDestroyExists("uptrends_monitor_fpc.test"),
-			// 		resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "name", fmt.Sprintf("acctest-uptrends-monitor-fpc-%d", randInt)),
-			// 		resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "mode", "Staging"),
-			// 	),
-			// },
+			{
+				Config: r.update(randInt),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckUptrendsMonitorFullPageCheckDestroyExists("uptrends_monitor_fpc.test"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "name", fmt.Sprintf("acctest-uptrends-monitor-fpc-%d", randInt)),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "mode", "Staging"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "alert_on_min_bytes", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "min_bytes", "1024"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "alert_on_max_bytes", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "max_bytes", "2048"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "alert_on_max_element_bytes", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "max_element_bytes", "4096"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "ignore_external_elements", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_type", "Firefox"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_window_dimensions.0.is_mobile", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_window_dimensions.0.width", "1024"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_window_dimensions.0.height", "768"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_window_dimensions.0.pixel_ratio", "3"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_window_dimensions.0.mobile_device", "Apple iPhone X"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "block_google_analytics", "true"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "block_uptrends_rum", "true"),
+				),
+			},
 		},
 	})
 }
@@ -89,8 +105,8 @@ func testAccCheckUptrendsMonitorFullPageCheckDestroyExists(n string) resource.Te
 func (r UptrendsMonitorFullPageCheckResource) basic(randInt int) string {
 	return fmt.Sprintf(`
 resource "uptrends_monitor_fpc" "test" {
-  name                = "acctest-uptrends-monitor-fpc-%d"
-  url                 = "https://example.com"
+  name = "acctest-uptrends-monitor-fpc-%d"
+  url  = "https://example.com"
 }
 `, randInt)
 }
@@ -98,19 +114,54 @@ resource "uptrends_monitor_fpc" "test" {
 func (r UptrendsMonitorFullPageCheckResource) update(randInt int) string {
 	return fmt.Sprintf(`
 resource "uptrends_monitor_fpc" "test" {
-  name                       = "acctest-uptrends-monitor-fpc-%d"
-  mode                       = "Staging"
-  generate_alert             = false
-  check_interval             = 10
-  notes                      = "Managed by Terraform"
+  name           = "acctest-uptrends-monitor-fpc-%d"
+  url            = "https://example.org"
+  mode           = "Staging"
+  generate_alert = false
+  check_interval = 10
+  notes          = "Managed by Terraform"
+
   primary_checkpoints_only   = false
   alert_on_load_time_limit_1 = true
   load_time_limit_1          = 3000
   alert_on_load_time_limit_2 = true
   load_time_limit_2          = 7000
+  alert_on_min_bytes         = true
+  min_bytes                  = 1024
+  alert_on_max_bytes         = true
+  max_bytes                  = 2048
+  alert_on_max_element_bytes = true
+  max_element_bytes          = 4096
+  ignore_external_elements   = true
+  alert_on_percentage_fail   = true
+  browser_type               = "Firefox"
 
+  browser_window_dimensions {
+    is_mobile     = true
+    width         = 1024
+    height        = 768
+    pixel_ratio   = 3
+    mobile_device = "Apple iPhone X"
+  }
 
+  block_google_analytics = true
+  block_uptrends_rum     = true
+  block_urls             = ["example.org"]
 
+  user_agent = "firefox77"
+  auth_type  = "Basic"
+  username   = "user"
+  password   = "secret"
+
+  request_headers {
+    name  = "X-Test1-Header"
+    value = "true"
+  }
+
+  match_pattern {
+    pattern     = "example"
+    is_positive = true
+  }
 
   selected_checkpoints {
     regions           = ["Asia", "1005"]
