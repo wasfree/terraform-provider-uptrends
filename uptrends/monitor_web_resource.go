@@ -11,7 +11,7 @@ import (
 
 func ResourceMonitorWebSchema() *schema.Resource {
 	return &schema.Resource{
-		Description:   "Manages Uptrends HTTP and HTTPS Monitor.",
+		Description:   "Manages Uptrends HTTP, HTTPS, Webservice HTTP and Webservice HTTPS Monitor.",
 		CreateContext: monitorWebCreate,
 		ReadContext:   monitorWebRead,
 		UpdateContext: monitorWebUpdate,
@@ -27,12 +27,17 @@ func ResourceMonitorWebSchema() *schema.Resource {
 				ValidateFunc: validation.IsURLWithHTTPorHTTPS,
 			},
 			"type": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ForceNew:     true,
-				Default:      "Http",
-				Description:  "Select between `Http` and `Https` monitor type. Defaults to `Http`",
-				ValidateFunc: validation.StringInSlice([]string{"Http", "Https"}, true),
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Default:     uptrends.MONITORTYPE_HTTP,
+				Description: "Select between `Http`, `Https`, `WebserviceHttp` and `WebserviceHttps` monitor type. Defaults to `Http`",
+				ValidateFunc: validation.StringInSlice([]string{
+					string(uptrends.MONITORTYPE_HTTP),
+					string(uptrends.MONITORTYPE_HTTPS),
+					string(uptrends.MONITORTYPE_WEBSERVICE_HTTP),
+					string(uptrends.MONITORTYPE_WEBSERVICE_HTTPS)},
+					false),
 			},
 			"check_cert_errors": {
 				Type:        schema.TypeBool,
@@ -41,11 +46,14 @@ func ResourceMonitorWebSchema() *schema.Resource {
 				Description: "An HTTPS check will only pass our checks if the SSL certificate does not cause any errors. Only set this option to `false` if you really want to ignore SSL certificate issues. This parameter takes only effect if `type` has been set to `Https`.",
 			},
 			"ip_version": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Default:      "IpV4",
-				Description:  "IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6. Defaults to `IpV4`.",
-				ValidateFunc: validation.StringInSlice([]string{"IpV4", "IpV6"}, false),
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     uptrends.IPVERSION_IP_V4,
+				Description: "IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6. Defaults to `IpV4`.",
+				ValidateFunc: validation.StringInSlice([]string{
+					string(uptrends.IPVERSION_IP_V4),
+					string(uptrends.IPVERSION_IP_V6)},
+					false),
 			},
 			"native_ipv6_only": {
 				Type:        schema.TypeBool,

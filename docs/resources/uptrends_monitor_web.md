@@ -3,12 +3,12 @@
 page_title: "uptrends_monitor_web Resource - terraform-provider-uptends"
 subcategory: ""
 description: |-
-  Manages Uptrends HTTP and HTTPS Monitor.
+  Manages Uptrends HTTP, HTTPS, Webservice HTTP and Webservice HTTPS Monitor.
 ---
 
 # uptrends_monitor_web (Resource)
 
-Manages Uptrends HTTP and HTTPS Monitor.
+Manages Uptrends HTTP, HTTPS, Webservice HTTP and Webservice HTTPS Monitor.
 
 ## Example Usage
 
@@ -79,7 +79,7 @@ bar=foo
 `. Requires `http_method` to be set to `Post`.
 - **request_headers** (Block List) (see [below for nested schema](#nestedblock--request_headers))
 - **selected_checkpoints** (Block List, Max: 1) (see [below for nested schema](#nestedblock--selected_checkpoints))
-- **type** (String) Select between `Http` and `Https` monitor type. Defaults to `Http`
+- **type** (String) Select between `Http`, `Https`, `WebserviceHttp` and `WebserviceHttps` monitor type. Defaults to `Http`
 - **user_agent** (String) A string value that identifies which HTTP client is making the HTTP request. A browser typically sends a value that identifies the browser type and version.
 - **username** (String) Specify the username of the appropriate credentials here.
 

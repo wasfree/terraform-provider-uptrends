@@ -34,11 +34,11 @@ func ResourceMonitorDatabaseServerSchema() *schema.Resource {
 			"ip_version": {
 				Type:        schema.TypeString,
 				Optional:    true,
-				Default:     "IpV4",
+				Default:     uptrends.IPVERSION_IP_V4,
 				Description: "IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6. Defaults to `IpV4`.",
 				ValidateFunc: validation.StringInSlice([]string{
 					string(uptrends.IPVERSION_IP_V4),
-					string(uptrends.IPVERSION_IP_V4)},
+					string(uptrends.IPVERSION_IP_V6)},
 					false),
 			},
 			"native_ipv6_only": {

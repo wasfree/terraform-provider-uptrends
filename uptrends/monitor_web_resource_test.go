@@ -107,14 +107,38 @@ func (r UptrendsMonitorWebResource) basic(randInt int) string {
 	return fmt.Sprintf(`
 resource "uptrends_monitor_web" "http" {
   name = "acctest-uptrends-monitor-web-http-%d"
+  type = "Http"
   url  = "http://example.com/"
 }
 
 resource "uptrends_monitor_web" "https" {
   name = "acctest-uptrends-monitor-web-https-%d"
+  type = "Https"
   url  = "https://example.com/"
 }
-`, randInt, randInt)
+
+resource "uptrends_monitor_web" "webservice_http" {
+  name = "acctest-uptrends-monitor-webservice-http-%d"
+  type = "WebserviceHttp"
+  url  = "http://api.uptrends.com/v4/Checkpoint/Server/Ipv4"
+
+  request_headers {
+    name  = "accept"
+    value = "application/json"
+  }
+}
+
+resource "uptrends_monitor_web" "webservice_https" {
+  name = "acctest-uptrends-monitor-webservice-https-%d"
+  type = "WebserviceHttps"
+  url  = "http://api.uptrends.com/v4/Checkpoint/Server/Ipv4"
+
+  request_headers {
+    name  = "accept"
+    value = "application/json"
+  }
+}
+`, randInt, randInt, randInt, randInt)
 }
 
 func (r UptrendsMonitorWebResource) update(randInt int) string {

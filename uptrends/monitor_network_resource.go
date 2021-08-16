@@ -27,12 +27,15 @@ func ResourceMonitorNetworkSchema() *schema.Resource {
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
 			"type": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				ForceNew:     true,
-				Default:      "Ping",
-				Description:  "Select between `Ping` and `Connect` monitor type. Defaults to `Ping`",
-				ValidateFunc: validation.StringInSlice([]string{"Ping", "Connect"}, true),
+				Type:        schema.TypeString,
+				Optional:    true,
+				ForceNew:    true,
+				Default:     uptrends.MONITORTYPE_PING,
+				Description: "Select between `Ping` and `Connect` monitor type. Defaults to `Ping`",
+				ValidateFunc: validation.StringInSlice([]string{
+					string(uptrends.MONITORTYPE_PING),
+					string(uptrends.MONITORTYPE_CONNECT)},
+					true),
 			},
 			"port": {
 				Type:         schema.TypeInt,
@@ -41,11 +44,14 @@ func ResourceMonitorNetworkSchema() *schema.Resource {
 				ValidateFunc: validation.IntBetween(1, 65535),
 			},
 			"ip_version": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Default:      "IpV4",
-				Description:  "IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6. Defaults to `IpV4`.",
-				ValidateFunc: validation.StringInSlice([]string{"IpV4", "IpV6"}, false),
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     uptrends.IPVERSION_IP_V4,
+				Description: "IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6. Defaults to `IpV4`.",
+				ValidateFunc: validation.StringInSlice([]string{
+					string(uptrends.IPVERSION_IP_V4),
+					string(uptrends.IPVERSION_IP_V6)},
+					false),
 			},
 			"native_ipv6_only": {
 				Type:        schema.TypeBool,
