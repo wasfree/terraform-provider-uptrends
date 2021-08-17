@@ -3,6 +3,8 @@
 Version 0.x of the Uptrends Provider requires Terraform 0.15.x and later, but 1.0 is recommended.
 
 * [Terraform Website](https://www.terraform.io)
+* [Uptrends Website](https://www.uptrends.com)
+* [Uptrends API Documentation](https://www.uptrends.de/support/kb/api)
 * [Uptrends Provider Documentation](https://registry.terraform.io/providers/wasfree/uptrends/latest/docs)
 * [Uptrends Provider Usage Examples](https://github.com/wasfree/terraform-provider-uptrends/tree/master/examples)
 
@@ -34,7 +36,7 @@ provider "uptrends" {
 }
 
 resource "uptrends_monitor_web" "https" {
-  name                       = "acctest-uptrends-monitor-web-https-%d"
+  name                       = "example-https-monitor"
   type                       = "Https"
   url                        = "https://example.org/"
 
@@ -116,7 +118,7 @@ At this point you can compile the provider by running `make build`, which will b
 ```sh
 $ make build
 ...
-$ $GOPATH/bin/terraform-provider-azurerm
+$ $GOPATH/bin/terraform-provider-uptrends
 ...
 ```
 
@@ -132,34 +134,24 @@ In order to run the `Unit Tests` for the provider, you can run:
 $ make test
 ```
 
-The majority of tests in the provider are `Acceptance Tests` - which provisions real resources in Azure. It's possible to run the entire acceptance test suite by running `make testacc` - however it's likely you'll want to run a subset, which you can do using a prefix, by running:
+The majority of tests in the provider are `Acceptance Tests` - which provisions real resources in Uptrends. It's possible to run the entire acceptance test suite by running `make testacc` - however it's likely you'll want to run a subset, which you can do using a prefix, by running:
 
 ```sh
-make acctests SERVICE='<service>' TESTARGS='-run=<nameOfTheTest>' TESTTIMEOUT='60m'
+make testacc
 ```
-
-* `<service>` is the name of the folder which contains the file with the test(s) you want to run. The available folders are found in `azurerm/internal/services/`. So examples are `mssql`, `compute` or `mariadb`
-* `<nameOfTheTest>` should be self-explanatory as it is the name of the test you want to run. An example could be `TestAccMsSqlServerExtendedAuditingPolicy_basic`. Since `-run` can be used with regular expressions you can use it to specify multiple tests like in `TestAccMsSqlServerExtendedAuditingPolicy_` to run all tests that match that expression
 
 The following Environment Variables must be set in your shell prior to running acceptance tests:
 
-- `ARM_CLIENT_ID`
-- `ARM_CLIENT_SECRET`
-- `ARM_SUBSCRIPTION_ID`
-- `ARM_TENANT_ID`
-- `ARM_ENVIRONMENT`
-- `ARM_METADATA_HOST`
-- `ARM_TEST_LOCATION`
-- `ARM_TEST_LOCATION_ALT`
-- `ARM_TEST_LOCATION_ALT2`
+- `UPTRENDS_USERNAME`
+- `UPTRENDS_PASSWORD`
 
-**Note:** Acceptance tests create real resources in Azure which often cost money to run.
+**Note:** Acceptance tests create real resources in Uptrends.
 
 ---
 
-## Developer: Using the locally compiled Azure Provider binary
+## Developer: Using the locally compiled Uptrends Provider binary
 
-When using Terraform 0.14 and later, after successfully compiling the Azure Provider, you must [instruct Terraform to use your locally compiled provider binary](https://www.terraform.io/docs/commands/cli-config.html#development-overrides-for-provider-developers) instead of the official binary from the Terraform Registry.
+When using Terraform 0.15 and later, after successfully compiling the Uptrends Provider, you must [instruct Terraform to use your locally compiled provider binary](https://www.terraform.io/docs/commands/cli-config.html#development-overrides-for-provider-developers) instead of the official binary from the Terraform Registry.
 
 For example, add the following to `~/.terraformrc` for a provider binary located in `/home/developer/go/bin`:
 
@@ -167,11 +159,11 @@ For example, add the following to `~/.terraformrc` for a provider binary located
 provider_installation {
 
   # Use /home/developer/go/bin as an overridden package directory
-  # for the hashicorp/azurerm provider. This disables the version and checksum
+  # for the wasfree/uptrends provider. This disables the version and checksum
   # verifications for this provider and forces Terraform to look for the
-  # azurerm provider plugin in the given directory.
+  # uptrends provider plugin in the given directory.
   dev_overrides {
-    "hashicorp/azurerm" = "/home/developer/go/bin"
+    "wasfree/uptrends" = "/home/developer/go/bin"
   }
 
   # For all other providers, install them directly from their origin provider
@@ -182,35 +174,3 @@ provider_installation {
 ```
 
 ---
-
-## Developer: Generating Resource ID Formatters, Parsers and Validators
-
-You can generate a Resource ID Formatter, Parser and Validator by adding the following line to a `resourceids.go` within each Service Package (for example `./internal/services/someservice/resourceids.go`):
-
-```go
-//go:generate go run ../../tools/generator-resource-id/main.go -path=./ -name=Server -id=/subscriptions/12345678-1234-9876-4563-123456789012/resourceGroups/resGroup1/providers/Microsoft.AnalysisServices/servers/Server1
-```
-
-Where `name` is the name of the Resource ID Type - and `id` is an example Resource ID with placeholder data.
-
-When `make generate` is run, this will then generate the following for this Resource ID:
-
-* Resource ID Struct, containing the fields and a Formatter to convert this into a string - and the associated Unit Tests.
-* Resource ID Parser (`./parse/{name}.go`) - to be able to parse a Resource ID into said struct - and the associated Unit Tests.
-* Resource ID Validator (`./validate/{name}_id.go`) - to validate the Resource ID is what's expected (and not for a different resource) - and the associated Unit Tests.
-
----
-
-## Developer: Scaffolding the Website Documentation
-
-You can scaffold the documentation for a Data Source by running:
-
-```sh
-$ make scaffold-website BRAND_NAME="Resource Group" RESOURCE_NAME="azurerm_resource_group" RESOURCE_TYPE="data"
-```
-
-You can scaffold the documentation for a Resource by running:
-
-```sh
-$ make scaffold-website BRAND_NAME="Resource Group" RESOURCE_NAME="azurerm_resource_group" RESOURCE_TYPE="resource" RESOURCE_ID="/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1"
-```
