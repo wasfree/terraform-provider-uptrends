@@ -34,6 +34,12 @@ func Provider() *schema.Provider {
 				Description:  "Password for the uptrends API. Can be specified with the UPTRENDS_PASSWORD environment variable.",
 				ValidateFunc: validation.StringIsNotEmpty,
 			},
+			"debug": {
+				Type:        schema.TypeBool,
+				Optional:    true,
+				DefaultFunc: schema.EnvDefaultFunc("UPTRENDS_DEBUG_MODE", false),
+				Description: "Enable uptrends debug mode. Defaults to `false`.",
+			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
 			"uptrends_operator_account":        ResourceOperatorAccountSchema(),
@@ -57,7 +63,7 @@ func providerConfigure(ctx context.Context, d *schema.ResourceData) (interface{}
 	config := uptrends.NewConfiguration()
 	config.HTTPClient = &http.Client{Timeout: 30 * time.Second}
 	// enable debug for http client
-	config.Debug = true
+	config.Debug = d.Get("debug").(bool)
 	client := uptrends.NewAPIClient(config)
 
 	authContext := context.WithValue(
