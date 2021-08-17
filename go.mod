@@ -1,4 +1,4 @@
-module github.com/wasfree/terraform-provider-uptends
+module github.com/wasfree/terraform-provider-uptrends
 
 go 1.16
 
