@@ -36,6 +36,7 @@ func Provider() *schema.Provider {
 			},
 		},
 		ResourcesMap: map[string]*schema.Resource{
+			"uptrends_operator_account":        ResourceOperatorAccountSchema(),
 			"uptrends_monitor_group":           ResourceMonitorGroupSchema(),
 			"uptrends_monitor_web":             ResourceMonitorWebSchema(),
 			"uptrends_monitor_fpc":             ResourceMonitorFullPageCheckSchema(),

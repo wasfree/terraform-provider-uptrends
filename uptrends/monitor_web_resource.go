@@ -62,11 +62,14 @@ func ResourceMonitorWebSchema() *schema.Resource {
 				Description: "True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity. Defaults to `false`.",
 			},
 			"http_method": {
-				Type:         schema.TypeString,
-				Optional:     true,
-				Default:      "Get",
-				Description:  "Specifies the HTTP methode for your monitor. Defaults to `GET`.",
-				ValidateFunc: validation.StringInSlice([]string{"Get", "Post"}, false),
+				Type:        schema.TypeString,
+				Optional:    true,
+				Default:     uptrends.HTTPMETHOD_GET,
+				Description: "Specifies the HTTP methode for your monitor. Defaults to `GET`.",
+				ValidateFunc: validation.StringInSlice([]string{
+					string(uptrends.HTTPMETHOD_GET),
+					string(uptrends.HTTPMETHOD_POST)},
+					false),
 			},
 			"request_headers": {
 				Type:     schema.TypeList,

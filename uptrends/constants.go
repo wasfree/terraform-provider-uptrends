@@ -4,6 +4,22 @@ import (
 	"strconv"
 )
 
+var uptrendsDashboards = []string{
+	"UseAccountSpecifiedDashboard",
+	"AccountOverview",
+	"AlertLog",
+	"AvailabilitySummary",
+	"ErrorsOverview",
+	"ProbeLog",
+	"ProbeStatus",
+	"Operations",
+	"PerformanceDetails",
+	"PerformanceSummary",
+	"TotalTimeTable",
+	"UptimePerProbe",
+	"UptimeTable",
+}
+
 var browserToUserAgent = map[string]string{
 	"chrome83":          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36",
 	"chrome83_android":  "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.101 Mobile Safari/537.36",
@@ -30,6 +46,16 @@ func UserAgent(input string) string {
 		return id
 	}
 	return input
+}
+
+var httpMethods = []string{
+	"GET",
+	"HEAD",
+	"POST",
+	"PUT",
+	"PATCH",
+	"DELETE",
+	"OPTIONS",
 }
 
 var validHttpCodes = []int{
