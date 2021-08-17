@@ -3,6 +3,7 @@
 .DS_Store
 terraform.tfplan
 terraform.tfstate
+terraform-provider-uptrends
 website/.vagrant
 website/.bundle
 website/build
