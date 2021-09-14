@@ -20,7 +20,7 @@ require (
 	github.com/hashicorp/hcl/v2 v2.10.1 // indirect
 	github.com/hashicorp/terraform-plugin-docs v0.4.0
 	github.com/hashicorp/terraform-plugin-go v0.3.1 // indirect
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.7.0
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.7.1
 	github.com/hashicorp/yamux v0.0.0-20210707203944-259a57b3608c // indirect
 	github.com/klauspost/compress v1.13.4 // indirect
 	github.com/mattn/go-isatty v0.0.13 // indirect
