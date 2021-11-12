@@ -152,13 +152,13 @@ github.com/hashicorp/hcl/v2/ext/customdecode
 github.com/hashicorp/hcl/v2/hclsyntax
 # github.com/hashicorp/logutils v1.0.0
 github.com/hashicorp/logutils
-# github.com/hashicorp/terraform-exec v0.14.0
+# github.com/hashicorp/terraform-exec v0.15.0
 github.com/hashicorp/terraform-exec/internal/version
 github.com/hashicorp/terraform-exec/tfexec
 github.com/hashicorp/terraform-exec/tfinstall
-# github.com/hashicorp/terraform-json v0.12.0
+# github.com/hashicorp/terraform-json v0.13.0
 github.com/hashicorp/terraform-json
-# github.com/hashicorp/terraform-plugin-docs v0.5.0
+# github.com/hashicorp/terraform-plugin-docs v0.5.1
 ## explicit
 github.com/hashicorp/terraform-plugin-docs/cmd/tfplugindocs
 github.com/hashicorp/terraform-plugin-docs/internal/cmd
@@ -215,10 +215,9 @@ github.com/klauspost/compress/huff0
 github.com/klauspost/compress/internal/snapref
 github.com/klauspost/compress/zstd
 github.com/klauspost/compress/zstd/internal/xxhash
-# github.com/mattn/go-colorable v0.1.8
+# github.com/mattn/go-colorable v0.1.11
 github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.14
-## explicit
 github.com/mattn/go-isatty
 # github.com/mitchellh/cli v1.1.2
 github.com/mitchellh/cli
@@ -264,7 +263,7 @@ github.com/vmihailenco/msgpack/codes
 # github.com/wasfree/uptrends-go-sdk v1.0.6
 ## explicit
 github.com/wasfree/uptrends-go-sdk
-# github.com/zclconf/go-cty v1.9.1
+# github.com/zclconf/go-cty v1.10.0
 github.com/zclconf/go-cty/cty
 github.com/zclconf/go-cty/cty/convert
 github.com/zclconf/go-cty/cty/function
@@ -328,8 +327,7 @@ golang.org/x/oauth2/google/internal/externalaccount
 golang.org/x/oauth2/internal
 golang.org/x/oauth2/jws
 golang.org/x/oauth2/jwt
-# golang.org/x/sys v0.0.0-20210910150752-751e447fb3d0
-## explicit
+# golang.org/x/sys v0.0.0-20210927094055-39ccf1dd6fa6
 golang.org/x/sys/cpu
 golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
