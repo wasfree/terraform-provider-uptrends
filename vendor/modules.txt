@@ -132,7 +132,6 @@ github.com/hashicorp/go-getter/helper/url
 ## explicit
 github.com/hashicorp/go-hclog
 # github.com/hashicorp/go-multierror v1.1.1
-## explicit
 github.com/hashicorp/go-multierror
 # github.com/hashicorp/go-plugin v1.4.3
 ## explicit
@@ -141,10 +140,24 @@ github.com/hashicorp/go-plugin/internal/plugin
 # github.com/hashicorp/go-safetemp v1.0.0
 github.com/hashicorp/go-safetemp
 # github.com/hashicorp/go-uuid v1.0.2
-## explicit
 github.com/hashicorp/go-uuid
 # github.com/hashicorp/go-version v1.3.0
 github.com/hashicorp/go-version
+# github.com/hashicorp/hc-install v0.3.1
+github.com/hashicorp/hc-install
+github.com/hashicorp/hc-install/checkpoint
+github.com/hashicorp/hc-install/errors
+github.com/hashicorp/hc-install/fs
+github.com/hashicorp/hc-install/internal/build
+github.com/hashicorp/hc-install/internal/httpclient
+github.com/hashicorp/hc-install/internal/pubkey
+github.com/hashicorp/hc-install/internal/releasesjson
+github.com/hashicorp/hc-install/internal/src
+github.com/hashicorp/hc-install/internal/validators
+github.com/hashicorp/hc-install/internal/version
+github.com/hashicorp/hc-install/product
+github.com/hashicorp/hc-install/releases
+github.com/hashicorp/hc-install/src
 # github.com/hashicorp/hcl/v2 v2.10.1
 ## explicit
 github.com/hashicorp/hcl/v2
@@ -152,11 +165,11 @@ github.com/hashicorp/hcl/v2/ext/customdecode
 github.com/hashicorp/hcl/v2/hclsyntax
 # github.com/hashicorp/logutils v1.0.0
 github.com/hashicorp/logutils
-# github.com/hashicorp/terraform-exec v0.14.0
+# github.com/hashicorp/terraform-exec v0.15.0
 github.com/hashicorp/terraform-exec/internal/version
 github.com/hashicorp/terraform-exec/tfexec
 github.com/hashicorp/terraform-exec/tfinstall
-# github.com/hashicorp/terraform-json v0.12.0
+# github.com/hashicorp/terraform-json v0.13.0
 github.com/hashicorp/terraform-json
 # github.com/hashicorp/terraform-plugin-docs v0.5.0
 ## explicit
@@ -166,7 +179,7 @@ github.com/hashicorp/terraform-plugin-docs/internal/mdplain
 github.com/hashicorp/terraform-plugin-docs/internal/provider
 github.com/hashicorp/terraform-plugin-docs/internal/tmplfuncs
 github.com/hashicorp/terraform-plugin-docs/schemamd
-# github.com/hashicorp/terraform-plugin-go v0.4.0
+# github.com/hashicorp/terraform-plugin-go v0.5.0
 github.com/hashicorp/terraform-plugin-go/tfprotov5
 github.com/hashicorp/terraform-plugin-go/tfprotov5/internal/fromproto
 github.com/hashicorp/terraform-plugin-go/tfprotov5/internal/tfplugin5
@@ -178,7 +191,11 @@ github.com/hashicorp/terraform-plugin-go/tfprotov6/internal/tfplugin6
 github.com/hashicorp/terraform-plugin-go/tfprotov6/internal/toproto
 github.com/hashicorp/terraform-plugin-go/tfprotov6/tf6server
 github.com/hashicorp/terraform-plugin-go/tftypes
-# github.com/hashicorp/terraform-plugin-sdk/v2 v2.8.0
+# github.com/hashicorp/terraform-plugin-log v0.2.0
+github.com/hashicorp/terraform-plugin-log/internal/logging
+github.com/hashicorp/terraform-plugin-log/tflog
+github.com/hashicorp/terraform-plugin-log/tfsdklog
+# github.com/hashicorp/terraform-plugin-sdk/v2 v2.10.0
 ## explicit
 github.com/hashicorp/terraform-plugin-sdk/v2/diag
 github.com/hashicorp/terraform-plugin-sdk/v2/helper/acctest
@@ -198,6 +215,10 @@ github.com/hashicorp/terraform-plugin-sdk/v2/internal/tfdiags
 github.com/hashicorp/terraform-plugin-sdk/v2/meta
 github.com/hashicorp/terraform-plugin-sdk/v2/plugin
 github.com/hashicorp/terraform-plugin-sdk/v2/terraform
+# github.com/hashicorp/terraform-registry-address v0.0.0-20210412075316-9b2996cce896
+github.com/hashicorp/terraform-registry-address
+# github.com/hashicorp/terraform-svchost v0.0.0-20200729002733-f050f53b9734
+github.com/hashicorp/terraform-svchost
 # github.com/hashicorp/yamux v0.0.0-20210826001029-26ff87cf9493
 ## explicit
 github.com/hashicorp/yamux
@@ -227,7 +248,6 @@ github.com/mitchellh/copystructure
 # github.com/mitchellh/go-homedir v1.1.0
 github.com/mitchellh/go-homedir
 # github.com/mitchellh/go-testing-interface v1.14.1
-## explicit
 github.com/mitchellh/go-testing-interface
 # github.com/mitchellh/go-wordwrap v1.0.1
 ## explicit
