@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// PresetPeriodType the model 'PresetPeriodType'
+// PresetPeriodType 
 type PresetPeriodType string
 
 // List of PresetPeriodType

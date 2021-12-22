@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// PresetPeriodTypeWithExclusive the model 'PresetPeriodTypeWithExclusive'
+// PresetPeriodTypeWithExclusive 
 type PresetPeriodTypeWithExclusive string
 
 // List of PresetPeriodTypeWithExclusive

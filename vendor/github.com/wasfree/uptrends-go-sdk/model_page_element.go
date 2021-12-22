@@ -20,6 +20,8 @@ type PageElement struct {
 	Index int32 `json:"Index"`
 	// Starting time in milliseconds
 	StartTime int32 `json:"StartTime"`
+	// Number of milliseconds this element has been queueing, when appropriate.
+	QueueTime int32 `json:"QueueTime"`
 	// Number of milliseconds needed to perform the DNS query for this element, when appropriate.
 	ResolveTime int32 `json:"ResolveTime"`
 	// Number of milliseconds needed to establish a connection.
@@ -61,10 +63,11 @@ type PageElement struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewPageElement(index int32, startTime int32, resolveTime int32, connectTime int32, staleTime int32, httpsHandshakeTime int32, sendTime int32, waitTime int32, receiveTime int32, timeoutTime int32, totalTime int32, httpStatusCode int32, totalBytes int32, urlIsBlocked bool) *PageElement {
+func NewPageElement(index int32, startTime int32, queueTime int32, resolveTime int32, connectTime int32, staleTime int32, httpsHandshakeTime int32, sendTime int32, waitTime int32, receiveTime int32, timeoutTime int32, totalTime int32, httpStatusCode int32, totalBytes int32, urlIsBlocked bool) *PageElement {
 	this := PageElement{}
 	this.Index = index
 	this.StartTime = startTime
+	this.QueueTime = queueTime
 	this.ResolveTime = resolveTime
 	this.ConnectTime = connectTime
 	this.StaleTime = staleTime
@@ -134,6 +137,30 @@ func (o *PageElement) GetStartTimeOk() (*int32, bool) {
 // SetStartTime sets field value
 func (o *PageElement) SetStartTime(v int32) {
 	o.StartTime = v
+}
+
+// GetQueueTime returns the QueueTime field value
+func (o *PageElement) GetQueueTime() int32 {
+	if o == nil {
+		var ret int32
+		return ret
+	}
+
+	return o.QueueTime
+}
+
+// GetQueueTimeOk returns a tuple with the QueueTime field value
+// and a boolean to check if the value has been set.
+func (o *PageElement) GetQueueTimeOk() (*int32, bool) {
+	if o == nil  {
+		return nil, false
+	}
+	return &o.QueueTime, true
+}
+
+// SetQueueTime sets field value
+func (o *PageElement) SetQueueTime(v int32) {
+	o.QueueTime = v
 }
 
 // GetResolveTime returns the ResolveTime field value
@@ -623,6 +650,9 @@ func (o PageElement) MarshalJSON() ([]byte, error) {
 	}
 	if true {
 		toSerialize["StartTime"] = o.StartTime
+	}
+	if true {
+		toSerialize["QueueTime"] = o.QueueTime
 	}
 	if true {
 		toSerialize["ResolveTime"] = o.ResolveTime

@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// SortOrderEnum the model 'SortOrderEnum'
+// SortOrderEnum 
 type SortOrderEnum string
 
 // List of SortOrderEnum

@@ -15,16 +15,26 @@ import (
 	"fmt"
 )
 
-// OperatorAuthorizationType the model 'OperatorAuthorizationType'
+// OperatorAuthorizationType 
 type OperatorAuthorizationType string
 
 // List of OperatorAuthorizationType
 const (
 	OPERATORAUTHORIZATIONTYPE_ACCOUNT_ACCESS OperatorAuthorizationType = "AccountAccess"
+	OPERATORAUTHORIZATIONTYPE_ACCOUNT_ADMINISTRATOR OperatorAuthorizationType = "AccountAdministrator"
+	OPERATORAUTHORIZATIONTYPE_ALLOW_INFRA OperatorAuthorizationType = "AllowInfra"
+	OPERATORAUTHORIZATIONTYPE_FINANCIAL_OPERATOR OperatorAuthorizationType = "FinancialOperator"
+	OPERATORAUTHORIZATIONTYPE_TECHNICAL_CONTACT OperatorAuthorizationType = "TechnicalContact"
+	OPERATORAUTHORIZATIONTYPE_SHARE_DASHBOARDS OperatorAuthorizationType = "ShareDashboards"
 )
 
 var allowedOperatorAuthorizationTypeEnumValues = []OperatorAuthorizationType{
 	"AccountAccess",
+	"AccountAdministrator",
+	"AllowInfra",
+	"FinancialOperator",
+	"TechnicalContact",
+	"ShareDashboards",
 }
 
 func (v *OperatorAuthorizationType) UnmarshalJSON(src []byte) error {

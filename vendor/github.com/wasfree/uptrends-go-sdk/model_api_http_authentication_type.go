@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// ApiHttpAuthenticationType the model 'ApiHttpAuthenticationType'
+// ApiHttpAuthenticationType 
 type ApiHttpAuthenticationType string
 
 // List of ApiHttpAuthenticationType

@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// HttpMethod the model 'HttpMethod'
+// HttpMethod 
 type HttpMethod string
 
 // List of HttpMethod

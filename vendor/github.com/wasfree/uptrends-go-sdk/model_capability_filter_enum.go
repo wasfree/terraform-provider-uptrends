@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// CapabilityFilterEnum the model 'CapabilityFilterEnum'
+// CapabilityFilterEnum 
 type CapabilityFilterEnum string
 
 // List of CapabilityFilterEnum

@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// JwtAlgorithm the model 'JwtAlgorithm'
+// JwtAlgorithm 
 type JwtAlgorithm string
 
 // List of JwtAlgorithm

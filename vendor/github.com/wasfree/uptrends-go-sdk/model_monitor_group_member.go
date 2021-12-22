@@ -14,7 +14,7 @@ import (
 	"encoding/json"
 )
 
-// MonitorGroupMember struct for MonitorGroupMember
+// MonitorGroupMember Monitor group member
 type MonitorGroupMember struct {
 	// The unique identifier of this monitor
 	MonitorGuid string `json:"MonitorGuid"`

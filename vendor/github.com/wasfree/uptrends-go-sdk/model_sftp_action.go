@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// SftpAction the model 'SftpAction'
+// SftpAction 
 type SftpAction string
 
 // List of SftpAction

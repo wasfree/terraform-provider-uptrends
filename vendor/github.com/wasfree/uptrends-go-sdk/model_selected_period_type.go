@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// SelectedPeriodType the model 'SelectedPeriodType'
+// SelectedPeriodType 
 type SelectedPeriodType string
 
 // List of SelectedPeriodType

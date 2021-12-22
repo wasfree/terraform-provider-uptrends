@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// IpVersion the model 'IpVersion'
+// IpVersion 
 type IpVersion string
 
 // List of IpVersion

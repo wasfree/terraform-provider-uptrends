@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// ErrorLevel the model 'ErrorLevel'
+// ErrorLevel 
 type ErrorLevel string
 
 // List of ErrorLevel

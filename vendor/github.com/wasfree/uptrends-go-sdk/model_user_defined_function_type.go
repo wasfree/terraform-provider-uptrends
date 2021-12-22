@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// UserDefinedFunctionType the model 'UserDefinedFunctionType'
+// UserDefinedFunctionType 
 type UserDefinedFunctionType string
 
 // List of UserDefinedFunctionType

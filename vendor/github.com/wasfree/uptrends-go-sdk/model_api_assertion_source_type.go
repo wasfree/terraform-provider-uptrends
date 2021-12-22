@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// ApiAssertionSourceType the model 'ApiAssertionSourceType'
+// ApiAssertionSourceType 
 type ApiAssertionSourceType string
 
 // List of ApiAssertionSourceType

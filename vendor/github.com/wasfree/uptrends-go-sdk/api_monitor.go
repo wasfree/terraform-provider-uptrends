@@ -287,6 +287,140 @@ func (a *MonitorApiService) MonitorCloneMonitorExecute(r ApiMonitorCloneMonitorR
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiMonitorCreateAuthorizationForMonitorRequest struct {
+	ctx _context.Context
+	ApiService *MonitorApiService
+	monitorGuid string
+	monitorAuthorization *MonitorAuthorization
+}
+
+// Authorization to add
+func (r ApiMonitorCreateAuthorizationForMonitorRequest) MonitorAuthorization(monitorAuthorization MonitorAuthorization) ApiMonitorCreateAuthorizationForMonitorRequest {
+	r.monitorAuthorization = &monitorAuthorization
+	return r
+}
+
+func (r ApiMonitorCreateAuthorizationForMonitorRequest) Execute() ([]MonitorAuthorization, *_nethttp.Response, error) {
+	return r.ApiService.MonitorCreateAuthorizationForMonitorExecute(r)
+}
+
+/*
+MonitorCreateAuthorizationForMonitor Create monitor authorizations for monitor If the wanted authorizations requires other authorizations, these will be added as well
+
+ @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param monitorGuid The monitor GUID
+ @return ApiMonitorCreateAuthorizationForMonitorRequest
+*/
+func (a *MonitorApiService) MonitorCreateAuthorizationForMonitor(ctx _context.Context, monitorGuid string) ApiMonitorCreateAuthorizationForMonitorRequest {
+	return ApiMonitorCreateAuthorizationForMonitorRequest{
+		ApiService: a,
+		ctx: ctx,
+		monitorGuid: monitorGuid,
+	}
+}
+
+// Execute executes the request
+//  @return []MonitorAuthorization
+func (a *MonitorApiService) MonitorCreateAuthorizationForMonitorExecute(r ApiMonitorCreateAuthorizationForMonitorRequest) ([]MonitorAuthorization, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  []MonitorAuthorization
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorApiService.MonitorCreateAuthorizationForMonitor")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/Monitor/{monitorGuid}/Authorizations"
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGuid, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+	if r.monitorAuthorization == nil {
+		return localVarReturnValue, nil, reportError("monitorAuthorization is required and must be specified")
+	}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.monitorAuthorization
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiMonitorCreateMaintenancePeriodForMonitorRequest struct {
 	ctx _context.Context
 	ApiService *MonitorApiService
@@ -418,6 +552,122 @@ func (a *MonitorApiService) MonitorCreateMaintenancePeriodForMonitorExecute(r Ap
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiMonitorDeleteAuthorizationForMonitorGroupRequest struct {
+	ctx _context.Context
+	ApiService *MonitorApiService
+	monitorGuid string
+	authorizationGuid string
+}
+
+
+func (r ApiMonitorDeleteAuthorizationForMonitorGroupRequest) Execute() (*_nethttp.Response, error) {
+	return r.ApiService.MonitorDeleteAuthorizationForMonitorGroupExecute(r)
+}
+
+/*
+MonitorDeleteAuthorizationForMonitorGroup Delete monitor authorization for monitor
+
+ @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param monitorGuid The monitor GUID
+ @param authorizationGuid The authorization GUID that needs to be deleted
+ @return ApiMonitorDeleteAuthorizationForMonitorGroupRequest
+*/
+func (a *MonitorApiService) MonitorDeleteAuthorizationForMonitorGroup(ctx _context.Context, monitorGuid string, authorizationGuid string) ApiMonitorDeleteAuthorizationForMonitorGroupRequest {
+	return ApiMonitorDeleteAuthorizationForMonitorGroupRequest{
+		ApiService: a,
+		ctx: ctx,
+		monitorGuid: monitorGuid,
+		authorizationGuid: authorizationGuid,
+	}
+}
+
+// Execute executes the request
+func (a *MonitorApiService) MonitorDeleteAuthorizationForMonitorGroupExecute(r ApiMonitorDeleteAuthorizationForMonitorGroupRequest) (*_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorApiService.MonitorDeleteAuthorizationForMonitorGroup")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/Monitor/{monitorGuid}/Authorizations/{authorizationGuid}"
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"authorizationGuid"+"}", _neturl.PathEscape(parameterToString(r.authorizationGuid, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
 }
 
 type ApiMonitorDeleteMaintenancePeriodFromMonitorRequest struct {
@@ -771,6 +1021,129 @@ func (a *MonitorApiService) MonitorGetAllMaintenancePeriodsForMonitorExecute(r A
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+type ApiMonitorGetAuthorizationsOfMonitorRequest struct {
+	ctx _context.Context
+	ApiService *MonitorApiService
+	monitorGuid string
+}
+
+
+func (r ApiMonitorGetAuthorizationsOfMonitorRequest) Execute() ([]MonitorAuthorization, *_nethttp.Response, error) {
+	return r.ApiService.MonitorGetAuthorizationsOfMonitorExecute(r)
+}
+
+/*
+MonitorGetAuthorizationsOfMonitor Get monitor authorizations of monitor
+
+ @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param monitorGuid The monitor GUID
+ @return ApiMonitorGetAuthorizationsOfMonitorRequest
+*/
+func (a *MonitorApiService) MonitorGetAuthorizationsOfMonitor(ctx _context.Context, monitorGuid string) ApiMonitorGetAuthorizationsOfMonitorRequest {
+	return ApiMonitorGetAuthorizationsOfMonitorRequest{
+		ApiService: a,
+		ctx: ctx,
+		monitorGuid: monitorGuid,
+	}
+}
+
+// Execute executes the request
+//  @return []MonitorAuthorization
+func (a *MonitorApiService) MonitorGetAuthorizationsOfMonitorExecute(r ApiMonitorGetAuthorizationsOfMonitorRequest) ([]MonitorAuthorization, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  []MonitorAuthorization
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorApiService.MonitorGetAuthorizationsOfMonitor")
+	if err != nil {
+		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/Monitor/{monitorGuid}/Authorizations"
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGuid, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 type ApiMonitorGetMonitorRequest struct {
 	ctx _context.Context
 	ApiService *MonitorApiService
@@ -910,7 +1283,7 @@ type ApiMonitorGetMonitorGroupsRequest struct {
 }
 
 
-func (r ApiMonitorGetMonitorGroupsRequest) Execute() (Monitor, *_nethttp.Response, error) {
+func (r ApiMonitorGetMonitorGroupsRequest) Execute() ([]string, *_nethttp.Response, error) {
 	return r.ApiService.MonitorGetMonitorGroupsExecute(r)
 }
 
@@ -930,15 +1303,15 @@ func (a *MonitorApiService) MonitorGetMonitorGroups(ctx _context.Context, monito
 }
 
 // Execute executes the request
-//  @return Monitor
-func (a *MonitorApiService) MonitorGetMonitorGroupsExecute(r ApiMonitorGetMonitorGroupsRequest) (Monitor, *_nethttp.Response, error) {
+//  @return []string
+func (a *MonitorApiService) MonitorGetMonitorGroupsExecute(r ApiMonitorGetMonitorGroupsRequest) ([]string, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  Monitor
+		localVarReturnValue  []string
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorApiService.MonitorGetMonitorGroups")

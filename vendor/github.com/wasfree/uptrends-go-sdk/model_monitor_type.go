@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// MonitorType the model 'MonitorType'
+// MonitorType 
 type MonitorType string
 
 // List of MonitorType

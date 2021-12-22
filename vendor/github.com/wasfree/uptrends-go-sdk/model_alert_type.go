@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// AlertType the model 'AlertType'
+// AlertType 
 type AlertType string
 
 // List of AlertType
