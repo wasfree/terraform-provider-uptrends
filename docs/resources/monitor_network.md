@@ -50,7 +50,7 @@ resource "uptrends_monitor_network" "example" {
 - **is_active** (Boolean) Indicates whether the monitor is actively running in the account. Defaults to `true`.
 - **load_time_limit_1** (Number) Set threshold time in ms for requires `alert_on_load_time_limit_1` to be enabled. Defaults to `2500`.
 - **load_time_limit_2** (Number) Set threshold time in ms for requires `alert_on_load_time_limit_2` to be enabled. Defaults to `5000`.
-- **mode** (String) The monitor mode, either Development, Staging or Production. Defaults to `Production`.
+- **mode** (String) The monitor mode, either Development, Staging or Production. Defaults to `Production`. If monitoring mode is Development `is_active` has to be `false`
 - **name_for_phone_alerts** (String) The value for the speech-friendly monitor name, if applicable. This is the monitor name we’ll use in text-to-speech phone alerting, provided that the ‘Use alternate monitor names’ option has been enabled in the phone alert integration.
 - **native_ipv6_only** (Boolean) True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity. Defaults to `false`.
 - **notes** (String) Your notes for this monitor.
