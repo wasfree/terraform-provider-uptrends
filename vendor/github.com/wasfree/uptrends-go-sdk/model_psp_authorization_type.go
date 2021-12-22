@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// PSPAuthorizationType the model 'PSPAuthorizationType'
+// PSPAuthorizationType 
 type PSPAuthorizationType string
 
 // List of PSPAuthorizationType

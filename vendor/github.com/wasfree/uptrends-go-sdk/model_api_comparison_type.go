@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// ApiComparisonType the model 'ApiComparisonType'
+// ApiComparisonType 
 type ApiComparisonType string
 
 // List of ApiComparisonType

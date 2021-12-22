@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// DnsQuery the model 'DnsQuery'
+// DnsQuery 
 type DnsQuery string
 
 // List of DnsQuery

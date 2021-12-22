@@ -28,8 +28,6 @@ type VaultItem struct {
 	VaultSectionGuid *string `json:"VaultSectionGuid,omitempty"`
 	// The vault item type
 	VaultItemType *VaultItemTypes `json:"VaultItemType,omitempty"`
-	// Whether or not the vault item is considered sensitive. 
-	IsSensitive *bool `json:"IsSensitive,omitempty"`
 	// Notes about this vault item
 	Notes *string `json:"Notes,omitempty"`
 	// The UserName of a credentialset
@@ -251,38 +249,6 @@ func (o *VaultItem) SetVaultItemType(v VaultItemTypes) {
 	o.VaultItemType = &v
 }
 
-// GetIsSensitive returns the IsSensitive field value if set, zero value otherwise.
-func (o *VaultItem) GetIsSensitive() bool {
-	if o == nil || o.IsSensitive == nil {
-		var ret bool
-		return ret
-	}
-	return *o.IsSensitive
-}
-
-// GetIsSensitiveOk returns a tuple with the IsSensitive field value if set, nil otherwise
-// and a boolean to check if the value has been set.
-func (o *VaultItem) GetIsSensitiveOk() (*bool, bool) {
-	if o == nil || o.IsSensitive == nil {
-		return nil, false
-	}
-	return o.IsSensitive, true
-}
-
-// HasIsSensitive returns a boolean if a field has been set.
-func (o *VaultItem) HasIsSensitive() bool {
-	if o != nil && o.IsSensitive != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetIsSensitive gets a reference to the given bool and assigns it to the IsSensitive field.
-func (o *VaultItem) SetIsSensitive(v bool) {
-	o.IsSensitive = &v
-}
-
 // GetNotes returns the Notes field value if set, zero value otherwise.
 func (o *VaultItem) GetNotes() string {
 	if o == nil || o.Notes == nil {
@@ -462,9 +428,6 @@ func (o VaultItem) MarshalJSON() ([]byte, error) {
 	}
 	if o.VaultItemType != nil {
 		toSerialize["VaultItemType"] = o.VaultItemType
-	}
-	if o.IsSensitive != nil {
-		toSerialize["IsSensitive"] = o.IsSensitive
 	}
 	if o.Notes != nil {
 		toSerialize["Notes"] = o.Notes

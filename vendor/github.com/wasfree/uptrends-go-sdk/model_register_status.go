@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// RegisterStatus the model 'RegisterStatus'
+// RegisterStatus 
 type RegisterStatus string
 
 // List of RegisterStatus

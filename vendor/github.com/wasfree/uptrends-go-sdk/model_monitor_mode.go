@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// MonitorMode the model 'MonitorMode'
+// MonitorMode 
 type MonitorMode string
 
 // List of MonitorMode

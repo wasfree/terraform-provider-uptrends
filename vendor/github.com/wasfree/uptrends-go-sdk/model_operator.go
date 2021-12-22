@@ -55,6 +55,7 @@ type Operator struct {
 	AllowSingleSignon *bool `json:"AllowSingleSignon,omitempty"`
 	AllowSingleSignonSpecified *bool `json:"AllowSingleSignonSpecified,omitempty"`
 	DefaultDashboard *string `json:"DefaultDashboard,omitempty"`
+	SetupMode *OperatorSetupMode `json:"SetupMode,omitempty"`
 }
 
 // NewOperator instantiates a new Operator object
@@ -810,6 +811,38 @@ func (o *Operator) SetDefaultDashboard(v string) {
 	o.DefaultDashboard = &v
 }
 
+// GetSetupMode returns the SetupMode field value if set, zero value otherwise.
+func (o *Operator) GetSetupMode() OperatorSetupMode {
+	if o == nil || o.SetupMode == nil {
+		var ret OperatorSetupMode
+		return ret
+	}
+	return *o.SetupMode
+}
+
+// GetSetupModeOk returns a tuple with the SetupMode field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Operator) GetSetupModeOk() (*OperatorSetupMode, bool) {
+	if o == nil || o.SetupMode == nil {
+		return nil, false
+	}
+	return o.SetupMode, true
+}
+
+// HasSetupMode returns a boolean if a field has been set.
+func (o *Operator) HasSetupMode() bool {
+	if o != nil && o.SetupMode != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetSetupMode gets a reference to the given OperatorSetupMode and assigns it to the SetupMode field.
+func (o *Operator) SetSetupMode(v OperatorSetupMode) {
+	o.SetupMode = &v
+}
+
 func (o Operator) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if o.OperatorGuid != nil {
@@ -880,6 +913,9 @@ func (o Operator) MarshalJSON() ([]byte, error) {
 	}
 	if o.DefaultDashboard != nil {
 		toSerialize["DefaultDashboard"] = o.DefaultDashboard
+	}
+	if o.SetupMode != nil {
+		toSerialize["SetupMode"] = o.SetupMode
 	}
 	return json.Marshal(toSerialize)
 }

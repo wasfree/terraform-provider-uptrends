@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// ApiVariableSourceType the model 'ApiVariableSourceType'
+// ApiVariableSourceType 
 type ApiVariableSourceType string
 
 // List of ApiVariableSourceType

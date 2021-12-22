@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// IntegrationTypeEnum the model 'IntegrationTypeEnum'
+// IntegrationTypeEnum 
 type IntegrationTypeEnum string
 
 // List of IntegrationTypeEnum

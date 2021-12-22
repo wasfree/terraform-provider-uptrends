@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// ScheduleType the model 'ScheduleType'
+// ScheduleType 
 type ScheduleType string
 
 // List of ScheduleType
@@ -23,12 +23,16 @@ const (
 	SCHEDULETYPE_DAILY ScheduleType = "Daily"
 	SCHEDULETYPE_WEEKLY ScheduleType = "Weekly"
 	SCHEDULETYPE_MONTHLY ScheduleType = "Monthly"
+	SCHEDULETYPE_QUARTERLY ScheduleType = "Quarterly"
+	SCHEDULETYPE_YEARLY ScheduleType = "Yearly"
 )
 
 var allowedScheduleTypeEnumValues = []ScheduleType{
 	"Daily",
 	"Weekly",
 	"Monthly",
+	"Quarterly",
+	"Yearly",
 }
 
 func (v *ScheduleType) UnmarshalJSON(src []byte) error {

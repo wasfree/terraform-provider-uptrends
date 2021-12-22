@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// ThrottlingType the model 'ThrottlingType'
+// ThrottlingType 
 type ThrottlingType string
 
 // List of ThrottlingType

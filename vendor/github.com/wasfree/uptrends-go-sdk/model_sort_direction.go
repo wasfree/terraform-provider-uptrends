@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// SortDirection the model 'SortDirection'
+// SortDirection 
 type SortDirection string
 
 // List of SortDirection

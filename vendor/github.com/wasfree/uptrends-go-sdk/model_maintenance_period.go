@@ -35,6 +35,8 @@ type MaintenancePeriod struct {
 	EndTime *string `json:"EndTime,omitempty"`
 	// Indicates whether, during the maintenance periods, only alerting will be disabled, or if the entire monitor will be stopped
 	MaintenanceType MaintenanceTypes `json:"MaintenanceType"`
+	// The description for this maintenance period
+	Description *string `json:"Description,omitempty"`
 }
 
 // NewMaintenancePeriod instantiates a new MaintenancePeriod object
@@ -321,6 +323,38 @@ func (o *MaintenancePeriod) SetMaintenanceType(v MaintenanceTypes) {
 	o.MaintenanceType = v
 }
 
+// GetDescription returns the Description field value if set, zero value otherwise.
+func (o *MaintenancePeriod) GetDescription() string {
+	if o == nil || o.Description == nil {
+		var ret string
+		return ret
+	}
+	return *o.Description
+}
+
+// GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MaintenancePeriod) GetDescriptionOk() (*string, bool) {
+	if o == nil || o.Description == nil {
+		return nil, false
+	}
+	return o.Description, true
+}
+
+// HasDescription returns a boolean if a field has been set.
+func (o *MaintenancePeriod) HasDescription() bool {
+	if o != nil && o.Description != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetDescription gets a reference to the given string and assigns it to the Description field.
+func (o *MaintenancePeriod) SetDescription(v string) {
+	o.Description = &v
+}
+
 func (o MaintenancePeriod) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
@@ -349,6 +383,9 @@ func (o MaintenancePeriod) MarshalJSON() ([]byte, error) {
 	}
 	if true {
 		toSerialize["MaintenanceType"] = o.MaintenanceType
+	}
+	if o.Description != nil {
+		toSerialize["Description"] = o.Description
 	}
 	return json.Marshal(toSerialize)
 }

@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// EscalationMode the model 'EscalationMode'
+// EscalationMode 
 type EscalationMode string
 
 // List of EscalationMode

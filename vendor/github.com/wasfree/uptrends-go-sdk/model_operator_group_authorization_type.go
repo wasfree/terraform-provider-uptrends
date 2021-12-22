@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// OperatorGroupAuthorizationType the model 'OperatorGroupAuthorizationType'
+// OperatorGroupAuthorizationType 
 type OperatorGroupAuthorizationType string
 
 // List of OperatorGroupAuthorizationType

@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// BrowserType the model 'BrowserType'
+// BrowserType 
 type BrowserType string
 
 // List of BrowserType
@@ -26,6 +26,7 @@ const (
 	BROWSERTYPE_SAFARI BrowserType = "Safari"
 	BROWSERTYPE_PHANTOM_JS BrowserType = "PhantomJS"
 	BROWSERTYPE_PHANTOM_JS20 BrowserType = "PhantomJS20"
+	BROWSERTYPE_CHROME_WITH_EXTRA_METRICS BrowserType = "ChromeWithExtraMetrics"
 )
 
 var allowedBrowserTypeEnumValues = []BrowserType{
@@ -35,6 +36,7 @@ var allowedBrowserTypeEnumValues = []BrowserType{
 	"Safari",
 	"PhantomJS",
 	"PhantomJS20",
+	"ChromeWithExtraMetrics",
 }
 
 func (v *BrowserType) UnmarshalJSON(src []byte) error {

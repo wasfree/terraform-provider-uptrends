@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// DayOfWeek the model 'DayOfWeek'
+// DayOfWeek 
 type DayOfWeek string
 
 // List of DayOfWeek

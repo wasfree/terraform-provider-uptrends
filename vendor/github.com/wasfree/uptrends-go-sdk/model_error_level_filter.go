@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// ErrorLevelFilter the model 'ErrorLevelFilter'
+// ErrorLevelFilter 
 type ErrorLevelFilter string
 
 // List of ErrorLevelFilter
