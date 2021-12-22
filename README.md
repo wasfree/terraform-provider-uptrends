@@ -1,6 +1,6 @@
 # Terraform Provider for Uptrends
 
-Version 0.x of the Uptrends Provider requires Terraform 0.15.x and later, but 1.0 is recommended.
+Version 0.x of the Uptrends Provider requires Terraform 0.15.x and later, but 1.x is recommended.
 
 * [Terraform Website](https://www.terraform.io)
 * [Uptrends Website](https://www.uptrends.com)
@@ -19,7 +19,7 @@ terraform {
   required_providers {
     uptrends = {
       source = "wasfree/uptrends"
-      version = "=0.1.0"
+      version = "=0.2.0"
     }
   }
 }
@@ -79,7 +79,7 @@ Further [usage documentation is available on the Terraform website](https://www.
 ## Developer Requirements
 
 * [Terraform](https://www.terraform.io/downloads.html) version 0.15.x + (but 1.x is recommended)
-* [Go](https://golang.org/doc/install) version 1.16.x (to build the provider plugin)
+* [Go](https://golang.org/doc/install) version 1.17.x (to build the provider plugin)
 
 ### On Windows
 
