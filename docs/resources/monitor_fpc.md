@@ -103,7 +103,7 @@ resource "uptrends_monitor_fpc" "example" {
 - **max_bytes** (Number) Set threshold bytes that the response of the Server must at least contains. Required `alert_on_max_bytes` to be enabled.
 - **max_element_bytes** (Number) Set threshold bytes that the response of the Server must at least contains. Required `alert_on_max_element_bytes` to be enabled.
 - **min_bytes** (Number) Set threshold bytes that the response of the Server must at least contains. Required `alert_on_min_bytes` to be enabled.
-- **mode** (String) The monitor mode, either Development, Staging or Production. Defaults to `Production`.
+- **mode** (String) The monitor mode, either Development, Staging or Production. Defaults to `Production`. If monitoring mode is Development `is_active` has to be `false`
 - **name_for_phone_alerts** (String) The value for the speech-friendly monitor name, if applicable. This is the monitor name we’ll use in text-to-speech phone alerting, provided that the ‘Use alternate monitor names’ option has been enabled in the phone alert integration.
 - **notes** (String) Your notes for this monitor.
 - **password** (String, Sensitive) See the Username field. Specify the corresponding password value here.

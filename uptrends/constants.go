@@ -48,16 +48,6 @@ func UserAgent(input string) string {
 	return input
 }
 
-var httpMethods = []string{
-	"GET",
-	"HEAD",
-	"POST",
-	"PUT",
-	"PATCH",
-	"DELETE",
-	"OPTIONS",
-}
-
 var validHttpCodes = []int{
 	100, // Continue
 	101, // Switching Protocol
