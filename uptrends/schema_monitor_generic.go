@@ -1,6 +1,8 @@
 package uptrends
 
 import (
+	"errors"
+
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
 	"github.com/wasfree/uptrends-go-sdk"
@@ -37,7 +39,7 @@ var MonitorGenericSchema = map[string]*schema.Schema{
 		Type:         schema.TypeString,
 		Optional:     true,
 		Default:      "Production",
-		Description:  "The monitor mode, either Development, Staging or Production. Defaults to `Production`.",
+		Description:  "The monitor mode, either Development, Staging or Production. Defaults to `Production`. If monitoring mode is Development `is_active` has to be `false`",
 		ValidateFunc: validation.StringInSlice([]string{"Development", "Staging", "Production"}, false),
 	},
 	"notes": {
@@ -159,6 +161,12 @@ func buildMonitorGenericStruct(m *uptrends.Monitor, d *schema.ResourceData) erro
 	m.UsePrimaryCheckpointsOnly = Bool(d.Get("primary_checkpoints_only").(bool))
 	m.SelectedCheckpoints = expandSelectedCheckpoints(d.Get("selected_checkpoints").([]interface{}))
 
+	// IsActive has to be false if MonitorMode is Development
+	if *m.MonitorMode == uptrends.MONITORMODE_DEVELOPMENT && *m.IsActive {
+		return errors.New("monitors in development mode has always to be inactive, please set is_active to false")
+	}
+
+	// Optional without defaults
 	if attr, ok := d.GetOk("notes"); ok {
 		m.Notes = String(attr.(string))
 	}
