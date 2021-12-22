@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// ScheduledReportFileType the model 'ScheduledReportFileType'
+// ScheduledReportFileType 
 type ScheduledReportFileType string
 
 // List of ScheduledReportFileType

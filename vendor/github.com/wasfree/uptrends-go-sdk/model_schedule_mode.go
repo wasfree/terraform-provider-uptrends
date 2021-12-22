@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// ScheduleMode the model 'ScheduleMode'
+// ScheduleMode 
 type ScheduleMode string
 
 // List of ScheduleMode

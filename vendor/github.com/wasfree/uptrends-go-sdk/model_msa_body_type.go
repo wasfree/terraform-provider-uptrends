@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// MsaBodyType the model 'MsaBodyType'
+// MsaBodyType 
 type MsaBodyType string
 
 // List of MsaBodyType

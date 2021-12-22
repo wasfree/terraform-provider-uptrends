@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// VaultSectionAuthorizationType the model 'VaultSectionAuthorizationType'
+// VaultSectionAuthorizationType 
 type VaultSectionAuthorizationType string
 
 // List of VaultSectionAuthorizationType

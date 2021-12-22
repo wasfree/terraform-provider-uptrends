@@ -489,141 +489,6 @@ func (a *OperatorGroupApiService) OperatorGroupAllOperatorsInGroupOnDutyExecute(
 	return localVarHTTPResponse, nil
 }
 
-type ApiOperatorGroupCreateAuthorizationForOperatorGroupRequest struct {
-	ctx _context.Context
-	ApiService *OperatorGroupApiService
-	operatorGroupGuid string
-	authorization *OperatorGroupAuthorization
-}
-
-func (r ApiOperatorGroupCreateAuthorizationForOperatorGroupRequest) Authorization(authorization OperatorGroupAuthorization) ApiOperatorGroupCreateAuthorizationForOperatorGroupRequest {
-	r.authorization = &authorization
-	return r
-}
-
-func (r ApiOperatorGroupCreateAuthorizationForOperatorGroupRequest) Execute() (OperatorGroupAuthorization, *_nethttp.Response, error) {
-	return r.ApiService.OperatorGroupCreateAuthorizationForOperatorGroupExecute(r)
-}
-
-/*
-OperatorGroupCreateAuthorizationForOperatorGroup Creates a new authorization for the specified operator group
-
-The AuthorizationId attribute should be omitted in the request body. The newly created authorization will be returned in the response. An authorization should be granted to an operator group. Therefore, either specify the OperatorGroupGuid attribute. The OperatorGuid attribute is not used for this endpoint
-
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param operatorGroupGuid The Guid of the operator group for which to create the new authorization.
- @return ApiOperatorGroupCreateAuthorizationForOperatorGroupRequest
-*/
-func (a *OperatorGroupApiService) OperatorGroupCreateAuthorizationForOperatorGroup(ctx _context.Context, operatorGroupGuid string) ApiOperatorGroupCreateAuthorizationForOperatorGroupRequest {
-	return ApiOperatorGroupCreateAuthorizationForOperatorGroupRequest{
-		ApiService: a,
-		ctx: ctx,
-		operatorGroupGuid: operatorGroupGuid,
-	}
-}
-
-// Execute executes the request
-//  @return OperatorGroupAuthorization
-func (a *OperatorGroupApiService) OperatorGroupCreateAuthorizationForOperatorGroupExecute(r ApiOperatorGroupCreateAuthorizationForOperatorGroupRequest) (OperatorGroupAuthorization, *_nethttp.Response, error) {
-	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
-		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  OperatorGroupAuthorization
-	)
-
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OperatorGroupApiService.OperatorGroupCreateAuthorizationForOperatorGroup")
-	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
-	}
-
-	localVarPath := localBasePath + "/OperatorGroup/{operatorGroupGuid}/Authorization"
-	localVarPath = strings.Replace(localVarPath, "{"+"operatorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.operatorGroupGuid, "")), -1)
-
-	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.authorization == nil {
-		return localVarReturnValue, nil, reportError("authorization is required and must be specified")
-	}
-
-	// to determine the Content-Type header
-	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
-
-	// set Content-Type header
-	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
-	if localVarHTTPContentType != "" {
-		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
-	}
-
-	// to determine the Accept header
-	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
-
-	// set Accept header
-	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
-	if localVarHTTPHeaderAccept != "" {
-		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
-	}
-	// body params
-	localVarPostBody = r.authorization
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
-	if err != nil {
-		return localVarReturnValue, nil, err
-	}
-
-	localVarHTTPResponse, err := a.client.callAPI(req)
-	if err != nil || localVarHTTPResponse == nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
-	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
-	if err != nil {
-		return localVarReturnValue, localVarHTTPResponse, err
-	}
-
-	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: localVarHTTPResponse.Status,
-		}
-		if localVarHTTPResponse.StatusCode == 400 {
-			var v MessageList
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHTTPResponse, newErr
-		}
-		if localVarHTTPResponse.StatusCode == 404 {
-			var v MessageList
-			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHTTPResponse, newErr
-			}
-			newErr.model = v
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
-	if err != nil {
-		newErr := GenericOpenAPIError{
-			body:  localVarBody,
-			error: err.Error(),
-		}
-		return localVarReturnValue, localVarHTTPResponse, newErr
-	}
-
-	return localVarReturnValue, localVarHTTPResponse, nil
-}
-
 type ApiOperatorGroupCreateOperatorGroupRequest struct {
 	ctx _context.Context
 	ApiService *OperatorGroupApiService
@@ -748,7 +613,7 @@ type ApiOperatorGroupDeleteAuthorizationForOperatorGroupRequest struct {
 	ctx _context.Context
 	ApiService *OperatorGroupApiService
 	operatorGroupGuid string
-	authorizationGuid string
+	authorizationType string
 }
 
 
@@ -757,19 +622,19 @@ func (r ApiOperatorGroupDeleteAuthorizationForOperatorGroupRequest) Execute() (*
 }
 
 /*
-OperatorGroupDeleteAuthorizationForOperatorGroup Deletes the specified authorization for the specified operator group
+OperatorGroupDeleteAuthorizationForOperatorGroup Removes the specified authorization of the operator group.
 
  @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param operatorGroupGuid The Guid of the operator group for which the authorization should be deleted.
- @param authorizationGuid The Guid of the authorization that should be deleted.
+ @param operatorGroupGuid The Guid of the operator group
+ @param authorizationType The type of authorization
  @return ApiOperatorGroupDeleteAuthorizationForOperatorGroupRequest
 */
-func (a *OperatorGroupApiService) OperatorGroupDeleteAuthorizationForOperatorGroup(ctx _context.Context, operatorGroupGuid string, authorizationGuid string) ApiOperatorGroupDeleteAuthorizationForOperatorGroupRequest {
+func (a *OperatorGroupApiService) OperatorGroupDeleteAuthorizationForOperatorGroup(ctx _context.Context, operatorGroupGuid string, authorizationType string) ApiOperatorGroupDeleteAuthorizationForOperatorGroupRequest {
 	return ApiOperatorGroupDeleteAuthorizationForOperatorGroupRequest{
 		ApiService: a,
 		ctx: ctx,
 		operatorGroupGuid: operatorGroupGuid,
-		authorizationGuid: authorizationGuid,
+		authorizationType: authorizationType,
 	}
 }
 
@@ -788,9 +653,9 @@ func (a *OperatorGroupApiService) OperatorGroupDeleteAuthorizationForOperatorGro
 		return nil, GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/OperatorGroup/{operatorGroupGuid}/Authorization/{authorizationGuid}"
+	localVarPath := localBasePath + "/OperatorGroup/{operatorGroupGuid}/Authorization/{authorizationType}"
 	localVarPath = strings.Replace(localVarPath, "{"+"operatorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.operatorGroupGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"authorizationGuid"+"}", _neturl.PathEscape(parameterToString(r.authorizationGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"authorizationType"+"}", _neturl.PathEscape(parameterToString(r.authorizationType, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
 	localVarQueryParams := _neturl.Values{}
@@ -1088,15 +953,15 @@ type ApiOperatorGroupGetAuthorizationsForOperatorGroupRequest struct {
 }
 
 
-func (r ApiOperatorGroupGetAuthorizationsForOperatorGroupRequest) Execute() (OperatorGroupAuthorization, *_nethttp.Response, error) {
+func (r ApiOperatorGroupGetAuthorizationsForOperatorGroupRequest) Execute() ([]OperatorGroupAuthorizationType, *_nethttp.Response, error) {
 	return r.ApiService.OperatorGroupGetAuthorizationsForOperatorGroupExecute(r)
 }
 
 /*
-OperatorGroupGetAuthorizationsForOperatorGroup Returns all authorizations for the specified operator group
+OperatorGroupGetAuthorizationsForOperatorGroup Gets all authorizations for the specified operator group.
 
  @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @param operatorGroupGuid The Guid of the operatorgroup for which to return authorizations.
+ @param operatorGroupGuid The Guid of the operator group
  @return ApiOperatorGroupGetAuthorizationsForOperatorGroupRequest
 */
 func (a *OperatorGroupApiService) OperatorGroupGetAuthorizationsForOperatorGroup(ctx _context.Context, operatorGroupGuid string) ApiOperatorGroupGetAuthorizationsForOperatorGroupRequest {
@@ -1108,15 +973,15 @@ func (a *OperatorGroupApiService) OperatorGroupGetAuthorizationsForOperatorGroup
 }
 
 // Execute executes the request
-//  @return OperatorGroupAuthorization
-func (a *OperatorGroupApiService) OperatorGroupGetAuthorizationsForOperatorGroupExecute(r ApiOperatorGroupGetAuthorizationsForOperatorGroupRequest) (OperatorGroupAuthorization, *_nethttp.Response, error) {
+//  @return []OperatorGroupAuthorizationType
+func (a *OperatorGroupApiService) OperatorGroupGetAuthorizationsForOperatorGroupExecute(r ApiOperatorGroupGetAuthorizationsForOperatorGroupRequest) ([]OperatorGroupAuthorizationType, *_nethttp.Response, error) {
 	var (
 		localVarHTTPMethod   = _nethttp.MethodGet
 		localVarPostBody     interface{}
 		localVarFormFileName string
 		localVarFileName     string
 		localVarFileBytes    []byte
-		localVarReturnValue  OperatorGroupAuthorization
+		localVarReturnValue  []OperatorGroupAuthorizationType
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OperatorGroupApiService.OperatorGroupGetAuthorizationsForOperatorGroup")
@@ -1448,6 +1313,122 @@ func (a *OperatorGroupApiService) OperatorGroupGetOperatorGroupMembersExecute(r 
 	}
 
 	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiOperatorGroupPostAuthorizationForOperatorGroupRequest struct {
+	ctx _context.Context
+	ApiService *OperatorGroupApiService
+	operatorGroupGuid string
+	authorizationType string
+}
+
+
+func (r ApiOperatorGroupPostAuthorizationForOperatorGroupRequest) Execute() (*_nethttp.Response, error) {
+	return r.ApiService.OperatorGroupPostAuthorizationForOperatorGroupExecute(r)
+}
+
+/*
+OperatorGroupPostAuthorizationForOperatorGroup Assigns the specified authorization to the operator group.
+
+ @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param operatorGroupGuid The Guid of the operator group
+ @param authorizationType The type of authorization
+ @return ApiOperatorGroupPostAuthorizationForOperatorGroupRequest
+*/
+func (a *OperatorGroupApiService) OperatorGroupPostAuthorizationForOperatorGroup(ctx _context.Context, operatorGroupGuid string, authorizationType string) ApiOperatorGroupPostAuthorizationForOperatorGroupRequest {
+	return ApiOperatorGroupPostAuthorizationForOperatorGroupRequest{
+		ApiService: a,
+		ctx: ctx,
+		operatorGroupGuid: operatorGroupGuid,
+		authorizationType: authorizationType,
+	}
+}
+
+// Execute executes the request
+func (a *OperatorGroupApiService) OperatorGroupPostAuthorizationForOperatorGroupExecute(r ApiOperatorGroupPostAuthorizationForOperatorGroupRequest) (*_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "OperatorGroupApiService.OperatorGroupPostAuthorizationForOperatorGroup")
+	if err != nil {
+		return nil, GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/OperatorGroup/{operatorGroupGuid}/Authorization/{authorizationType}"
+	localVarPath = strings.Replace(localVarPath, "{"+"operatorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.operatorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"authorizationType"+"}", _neturl.PathEscape(parameterToString(r.authorizationType, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+			newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
 }
 
 type ApiOperatorGroupRemoveOperatorFromOperatorGroupRequest struct {

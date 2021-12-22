@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// SubStepType the model 'SubStepType'
+// SubStepType 
 type SubStepType string
 
 // List of SubStepType

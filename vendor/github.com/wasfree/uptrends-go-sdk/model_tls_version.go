@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// TlsVersion the model 'TlsVersion'
+// TlsVersion 
 type TlsVersion string
 
 // List of TlsVersion

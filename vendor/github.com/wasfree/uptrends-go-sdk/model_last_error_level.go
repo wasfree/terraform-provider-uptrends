@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// LastErrorLevel the model 'LastErrorLevel'
+// LastErrorLevel 
 type LastErrorLevel string
 
 // List of LastErrorLevel

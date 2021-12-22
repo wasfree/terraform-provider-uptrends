@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// MaintenanceTypes the model 'MaintenanceTypes'
+// MaintenanceTypes 
 type MaintenanceTypes string
 
 // List of MaintenanceTypes

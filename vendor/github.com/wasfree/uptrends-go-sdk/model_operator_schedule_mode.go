@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// OperatorScheduleMode the model 'OperatorScheduleMode'
+// OperatorScheduleMode 
 type OperatorScheduleMode string
 
 // List of OperatorScheduleMode

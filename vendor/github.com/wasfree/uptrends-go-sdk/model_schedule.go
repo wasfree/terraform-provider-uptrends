@@ -19,7 +19,9 @@ type Schedule struct {
 	ScheduleType *ScheduleType `json:"ScheduleType,omitempty"`
 	Time *string `json:"Time,omitempty"`
 	WeekDay *DayOfWeek `json:"WeekDay,omitempty"`
+	Month *int32 `json:"Month,omitempty"`
 	MonthDay *int32 `json:"MonthDay,omitempty"`
+	QuarterStartMonth *int32 `json:"QuarterStartMonth,omitempty"`
 }
 
 // NewSchedule instantiates a new Schedule object
@@ -135,6 +137,38 @@ func (o *Schedule) SetWeekDay(v DayOfWeek) {
 	o.WeekDay = &v
 }
 
+// GetMonth returns the Month field value if set, zero value otherwise.
+func (o *Schedule) GetMonth() int32 {
+	if o == nil || o.Month == nil {
+		var ret int32
+		return ret
+	}
+	return *o.Month
+}
+
+// GetMonthOk returns a tuple with the Month field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Schedule) GetMonthOk() (*int32, bool) {
+	if o == nil || o.Month == nil {
+		return nil, false
+	}
+	return o.Month, true
+}
+
+// HasMonth returns a boolean if a field has been set.
+func (o *Schedule) HasMonth() bool {
+	if o != nil && o.Month != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetMonth gets a reference to the given int32 and assigns it to the Month field.
+func (o *Schedule) SetMonth(v int32) {
+	o.Month = &v
+}
+
 // GetMonthDay returns the MonthDay field value if set, zero value otherwise.
 func (o *Schedule) GetMonthDay() int32 {
 	if o == nil || o.MonthDay == nil {
@@ -167,6 +201,38 @@ func (o *Schedule) SetMonthDay(v int32) {
 	o.MonthDay = &v
 }
 
+// GetQuarterStartMonth returns the QuarterStartMonth field value if set, zero value otherwise.
+func (o *Schedule) GetQuarterStartMonth() int32 {
+	if o == nil || o.QuarterStartMonth == nil {
+		var ret int32
+		return ret
+	}
+	return *o.QuarterStartMonth
+}
+
+// GetQuarterStartMonthOk returns a tuple with the QuarterStartMonth field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Schedule) GetQuarterStartMonthOk() (*int32, bool) {
+	if o == nil || o.QuarterStartMonth == nil {
+		return nil, false
+	}
+	return o.QuarterStartMonth, true
+}
+
+// HasQuarterStartMonth returns a boolean if a field has been set.
+func (o *Schedule) HasQuarterStartMonth() bool {
+	if o != nil && o.QuarterStartMonth != nil {
+		return true
+	}
+
+	return false
+}
+
+// SetQuarterStartMonth gets a reference to the given int32 and assigns it to the QuarterStartMonth field.
+func (o *Schedule) SetQuarterStartMonth(v int32) {
+	o.QuarterStartMonth = &v
+}
+
 func (o Schedule) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if o.ScheduleType != nil {
@@ -178,8 +244,14 @@ func (o Schedule) MarshalJSON() ([]byte, error) {
 	if o.WeekDay != nil {
 		toSerialize["WeekDay"] = o.WeekDay
 	}
+	if o.Month != nil {
+		toSerialize["Month"] = o.Month
+	}
 	if o.MonthDay != nil {
 		toSerialize["MonthDay"] = o.MonthDay
+	}
+	if o.QuarterStartMonth != nil {
+		toSerialize["QuarterStartMonth"] = o.QuarterStartMonth
 	}
 	return json.Marshal(toSerialize)
 }

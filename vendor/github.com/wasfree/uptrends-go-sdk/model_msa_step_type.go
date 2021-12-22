@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// MsaStepType the model 'MsaStepType'
+// MsaStepType 
 type MsaStepType string
 
 // List of MsaStepType

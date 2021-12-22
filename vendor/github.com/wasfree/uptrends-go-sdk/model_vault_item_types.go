@@ -15,14 +15,13 @@ import (
 	"fmt"
 )
 
-// VaultItemTypes the model 'VaultItemTypes'
+// VaultItemTypes 
 type VaultItemTypes string
 
 // List of VaultItemTypes
 const (
 	VAULTITEMTYPES_CREDENTIAL_SET VaultItemTypes = "CredentialSet"
 	VAULTITEMTYPES_CERTIFICATE VaultItemTypes = "Certificate"
-	VAULTITEMTYPES_TEXT VaultItemTypes = "Text"
 	VAULTITEMTYPES_CERTIFICATE_ARCHIVE VaultItemTypes = "CertificateArchive"
 	VAULTITEMTYPES_FILE VaultItemTypes = "File"
 )
@@ -30,7 +29,6 @@ const (
 var allowedVaultItemTypesEnumValues = []VaultItemTypes{
 	"CredentialSet",
 	"Certificate",
-	"Text",
 	"CertificateArchive",
 	"File",
 }

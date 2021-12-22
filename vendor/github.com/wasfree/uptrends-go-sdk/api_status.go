@@ -31,8 +31,20 @@ type ApiStatusGetMonitorGroupStatusRequest struct {
 	ctx _context.Context
 	ApiService *StatusApiService
 	monitorGroupGuid string
+	skip *int32
+	take *int32
 }
 
+// The number of monitors in the monitor group that should be skipped.
+func (r ApiStatusGetMonitorGroupStatusRequest) Skip(skip int32) ApiStatusGetMonitorGroupStatusRequest {
+	r.skip = &skip
+	return r
+}
+// The maximum number of monitors in the monitor group to get data from.
+func (r ApiStatusGetMonitorGroupStatusRequest) Take(take int32) ApiStatusGetMonitorGroupStatusRequest {
+	r.take = &take
+	return r
+}
 
 func (r ApiStatusGetMonitorGroupStatusRequest) Execute() (MonitorStatusListResponse, *_nethttp.Response, error) {
 	return r.ApiService.StatusGetMonitorGroupStatusExecute(r)
@@ -77,6 +89,12 @@ func (a *StatusApiService) StatusGetMonitorGroupStatusExecute(r ApiStatusGetMoni
 	localVarQueryParams := _neturl.Values{}
 	localVarFormParams := _neturl.Values{}
 
+	if r.skip != nil {
+		localVarQueryParams.Add("skip", parameterToString(*r.skip, ""))
+	}
+	if r.take != nil {
+		localVarQueryParams.Add("take", parameterToString(*r.take, ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 

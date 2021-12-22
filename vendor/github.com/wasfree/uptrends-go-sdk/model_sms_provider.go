@@ -15,7 +15,7 @@ import (
 	"fmt"
 )
 
-// SmsProvider the model 'SmsProvider'
+// SmsProvider 
 type SmsProvider string
 
 // List of SmsProvider
