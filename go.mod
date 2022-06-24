@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/hashicorp/terraform-plugin-docs v0.8.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.10.1
-	github.com/stretchr/testify v1.7.0
+	github.com/stretchr/testify v1.7.5
 	github.com/wasfree/uptrends-go-sdk v1.1.0
 )
 
@@ -69,5 +69,5 @@ require (
 	google.golang.org/genproto v0.0.0-20211221231510-d629cc9a93d5 // indirect
 	google.golang.org/grpc v1.43.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
+	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
