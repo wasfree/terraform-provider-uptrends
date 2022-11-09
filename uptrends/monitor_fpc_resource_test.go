@@ -41,7 +41,7 @@ func TestAccUptrendsMonitorFullPageCheck_Basic(t *testing.T) {
 					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "alert_on_max_element_bytes", "true"),
 					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "max_element_bytes", "4096"),
 					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "ignore_external_elements", "true"),
-					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_type", "Firefox"),
+					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_type", "Chrome"),
 					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_window_dimensions.0.is_mobile", "true"),
 					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_window_dimensions.0.width", "1024"),
 					resource.TestCheckResourceAttr("uptrends_monitor_fpc.test", "browser_window_dimensions.0.height", "768"),
@@ -134,7 +134,7 @@ resource "uptrends_monitor_fpc" "test" {
   max_element_bytes          = 4096
   ignore_external_elements   = true
   alert_on_percentage_fail   = true
-  browser_type               = "Firefox"
+  browser_type               = "Chrome"
 
   browser_window_dimensions {
     is_mobile     = true
