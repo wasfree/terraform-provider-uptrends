@@ -12,38 +12,33 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // CheckpointApiService CheckpointApi service
 type CheckpointApiService service
 
 type ApiCheckpointGetAllCheckpointsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *CheckpointApiService
 }
 
-
-func (r ApiCheckpointGetAllCheckpointsRequest) Execute() (CheckpointListResponse, *_nethttp.Response, error) {
+func (r ApiCheckpointGetAllCheckpointsRequest) Execute() (*CheckpointListResponse, *http.Response, error) {
 	return r.ApiService.CheckpointGetAllCheckpointsExecute(r)
 }
 
 /*
-CheckpointGetAllCheckpoints Returns all the checkpoints. 
+CheckpointGetAllCheckpoints Returns all the checkpoints that are not deleted
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCheckpointGetAllCheckpointsRequest
 */
-func (a *CheckpointApiService) CheckpointGetAllCheckpoints(ctx _context.Context) ApiCheckpointGetAllCheckpointsRequest {
+func (a *CheckpointApiService) CheckpointGetAllCheckpoints(ctx context.Context) ApiCheckpointGetAllCheckpointsRequest {
 	return ApiCheckpointGetAllCheckpointsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -52,26 +47,24 @@ func (a *CheckpointApiService) CheckpointGetAllCheckpoints(ctx _context.Context)
 
 // Execute executes the request
 //  @return CheckpointListResponse
-func (a *CheckpointApiService) CheckpointGetAllCheckpointsExecute(r ApiCheckpointGetAllCheckpointsRequest) (CheckpointListResponse, *_nethttp.Response, error) {
+func (a *CheckpointApiService) CheckpointGetAllCheckpointsExecute(r ApiCheckpointGetAllCheckpointsRequest) (*CheckpointListResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  CheckpointListResponse
+		formFiles            []formFile
+		localVarReturnValue  *CheckpointListResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CheckpointApiService.CheckpointGetAllCheckpoints")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Checkpoint"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -90,7 +83,7 @@ func (a *CheckpointApiService) CheckpointGetAllCheckpointsExecute(r ApiCheckpoin
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -100,15 +93,15 @@ func (a *CheckpointApiService) CheckpointGetAllCheckpointsExecute(r ApiCheckpoin
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -119,14 +112,15 @@ func (a *CheckpointApiService) CheckpointGetAllCheckpointsExecute(r ApiCheckpoin
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -137,24 +131,23 @@ func (a *CheckpointApiService) CheckpointGetAllCheckpointsExecute(r ApiCheckpoin
 }
 
 type ApiCheckpointGetCheckpointRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *CheckpointApiService
 	checkpointId int32
 }
 
-
-func (r ApiCheckpointGetCheckpointRequest) Execute() (CheckpointResponse, *_nethttp.Response, error) {
+func (r ApiCheckpointGetCheckpointRequest) Execute() (*CheckpointResponse, *http.Response, error) {
 	return r.ApiService.CheckpointGetCheckpointExecute(r)
 }
 
 /*
-CheckpointGetCheckpoint Returns the specified checkpoint. 
+CheckpointGetCheckpoint Returns the specified checkpoint, deleted or not
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param checkpointId The Id of the requested checkpoint.
  @return ApiCheckpointGetCheckpointRequest
 */
-func (a *CheckpointApiService) CheckpointGetCheckpoint(ctx _context.Context, checkpointId int32) ApiCheckpointGetCheckpointRequest {
+func (a *CheckpointApiService) CheckpointGetCheckpoint(ctx context.Context, checkpointId int32) ApiCheckpointGetCheckpointRequest {
 	return ApiCheckpointGetCheckpointRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -164,27 +157,25 @@ func (a *CheckpointApiService) CheckpointGetCheckpoint(ctx _context.Context, che
 
 // Execute executes the request
 //  @return CheckpointResponse
-func (a *CheckpointApiService) CheckpointGetCheckpointExecute(r ApiCheckpointGetCheckpointRequest) (CheckpointResponse, *_nethttp.Response, error) {
+func (a *CheckpointApiService) CheckpointGetCheckpointExecute(r ApiCheckpointGetCheckpointRequest) (*CheckpointResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  CheckpointResponse
+		formFiles            []formFile
+		localVarReturnValue  *CheckpointResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CheckpointApiService.CheckpointGetCheckpoint")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Checkpoint/{checkpointId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"checkpointId"+"}", _neturl.PathEscape(parameterToString(r.checkpointId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"checkpointId"+"}", url.PathEscape(parameterToString(r.checkpointId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -203,7 +194,7 @@ func (a *CheckpointApiService) CheckpointGetCheckpointExecute(r ApiCheckpointGet
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -213,15 +204,15 @@ func (a *CheckpointApiService) CheckpointGetCheckpointExecute(r ApiCheckpointGet
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -232,7 +223,8 @@ func (a *CheckpointApiService) CheckpointGetCheckpointExecute(r ApiCheckpointGet
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -242,14 +234,15 @@ func (a *CheckpointApiService) CheckpointGetCheckpointExecute(r ApiCheckpointGet
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -260,22 +253,21 @@ func (a *CheckpointApiService) CheckpointGetCheckpointExecute(r ApiCheckpointGet
 }
 
 type ApiCheckpointRegionGetAllCheckpointRegionsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *CheckpointApiService
 }
 
-
-func (r ApiCheckpointRegionGetAllCheckpointRegionsRequest) Execute() ([]CheckpointRegion, *_nethttp.Response, error) {
+func (r ApiCheckpointRegionGetAllCheckpointRegionsRequest) Execute() ([]CheckpointRegion, *http.Response, error) {
 	return r.ApiService.CheckpointRegionGetAllCheckpointRegionsExecute(r)
 }
 
 /*
-CheckpointRegionGetAllCheckpointRegions Returns all the checkpoint regions. 
+CheckpointRegionGetAllCheckpointRegions Returns all the checkpoint regions.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCheckpointRegionGetAllCheckpointRegionsRequest
 */
-func (a *CheckpointApiService) CheckpointRegionGetAllCheckpointRegions(ctx _context.Context) ApiCheckpointRegionGetAllCheckpointRegionsRequest {
+func (a *CheckpointApiService) CheckpointRegionGetAllCheckpointRegions(ctx context.Context) ApiCheckpointRegionGetAllCheckpointRegionsRequest {
 	return ApiCheckpointRegionGetAllCheckpointRegionsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -284,26 +276,24 @@ func (a *CheckpointApiService) CheckpointRegionGetAllCheckpointRegions(ctx _cont
 
 // Execute executes the request
 //  @return []CheckpointRegion
-func (a *CheckpointApiService) CheckpointRegionGetAllCheckpointRegionsExecute(r ApiCheckpointRegionGetAllCheckpointRegionsRequest) ([]CheckpointRegion, *_nethttp.Response, error) {
+func (a *CheckpointApiService) CheckpointRegionGetAllCheckpointRegionsExecute(r ApiCheckpointRegionGetAllCheckpointRegionsRequest) ([]CheckpointRegion, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []CheckpointRegion
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CheckpointApiService.CheckpointRegionGetAllCheckpointRegions")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/CheckpointRegion"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -322,7 +312,7 @@ func (a *CheckpointApiService) CheckpointRegionGetAllCheckpointRegionsExecute(r 
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -332,15 +322,15 @@ func (a *CheckpointApiService) CheckpointRegionGetAllCheckpointRegionsExecute(r 
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -351,14 +341,15 @@ func (a *CheckpointApiService) CheckpointRegionGetAllCheckpointRegionsExecute(r 
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -369,24 +360,23 @@ func (a *CheckpointApiService) CheckpointRegionGetAllCheckpointRegionsExecute(r 
 }
 
 type ApiCheckpointRegionGetCheckpointRegionCheckpointsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *CheckpointApiService
 	checkpointRegionId int32
 }
 
-
-func (r ApiCheckpointRegionGetCheckpointRegionCheckpointsRequest) Execute() ([]Checkpoint, *_nethttp.Response, error) {
+func (r ApiCheckpointRegionGetCheckpointRegionCheckpointsRequest) Execute() ([]Checkpoint, *http.Response, error) {
 	return r.ApiService.CheckpointRegionGetCheckpointRegionCheckpointsExecute(r)
 }
 
 /*
-CheckpointRegionGetCheckpointRegionCheckpoints Returns the checkpoints for the specified checkpoint region. 
+CheckpointRegionGetCheckpointRegionCheckpoints Returns the checkpoints for the specified checkpoint region.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param checkpointRegionId The id for the specified checkpoint region.
  @return ApiCheckpointRegionGetCheckpointRegionCheckpointsRequest
 */
-func (a *CheckpointApiService) CheckpointRegionGetCheckpointRegionCheckpoints(ctx _context.Context, checkpointRegionId int32) ApiCheckpointRegionGetCheckpointRegionCheckpointsRequest {
+func (a *CheckpointApiService) CheckpointRegionGetCheckpointRegionCheckpoints(ctx context.Context, checkpointRegionId int32) ApiCheckpointRegionGetCheckpointRegionCheckpointsRequest {
 	return ApiCheckpointRegionGetCheckpointRegionCheckpointsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -396,27 +386,25 @@ func (a *CheckpointApiService) CheckpointRegionGetCheckpointRegionCheckpoints(ct
 
 // Execute executes the request
 //  @return []Checkpoint
-func (a *CheckpointApiService) CheckpointRegionGetCheckpointRegionCheckpointsExecute(r ApiCheckpointRegionGetCheckpointRegionCheckpointsRequest) ([]Checkpoint, *_nethttp.Response, error) {
+func (a *CheckpointApiService) CheckpointRegionGetCheckpointRegionCheckpointsExecute(r ApiCheckpointRegionGetCheckpointRegionCheckpointsRequest) ([]Checkpoint, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []Checkpoint
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CheckpointApiService.CheckpointRegionGetCheckpointRegionCheckpoints")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/CheckpointRegion/{checkpointRegionId}/Checkpoint"
-	localVarPath = strings.Replace(localVarPath, "{"+"checkpointRegionId"+"}", _neturl.PathEscape(parameterToString(r.checkpointRegionId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"checkpointRegionId"+"}", url.PathEscape(parameterToString(r.checkpointRegionId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -435,7 +423,7 @@ func (a *CheckpointApiService) CheckpointRegionGetCheckpointRegionCheckpointsExe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -445,15 +433,15 @@ func (a *CheckpointApiService) CheckpointRegionGetCheckpointRegionCheckpointsExe
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -464,7 +452,8 @@ func (a *CheckpointApiService) CheckpointRegionGetCheckpointRegionCheckpointsExe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -474,14 +463,15 @@ func (a *CheckpointApiService) CheckpointRegionGetCheckpointRegionCheckpointsExe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -492,24 +482,23 @@ func (a *CheckpointApiService) CheckpointRegionGetCheckpointRegionCheckpointsExe
 }
 
 type ApiCheckpointRegionGetSpecifiedCheckpointRegionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *CheckpointApiService
 	checkpointRegionId int32
 }
 
-
-func (r ApiCheckpointRegionGetSpecifiedCheckpointRegionRequest) Execute() (CheckpointRegion, *_nethttp.Response, error) {
+func (r ApiCheckpointRegionGetSpecifiedCheckpointRegionRequest) Execute() (*CheckpointRegion, *http.Response, error) {
 	return r.ApiService.CheckpointRegionGetSpecifiedCheckpointRegionExecute(r)
 }
 
 /*
-CheckpointRegionGetSpecifiedCheckpointRegion Returns the specified checkpoint region. 
+CheckpointRegionGetSpecifiedCheckpointRegion Returns the specified checkpoint region.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param checkpointRegionId The id for the specified checkpoint region.
  @return ApiCheckpointRegionGetSpecifiedCheckpointRegionRequest
 */
-func (a *CheckpointApiService) CheckpointRegionGetSpecifiedCheckpointRegion(ctx _context.Context, checkpointRegionId int32) ApiCheckpointRegionGetSpecifiedCheckpointRegionRequest {
+func (a *CheckpointApiService) CheckpointRegionGetSpecifiedCheckpointRegion(ctx context.Context, checkpointRegionId int32) ApiCheckpointRegionGetSpecifiedCheckpointRegionRequest {
 	return ApiCheckpointRegionGetSpecifiedCheckpointRegionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -519,27 +508,25 @@ func (a *CheckpointApiService) CheckpointRegionGetSpecifiedCheckpointRegion(ctx 
 
 // Execute executes the request
 //  @return CheckpointRegion
-func (a *CheckpointApiService) CheckpointRegionGetSpecifiedCheckpointRegionExecute(r ApiCheckpointRegionGetSpecifiedCheckpointRegionRequest) (CheckpointRegion, *_nethttp.Response, error) {
+func (a *CheckpointApiService) CheckpointRegionGetSpecifiedCheckpointRegionExecute(r ApiCheckpointRegionGetSpecifiedCheckpointRegionRequest) (*CheckpointRegion, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  CheckpointRegion
+		formFiles            []formFile
+		localVarReturnValue  *CheckpointRegion
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CheckpointApiService.CheckpointRegionGetSpecifiedCheckpointRegion")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/CheckpointRegion/{checkpointRegionId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"checkpointRegionId"+"}", _neturl.PathEscape(parameterToString(r.checkpointRegionId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"checkpointRegionId"+"}", url.PathEscape(parameterToString(r.checkpointRegionId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -558,7 +545,7 @@ func (a *CheckpointApiService) CheckpointRegionGetSpecifiedCheckpointRegionExecu
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -568,15 +555,15 @@ func (a *CheckpointApiService) CheckpointRegionGetSpecifiedCheckpointRegionExecu
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -587,7 +574,8 @@ func (a *CheckpointApiService) CheckpointRegionGetSpecifiedCheckpointRegionExecu
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -597,14 +585,15 @@ func (a *CheckpointApiService) CheckpointRegionGetSpecifiedCheckpointRegionExecu
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -615,22 +604,21 @@ func (a *CheckpointApiService) CheckpointRegionGetSpecifiedCheckpointRegionExecu
 }
 
 type ApiCheckpointServerGetAllServerIpv4AddressesRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *CheckpointApiService
 }
 
-
-func (r ApiCheckpointServerGetAllServerIpv4AddressesRequest) Execute() (ListStringResponse, *_nethttp.Response, error) {
+func (r ApiCheckpointServerGetAllServerIpv4AddressesRequest) Execute() (*ListStringResponse, *http.Response, error) {
 	return r.ApiService.CheckpointServerGetAllServerIpv4AddressesExecute(r)
 }
 
 /*
-CheckpointServerGetAllServerIpv4Addresses Anonymous call that returns all the IPv4 addresses of all the checkpoint servers. 
+CheckpointServerGetAllServerIpv4Addresses Anonymous call that returns all the IPv4 addresses of all the checkpoint servers.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCheckpointServerGetAllServerIpv4AddressesRequest
 */
-func (a *CheckpointApiService) CheckpointServerGetAllServerIpv4Addresses(ctx _context.Context) ApiCheckpointServerGetAllServerIpv4AddressesRequest {
+func (a *CheckpointApiService) CheckpointServerGetAllServerIpv4Addresses(ctx context.Context) ApiCheckpointServerGetAllServerIpv4AddressesRequest {
 	return ApiCheckpointServerGetAllServerIpv4AddressesRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -639,26 +627,24 @@ func (a *CheckpointApiService) CheckpointServerGetAllServerIpv4Addresses(ctx _co
 
 // Execute executes the request
 //  @return ListStringResponse
-func (a *CheckpointApiService) CheckpointServerGetAllServerIpv4AddressesExecute(r ApiCheckpointServerGetAllServerIpv4AddressesRequest) (ListStringResponse, *_nethttp.Response, error) {
+func (a *CheckpointApiService) CheckpointServerGetAllServerIpv4AddressesExecute(r ApiCheckpointServerGetAllServerIpv4AddressesRequest) (*ListStringResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ListStringResponse
+		formFiles            []formFile
+		localVarReturnValue  *ListStringResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CheckpointApiService.CheckpointServerGetAllServerIpv4Addresses")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Checkpoint/Server/Ipv4"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -677,7 +663,7 @@ func (a *CheckpointApiService) CheckpointServerGetAllServerIpv4AddressesExecute(
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -687,15 +673,15 @@ func (a *CheckpointApiService) CheckpointServerGetAllServerIpv4AddressesExecute(
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -706,14 +692,15 @@ func (a *CheckpointApiService) CheckpointServerGetAllServerIpv4AddressesExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -724,22 +711,21 @@ func (a *CheckpointApiService) CheckpointServerGetAllServerIpv4AddressesExecute(
 }
 
 type ApiCheckpointServerGetAllServerIpv6AddressesRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *CheckpointApiService
 }
 
-
-func (r ApiCheckpointServerGetAllServerIpv6AddressesRequest) Execute() (ListStringResponse, *_nethttp.Response, error) {
+func (r ApiCheckpointServerGetAllServerIpv6AddressesRequest) Execute() (*ListStringResponse, *http.Response, error) {
 	return r.ApiService.CheckpointServerGetAllServerIpv6AddressesExecute(r)
 }
 
 /*
-CheckpointServerGetAllServerIpv6Addresses Anonymous call that returns all the IPv6 addresses of all the checkpoint servers. 
+CheckpointServerGetAllServerIpv6Addresses Anonymous call that returns all the IPv6 addresses of all the checkpoint servers.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiCheckpointServerGetAllServerIpv6AddressesRequest
 */
-func (a *CheckpointApiService) CheckpointServerGetAllServerIpv6Addresses(ctx _context.Context) ApiCheckpointServerGetAllServerIpv6AddressesRequest {
+func (a *CheckpointApiService) CheckpointServerGetAllServerIpv6Addresses(ctx context.Context) ApiCheckpointServerGetAllServerIpv6AddressesRequest {
 	return ApiCheckpointServerGetAllServerIpv6AddressesRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -748,26 +734,24 @@ func (a *CheckpointApiService) CheckpointServerGetAllServerIpv6Addresses(ctx _co
 
 // Execute executes the request
 //  @return ListStringResponse
-func (a *CheckpointApiService) CheckpointServerGetAllServerIpv6AddressesExecute(r ApiCheckpointServerGetAllServerIpv6AddressesRequest) (ListStringResponse, *_nethttp.Response, error) {
+func (a *CheckpointApiService) CheckpointServerGetAllServerIpv6AddressesExecute(r ApiCheckpointServerGetAllServerIpv6AddressesRequest) (*ListStringResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ListStringResponse
+		formFiles            []formFile
+		localVarReturnValue  *ListStringResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CheckpointApiService.CheckpointServerGetAllServerIpv6Addresses")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Checkpoint/Server/Ipv6"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -786,7 +770,7 @@ func (a *CheckpointApiService) CheckpointServerGetAllServerIpv6AddressesExecute(
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -796,15 +780,15 @@ func (a *CheckpointApiService) CheckpointServerGetAllServerIpv6AddressesExecute(
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -815,14 +799,15 @@ func (a *CheckpointApiService) CheckpointServerGetAllServerIpv6AddressesExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -833,24 +818,23 @@ func (a *CheckpointApiService) CheckpointServerGetAllServerIpv6AddressesExecute(
 }
 
 type ApiCheckpointServerGetServerRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *CheckpointApiService
 	serverId int32
 }
 
-
-func (r ApiCheckpointServerGetServerRequest) Execute() (CheckpoinServerResponse, *_nethttp.Response, error) {
+func (r ApiCheckpointServerGetServerRequest) Execute() (*CheckpoinServerResponse, *http.Response, error) {
 	return r.ApiService.CheckpointServerGetServerExecute(r)
 }
 
 /*
 CheckpointServerGetServer Returns the requested checkpoint server.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param serverId The Id of the requested server.
  @return ApiCheckpointServerGetServerRequest
 */
-func (a *CheckpointApiService) CheckpointServerGetServer(ctx _context.Context, serverId int32) ApiCheckpointServerGetServerRequest {
+func (a *CheckpointApiService) CheckpointServerGetServer(ctx context.Context, serverId int32) ApiCheckpointServerGetServerRequest {
 	return ApiCheckpointServerGetServerRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -860,27 +844,25 @@ func (a *CheckpointApiService) CheckpointServerGetServer(ctx _context.Context, s
 
 // Execute executes the request
 //  @return CheckpoinServerResponse
-func (a *CheckpointApiService) CheckpointServerGetServerExecute(r ApiCheckpointServerGetServerRequest) (CheckpoinServerResponse, *_nethttp.Response, error) {
+func (a *CheckpointApiService) CheckpointServerGetServerExecute(r ApiCheckpointServerGetServerRequest) (*CheckpoinServerResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  CheckpoinServerResponse
+		formFiles            []formFile
+		localVarReturnValue  *CheckpoinServerResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CheckpointApiService.CheckpointServerGetServer")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Checkpoint/Server/{serverId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"serverId"+"}", _neturl.PathEscape(parameterToString(r.serverId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"serverId"+"}", url.PathEscape(parameterToString(r.serverId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -899,7 +881,7 @@ func (a *CheckpointApiService) CheckpointServerGetServerExecute(r ApiCheckpointS
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -909,15 +891,15 @@ func (a *CheckpointApiService) CheckpointServerGetServerExecute(r ApiCheckpointS
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -928,14 +910,271 @@ func (a *CheckpointApiService) CheckpointServerGetServerExecute(r ApiCheckpointS
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiPrivateCheckpointHealthGetPrivateCheckpointHealthForRegionRequest struct {
+	ctx context.Context
+	ApiService *CheckpointApiService
+	regionId *int32
+}
+
+// The id of the region.
+func (r ApiPrivateCheckpointHealthGetPrivateCheckpointHealthForRegionRequest) RegionId(regionId int32) ApiPrivateCheckpointHealthGetPrivateCheckpointHealthForRegionRequest {
+	r.regionId = &regionId
+	return r
+}
+
+func (r ApiPrivateCheckpointHealthGetPrivateCheckpointHealthForRegionRequest) Execute() (*CheckpointsHealth, *http.Response, error) {
+	return r.ApiService.PrivateCheckpointHealthGetPrivateCheckpointHealthForRegionExecute(r)
+}
+
+/*
+PrivateCheckpointHealthGetPrivateCheckpointHealthForRegion Returns the status of the private checkpoints in the given region.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiPrivateCheckpointHealthGetPrivateCheckpointHealthForRegionRequest
+*/
+func (a *CheckpointApiService) PrivateCheckpointHealthGetPrivateCheckpointHealthForRegion(ctx context.Context) ApiPrivateCheckpointHealthGetPrivateCheckpointHealthForRegionRequest {
+	return ApiPrivateCheckpointHealthGetPrivateCheckpointHealthForRegionRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return CheckpointsHealth
+func (a *CheckpointApiService) PrivateCheckpointHealthGetPrivateCheckpointHealthForRegionExecute(r ApiPrivateCheckpointHealthGetPrivateCheckpointHealthForRegionRequest) (*CheckpointsHealth, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *CheckpointsHealth
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CheckpointApiService.PrivateCheckpointHealthGetPrivateCheckpointHealthForRegion")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/PrivateCheckpointHealthForRegion"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+	if r.regionId == nil {
+		return localVarReturnValue, nil, reportError("regionId is required and must be specified")
+	}
+
+	localVarQueryParams.Add("regionId", parameterToString(*r.regionId, ""))
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiPrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealthRequest struct {
+	ctx context.Context
+	ApiService *CheckpointApiService
+	filter *string
+}
+
+func (r ApiPrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealthRequest) Filter(filter string) ApiPrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealthRequest {
+	r.filter = &filter
+	return r
+}
+
+func (r ApiPrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealthRequest) Execute() (*CheckpointsHealth, *http.Response, error) {
+	return r.ApiService.PrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealthExecute(r)
+}
+
+/*
+PrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealth Returns the status of the specified private checkpoints.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiPrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealthRequest
+*/
+func (a *CheckpointApiService) PrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealth(ctx context.Context) ApiPrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealthRequest {
+	return ApiPrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealthRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return CheckpointsHealth
+func (a *CheckpointApiService) PrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealthExecute(r ApiPrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealthRequest) (*CheckpointsHealth, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  *CheckpointsHealth
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "CheckpointApiService.PrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealth")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/PrivateCheckpointHealth"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	if r.filter != nil {
+		localVarQueryParams.Add("filter", parameterToString(*r.filter, ""))
+	}
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

@@ -23,9 +23,9 @@ type Checkpoint struct {
 	// The location code of the checkpoint
 	Code *string `json:"Code,omitempty"`
 	// The IPv4 addresses of the checkpoint 
-	Ipv4Addresses *[]string `json:"Ipv4Addresses,omitempty"`
+	Ipv4Addresses []string `json:"Ipv4Addresses,omitempty"`
 	// The IPv6 addresses of the checkpoint
-	Ipv6Addresses *[]Ipv6Address `json:"Ipv6Addresses,omitempty"`
+	Ipv6Addresses []Ipv6Address `json:"Ipv6Addresses,omitempty"`
 	// Checkpoint is primary
 	IsPrimaryCheckpoint bool `json:"IsPrimaryCheckpoint"`
 	// Checkpoint supports IPv6
@@ -68,8 +68,8 @@ func (o *Checkpoint) GetCheckpointId() int32 {
 // GetCheckpointIdOk returns a tuple with the CheckpointId field value
 // and a boolean to check if the value has been set.
 func (o *Checkpoint) GetCheckpointIdOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.CheckpointId, true
 }
@@ -81,7 +81,7 @@ func (o *Checkpoint) SetCheckpointId(v int32) {
 
 // GetCheckpointName returns the CheckpointName field value if set, zero value otherwise.
 func (o *Checkpoint) GetCheckpointName() string {
-	if o == nil || o.CheckpointName == nil {
+	if o == nil || isNil(o.CheckpointName) {
 		var ret string
 		return ret
 	}
@@ -91,15 +91,15 @@ func (o *Checkpoint) GetCheckpointName() string {
 // GetCheckpointNameOk returns a tuple with the CheckpointName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Checkpoint) GetCheckpointNameOk() (*string, bool) {
-	if o == nil || o.CheckpointName == nil {
-		return nil, false
+	if o == nil || isNil(o.CheckpointName) {
+    return nil, false
 	}
 	return o.CheckpointName, true
 }
 
 // HasCheckpointName returns a boolean if a field has been set.
 func (o *Checkpoint) HasCheckpointName() bool {
-	if o != nil && o.CheckpointName != nil {
+	if o != nil && !isNil(o.CheckpointName) {
 		return true
 	}
 
@@ -113,7 +113,7 @@ func (o *Checkpoint) SetCheckpointName(v string) {
 
 // GetCode returns the Code field value if set, zero value otherwise.
 func (o *Checkpoint) GetCode() string {
-	if o == nil || o.Code == nil {
+	if o == nil || isNil(o.Code) {
 		var ret string
 		return ret
 	}
@@ -123,15 +123,15 @@ func (o *Checkpoint) GetCode() string {
 // GetCodeOk returns a tuple with the Code field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Checkpoint) GetCodeOk() (*string, bool) {
-	if o == nil || o.Code == nil {
-		return nil, false
+	if o == nil || isNil(o.Code) {
+    return nil, false
 	}
 	return o.Code, true
 }
 
 // HasCode returns a boolean if a field has been set.
 func (o *Checkpoint) HasCode() bool {
-	if o != nil && o.Code != nil {
+	if o != nil && !isNil(o.Code) {
 		return true
 	}
 
@@ -145,25 +145,25 @@ func (o *Checkpoint) SetCode(v string) {
 
 // GetIpv4Addresses returns the Ipv4Addresses field value if set, zero value otherwise.
 func (o *Checkpoint) GetIpv4Addresses() []string {
-	if o == nil || o.Ipv4Addresses == nil {
+	if o == nil || isNil(o.Ipv4Addresses) {
 		var ret []string
 		return ret
 	}
-	return *o.Ipv4Addresses
+	return o.Ipv4Addresses
 }
 
 // GetIpv4AddressesOk returns a tuple with the Ipv4Addresses field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Checkpoint) GetIpv4AddressesOk() (*[]string, bool) {
-	if o == nil || o.Ipv4Addresses == nil {
-		return nil, false
+func (o *Checkpoint) GetIpv4AddressesOk() ([]string, bool) {
+	if o == nil || isNil(o.Ipv4Addresses) {
+    return nil, false
 	}
 	return o.Ipv4Addresses, true
 }
 
 // HasIpv4Addresses returns a boolean if a field has been set.
 func (o *Checkpoint) HasIpv4Addresses() bool {
-	if o != nil && o.Ipv4Addresses != nil {
+	if o != nil && !isNil(o.Ipv4Addresses) {
 		return true
 	}
 
@@ -172,30 +172,30 @@ func (o *Checkpoint) HasIpv4Addresses() bool {
 
 // SetIpv4Addresses gets a reference to the given []string and assigns it to the Ipv4Addresses field.
 func (o *Checkpoint) SetIpv4Addresses(v []string) {
-	o.Ipv4Addresses = &v
+	o.Ipv4Addresses = v
 }
 
 // GetIpv6Addresses returns the Ipv6Addresses field value if set, zero value otherwise.
 func (o *Checkpoint) GetIpv6Addresses() []Ipv6Address {
-	if o == nil || o.Ipv6Addresses == nil {
+	if o == nil || isNil(o.Ipv6Addresses) {
 		var ret []Ipv6Address
 		return ret
 	}
-	return *o.Ipv6Addresses
+	return o.Ipv6Addresses
 }
 
 // GetIpv6AddressesOk returns a tuple with the Ipv6Addresses field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Checkpoint) GetIpv6AddressesOk() (*[]Ipv6Address, bool) {
-	if o == nil || o.Ipv6Addresses == nil {
-		return nil, false
+func (o *Checkpoint) GetIpv6AddressesOk() ([]Ipv6Address, bool) {
+	if o == nil || isNil(o.Ipv6Addresses) {
+    return nil, false
 	}
 	return o.Ipv6Addresses, true
 }
 
 // HasIpv6Addresses returns a boolean if a field has been set.
 func (o *Checkpoint) HasIpv6Addresses() bool {
-	if o != nil && o.Ipv6Addresses != nil {
+	if o != nil && !isNil(o.Ipv6Addresses) {
 		return true
 	}
 
@@ -204,7 +204,7 @@ func (o *Checkpoint) HasIpv6Addresses() bool {
 
 // SetIpv6Addresses gets a reference to the given []Ipv6Address and assigns it to the Ipv6Addresses field.
 func (o *Checkpoint) SetIpv6Addresses(v []Ipv6Address) {
-	o.Ipv6Addresses = &v
+	o.Ipv6Addresses = v
 }
 
 // GetIsPrimaryCheckpoint returns the IsPrimaryCheckpoint field value
@@ -220,8 +220,8 @@ func (o *Checkpoint) GetIsPrimaryCheckpoint() bool {
 // GetIsPrimaryCheckpointOk returns a tuple with the IsPrimaryCheckpoint field value
 // and a boolean to check if the value has been set.
 func (o *Checkpoint) GetIsPrimaryCheckpointOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.IsPrimaryCheckpoint, true
 }
@@ -244,8 +244,8 @@ func (o *Checkpoint) GetSupportsIpv6() bool {
 // GetSupportsIpv6Ok returns a tuple with the SupportsIpv6 field value
 // and a boolean to check if the value has been set.
 func (o *Checkpoint) GetSupportsIpv6Ok() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.SupportsIpv6, true
 }
@@ -268,8 +268,8 @@ func (o *Checkpoint) GetHasHighAvailability() bool {
 // GetHasHighAvailabilityOk returns a tuple with the HasHighAvailability field value
 // and a boolean to check if the value has been set.
 func (o *Checkpoint) GetHasHighAvailabilityOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.HasHighAvailability, true
 }
@@ -284,16 +284,16 @@ func (o Checkpoint) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["CheckpointId"] = o.CheckpointId
 	}
-	if o.CheckpointName != nil {
+	if !isNil(o.CheckpointName) {
 		toSerialize["CheckpointName"] = o.CheckpointName
 	}
-	if o.Code != nil {
+	if !isNil(o.Code) {
 		toSerialize["Code"] = o.Code
 	}
-	if o.Ipv4Addresses != nil {
+	if !isNil(o.Ipv4Addresses) {
 		toSerialize["Ipv4Addresses"] = o.Ipv4Addresses
 	}
-	if o.Ipv6Addresses != nil {
+	if !isNil(o.Ipv6Addresses) {
 		toSerialize["Ipv6Addresses"] = o.Ipv6Addresses
 	}
 	if true {

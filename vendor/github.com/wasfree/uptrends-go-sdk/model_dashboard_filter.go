@@ -17,9 +17,9 @@ import (
 // DashboardFilter struct for DashboardFilter
 type DashboardFilter struct {
 	SelectedPeriod *SelectedPeriod `json:"SelectedPeriod,omitempty"`
-	Monitors *[]string `json:"Monitors,omitempty"`
-	MonitorGroups *[]string `json:"MonitorGroups,omitempty"`
-	Checkpoints *[]int32 `json:"Checkpoints,omitempty"`
+	Monitors []string `json:"Monitors,omitempty"`
+	MonitorGroups []string `json:"MonitorGroups,omitempty"`
+	Checkpoints []int32 `json:"Checkpoints,omitempty"`
 }
 
 // NewDashboardFilter instantiates a new DashboardFilter object
@@ -41,7 +41,7 @@ func NewDashboardFilterWithDefaults() *DashboardFilter {
 
 // GetSelectedPeriod returns the SelectedPeriod field value if set, zero value otherwise.
 func (o *DashboardFilter) GetSelectedPeriod() SelectedPeriod {
-	if o == nil || o.SelectedPeriod == nil {
+	if o == nil || isNil(o.SelectedPeriod) {
 		var ret SelectedPeriod
 		return ret
 	}
@@ -51,15 +51,15 @@ func (o *DashboardFilter) GetSelectedPeriod() SelectedPeriod {
 // GetSelectedPeriodOk returns a tuple with the SelectedPeriod field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *DashboardFilter) GetSelectedPeriodOk() (*SelectedPeriod, bool) {
-	if o == nil || o.SelectedPeriod == nil {
-		return nil, false
+	if o == nil || isNil(o.SelectedPeriod) {
+    return nil, false
 	}
 	return o.SelectedPeriod, true
 }
 
 // HasSelectedPeriod returns a boolean if a field has been set.
 func (o *DashboardFilter) HasSelectedPeriod() bool {
-	if o != nil && o.SelectedPeriod != nil {
+	if o != nil && !isNil(o.SelectedPeriod) {
 		return true
 	}
 
@@ -73,25 +73,25 @@ func (o *DashboardFilter) SetSelectedPeriod(v SelectedPeriod) {
 
 // GetMonitors returns the Monitors field value if set, zero value otherwise.
 func (o *DashboardFilter) GetMonitors() []string {
-	if o == nil || o.Monitors == nil {
+	if o == nil || isNil(o.Monitors) {
 		var ret []string
 		return ret
 	}
-	return *o.Monitors
+	return o.Monitors
 }
 
 // GetMonitorsOk returns a tuple with the Monitors field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *DashboardFilter) GetMonitorsOk() (*[]string, bool) {
-	if o == nil || o.Monitors == nil {
-		return nil, false
+func (o *DashboardFilter) GetMonitorsOk() ([]string, bool) {
+	if o == nil || isNil(o.Monitors) {
+    return nil, false
 	}
 	return o.Monitors, true
 }
 
 // HasMonitors returns a boolean if a field has been set.
 func (o *DashboardFilter) HasMonitors() bool {
-	if o != nil && o.Monitors != nil {
+	if o != nil && !isNil(o.Monitors) {
 		return true
 	}
 
@@ -100,30 +100,30 @@ func (o *DashboardFilter) HasMonitors() bool {
 
 // SetMonitors gets a reference to the given []string and assigns it to the Monitors field.
 func (o *DashboardFilter) SetMonitors(v []string) {
-	o.Monitors = &v
+	o.Monitors = v
 }
 
 // GetMonitorGroups returns the MonitorGroups field value if set, zero value otherwise.
 func (o *DashboardFilter) GetMonitorGroups() []string {
-	if o == nil || o.MonitorGroups == nil {
+	if o == nil || isNil(o.MonitorGroups) {
 		var ret []string
 		return ret
 	}
-	return *o.MonitorGroups
+	return o.MonitorGroups
 }
 
 // GetMonitorGroupsOk returns a tuple with the MonitorGroups field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *DashboardFilter) GetMonitorGroupsOk() (*[]string, bool) {
-	if o == nil || o.MonitorGroups == nil {
-		return nil, false
+func (o *DashboardFilter) GetMonitorGroupsOk() ([]string, bool) {
+	if o == nil || isNil(o.MonitorGroups) {
+    return nil, false
 	}
 	return o.MonitorGroups, true
 }
 
 // HasMonitorGroups returns a boolean if a field has been set.
 func (o *DashboardFilter) HasMonitorGroups() bool {
-	if o != nil && o.MonitorGroups != nil {
+	if o != nil && !isNil(o.MonitorGroups) {
 		return true
 	}
 
@@ -132,30 +132,30 @@ func (o *DashboardFilter) HasMonitorGroups() bool {
 
 // SetMonitorGroups gets a reference to the given []string and assigns it to the MonitorGroups field.
 func (o *DashboardFilter) SetMonitorGroups(v []string) {
-	o.MonitorGroups = &v
+	o.MonitorGroups = v
 }
 
 // GetCheckpoints returns the Checkpoints field value if set, zero value otherwise.
 func (o *DashboardFilter) GetCheckpoints() []int32 {
-	if o == nil || o.Checkpoints == nil {
+	if o == nil || isNil(o.Checkpoints) {
 		var ret []int32
 		return ret
 	}
-	return *o.Checkpoints
+	return o.Checkpoints
 }
 
 // GetCheckpointsOk returns a tuple with the Checkpoints field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *DashboardFilter) GetCheckpointsOk() (*[]int32, bool) {
-	if o == nil || o.Checkpoints == nil {
-		return nil, false
+func (o *DashboardFilter) GetCheckpointsOk() ([]int32, bool) {
+	if o == nil || isNil(o.Checkpoints) {
+    return nil, false
 	}
 	return o.Checkpoints, true
 }
 
 // HasCheckpoints returns a boolean if a field has been set.
 func (o *DashboardFilter) HasCheckpoints() bool {
-	if o != nil && o.Checkpoints != nil {
+	if o != nil && !isNil(o.Checkpoints) {
 		return true
 	}
 
@@ -164,21 +164,21 @@ func (o *DashboardFilter) HasCheckpoints() bool {
 
 // SetCheckpoints gets a reference to the given []int32 and assigns it to the Checkpoints field.
 func (o *DashboardFilter) SetCheckpoints(v []int32) {
-	o.Checkpoints = &v
+	o.Checkpoints = v
 }
 
 func (o DashboardFilter) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.SelectedPeriod != nil {
+	if !isNil(o.SelectedPeriod) {
 		toSerialize["SelectedPeriod"] = o.SelectedPeriod
 	}
-	if o.Monitors != nil {
+	if !isNil(o.Monitors) {
 		toSerialize["Monitors"] = o.Monitors
 	}
-	if o.MonitorGroups != nil {
+	if !isNil(o.MonitorGroups) {
 		toSerialize["MonitorGroups"] = o.MonitorGroups
 	}
-	if o.Checkpoints != nil {
+	if !isNil(o.Checkpoints) {
 		toSerialize["Checkpoints"] = o.Checkpoints
 	}
 	return json.Marshal(toSerialize)

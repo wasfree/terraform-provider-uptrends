@@ -45,7 +45,7 @@ func NewAlertDefinitionWithDefaults() *AlertDefinition {
 
 // GetAlertDefinitionGuid returns the AlertDefinitionGuid field value if set, zero value otherwise.
 func (o *AlertDefinition) GetAlertDefinitionGuid() string {
-	if o == nil || o.AlertDefinitionGuid == nil {
+	if o == nil || isNil(o.AlertDefinitionGuid) {
 		var ret string
 		return ret
 	}
@@ -55,15 +55,15 @@ func (o *AlertDefinition) GetAlertDefinitionGuid() string {
 // GetAlertDefinitionGuidOk returns a tuple with the AlertDefinitionGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertDefinition) GetAlertDefinitionGuidOk() (*string, bool) {
-	if o == nil || o.AlertDefinitionGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.AlertDefinitionGuid) {
+    return nil, false
 	}
 	return o.AlertDefinitionGuid, true
 }
 
 // HasAlertDefinitionGuid returns a boolean if a field has been set.
 func (o *AlertDefinition) HasAlertDefinitionGuid() bool {
-	if o != nil && o.AlertDefinitionGuid != nil {
+	if o != nil && !isNil(o.AlertDefinitionGuid) {
 		return true
 	}
 
@@ -77,7 +77,7 @@ func (o *AlertDefinition) SetAlertDefinitionGuid(v string) {
 
 // GetHash returns the Hash field value if set, zero value otherwise.
 func (o *AlertDefinition) GetHash() string {
-	if o == nil || o.Hash == nil {
+	if o == nil || isNil(o.Hash) {
 		var ret string
 		return ret
 	}
@@ -87,15 +87,15 @@ func (o *AlertDefinition) GetHash() string {
 // GetHashOk returns a tuple with the Hash field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertDefinition) GetHashOk() (*string, bool) {
-	if o == nil || o.Hash == nil {
-		return nil, false
+	if o == nil || isNil(o.Hash) {
+    return nil, false
 	}
 	return o.Hash, true
 }
 
 // HasHash returns a boolean if a field has been set.
 func (o *AlertDefinition) HasHash() bool {
-	if o != nil && o.Hash != nil {
+	if o != nil && !isNil(o.Hash) {
 		return true
 	}
 
@@ -109,7 +109,7 @@ func (o *AlertDefinition) SetHash(v string) {
 
 // GetAlertName returns the AlertName field value if set, zero value otherwise.
 func (o *AlertDefinition) GetAlertName() string {
-	if o == nil || o.AlertName == nil {
+	if o == nil || isNil(o.AlertName) {
 		var ret string
 		return ret
 	}
@@ -119,15 +119,15 @@ func (o *AlertDefinition) GetAlertName() string {
 // GetAlertNameOk returns a tuple with the AlertName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertDefinition) GetAlertNameOk() (*string, bool) {
-	if o == nil || o.AlertName == nil {
-		return nil, false
+	if o == nil || isNil(o.AlertName) {
+    return nil, false
 	}
 	return o.AlertName, true
 }
 
 // HasAlertName returns a boolean if a field has been set.
 func (o *AlertDefinition) HasAlertName() bool {
-	if o != nil && o.AlertName != nil {
+	if o != nil && !isNil(o.AlertName) {
 		return true
 	}
 
@@ -141,7 +141,7 @@ func (o *AlertDefinition) SetAlertName(v string) {
 
 // GetIsActive returns the IsActive field value if set, zero value otherwise.
 func (o *AlertDefinition) GetIsActive() bool {
-	if o == nil || o.IsActive == nil {
+	if o == nil || isNil(o.IsActive) {
 		var ret bool
 		return ret
 	}
@@ -151,15 +151,15 @@ func (o *AlertDefinition) GetIsActive() bool {
 // GetIsActiveOk returns a tuple with the IsActive field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertDefinition) GetIsActiveOk() (*bool, bool) {
-	if o == nil || o.IsActive == nil {
-		return nil, false
+	if o == nil || isNil(o.IsActive) {
+    return nil, false
 	}
 	return o.IsActive, true
 }
 
 // HasIsActive returns a boolean if a field has been set.
 func (o *AlertDefinition) HasIsActive() bool {
-	if o != nil && o.IsActive != nil {
+	if o != nil && !isNil(o.IsActive) {
 		return true
 	}
 
@@ -173,16 +173,16 @@ func (o *AlertDefinition) SetIsActive(v bool) {
 
 func (o AlertDefinition) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.AlertDefinitionGuid != nil {
+	if !isNil(o.AlertDefinitionGuid) {
 		toSerialize["AlertDefinitionGuid"] = o.AlertDefinitionGuid
 	}
-	if o.Hash != nil {
+	if !isNil(o.Hash) {
 		toSerialize["Hash"] = o.Hash
 	}
-	if o.AlertName != nil {
+	if !isNil(o.AlertName) {
 		toSerialize["AlertName"] = o.AlertName
 	}
-	if o.IsActive != nil {
+	if !isNil(o.IsActive) {
 		toSerialize["IsActive"] = o.IsActive
 	}
 	return json.Marshal(toSerialize)

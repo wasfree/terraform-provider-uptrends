@@ -12,23 +12,19 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // MonitorGroupApiService MonitorGroupApi service
 type MonitorGroupApiService service
 
 type ApiMonitorGroupAddMaintenancePeriodToAllMembersRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 	maintenancePeriod *MaintenancePeriod
@@ -39,18 +35,18 @@ func (r ApiMonitorGroupAddMaintenancePeriodToAllMembersRequest) MaintenancePerio
 	return r
 }
 
-func (r ApiMonitorGroupAddMaintenancePeriodToAllMembersRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiMonitorGroupAddMaintenancePeriodToAllMembersRequest) Execute() (*http.Response, error) {
 	return r.ApiService.MonitorGroupAddMaintenancePeriodToAllMembersExecute(r)
 }
 
 /*
-MonitorGroupAddMaintenancePeriodToAllMembers Adds the provided maintenance period to all monitors in the group specified 
+MonitorGroupAddMaintenancePeriodToAllMembers Adds the provided maintenance period to all monitors in the group specified
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid
  @return ApiMonitorGroupAddMaintenancePeriodToAllMembersRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupAddMaintenancePeriodToAllMembers(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupAddMaintenancePeriodToAllMembersRequest {
+func (a *MonitorGroupApiService) MonitorGroupAddMaintenancePeriodToAllMembers(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupAddMaintenancePeriodToAllMembersRequest {
 	return ApiMonitorGroupAddMaintenancePeriodToAllMembersRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -59,29 +55,24 @@ func (a *MonitorGroupApiService) MonitorGroupAddMaintenancePeriodToAllMembers(ct
 }
 
 // Execute executes the request
-func (a *MonitorGroupApiService) MonitorGroupAddMaintenancePeriodToAllMembersExecute(r ApiMonitorGroupAddMaintenancePeriodToAllMembersRequest) (*_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupAddMaintenancePeriodToAllMembersExecute(r ApiMonitorGroupAddMaintenancePeriodToAllMembersRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupAddMaintenancePeriodToAllMembers")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/AddMaintenancePeriodToAllMembers"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.maintenancePeriod == nil {
-		return nil, reportError("maintenancePeriod is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -102,7 +93,7 @@ func (a *MonitorGroupApiService) MonitorGroupAddMaintenancePeriodToAllMembersExe
 	}
 	// body params
 	localVarPostBody = r.maintenancePeriod
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -112,15 +103,15 @@ func (a *MonitorGroupApiService) MonitorGroupAddMaintenancePeriodToAllMembersExe
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -131,7 +122,8 @@ func (a *MonitorGroupApiService) MonitorGroupAddMaintenancePeriodToAllMembersExe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -141,7 +133,8 @@ func (a *MonitorGroupApiService) MonitorGroupAddMaintenancePeriodToAllMembersExe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -150,26 +143,25 @@ func (a *MonitorGroupApiService) MonitorGroupAddMaintenancePeriodToAllMembersExe
 }
 
 type ApiMonitorGroupAddMonitorToMonitorGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 	monitorGuid string
 }
 
-
-func (r ApiMonitorGroupAddMonitorToMonitorGroupRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiMonitorGroupAddMonitorToMonitorGroupRequest) Execute() (*http.Response, error) {
 	return r.ApiService.MonitorGroupAddMonitorToMonitorGroupExecute(r)
 }
 
 /*
-MonitorGroupAddMonitorToMonitorGroup Adds the specified monitor to the monitor group 
+MonitorGroupAddMonitorToMonitorGroup Adds the specified monitor to the monitor group
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The Guid of the monitor group to add the monitor to
  @param monitorGuid The monitor Guid
  @return ApiMonitorGroupAddMonitorToMonitorGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupAddMonitorToMonitorGroup(ctx _context.Context, monitorGroupGuid string, monitorGuid string) ApiMonitorGroupAddMonitorToMonitorGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupAddMonitorToMonitorGroup(ctx context.Context, monitorGroupGuid string, monitorGuid string) ApiMonitorGroupAddMonitorToMonitorGroupRequest {
 	return ApiMonitorGroupAddMonitorToMonitorGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -179,27 +171,25 @@ func (a *MonitorGroupApiService) MonitorGroupAddMonitorToMonitorGroup(ctx _conte
 }
 
 // Execute executes the request
-func (a *MonitorGroupApiService) MonitorGroupAddMonitorToMonitorGroupExecute(r ApiMonitorGroupAddMonitorToMonitorGroupRequest) (*_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupAddMonitorToMonitorGroupExecute(r ApiMonitorGroupAddMonitorToMonitorGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupAddMonitorToMonitorGroup")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/Member/{monitorGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", url.PathEscape(parameterToString(r.monitorGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -218,7 +208,7 @@ func (a *MonitorGroupApiService) MonitorGroupAddMonitorToMonitorGroupExecute(r A
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -228,15 +218,15 @@ func (a *MonitorGroupApiService) MonitorGroupAddMonitorToMonitorGroupExecute(r A
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -247,7 +237,8 @@ func (a *MonitorGroupApiService) MonitorGroupAddMonitorToMonitorGroupExecute(r A
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -257,7 +248,8 @@ func (a *MonitorGroupApiService) MonitorGroupAddMonitorToMonitorGroupExecute(r A
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -266,7 +258,7 @@ func (a *MonitorGroupApiService) MonitorGroupAddMonitorToMonitorGroupExecute(r A
 }
 
 type ApiMonitorGroupCreateAuthorizationForMonitorGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 	monitorGroupAuthorization *MonitorGroupAuthorization
@@ -278,18 +270,18 @@ func (r ApiMonitorGroupCreateAuthorizationForMonitorGroupRequest) MonitorGroupAu
 	return r
 }
 
-func (r ApiMonitorGroupCreateAuthorizationForMonitorGroupRequest) Execute() ([]MonitorGroupAuthorization, *_nethttp.Response, error) {
+func (r ApiMonitorGroupCreateAuthorizationForMonitorGroupRequest) Execute() ([]MonitorGroupAuthorization, *http.Response, error) {
 	return r.ApiService.MonitorGroupCreateAuthorizationForMonitorGroupExecute(r)
 }
 
 /*
 MonitorGroupCreateAuthorizationForMonitorGroup Create monitor authorizations for monitor group If the wanted authorizations requires other authorizations, these will be added as well
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The monitor group GUID
  @return ApiMonitorGroupCreateAuthorizationForMonitorGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupCreateAuthorizationForMonitorGroup(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupCreateAuthorizationForMonitorGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupCreateAuthorizationForMonitorGroup(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupCreateAuthorizationForMonitorGroupRequest {
 	return ApiMonitorGroupCreateAuthorizationForMonitorGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -299,30 +291,25 @@ func (a *MonitorGroupApiService) MonitorGroupCreateAuthorizationForMonitorGroup(
 
 // Execute executes the request
 //  @return []MonitorGroupAuthorization
-func (a *MonitorGroupApiService) MonitorGroupCreateAuthorizationForMonitorGroupExecute(r ApiMonitorGroupCreateAuthorizationForMonitorGroupRequest) ([]MonitorGroupAuthorization, *_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupCreateAuthorizationForMonitorGroupExecute(r ApiMonitorGroupCreateAuthorizationForMonitorGroupRequest) ([]MonitorGroupAuthorization, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []MonitorGroupAuthorization
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupCreateAuthorizationForMonitorGroup")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/Authorizations"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.monitorGroupAuthorization == nil {
-		return localVarReturnValue, nil, reportError("monitorGroupAuthorization is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -343,7 +330,7 @@ func (a *MonitorGroupApiService) MonitorGroupCreateAuthorizationForMonitorGroupE
 	}
 	// body params
 	localVarPostBody = r.monitorGroupAuthorization
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -353,15 +340,15 @@ func (a *MonitorGroupApiService) MonitorGroupCreateAuthorizationForMonitorGroupE
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -372,7 +359,8 @@ func (a *MonitorGroupApiService) MonitorGroupCreateAuthorizationForMonitorGroupE
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -382,14 +370,15 @@ func (a *MonitorGroupApiService) MonitorGroupCreateAuthorizationForMonitorGroupE
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -400,7 +389,7 @@ func (a *MonitorGroupApiService) MonitorGroupCreateAuthorizationForMonitorGroupE
 }
 
 type ApiMonitorGroupCreateMonitorGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroup *MonitorGroup
 }
@@ -411,17 +400,17 @@ func (r ApiMonitorGroupCreateMonitorGroupRequest) MonitorGroup(monitorGroup Moni
 	return r
 }
 
-func (r ApiMonitorGroupCreateMonitorGroupRequest) Execute() (MonitorGroup, *_nethttp.Response, error) {
+func (r ApiMonitorGroupCreateMonitorGroupRequest) Execute() (*MonitorGroup, *http.Response, error) {
 	return r.ApiService.MonitorGroupCreateMonitorGroupExecute(r)
 }
 
 /*
 MonitorGroupCreateMonitorGroup Creates a new monitor group
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiMonitorGroupCreateMonitorGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupCreateMonitorGroup(ctx _context.Context) ApiMonitorGroupCreateMonitorGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupCreateMonitorGroup(ctx context.Context) ApiMonitorGroupCreateMonitorGroupRequest {
 	return ApiMonitorGroupCreateMonitorGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -430,29 +419,24 @@ func (a *MonitorGroupApiService) MonitorGroupCreateMonitorGroup(ctx _context.Con
 
 // Execute executes the request
 //  @return MonitorGroup
-func (a *MonitorGroupApiService) MonitorGroupCreateMonitorGroupExecute(r ApiMonitorGroupCreateMonitorGroupRequest) (MonitorGroup, *_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupCreateMonitorGroupExecute(r ApiMonitorGroupCreateMonitorGroupRequest) (*MonitorGroup, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  MonitorGroup
+		formFiles            []formFile
+		localVarReturnValue  *MonitorGroup
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupCreateMonitorGroup")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.monitorGroup == nil {
-		return localVarReturnValue, nil, reportError("monitorGroup is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -473,7 +457,7 @@ func (a *MonitorGroupApiService) MonitorGroupCreateMonitorGroupExecute(r ApiMoni
 	}
 	// body params
 	localVarPostBody = r.monitorGroup
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -483,15 +467,15 @@ func (a *MonitorGroupApiService) MonitorGroupCreateMonitorGroupExecute(r ApiMoni
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -502,14 +486,15 @@ func (a *MonitorGroupApiService) MonitorGroupCreateMonitorGroupExecute(r ApiMoni
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -520,26 +505,25 @@ func (a *MonitorGroupApiService) MonitorGroupCreateMonitorGroupExecute(r ApiMoni
 }
 
 type ApiMonitorGroupDeleteAuthorizationForMonitorGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 	authorizationGuid string
 }
 
-
-func (r ApiMonitorGroupDeleteAuthorizationForMonitorGroupRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiMonitorGroupDeleteAuthorizationForMonitorGroupRequest) Execute() (*http.Response, error) {
 	return r.ApiService.MonitorGroupDeleteAuthorizationForMonitorGroupExecute(r)
 }
 
 /*
 MonitorGroupDeleteAuthorizationForMonitorGroup Delete monitor authorization for monitor group
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The monitor group GUID
  @param authorizationGuid The authorization GUID that needs to be deleted
  @return ApiMonitorGroupDeleteAuthorizationForMonitorGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupDeleteAuthorizationForMonitorGroup(ctx _context.Context, monitorGroupGuid string, authorizationGuid string) ApiMonitorGroupDeleteAuthorizationForMonitorGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupDeleteAuthorizationForMonitorGroup(ctx context.Context, monitorGroupGuid string, authorizationGuid string) ApiMonitorGroupDeleteAuthorizationForMonitorGroupRequest {
 	return ApiMonitorGroupDeleteAuthorizationForMonitorGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -549,27 +533,25 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteAuthorizationForMonitorGroup(
 }
 
 // Execute executes the request
-func (a *MonitorGroupApiService) MonitorGroupDeleteAuthorizationForMonitorGroupExecute(r ApiMonitorGroupDeleteAuthorizationForMonitorGroupRequest) (*_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupDeleteAuthorizationForMonitorGroupExecute(r ApiMonitorGroupDeleteAuthorizationForMonitorGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupDeleteAuthorizationForMonitorGroup")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/Authorizations/{authorizationGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"authorizationGuid"+"}", _neturl.PathEscape(parameterToString(r.authorizationGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"authorizationGuid"+"}", url.PathEscape(parameterToString(r.authorizationGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -588,7 +570,7 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteAuthorizationForMonitorGroupE
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -598,15 +580,15 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteAuthorizationForMonitorGroupE
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -617,7 +599,8 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteAuthorizationForMonitorGroupE
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -627,7 +610,8 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteAuthorizationForMonitorGroupE
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -636,24 +620,23 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteAuthorizationForMonitorGroupE
 }
 
 type ApiMonitorGroupDeleteMonitorGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 }
 
-
-func (r ApiMonitorGroupDeleteMonitorGroupRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiMonitorGroupDeleteMonitorGroupRequest) Execute() (*http.Response, error) {
 	return r.ApiService.MonitorGroupDeleteMonitorGroupExecute(r)
 }
 
 /*
 MonitorGroupDeleteMonitorGroup Deletes the specified monitor group
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The Guid of the monitor group to be deleted
  @return ApiMonitorGroupDeleteMonitorGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupDeleteMonitorGroup(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupDeleteMonitorGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupDeleteMonitorGroup(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupDeleteMonitorGroupRequest {
 	return ApiMonitorGroupDeleteMonitorGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -662,26 +645,24 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteMonitorGroup(ctx _context.Con
 }
 
 // Execute executes the request
-func (a *MonitorGroupApiService) MonitorGroupDeleteMonitorGroupExecute(r ApiMonitorGroupDeleteMonitorGroupRequest) (*_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupDeleteMonitorGroupExecute(r ApiMonitorGroupDeleteMonitorGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupDeleteMonitorGroup")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -700,7 +681,7 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteMonitorGroupExecute(r ApiMoni
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -710,15 +691,15 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteMonitorGroupExecute(r ApiMoni
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -729,7 +710,8 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteMonitorGroupExecute(r ApiMoni
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -739,7 +721,8 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteMonitorGroupExecute(r ApiMoni
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -748,22 +731,21 @@ func (a *MonitorGroupApiService) MonitorGroupDeleteMonitorGroupExecute(r ApiMoni
 }
 
 type ApiMonitorGroupGetAllMonitorGroupsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 }
 
-
-func (r ApiMonitorGroupGetAllMonitorGroupsRequest) Execute() ([]MonitorGroup, *_nethttp.Response, error) {
+func (r ApiMonitorGroupGetAllMonitorGroupsRequest) Execute() ([]MonitorGroup, *http.Response, error) {
 	return r.ApiService.MonitorGroupGetAllMonitorGroupsExecute(r)
 }
 
 /*
 MonitorGroupGetAllMonitorGroups Gets all monitor groups
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiMonitorGroupGetAllMonitorGroupsRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupGetAllMonitorGroups(ctx _context.Context) ApiMonitorGroupGetAllMonitorGroupsRequest {
+func (a *MonitorGroupApiService) MonitorGroupGetAllMonitorGroups(ctx context.Context) ApiMonitorGroupGetAllMonitorGroupsRequest {
 	return ApiMonitorGroupGetAllMonitorGroupsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -772,26 +754,24 @@ func (a *MonitorGroupApiService) MonitorGroupGetAllMonitorGroups(ctx _context.Co
 
 // Execute executes the request
 //  @return []MonitorGroup
-func (a *MonitorGroupApiService) MonitorGroupGetAllMonitorGroupsExecute(r ApiMonitorGroupGetAllMonitorGroupsRequest) ([]MonitorGroup, *_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupGetAllMonitorGroupsExecute(r ApiMonitorGroupGetAllMonitorGroupsRequest) ([]MonitorGroup, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []MonitorGroup
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupGetAllMonitorGroups")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -810,7 +790,7 @@ func (a *MonitorGroupApiService) MonitorGroupGetAllMonitorGroupsExecute(r ApiMon
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -820,15 +800,15 @@ func (a *MonitorGroupApiService) MonitorGroupGetAllMonitorGroupsExecute(r ApiMon
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -839,14 +819,15 @@ func (a *MonitorGroupApiService) MonitorGroupGetAllMonitorGroupsExecute(r ApiMon
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -857,24 +838,23 @@ func (a *MonitorGroupApiService) MonitorGroupGetAllMonitorGroupsExecute(r ApiMon
 }
 
 type ApiMonitorGroupGetAuthorizationsOfMonitorGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 }
 
-
-func (r ApiMonitorGroupGetAuthorizationsOfMonitorGroupRequest) Execute() ([]MonitorGroupAuthorization, *_nethttp.Response, error) {
+func (r ApiMonitorGroupGetAuthorizationsOfMonitorGroupRequest) Execute() ([]MonitorGroupAuthorization, *http.Response, error) {
 	return r.ApiService.MonitorGroupGetAuthorizationsOfMonitorGroupExecute(r)
 }
 
 /*
 MonitorGroupGetAuthorizationsOfMonitorGroup Get monitor authorizations of monitor group
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The monitor group GUID
  @return ApiMonitorGroupGetAuthorizationsOfMonitorGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupGetAuthorizationsOfMonitorGroup(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupGetAuthorizationsOfMonitorGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupGetAuthorizationsOfMonitorGroup(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupGetAuthorizationsOfMonitorGroupRequest {
 	return ApiMonitorGroupGetAuthorizationsOfMonitorGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -884,27 +864,25 @@ func (a *MonitorGroupApiService) MonitorGroupGetAuthorizationsOfMonitorGroup(ctx
 
 // Execute executes the request
 //  @return []MonitorGroupAuthorization
-func (a *MonitorGroupApiService) MonitorGroupGetAuthorizationsOfMonitorGroupExecute(r ApiMonitorGroupGetAuthorizationsOfMonitorGroupRequest) ([]MonitorGroupAuthorization, *_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupGetAuthorizationsOfMonitorGroupExecute(r ApiMonitorGroupGetAuthorizationsOfMonitorGroupRequest) ([]MonitorGroupAuthorization, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []MonitorGroupAuthorization
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupGetAuthorizationsOfMonitorGroup")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/Authorizations"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -923,7 +901,7 @@ func (a *MonitorGroupApiService) MonitorGroupGetAuthorizationsOfMonitorGroupExec
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -933,15 +911,15 @@ func (a *MonitorGroupApiService) MonitorGroupGetAuthorizationsOfMonitorGroupExec
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -952,7 +930,8 @@ func (a *MonitorGroupApiService) MonitorGroupGetAuthorizationsOfMonitorGroupExec
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -962,14 +941,15 @@ func (a *MonitorGroupApiService) MonitorGroupGetAuthorizationsOfMonitorGroupExec
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -980,24 +960,23 @@ func (a *MonitorGroupApiService) MonitorGroupGetAuthorizationsOfMonitorGroupExec
 }
 
 type ApiMonitorGroupGetMonitorGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 }
 
-
-func (r ApiMonitorGroupGetMonitorGroupRequest) Execute() (MonitorGroup, *_nethttp.Response, error) {
+func (r ApiMonitorGroupGetMonitorGroupRequest) Execute() (*MonitorGroup, *http.Response, error) {
 	return r.ApiService.MonitorGroupGetMonitorGroupExecute(r)
 }
 
 /*
 MonitorGroupGetMonitorGroup Gets the details of a monitor group
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The Guid of the monitor group to be retrieved
  @return ApiMonitorGroupGetMonitorGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroup(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupGetMonitorGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroup(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupGetMonitorGroupRequest {
 	return ApiMonitorGroupGetMonitorGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1007,27 +986,25 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroup(ctx _context.Contex
 
 // Execute executes the request
 //  @return MonitorGroup
-func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupExecute(r ApiMonitorGroupGetMonitorGroupRequest) (MonitorGroup, *_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupExecute(r ApiMonitorGroupGetMonitorGroupRequest) (*MonitorGroup, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  MonitorGroup
+		formFiles            []formFile
+		localVarReturnValue  *MonitorGroup
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupGetMonitorGroup")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1046,7 +1023,7 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupExecute(r ApiMonitor
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1056,15 +1033,15 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupExecute(r ApiMonitor
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1075,7 +1052,8 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupExecute(r ApiMonitor
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1085,14 +1063,15 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupExecute(r ApiMonitor
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1103,24 +1082,23 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupExecute(r ApiMonitor
 }
 
 type ApiMonitorGroupGetMonitorGroupMembersRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 }
 
-
-func (r ApiMonitorGroupGetMonitorGroupMembersRequest) Execute() (MonitorGroupMember, *_nethttp.Response, error) {
+func (r ApiMonitorGroupGetMonitorGroupMembersRequest) Execute() (*MonitorGroupMember, *http.Response, error) {
 	return r.ApiService.MonitorGroupGetMonitorGroupMembersExecute(r)
 }
 
 /*
 MonitorGroupGetMonitorGroupMembers Gets a list of all members of a monitor group
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The Guid of the monitor group to retrieve the members for
  @return ApiMonitorGroupGetMonitorGroupMembersRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupMembers(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupGetMonitorGroupMembersRequest {
+func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupMembers(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupGetMonitorGroupMembersRequest {
 	return ApiMonitorGroupGetMonitorGroupMembersRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1130,27 +1108,25 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupMembers(ctx _context
 
 // Execute executes the request
 //  @return MonitorGroupMember
-func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupMembersExecute(r ApiMonitorGroupGetMonitorGroupMembersRequest) (MonitorGroupMember, *_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupMembersExecute(r ApiMonitorGroupGetMonitorGroupMembersRequest) (*MonitorGroupMember, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  MonitorGroupMember
+		formFiles            []formFile
+		localVarReturnValue  *MonitorGroupMember
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupGetMonitorGroupMembers")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/Member"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1169,7 +1145,7 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupMembersExecute(r Api
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1179,15 +1155,15 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupMembersExecute(r Api
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1198,7 +1174,8 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupMembersExecute(r Api
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1208,14 +1185,15 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupMembersExecute(r Api
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1226,26 +1204,25 @@ func (a *MonitorGroupApiService) MonitorGroupGetMonitorGroupMembersExecute(r Api
 }
 
 type ApiMonitorGroupRemoveMonitorFromMonitorGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 	monitorGuid string
 }
 
-
-func (r ApiMonitorGroupRemoveMonitorFromMonitorGroupRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiMonitorGroupRemoveMonitorFromMonitorGroupRequest) Execute() (*http.Response, error) {
 	return r.ApiService.MonitorGroupRemoveMonitorFromMonitorGroupExecute(r)
 }
 
 /*
 MonitorGroupRemoveMonitorFromMonitorGroup Removes the specified monitor from the monitor group
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The Guid of the monitor group to remove the monitor from
  @param monitorGuid The monitor Guid to be removed
  @return ApiMonitorGroupRemoveMonitorFromMonitorGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupRemoveMonitorFromMonitorGroup(ctx _context.Context, monitorGroupGuid string, monitorGuid string) ApiMonitorGroupRemoveMonitorFromMonitorGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupRemoveMonitorFromMonitorGroup(ctx context.Context, monitorGroupGuid string, monitorGuid string) ApiMonitorGroupRemoveMonitorFromMonitorGroupRequest {
 	return ApiMonitorGroupRemoveMonitorFromMonitorGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1255,27 +1232,25 @@ func (a *MonitorGroupApiService) MonitorGroupRemoveMonitorFromMonitorGroup(ctx _
 }
 
 // Execute executes the request
-func (a *MonitorGroupApiService) MonitorGroupRemoveMonitorFromMonitorGroupExecute(r ApiMonitorGroupRemoveMonitorFromMonitorGroupRequest) (*_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupRemoveMonitorFromMonitorGroupExecute(r ApiMonitorGroupRemoveMonitorFromMonitorGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupRemoveMonitorFromMonitorGroup")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/Member/{monitorGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", url.PathEscape(parameterToString(r.monitorGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1294,7 +1269,7 @@ func (a *MonitorGroupApiService) MonitorGroupRemoveMonitorFromMonitorGroupExecut
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1304,15 +1279,15 @@ func (a *MonitorGroupApiService) MonitorGroupRemoveMonitorFromMonitorGroupExecut
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1323,7 +1298,8 @@ func (a *MonitorGroupApiService) MonitorGroupRemoveMonitorFromMonitorGroupExecut
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1333,7 +1309,8 @@ func (a *MonitorGroupApiService) MonitorGroupRemoveMonitorFromMonitorGroupExecut
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1342,24 +1319,23 @@ func (a *MonitorGroupApiService) MonitorGroupRemoveMonitorFromMonitorGroupExecut
 }
 
 type ApiMonitorGroupStartAllMonitorAlertsInGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 }
 
-
-func (r ApiMonitorGroupStartAllMonitorAlertsInGroupRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiMonitorGroupStartAllMonitorAlertsInGroupRequest) Execute() (*http.Response, error) {
 	return r.ApiService.MonitorGroupStartAllMonitorAlertsInGroupExecute(r)
 }
 
 /*
 MonitorGroupStartAllMonitorAlertsInGroup Starts alerting for all monitors that are a member of the monitor group specified by the monitor group GUID
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The monitor group GUID
  @return ApiMonitorGroupStartAllMonitorAlertsInGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorAlertsInGroup(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupStartAllMonitorAlertsInGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorAlertsInGroup(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupStartAllMonitorAlertsInGroupRequest {
 	return ApiMonitorGroupStartAllMonitorAlertsInGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1368,26 +1344,24 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorAlertsInGroup(ctx _c
 }
 
 // Execute executes the request
-func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorAlertsInGroupExecute(r ApiMonitorGroupStartAllMonitorAlertsInGroupRequest) (*_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorAlertsInGroupExecute(r ApiMonitorGroupStartAllMonitorAlertsInGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupStartAllMonitorAlertsInGroup")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/StartAllMonitorAlerts"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1406,7 +1380,7 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorAlertsInGroupExecute
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1416,15 +1390,15 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorAlertsInGroupExecute
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1435,7 +1409,8 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorAlertsInGroupExecute
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1445,7 +1420,8 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorAlertsInGroupExecute
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1454,24 +1430,23 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorAlertsInGroupExecute
 }
 
 type ApiMonitorGroupStartAllMonitorsInGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 }
 
-
-func (r ApiMonitorGroupStartAllMonitorsInGroupRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiMonitorGroupStartAllMonitorsInGroupRequest) Execute() (*http.Response, error) {
 	return r.ApiService.MonitorGroupStartAllMonitorsInGroupExecute(r)
 }
 
 /*
 MonitorGroupStartAllMonitorsInGroup Starts all monitors that are a member of the monitor group specified by the monitor group GUID
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The monitor group GUID
  @return ApiMonitorGroupStartAllMonitorsInGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorsInGroup(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupStartAllMonitorsInGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorsInGroup(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupStartAllMonitorsInGroupRequest {
 	return ApiMonitorGroupStartAllMonitorsInGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1480,26 +1455,24 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorsInGroup(ctx _contex
 }
 
 // Execute executes the request
-func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorsInGroupExecute(r ApiMonitorGroupStartAllMonitorsInGroupRequest) (*_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorsInGroupExecute(r ApiMonitorGroupStartAllMonitorsInGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupStartAllMonitorsInGroup")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/StartAllMonitors"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1518,7 +1491,7 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorsInGroupExecute(r Ap
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1528,15 +1501,15 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorsInGroupExecute(r Ap
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1547,7 +1520,8 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorsInGroupExecute(r Ap
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1557,7 +1531,8 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorsInGroupExecute(r Ap
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1566,24 +1541,23 @@ func (a *MonitorGroupApiService) MonitorGroupStartAllMonitorsInGroupExecute(r Ap
 }
 
 type ApiMonitorGroupStopAllMonitorAlertsInGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 }
 
-
-func (r ApiMonitorGroupStopAllMonitorAlertsInGroupRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiMonitorGroupStopAllMonitorAlertsInGroupRequest) Execute() (*http.Response, error) {
 	return r.ApiService.MonitorGroupStopAllMonitorAlertsInGroupExecute(r)
 }
 
 /*
 MonitorGroupStopAllMonitorAlertsInGroup Stops alerting for all monitors that are a member of the monitor group specified by the monitor group GUID
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The monitor group GUID
  @return ApiMonitorGroupStopAllMonitorAlertsInGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorAlertsInGroup(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupStopAllMonitorAlertsInGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorAlertsInGroup(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupStopAllMonitorAlertsInGroupRequest {
 	return ApiMonitorGroupStopAllMonitorAlertsInGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1592,26 +1566,24 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorAlertsInGroup(ctx _co
 }
 
 // Execute executes the request
-func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorAlertsInGroupExecute(r ApiMonitorGroupStopAllMonitorAlertsInGroupRequest) (*_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorAlertsInGroupExecute(r ApiMonitorGroupStopAllMonitorAlertsInGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupStopAllMonitorAlertsInGroup")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/StopAllMonitorAlerts"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1630,7 +1602,7 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorAlertsInGroupExecute(
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1640,15 +1612,15 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorAlertsInGroupExecute(
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1659,7 +1631,8 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorAlertsInGroupExecute(
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1669,7 +1642,8 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorAlertsInGroupExecute(
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1678,24 +1652,23 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorAlertsInGroupExecute(
 }
 
 type ApiMonitorGroupStopAllMonitorsInGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
 }
 
-
-func (r ApiMonitorGroupStopAllMonitorsInGroupRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiMonitorGroupStopAllMonitorsInGroupRequest) Execute() (*http.Response, error) {
 	return r.ApiService.MonitorGroupStopAllMonitorsInGroupExecute(r)
 }
 
 /*
 MonitorGroupStopAllMonitorsInGroup Stops all monitors that are a member of the monitor group specified by the monitor group GUID
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The monitor group GUID
  @return ApiMonitorGroupStopAllMonitorsInGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorsInGroup(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupStopAllMonitorsInGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorsInGroup(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupStopAllMonitorsInGroupRequest {
 	return ApiMonitorGroupStopAllMonitorsInGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1704,26 +1677,24 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorsInGroup(ctx _context
 }
 
 // Execute executes the request
-func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorsInGroupExecute(r ApiMonitorGroupStopAllMonitorsInGroupRequest) (*_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorsInGroupExecute(r ApiMonitorGroupStopAllMonitorsInGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupStopAllMonitorsInGroup")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}/StopAllMonitors"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1742,7 +1713,7 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorsInGroupExecute(r Api
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1752,15 +1723,15 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorsInGroupExecute(r Api
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1771,7 +1742,8 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorsInGroupExecute(r Api
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1781,7 +1753,8 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorsInGroupExecute(r Api
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1790,30 +1763,30 @@ func (a *MonitorGroupApiService) MonitorGroupStopAllMonitorsInGroupExecute(r Api
 }
 
 type ApiMonitorGroupUpdateMonitorGroupRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorGroupApiService
 	monitorGroupGuid string
-	item *MonitorGroup
+	monitorGroup *MonitorGroup
 }
 
 // The monitor group to be updated
-func (r ApiMonitorGroupUpdateMonitorGroupRequest) Item(item MonitorGroup) ApiMonitorGroupUpdateMonitorGroupRequest {
-	r.item = &item
+func (r ApiMonitorGroupUpdateMonitorGroupRequest) MonitorGroup(monitorGroup MonitorGroup) ApiMonitorGroupUpdateMonitorGroupRequest {
+	r.monitorGroup = &monitorGroup
 	return r
 }
 
-func (r ApiMonitorGroupUpdateMonitorGroupRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiMonitorGroupUpdateMonitorGroupRequest) Execute() (*http.Response, error) {
 	return r.ApiService.MonitorGroupUpdateMonitorGroupExecute(r)
 }
 
 /*
 MonitorGroupUpdateMonitorGroup Updates the monitor group with the Guid specified
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The Guid of the monitor group to be updated
  @return ApiMonitorGroupUpdateMonitorGroupRequest
 */
-func (a *MonitorGroupApiService) MonitorGroupUpdateMonitorGroup(ctx _context.Context, monitorGroupGuid string) ApiMonitorGroupUpdateMonitorGroupRequest {
+func (a *MonitorGroupApiService) MonitorGroupUpdateMonitorGroup(ctx context.Context, monitorGroupGuid string) ApiMonitorGroupUpdateMonitorGroupRequest {
 	return ApiMonitorGroupUpdateMonitorGroupRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1822,29 +1795,24 @@ func (a *MonitorGroupApiService) MonitorGroupUpdateMonitorGroup(ctx _context.Con
 }
 
 // Execute executes the request
-func (a *MonitorGroupApiService) MonitorGroupUpdateMonitorGroupExecute(r ApiMonitorGroupUpdateMonitorGroupRequest) (*_nethttp.Response, error) {
+func (a *MonitorGroupApiService) MonitorGroupUpdateMonitorGroupExecute(r ApiMonitorGroupUpdateMonitorGroupRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorGroupApiService.MonitorGroupUpdateMonitorGroup")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorGroup/{monitorGroupGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.item == nil {
-		return nil, reportError("item is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -1864,8 +1832,8 @@ func (a *MonitorGroupApiService) MonitorGroupUpdateMonitorGroupExecute(r ApiMoni
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
 	// body params
-	localVarPostBody = r.item
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	localVarPostBody = r.monitorGroup
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1875,15 +1843,15 @@ func (a *MonitorGroupApiService) MonitorGroupUpdateMonitorGroupExecute(r ApiMoni
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1894,7 +1862,8 @@ func (a *MonitorGroupApiService) MonitorGroupUpdateMonitorGroupExecute(r ApiMoni
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1904,7 +1873,8 @@ func (a *MonitorGroupApiService) MonitorGroupUpdateMonitorGroupExecute(r ApiMoni
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

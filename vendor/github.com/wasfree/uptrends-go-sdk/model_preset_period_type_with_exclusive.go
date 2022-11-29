@@ -23,11 +23,16 @@ const (
 	PRESETPERIODTYPEWITHEXCLUSIVE_CURRENT_DAY PresetPeriodTypeWithExclusive = "CurrentDay"
 	PRESETPERIODTYPEWITHEXCLUSIVE_CURRENT_WEEK PresetPeriodTypeWithExclusive = "CurrentWeek"
 	PRESETPERIODTYPEWITHEXCLUSIVE_CURRENT_MONTH PresetPeriodTypeWithExclusive = "CurrentMonth"
+	PRESETPERIODTYPEWITHEXCLUSIVE_CURRENT_QUARTER PresetPeriodTypeWithExclusive = "CurrentQuarter"
 	PRESETPERIODTYPEWITHEXCLUSIVE_CURRENT_YEAR PresetPeriodTypeWithExclusive = "CurrentYear"
 	PRESETPERIODTYPEWITHEXCLUSIVE_PREVIOUS_DAY PresetPeriodTypeWithExclusive = "PreviousDay"
 	PRESETPERIODTYPEWITHEXCLUSIVE_PREVIOUS_WEEK PresetPeriodTypeWithExclusive = "PreviousWeek"
 	PRESETPERIODTYPEWITHEXCLUSIVE_PREVIOUS_MONTH PresetPeriodTypeWithExclusive = "PreviousMonth"
+	PRESETPERIODTYPEWITHEXCLUSIVE_PREVIOUS_QUARTER PresetPeriodTypeWithExclusive = "PreviousQuarter"
 	PRESETPERIODTYPEWITHEXCLUSIVE_PREVIOUS_YEAR PresetPeriodTypeWithExclusive = "PreviousYear"
+	PRESETPERIODTYPEWITHEXCLUSIVE_LAST2_HOURS PresetPeriodTypeWithExclusive = "Last2Hours"
+	PRESETPERIODTYPEWITHEXCLUSIVE_LAST6_HOURS PresetPeriodTypeWithExclusive = "Last6Hours"
+	PRESETPERIODTYPEWITHEXCLUSIVE_LAST12_HOURS PresetPeriodTypeWithExclusive = "Last12Hours"
 	PRESETPERIODTYPEWITHEXCLUSIVE_LAST24_HOURS PresetPeriodTypeWithExclusive = "Last24Hours"
 	PRESETPERIODTYPEWITHEXCLUSIVE_LAST48_HOURS PresetPeriodTypeWithExclusive = "Last48Hours"
 	PRESETPERIODTYPEWITHEXCLUSIVE_LAST7_DAYS PresetPeriodTypeWithExclusive = "Last7Days"
@@ -39,6 +44,9 @@ const (
 	PRESETPERIODTYPEWITHEXCLUSIVE_LAST6_MONTHS PresetPeriodTypeWithExclusive = "Last6Months"
 	PRESETPERIODTYPEWITHEXCLUSIVE_LAST12_MONTHS PresetPeriodTypeWithExclusive = "Last12Months"
 	PRESETPERIODTYPEWITHEXCLUSIVE_LAST24_MONTHS PresetPeriodTypeWithExclusive = "Last24Months"
+	PRESETPERIODTYPEWITHEXCLUSIVE_LAST2_HOURS_EXCL PresetPeriodTypeWithExclusive = "Last2HoursExcl"
+	PRESETPERIODTYPEWITHEXCLUSIVE_LAST6_HOURS_EXCL PresetPeriodTypeWithExclusive = "Last6HoursExcl"
+	PRESETPERIODTYPEWITHEXCLUSIVE_LAST12_HOURS_EXCL PresetPeriodTypeWithExclusive = "Last12HoursExcl"
 	PRESETPERIODTYPEWITHEXCLUSIVE_LAST24_HOURS_EXCL PresetPeriodTypeWithExclusive = "Last24HoursExcl"
 	PRESETPERIODTYPEWITHEXCLUSIVE_LAST48_HOURS_EXCL PresetPeriodTypeWithExclusive = "Last48HoursExcl"
 	PRESETPERIODTYPEWITHEXCLUSIVE_LAST7_DAYS_EXCL PresetPeriodTypeWithExclusive = "Last7DaysExcl"
@@ -53,15 +61,21 @@ const (
 	PRESETPERIODTYPEWITHEXCLUSIVE_ALL PresetPeriodTypeWithExclusive = "All"
 )
 
-var allowedPresetPeriodTypeWithExclusiveEnumValues = []PresetPeriodTypeWithExclusive{
+// All allowed values of PresetPeriodTypeWithExclusive enum
+var AllowedPresetPeriodTypeWithExclusiveEnumValues = []PresetPeriodTypeWithExclusive{
 	"CurrentDay",
 	"CurrentWeek",
 	"CurrentMonth",
+	"CurrentQuarter",
 	"CurrentYear",
 	"PreviousDay",
 	"PreviousWeek",
 	"PreviousMonth",
+	"PreviousQuarter",
 	"PreviousYear",
+	"Last2Hours",
+	"Last6Hours",
+	"Last12Hours",
 	"Last24Hours",
 	"Last48Hours",
 	"Last7Days",
@@ -73,6 +87,9 @@ var allowedPresetPeriodTypeWithExclusiveEnumValues = []PresetPeriodTypeWithExclu
 	"Last6Months",
 	"Last12Months",
 	"Last24Months",
+	"Last2HoursExcl",
+	"Last6HoursExcl",
+	"Last12HoursExcl",
 	"Last24HoursExcl",
 	"Last48HoursExcl",
 	"Last7DaysExcl",
@@ -94,7 +111,7 @@ func (v *PresetPeriodTypeWithExclusive) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := PresetPeriodTypeWithExclusive(value)
-	for _, existing := range allowedPresetPeriodTypeWithExclusiveEnumValues {
+	for _, existing := range AllowedPresetPeriodTypeWithExclusiveEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -111,13 +128,13 @@ func NewPresetPeriodTypeWithExclusiveFromValue(v string) (*PresetPeriodTypeWithE
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for PresetPeriodTypeWithExclusive: valid values are %v", v, allowedPresetPeriodTypeWithExclusiveEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for PresetPeriodTypeWithExclusive: valid values are %v", v, AllowedPresetPeriodTypeWithExclusiveEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v PresetPeriodTypeWithExclusive) IsValid() bool {
-	for _, existing := range allowedPresetPeriodTypeWithExclusiveEnumValues {
+	for _, existing := range AllowedPresetPeriodTypeWithExclusiveEnumValues {
 		if existing == v {
 			return true
 		}

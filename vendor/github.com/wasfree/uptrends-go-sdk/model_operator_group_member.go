@@ -51,8 +51,8 @@ func (o *OperatorGroupMember) GetOperatorGuid() string {
 // GetOperatorGuidOk returns a tuple with the OperatorGuid field value
 // and a boolean to check if the value has been set.
 func (o *OperatorGroupMember) GetOperatorGuidOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.OperatorGuid, true
 }

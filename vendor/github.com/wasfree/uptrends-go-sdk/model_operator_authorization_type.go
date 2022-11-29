@@ -26,15 +26,20 @@ const (
 	OPERATORAUTHORIZATIONTYPE_FINANCIAL_OPERATOR OperatorAuthorizationType = "FinancialOperator"
 	OPERATORAUTHORIZATIONTYPE_TECHNICAL_CONTACT OperatorAuthorizationType = "TechnicalContact"
 	OPERATORAUTHORIZATIONTYPE_SHARE_DASHBOARDS OperatorAuthorizationType = "ShareDashboards"
+	OPERATORAUTHORIZATIONTYPE_CREATE_ALERT_DEFINITION OperatorAuthorizationType = "CreateAlertDefinition"
+	OPERATORAUTHORIZATIONTYPE_CREATE_INTEGRATION OperatorAuthorizationType = "CreateIntegration"
 )
 
-var allowedOperatorAuthorizationTypeEnumValues = []OperatorAuthorizationType{
+// All allowed values of OperatorAuthorizationType enum
+var AllowedOperatorAuthorizationTypeEnumValues = []OperatorAuthorizationType{
 	"AccountAccess",
 	"AccountAdministrator",
 	"AllowInfra",
 	"FinancialOperator",
 	"TechnicalContact",
 	"ShareDashboards",
+	"CreateAlertDefinition",
+	"CreateIntegration",
 }
 
 func (v *OperatorAuthorizationType) UnmarshalJSON(src []byte) error {
@@ -44,7 +49,7 @@ func (v *OperatorAuthorizationType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := OperatorAuthorizationType(value)
-	for _, existing := range allowedOperatorAuthorizationTypeEnumValues {
+	for _, existing := range AllowedOperatorAuthorizationTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -61,13 +66,13 @@ func NewOperatorAuthorizationTypeFromValue(v string) (*OperatorAuthorizationType
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for OperatorAuthorizationType: valid values are %v", v, allowedOperatorAuthorizationTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for OperatorAuthorizationType: valid values are %v", v, AllowedOperatorAuthorizationTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v OperatorAuthorizationType) IsValid() bool {
-	for _, existing := range allowedOperatorAuthorizationTypeEnumValues {
+	for _, existing := range AllowedOperatorAuthorizationTypeEnumValues {
 		if existing == v {
 			return true
 		}

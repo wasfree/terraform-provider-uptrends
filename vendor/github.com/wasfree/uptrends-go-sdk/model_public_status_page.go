@@ -23,8 +23,8 @@ type PublicStatusPage struct {
 	CustomizationInfo *CustomizationInfo `json:"CustomizationInfo,omitempty"`
 	SlaGuid *string `json:"SlaGuid,omitempty"`
 	SlaGuidSpecified *bool `json:"SlaGuidSpecified,omitempty"`
-	MonitorGuids *[]string `json:"MonitorGuids,omitempty"`
-	MonitorGroupGuids *[]string `json:"MonitorGroupGuids,omitempty"`
+	MonitorGuids []string `json:"MonitorGuids,omitempty"`
+	MonitorGroupGuids []string `json:"MonitorGroupGuids,omitempty"`
 }
 
 // NewPublicStatusPage instantiates a new PublicStatusPage object
@@ -46,7 +46,7 @@ func NewPublicStatusPageWithDefaults() *PublicStatusPage {
 
 // GetPublicDashboardGuid returns the PublicDashboardGuid field value if set, zero value otherwise.
 func (o *PublicStatusPage) GetPublicDashboardGuid() string {
-	if o == nil || o.PublicDashboardGuid == nil {
+	if o == nil || isNil(o.PublicDashboardGuid) {
 		var ret string
 		return ret
 	}
@@ -56,15 +56,15 @@ func (o *PublicStatusPage) GetPublicDashboardGuid() string {
 // GetPublicDashboardGuidOk returns a tuple with the PublicDashboardGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PublicStatusPage) GetPublicDashboardGuidOk() (*string, bool) {
-	if o == nil || o.PublicDashboardGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.PublicDashboardGuid) {
+    return nil, false
 	}
 	return o.PublicDashboardGuid, true
 }
 
 // HasPublicDashboardGuid returns a boolean if a field has been set.
 func (o *PublicStatusPage) HasPublicDashboardGuid() bool {
-	if o != nil && o.PublicDashboardGuid != nil {
+	if o != nil && !isNil(o.PublicDashboardGuid) {
 		return true
 	}
 
@@ -78,7 +78,7 @@ func (o *PublicStatusPage) SetPublicDashboardGuid(v string) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *PublicStatusPage) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -88,15 +88,15 @@ func (o *PublicStatusPage) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PublicStatusPage) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *PublicStatusPage) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -110,7 +110,7 @@ func (o *PublicStatusPage) SetName(v string) {
 
 // GetIsPublished returns the IsPublished field value if set, zero value otherwise.
 func (o *PublicStatusPage) GetIsPublished() bool {
-	if o == nil || o.IsPublished == nil {
+	if o == nil || isNil(o.IsPublished) {
 		var ret bool
 		return ret
 	}
@@ -120,15 +120,15 @@ func (o *PublicStatusPage) GetIsPublished() bool {
 // GetIsPublishedOk returns a tuple with the IsPublished field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PublicStatusPage) GetIsPublishedOk() (*bool, bool) {
-	if o == nil || o.IsPublished == nil {
-		return nil, false
+	if o == nil || isNil(o.IsPublished) {
+    return nil, false
 	}
 	return o.IsPublished, true
 }
 
 // HasIsPublished returns a boolean if a field has been set.
 func (o *PublicStatusPage) HasIsPublished() bool {
-	if o != nil && o.IsPublished != nil {
+	if o != nil && !isNil(o.IsPublished) {
 		return true
 	}
 
@@ -142,7 +142,7 @@ func (o *PublicStatusPage) SetIsPublished(v bool) {
 
 // GetPresetPeriodType returns the PresetPeriodType field value if set, zero value otherwise.
 func (o *PublicStatusPage) GetPresetPeriodType() PresetPeriodType {
-	if o == nil || o.PresetPeriodType == nil {
+	if o == nil || isNil(o.PresetPeriodType) {
 		var ret PresetPeriodType
 		return ret
 	}
@@ -152,15 +152,15 @@ func (o *PublicStatusPage) GetPresetPeriodType() PresetPeriodType {
 // GetPresetPeriodTypeOk returns a tuple with the PresetPeriodType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PublicStatusPage) GetPresetPeriodTypeOk() (*PresetPeriodType, bool) {
-	if o == nil || o.PresetPeriodType == nil {
-		return nil, false
+	if o == nil || isNil(o.PresetPeriodType) {
+    return nil, false
 	}
 	return o.PresetPeriodType, true
 }
 
 // HasPresetPeriodType returns a boolean if a field has been set.
 func (o *PublicStatusPage) HasPresetPeriodType() bool {
-	if o != nil && o.PresetPeriodType != nil {
+	if o != nil && !isNil(o.PresetPeriodType) {
 		return true
 	}
 
@@ -174,7 +174,7 @@ func (o *PublicStatusPage) SetPresetPeriodType(v PresetPeriodType) {
 
 // GetCustomizationInfo returns the CustomizationInfo field value if set, zero value otherwise.
 func (o *PublicStatusPage) GetCustomizationInfo() CustomizationInfo {
-	if o == nil || o.CustomizationInfo == nil {
+	if o == nil || isNil(o.CustomizationInfo) {
 		var ret CustomizationInfo
 		return ret
 	}
@@ -184,15 +184,15 @@ func (o *PublicStatusPage) GetCustomizationInfo() CustomizationInfo {
 // GetCustomizationInfoOk returns a tuple with the CustomizationInfo field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PublicStatusPage) GetCustomizationInfoOk() (*CustomizationInfo, bool) {
-	if o == nil || o.CustomizationInfo == nil {
-		return nil, false
+	if o == nil || isNil(o.CustomizationInfo) {
+    return nil, false
 	}
 	return o.CustomizationInfo, true
 }
 
 // HasCustomizationInfo returns a boolean if a field has been set.
 func (o *PublicStatusPage) HasCustomizationInfo() bool {
-	if o != nil && o.CustomizationInfo != nil {
+	if o != nil && !isNil(o.CustomizationInfo) {
 		return true
 	}
 
@@ -206,7 +206,7 @@ func (o *PublicStatusPage) SetCustomizationInfo(v CustomizationInfo) {
 
 // GetSlaGuid returns the SlaGuid field value if set, zero value otherwise.
 func (o *PublicStatusPage) GetSlaGuid() string {
-	if o == nil || o.SlaGuid == nil {
+	if o == nil || isNil(o.SlaGuid) {
 		var ret string
 		return ret
 	}
@@ -216,15 +216,15 @@ func (o *PublicStatusPage) GetSlaGuid() string {
 // GetSlaGuidOk returns a tuple with the SlaGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PublicStatusPage) GetSlaGuidOk() (*string, bool) {
-	if o == nil || o.SlaGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.SlaGuid) {
+    return nil, false
 	}
 	return o.SlaGuid, true
 }
 
 // HasSlaGuid returns a boolean if a field has been set.
 func (o *PublicStatusPage) HasSlaGuid() bool {
-	if o != nil && o.SlaGuid != nil {
+	if o != nil && !isNil(o.SlaGuid) {
 		return true
 	}
 
@@ -238,7 +238,7 @@ func (o *PublicStatusPage) SetSlaGuid(v string) {
 
 // GetSlaGuidSpecified returns the SlaGuidSpecified field value if set, zero value otherwise.
 func (o *PublicStatusPage) GetSlaGuidSpecified() bool {
-	if o == nil || o.SlaGuidSpecified == nil {
+	if o == nil || isNil(o.SlaGuidSpecified) {
 		var ret bool
 		return ret
 	}
@@ -248,15 +248,15 @@ func (o *PublicStatusPage) GetSlaGuidSpecified() bool {
 // GetSlaGuidSpecifiedOk returns a tuple with the SlaGuidSpecified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PublicStatusPage) GetSlaGuidSpecifiedOk() (*bool, bool) {
-	if o == nil || o.SlaGuidSpecified == nil {
-		return nil, false
+	if o == nil || isNil(o.SlaGuidSpecified) {
+    return nil, false
 	}
 	return o.SlaGuidSpecified, true
 }
 
 // HasSlaGuidSpecified returns a boolean if a field has been set.
 func (o *PublicStatusPage) HasSlaGuidSpecified() bool {
-	if o != nil && o.SlaGuidSpecified != nil {
+	if o != nil && !isNil(o.SlaGuidSpecified) {
 		return true
 	}
 
@@ -270,25 +270,25 @@ func (o *PublicStatusPage) SetSlaGuidSpecified(v bool) {
 
 // GetMonitorGuids returns the MonitorGuids field value if set, zero value otherwise.
 func (o *PublicStatusPage) GetMonitorGuids() []string {
-	if o == nil || o.MonitorGuids == nil {
+	if o == nil || isNil(o.MonitorGuids) {
 		var ret []string
 		return ret
 	}
-	return *o.MonitorGuids
+	return o.MonitorGuids
 }
 
 // GetMonitorGuidsOk returns a tuple with the MonitorGuids field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PublicStatusPage) GetMonitorGuidsOk() (*[]string, bool) {
-	if o == nil || o.MonitorGuids == nil {
-		return nil, false
+func (o *PublicStatusPage) GetMonitorGuidsOk() ([]string, bool) {
+	if o == nil || isNil(o.MonitorGuids) {
+    return nil, false
 	}
 	return o.MonitorGuids, true
 }
 
 // HasMonitorGuids returns a boolean if a field has been set.
 func (o *PublicStatusPage) HasMonitorGuids() bool {
-	if o != nil && o.MonitorGuids != nil {
+	if o != nil && !isNil(o.MonitorGuids) {
 		return true
 	}
 
@@ -297,30 +297,30 @@ func (o *PublicStatusPage) HasMonitorGuids() bool {
 
 // SetMonitorGuids gets a reference to the given []string and assigns it to the MonitorGuids field.
 func (o *PublicStatusPage) SetMonitorGuids(v []string) {
-	o.MonitorGuids = &v
+	o.MonitorGuids = v
 }
 
 // GetMonitorGroupGuids returns the MonitorGroupGuids field value if set, zero value otherwise.
 func (o *PublicStatusPage) GetMonitorGroupGuids() []string {
-	if o == nil || o.MonitorGroupGuids == nil {
+	if o == nil || isNil(o.MonitorGroupGuids) {
 		var ret []string
 		return ret
 	}
-	return *o.MonitorGroupGuids
+	return o.MonitorGroupGuids
 }
 
 // GetMonitorGroupGuidsOk returns a tuple with the MonitorGroupGuids field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PublicStatusPage) GetMonitorGroupGuidsOk() (*[]string, bool) {
-	if o == nil || o.MonitorGroupGuids == nil {
-		return nil, false
+func (o *PublicStatusPage) GetMonitorGroupGuidsOk() ([]string, bool) {
+	if o == nil || isNil(o.MonitorGroupGuids) {
+    return nil, false
 	}
 	return o.MonitorGroupGuids, true
 }
 
 // HasMonitorGroupGuids returns a boolean if a field has been set.
 func (o *PublicStatusPage) HasMonitorGroupGuids() bool {
-	if o != nil && o.MonitorGroupGuids != nil {
+	if o != nil && !isNil(o.MonitorGroupGuids) {
 		return true
 	}
 
@@ -329,36 +329,36 @@ func (o *PublicStatusPage) HasMonitorGroupGuids() bool {
 
 // SetMonitorGroupGuids gets a reference to the given []string and assigns it to the MonitorGroupGuids field.
 func (o *PublicStatusPage) SetMonitorGroupGuids(v []string) {
-	o.MonitorGroupGuids = &v
+	o.MonitorGroupGuids = v
 }
 
 func (o PublicStatusPage) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.PublicDashboardGuid != nil {
+	if !isNil(o.PublicDashboardGuid) {
 		toSerialize["PublicDashboardGuid"] = o.PublicDashboardGuid
 	}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
-	if o.IsPublished != nil {
+	if !isNil(o.IsPublished) {
 		toSerialize["IsPublished"] = o.IsPublished
 	}
-	if o.PresetPeriodType != nil {
+	if !isNil(o.PresetPeriodType) {
 		toSerialize["PresetPeriodType"] = o.PresetPeriodType
 	}
-	if o.CustomizationInfo != nil {
+	if !isNil(o.CustomizationInfo) {
 		toSerialize["CustomizationInfo"] = o.CustomizationInfo
 	}
-	if o.SlaGuid != nil {
+	if !isNil(o.SlaGuid) {
 		toSerialize["SlaGuid"] = o.SlaGuid
 	}
-	if o.SlaGuidSpecified != nil {
+	if !isNil(o.SlaGuidSpecified) {
 		toSerialize["SlaGuidSpecified"] = o.SlaGuidSpecified
 	}
-	if o.MonitorGuids != nil {
+	if !isNil(o.MonitorGuids) {
 		toSerialize["MonitorGuids"] = o.MonitorGuids
 	}
-	if o.MonitorGroupGuids != nil {
+	if !isNil(o.MonitorGroupGuids) {
 		toSerialize["MonitorGroupGuids"] = o.MonitorGroupGuids
 	}
 	return json.Marshal(toSerialize)

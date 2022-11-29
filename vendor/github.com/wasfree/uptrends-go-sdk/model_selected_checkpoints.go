@@ -16,9 +16,9 @@ import (
 
 // SelectedCheckpoints struct for SelectedCheckpoints
 type SelectedCheckpoints struct {
-	Checkpoints *[]int32 `json:"Checkpoints,omitempty"`
-	Regions *[]int32 `json:"Regions,omitempty"`
-	ExcludeLocations *[]int32 `json:"ExcludeLocations,omitempty"`
+	Checkpoints []int32 `json:"Checkpoints,omitempty"`
+	Regions []int32 `json:"Regions,omitempty"`
+	ExcludeLocations []int32 `json:"ExcludeLocations,omitempty"`
 }
 
 // NewSelectedCheckpoints instantiates a new SelectedCheckpoints object
@@ -40,25 +40,25 @@ func NewSelectedCheckpointsWithDefaults() *SelectedCheckpoints {
 
 // GetCheckpoints returns the Checkpoints field value if set, zero value otherwise.
 func (o *SelectedCheckpoints) GetCheckpoints() []int32 {
-	if o == nil || o.Checkpoints == nil {
+	if o == nil || isNil(o.Checkpoints) {
 		var ret []int32
 		return ret
 	}
-	return *o.Checkpoints
+	return o.Checkpoints
 }
 
 // GetCheckpointsOk returns a tuple with the Checkpoints field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SelectedCheckpoints) GetCheckpointsOk() (*[]int32, bool) {
-	if o == nil || o.Checkpoints == nil {
-		return nil, false
+func (o *SelectedCheckpoints) GetCheckpointsOk() ([]int32, bool) {
+	if o == nil || isNil(o.Checkpoints) {
+    return nil, false
 	}
 	return o.Checkpoints, true
 }
 
 // HasCheckpoints returns a boolean if a field has been set.
 func (o *SelectedCheckpoints) HasCheckpoints() bool {
-	if o != nil && o.Checkpoints != nil {
+	if o != nil && !isNil(o.Checkpoints) {
 		return true
 	}
 
@@ -67,30 +67,30 @@ func (o *SelectedCheckpoints) HasCheckpoints() bool {
 
 // SetCheckpoints gets a reference to the given []int32 and assigns it to the Checkpoints field.
 func (o *SelectedCheckpoints) SetCheckpoints(v []int32) {
-	o.Checkpoints = &v
+	o.Checkpoints = v
 }
 
 // GetRegions returns the Regions field value if set, zero value otherwise.
 func (o *SelectedCheckpoints) GetRegions() []int32 {
-	if o == nil || o.Regions == nil {
+	if o == nil || isNil(o.Regions) {
 		var ret []int32
 		return ret
 	}
-	return *o.Regions
+	return o.Regions
 }
 
 // GetRegionsOk returns a tuple with the Regions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SelectedCheckpoints) GetRegionsOk() (*[]int32, bool) {
-	if o == nil || o.Regions == nil {
-		return nil, false
+func (o *SelectedCheckpoints) GetRegionsOk() ([]int32, bool) {
+	if o == nil || isNil(o.Regions) {
+    return nil, false
 	}
 	return o.Regions, true
 }
 
 // HasRegions returns a boolean if a field has been set.
 func (o *SelectedCheckpoints) HasRegions() bool {
-	if o != nil && o.Regions != nil {
+	if o != nil && !isNil(o.Regions) {
 		return true
 	}
 
@@ -99,30 +99,30 @@ func (o *SelectedCheckpoints) HasRegions() bool {
 
 // SetRegions gets a reference to the given []int32 and assigns it to the Regions field.
 func (o *SelectedCheckpoints) SetRegions(v []int32) {
-	o.Regions = &v
+	o.Regions = v
 }
 
 // GetExcludeLocations returns the ExcludeLocations field value if set, zero value otherwise.
 func (o *SelectedCheckpoints) GetExcludeLocations() []int32 {
-	if o == nil || o.ExcludeLocations == nil {
+	if o == nil || isNil(o.ExcludeLocations) {
 		var ret []int32
 		return ret
 	}
-	return *o.ExcludeLocations
+	return o.ExcludeLocations
 }
 
 // GetExcludeLocationsOk returns a tuple with the ExcludeLocations field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SelectedCheckpoints) GetExcludeLocationsOk() (*[]int32, bool) {
-	if o == nil || o.ExcludeLocations == nil {
-		return nil, false
+func (o *SelectedCheckpoints) GetExcludeLocationsOk() ([]int32, bool) {
+	if o == nil || isNil(o.ExcludeLocations) {
+    return nil, false
 	}
 	return o.ExcludeLocations, true
 }
 
 // HasExcludeLocations returns a boolean if a field has been set.
 func (o *SelectedCheckpoints) HasExcludeLocations() bool {
-	if o != nil && o.ExcludeLocations != nil {
+	if o != nil && !isNil(o.ExcludeLocations) {
 		return true
 	}
 
@@ -131,18 +131,18 @@ func (o *SelectedCheckpoints) HasExcludeLocations() bool {
 
 // SetExcludeLocations gets a reference to the given []int32 and assigns it to the ExcludeLocations field.
 func (o *SelectedCheckpoints) SetExcludeLocations(v []int32) {
-	o.ExcludeLocations = &v
+	o.ExcludeLocations = v
 }
 
 func (o SelectedCheckpoints) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Checkpoints != nil {
+	if !isNil(o.Checkpoints) {
 		toSerialize["Checkpoints"] = o.Checkpoints
 	}
-	if o.Regions != nil {
+	if !isNil(o.Regions) {
 		toSerialize["Regions"] = o.Regions
 	}
-	if o.ExcludeLocations != nil {
+	if !isNil(o.ExcludeLocations) {
 		toSerialize["ExcludeLocations"] = o.ExcludeLocations
 	}
 	return json.Marshal(toSerialize)

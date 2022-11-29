@@ -19,7 +19,7 @@ type TransactionStep2 struct {
 	Name *string `json:"Name,omitempty"`
 	HasScreenshot bool `json:"HasScreenshot"`
 	HasWaterfall bool `json:"HasWaterfall"`
-	SubSteps *[]TransactionSubStep `json:"SubSteps,omitempty"`
+	SubSteps []TransactionSubStep `json:"SubSteps,omitempty"`
 }
 
 // NewTransactionStep2 instantiates a new TransactionStep2 object
@@ -43,7 +43,7 @@ func NewTransactionStep2WithDefaults() *TransactionStep2 {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *TransactionStep2) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -53,15 +53,15 @@ func (o *TransactionStep2) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TransactionStep2) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *TransactionStep2) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -86,8 +86,8 @@ func (o *TransactionStep2) GetHasScreenshot() bool {
 // GetHasScreenshotOk returns a tuple with the HasScreenshot field value
 // and a boolean to check if the value has been set.
 func (o *TransactionStep2) GetHasScreenshotOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.HasScreenshot, true
 }
@@ -110,8 +110,8 @@ func (o *TransactionStep2) GetHasWaterfall() bool {
 // GetHasWaterfallOk returns a tuple with the HasWaterfall field value
 // and a boolean to check if the value has been set.
 func (o *TransactionStep2) GetHasWaterfallOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.HasWaterfall, true
 }
@@ -123,25 +123,25 @@ func (o *TransactionStep2) SetHasWaterfall(v bool) {
 
 // GetSubSteps returns the SubSteps field value if set, zero value otherwise.
 func (o *TransactionStep2) GetSubSteps() []TransactionSubStep {
-	if o == nil || o.SubSteps == nil {
+	if o == nil || isNil(o.SubSteps) {
 		var ret []TransactionSubStep
 		return ret
 	}
-	return *o.SubSteps
+	return o.SubSteps
 }
 
 // GetSubStepsOk returns a tuple with the SubSteps field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TransactionStep2) GetSubStepsOk() (*[]TransactionSubStep, bool) {
-	if o == nil || o.SubSteps == nil {
-		return nil, false
+func (o *TransactionStep2) GetSubStepsOk() ([]TransactionSubStep, bool) {
+	if o == nil || isNil(o.SubSteps) {
+    return nil, false
 	}
 	return o.SubSteps, true
 }
 
 // HasSubSteps returns a boolean if a field has been set.
 func (o *TransactionStep2) HasSubSteps() bool {
-	if o != nil && o.SubSteps != nil {
+	if o != nil && !isNil(o.SubSteps) {
 		return true
 	}
 
@@ -150,12 +150,12 @@ func (o *TransactionStep2) HasSubSteps() bool {
 
 // SetSubSteps gets a reference to the given []TransactionSubStep and assigns it to the SubSteps field.
 func (o *TransactionStep2) SetSubSteps(v []TransactionSubStep) {
-	o.SubSteps = &v
+	o.SubSteps = v
 }
 
 func (o TransactionStep2) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
 	if true {
@@ -164,7 +164,7 @@ func (o TransactionStep2) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["HasWaterfall"] = o.HasWaterfall
 	}
-	if o.SubSteps != nil {
+	if !isNil(o.SubSteps) {
 		toSerialize["SubSteps"] = o.SubSteps
 	}
 	return json.Marshal(toSerialize)

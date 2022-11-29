@@ -31,7 +31,8 @@ const (
 	DNSQUERY_SRV_RECORD DnsQuery = "SrvRecord"
 )
 
-var allowedDnsQueryEnumValues = []DnsQuery{
+// All allowed values of DnsQuery enum
+var AllowedDnsQueryEnumValues = []DnsQuery{
 	"ARecord",
 	"CnameRecord",
 	"MxRecord",
@@ -50,7 +51,7 @@ func (v *DnsQuery) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := DnsQuery(value)
-	for _, existing := range allowedDnsQueryEnumValues {
+	for _, existing := range AllowedDnsQueryEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -67,13 +68,13 @@ func NewDnsQueryFromValue(v string) (*DnsQuery, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for DnsQuery: valid values are %v", v, allowedDnsQueryEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for DnsQuery: valid values are %v", v, AllowedDnsQueryEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v DnsQuery) IsValid() bool {
-	for _, existing := range allowedDnsQueryEnumValues {
+	for _, existing := range AllowedDnsQueryEnumValues {
 		if existing == v {
 			return true
 		}

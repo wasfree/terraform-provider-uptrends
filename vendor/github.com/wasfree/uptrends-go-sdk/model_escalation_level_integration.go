@@ -19,11 +19,11 @@ type EscalationLevelIntegration struct {
 	// The unique key of this Integration.
 	IntegrationGuid *string `json:"IntegrationGuid,omitempty"`
 	// Extra email addresses
-	ExtraEmailAddresses *[]string `json:"ExtraEmailAddresses,omitempty"`
+	ExtraEmailAddresses []string `json:"ExtraEmailAddresses,omitempty"`
 	// Specified Extra EmailAddresses For Patch request
 	ExtraEmailAddressesSpecified *bool `json:"ExtraEmailAddressesSpecified,omitempty"`
 	// StatusHub Service Mapping
-	StatusHubServiceList *[]IntegrationServiceMap `json:"StatusHubServiceList,omitempty"`
+	StatusHubServiceList []IntegrationServiceMap `json:"StatusHubServiceList,omitempty"`
 	// Specified StatusHubServiceList For Patch request
 	StatusHubServiceListSpecified *bool `json:"StatusHubServiceListSpecified,omitempty"`
 	// Indicates whether this Integration is active.
@@ -50,7 +50,7 @@ func NewEscalationLevelIntegrationWithDefaults() *EscalationLevelIntegration {
 
 // GetIntegrationGuid returns the IntegrationGuid field value if set, zero value otherwise.
 func (o *EscalationLevelIntegration) GetIntegrationGuid() string {
-	if o == nil || o.IntegrationGuid == nil {
+	if o == nil || isNil(o.IntegrationGuid) {
 		var ret string
 		return ret
 	}
@@ -60,15 +60,15 @@ func (o *EscalationLevelIntegration) GetIntegrationGuid() string {
 // GetIntegrationGuidOk returns a tuple with the IntegrationGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevelIntegration) GetIntegrationGuidOk() (*string, bool) {
-	if o == nil || o.IntegrationGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.IntegrationGuid) {
+    return nil, false
 	}
 	return o.IntegrationGuid, true
 }
 
 // HasIntegrationGuid returns a boolean if a field has been set.
 func (o *EscalationLevelIntegration) HasIntegrationGuid() bool {
-	if o != nil && o.IntegrationGuid != nil {
+	if o != nil && !isNil(o.IntegrationGuid) {
 		return true
 	}
 
@@ -82,25 +82,25 @@ func (o *EscalationLevelIntegration) SetIntegrationGuid(v string) {
 
 // GetExtraEmailAddresses returns the ExtraEmailAddresses field value if set, zero value otherwise.
 func (o *EscalationLevelIntegration) GetExtraEmailAddresses() []string {
-	if o == nil || o.ExtraEmailAddresses == nil {
+	if o == nil || isNil(o.ExtraEmailAddresses) {
 		var ret []string
 		return ret
 	}
-	return *o.ExtraEmailAddresses
+	return o.ExtraEmailAddresses
 }
 
 // GetExtraEmailAddressesOk returns a tuple with the ExtraEmailAddresses field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *EscalationLevelIntegration) GetExtraEmailAddressesOk() (*[]string, bool) {
-	if o == nil || o.ExtraEmailAddresses == nil {
-		return nil, false
+func (o *EscalationLevelIntegration) GetExtraEmailAddressesOk() ([]string, bool) {
+	if o == nil || isNil(o.ExtraEmailAddresses) {
+    return nil, false
 	}
 	return o.ExtraEmailAddresses, true
 }
 
 // HasExtraEmailAddresses returns a boolean if a field has been set.
 func (o *EscalationLevelIntegration) HasExtraEmailAddresses() bool {
-	if o != nil && o.ExtraEmailAddresses != nil {
+	if o != nil && !isNil(o.ExtraEmailAddresses) {
 		return true
 	}
 
@@ -109,12 +109,12 @@ func (o *EscalationLevelIntegration) HasExtraEmailAddresses() bool {
 
 // SetExtraEmailAddresses gets a reference to the given []string and assigns it to the ExtraEmailAddresses field.
 func (o *EscalationLevelIntegration) SetExtraEmailAddresses(v []string) {
-	o.ExtraEmailAddresses = &v
+	o.ExtraEmailAddresses = v
 }
 
 // GetExtraEmailAddressesSpecified returns the ExtraEmailAddressesSpecified field value if set, zero value otherwise.
 func (o *EscalationLevelIntegration) GetExtraEmailAddressesSpecified() bool {
-	if o == nil || o.ExtraEmailAddressesSpecified == nil {
+	if o == nil || isNil(o.ExtraEmailAddressesSpecified) {
 		var ret bool
 		return ret
 	}
@@ -124,15 +124,15 @@ func (o *EscalationLevelIntegration) GetExtraEmailAddressesSpecified() bool {
 // GetExtraEmailAddressesSpecifiedOk returns a tuple with the ExtraEmailAddressesSpecified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevelIntegration) GetExtraEmailAddressesSpecifiedOk() (*bool, bool) {
-	if o == nil || o.ExtraEmailAddressesSpecified == nil {
-		return nil, false
+	if o == nil || isNil(o.ExtraEmailAddressesSpecified) {
+    return nil, false
 	}
 	return o.ExtraEmailAddressesSpecified, true
 }
 
 // HasExtraEmailAddressesSpecified returns a boolean if a field has been set.
 func (o *EscalationLevelIntegration) HasExtraEmailAddressesSpecified() bool {
-	if o != nil && o.ExtraEmailAddressesSpecified != nil {
+	if o != nil && !isNil(o.ExtraEmailAddressesSpecified) {
 		return true
 	}
 
@@ -146,25 +146,25 @@ func (o *EscalationLevelIntegration) SetExtraEmailAddressesSpecified(v bool) {
 
 // GetStatusHubServiceList returns the StatusHubServiceList field value if set, zero value otherwise.
 func (o *EscalationLevelIntegration) GetStatusHubServiceList() []IntegrationServiceMap {
-	if o == nil || o.StatusHubServiceList == nil {
+	if o == nil || isNil(o.StatusHubServiceList) {
 		var ret []IntegrationServiceMap
 		return ret
 	}
-	return *o.StatusHubServiceList
+	return o.StatusHubServiceList
 }
 
 // GetStatusHubServiceListOk returns a tuple with the StatusHubServiceList field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *EscalationLevelIntegration) GetStatusHubServiceListOk() (*[]IntegrationServiceMap, bool) {
-	if o == nil || o.StatusHubServiceList == nil {
-		return nil, false
+func (o *EscalationLevelIntegration) GetStatusHubServiceListOk() ([]IntegrationServiceMap, bool) {
+	if o == nil || isNil(o.StatusHubServiceList) {
+    return nil, false
 	}
 	return o.StatusHubServiceList, true
 }
 
 // HasStatusHubServiceList returns a boolean if a field has been set.
 func (o *EscalationLevelIntegration) HasStatusHubServiceList() bool {
-	if o != nil && o.StatusHubServiceList != nil {
+	if o != nil && !isNil(o.StatusHubServiceList) {
 		return true
 	}
 
@@ -173,12 +173,12 @@ func (o *EscalationLevelIntegration) HasStatusHubServiceList() bool {
 
 // SetStatusHubServiceList gets a reference to the given []IntegrationServiceMap and assigns it to the StatusHubServiceList field.
 func (o *EscalationLevelIntegration) SetStatusHubServiceList(v []IntegrationServiceMap) {
-	o.StatusHubServiceList = &v
+	o.StatusHubServiceList = v
 }
 
 // GetStatusHubServiceListSpecified returns the StatusHubServiceListSpecified field value if set, zero value otherwise.
 func (o *EscalationLevelIntegration) GetStatusHubServiceListSpecified() bool {
-	if o == nil || o.StatusHubServiceListSpecified == nil {
+	if o == nil || isNil(o.StatusHubServiceListSpecified) {
 		var ret bool
 		return ret
 	}
@@ -188,15 +188,15 @@ func (o *EscalationLevelIntegration) GetStatusHubServiceListSpecified() bool {
 // GetStatusHubServiceListSpecifiedOk returns a tuple with the StatusHubServiceListSpecified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevelIntegration) GetStatusHubServiceListSpecifiedOk() (*bool, bool) {
-	if o == nil || o.StatusHubServiceListSpecified == nil {
-		return nil, false
+	if o == nil || isNil(o.StatusHubServiceListSpecified) {
+    return nil, false
 	}
 	return o.StatusHubServiceListSpecified, true
 }
 
 // HasStatusHubServiceListSpecified returns a boolean if a field has been set.
 func (o *EscalationLevelIntegration) HasStatusHubServiceListSpecified() bool {
-	if o != nil && o.StatusHubServiceListSpecified != nil {
+	if o != nil && !isNil(o.StatusHubServiceListSpecified) {
 		return true
 	}
 
@@ -210,7 +210,7 @@ func (o *EscalationLevelIntegration) SetStatusHubServiceListSpecified(v bool) {
 
 // GetIsActive returns the IsActive field value if set, zero value otherwise.
 func (o *EscalationLevelIntegration) GetIsActive() bool {
-	if o == nil || o.IsActive == nil {
+	if o == nil || isNil(o.IsActive) {
 		var ret bool
 		return ret
 	}
@@ -220,15 +220,15 @@ func (o *EscalationLevelIntegration) GetIsActive() bool {
 // GetIsActiveOk returns a tuple with the IsActive field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevelIntegration) GetIsActiveOk() (*bool, bool) {
-	if o == nil || o.IsActive == nil {
-		return nil, false
+	if o == nil || isNil(o.IsActive) {
+    return nil, false
 	}
 	return o.IsActive, true
 }
 
 // HasIsActive returns a boolean if a field has been set.
 func (o *EscalationLevelIntegration) HasIsActive() bool {
-	if o != nil && o.IsActive != nil {
+	if o != nil && !isNil(o.IsActive) {
 		return true
 	}
 
@@ -242,7 +242,7 @@ func (o *EscalationLevelIntegration) SetIsActive(v bool) {
 
 // GetHash returns the Hash field value if set, zero value otherwise.
 func (o *EscalationLevelIntegration) GetHash() string {
-	if o == nil || o.Hash == nil {
+	if o == nil || isNil(o.Hash) {
 		var ret string
 		return ret
 	}
@@ -252,15 +252,15 @@ func (o *EscalationLevelIntegration) GetHash() string {
 // GetHashOk returns a tuple with the Hash field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevelIntegration) GetHashOk() (*string, bool) {
-	if o == nil || o.Hash == nil {
-		return nil, false
+	if o == nil || isNil(o.Hash) {
+    return nil, false
 	}
 	return o.Hash, true
 }
 
 // HasHash returns a boolean if a field has been set.
 func (o *EscalationLevelIntegration) HasHash() bool {
-	if o != nil && o.Hash != nil {
+	if o != nil && !isNil(o.Hash) {
 		return true
 	}
 
@@ -274,25 +274,25 @@ func (o *EscalationLevelIntegration) SetHash(v string) {
 
 func (o EscalationLevelIntegration) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.IntegrationGuid != nil {
+	if !isNil(o.IntegrationGuid) {
 		toSerialize["IntegrationGuid"] = o.IntegrationGuid
 	}
-	if o.ExtraEmailAddresses != nil {
+	if !isNil(o.ExtraEmailAddresses) {
 		toSerialize["ExtraEmailAddresses"] = o.ExtraEmailAddresses
 	}
-	if o.ExtraEmailAddressesSpecified != nil {
+	if !isNil(o.ExtraEmailAddressesSpecified) {
 		toSerialize["ExtraEmailAddressesSpecified"] = o.ExtraEmailAddressesSpecified
 	}
-	if o.StatusHubServiceList != nil {
+	if !isNil(o.StatusHubServiceList) {
 		toSerialize["StatusHubServiceList"] = o.StatusHubServiceList
 	}
-	if o.StatusHubServiceListSpecified != nil {
+	if !isNil(o.StatusHubServiceListSpecified) {
 		toSerialize["StatusHubServiceListSpecified"] = o.StatusHubServiceListSpecified
 	}
-	if o.IsActive != nil {
+	if !isNil(o.IsActive) {
 		toSerialize["IsActive"] = o.IsActive
 	}
-	if o.Hash != nil {
+	if !isNil(o.Hash) {
 		toSerialize["Hash"] = o.Hash
 	}
 	return json.Marshal(toSerialize)

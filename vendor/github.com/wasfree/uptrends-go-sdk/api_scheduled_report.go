@@ -12,23 +12,19 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // ScheduledReportApiService ScheduledReportApi service
 type ScheduledReportApiService service
 
 type ApiScheduledReportCreateScheduledReportRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *ScheduledReportApiService
 	scheduledReport *ScheduledReport
 }
@@ -39,17 +35,17 @@ func (r ApiScheduledReportCreateScheduledReportRequest) ScheduledReport(schedule
 	return r
 }
 
-func (r ApiScheduledReportCreateScheduledReportRequest) Execute() (ScheduledReport, *_nethttp.Response, error) {
+func (r ApiScheduledReportCreateScheduledReportRequest) Execute() (*ScheduledReport, *http.Response, error) {
 	return r.ApiService.ScheduledReportCreateScheduledReportExecute(r)
 }
 
 /*
 ScheduledReportCreateScheduledReport Creates a new scheduled report.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiScheduledReportCreateScheduledReportRequest
 */
-func (a *ScheduledReportApiService) ScheduledReportCreateScheduledReport(ctx _context.Context) ApiScheduledReportCreateScheduledReportRequest {
+func (a *ScheduledReportApiService) ScheduledReportCreateScheduledReport(ctx context.Context) ApiScheduledReportCreateScheduledReportRequest {
 	return ApiScheduledReportCreateScheduledReportRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -58,29 +54,24 @@ func (a *ScheduledReportApiService) ScheduledReportCreateScheduledReport(ctx _co
 
 // Execute executes the request
 //  @return ScheduledReport
-func (a *ScheduledReportApiService) ScheduledReportCreateScheduledReportExecute(r ApiScheduledReportCreateScheduledReportRequest) (ScheduledReport, *_nethttp.Response, error) {
+func (a *ScheduledReportApiService) ScheduledReportCreateScheduledReportExecute(r ApiScheduledReportCreateScheduledReportRequest) (*ScheduledReport, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ScheduledReport
+		formFiles            []formFile
+		localVarReturnValue  *ScheduledReport
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ScheduledReportApiService.ScheduledReportCreateScheduledReport")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/ScheduledReport"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.scheduledReport == nil {
-		return localVarReturnValue, nil, reportError("scheduledReport is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -101,7 +92,7 @@ func (a *ScheduledReportApiService) ScheduledReportCreateScheduledReportExecute(
 	}
 	// body params
 	localVarPostBody = r.scheduledReport
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -111,15 +102,15 @@ func (a *ScheduledReportApiService) ScheduledReportCreateScheduledReportExecute(
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -130,14 +121,15 @@ func (a *ScheduledReportApiService) ScheduledReportCreateScheduledReportExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -148,24 +140,23 @@ func (a *ScheduledReportApiService) ScheduledReportCreateScheduledReportExecute(
 }
 
 type ApiScheduledReportDeleteSpecifiedScheduledReportRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *ScheduledReportApiService
 	scheduledReportGuid string
 }
 
-
-func (r ApiScheduledReportDeleteSpecifiedScheduledReportRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiScheduledReportDeleteSpecifiedScheduledReportRequest) Execute() (*http.Response, error) {
 	return r.ApiService.ScheduledReportDeleteSpecifiedScheduledReportExecute(r)
 }
 
 /*
 ScheduledReportDeleteSpecifiedScheduledReport Delete the specified scheduled report.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param scheduledReportGuid The guid of the specified scheduled report.
  @return ApiScheduledReportDeleteSpecifiedScheduledReportRequest
 */
-func (a *ScheduledReportApiService) ScheduledReportDeleteSpecifiedScheduledReport(ctx _context.Context, scheduledReportGuid string) ApiScheduledReportDeleteSpecifiedScheduledReportRequest {
+func (a *ScheduledReportApiService) ScheduledReportDeleteSpecifiedScheduledReport(ctx context.Context, scheduledReportGuid string) ApiScheduledReportDeleteSpecifiedScheduledReportRequest {
 	return ApiScheduledReportDeleteSpecifiedScheduledReportRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -174,26 +165,24 @@ func (a *ScheduledReportApiService) ScheduledReportDeleteSpecifiedScheduledRepor
 }
 
 // Execute executes the request
-func (a *ScheduledReportApiService) ScheduledReportDeleteSpecifiedScheduledReportExecute(r ApiScheduledReportDeleteSpecifiedScheduledReportRequest) (*_nethttp.Response, error) {
+func (a *ScheduledReportApiService) ScheduledReportDeleteSpecifiedScheduledReportExecute(r ApiScheduledReportDeleteSpecifiedScheduledReportRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ScheduledReportApiService.ScheduledReportDeleteSpecifiedScheduledReport")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/ScheduledReport/{scheduledReportGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"scheduledReportGuid"+"}", _neturl.PathEscape(parameterToString(r.scheduledReportGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scheduledReportGuid"+"}", url.PathEscape(parameterToString(r.scheduledReportGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -212,7 +201,7 @@ func (a *ScheduledReportApiService) ScheduledReportDeleteSpecifiedScheduledRepor
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -222,15 +211,15 @@ func (a *ScheduledReportApiService) ScheduledReportDeleteSpecifiedScheduledRepor
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -241,7 +230,8 @@ func (a *ScheduledReportApiService) ScheduledReportDeleteSpecifiedScheduledRepor
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -251,7 +241,8 @@ func (a *ScheduledReportApiService) ScheduledReportDeleteSpecifiedScheduledRepor
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -260,22 +251,21 @@ func (a *ScheduledReportApiService) ScheduledReportDeleteSpecifiedScheduledRepor
 }
 
 type ApiScheduledReportGetAllScheduledReportsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *ScheduledReportApiService
 }
 
-
-func (r ApiScheduledReportGetAllScheduledReportsRequest) Execute() ([]ScheduledReport, *_nethttp.Response, error) {
+func (r ApiScheduledReportGetAllScheduledReportsRequest) Execute() ([]ScheduledReport, *http.Response, error) {
 	return r.ApiService.ScheduledReportGetAllScheduledReportsExecute(r)
 }
 
 /*
 ScheduledReportGetAllScheduledReports Returns data for all scheduled reports.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiScheduledReportGetAllScheduledReportsRequest
 */
-func (a *ScheduledReportApiService) ScheduledReportGetAllScheduledReports(ctx _context.Context) ApiScheduledReportGetAllScheduledReportsRequest {
+func (a *ScheduledReportApiService) ScheduledReportGetAllScheduledReports(ctx context.Context) ApiScheduledReportGetAllScheduledReportsRequest {
 	return ApiScheduledReportGetAllScheduledReportsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -284,26 +274,24 @@ func (a *ScheduledReportApiService) ScheduledReportGetAllScheduledReports(ctx _c
 
 // Execute executes the request
 //  @return []ScheduledReport
-func (a *ScheduledReportApiService) ScheduledReportGetAllScheduledReportsExecute(r ApiScheduledReportGetAllScheduledReportsRequest) ([]ScheduledReport, *_nethttp.Response, error) {
+func (a *ScheduledReportApiService) ScheduledReportGetAllScheduledReportsExecute(r ApiScheduledReportGetAllScheduledReportsRequest) ([]ScheduledReport, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []ScheduledReport
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ScheduledReportApiService.ScheduledReportGetAllScheduledReports")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/ScheduledReport"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -322,7 +310,7 @@ func (a *ScheduledReportApiService) ScheduledReportGetAllScheduledReportsExecute
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -332,15 +320,15 @@ func (a *ScheduledReportApiService) ScheduledReportGetAllScheduledReportsExecute
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -351,14 +339,15 @@ func (a *ScheduledReportApiService) ScheduledReportGetAllScheduledReportsExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -369,24 +358,23 @@ func (a *ScheduledReportApiService) ScheduledReportGetAllScheduledReportsExecute
 }
 
 type ApiScheduledReportGetSpecifiedScheduledReportRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *ScheduledReportApiService
 	scheduledReportGuid string
 }
 
-
-func (r ApiScheduledReportGetSpecifiedScheduledReportRequest) Execute() (ScheduledReport, *_nethttp.Response, error) {
+func (r ApiScheduledReportGetSpecifiedScheduledReportRequest) Execute() (*ScheduledReport, *http.Response, error) {
 	return r.ApiService.ScheduledReportGetSpecifiedScheduledReportExecute(r)
 }
 
 /*
 ScheduledReportGetSpecifiedScheduledReport Returns data for the specified scheduled report.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param scheduledReportGuid The guid of the specified scheduled report.
  @return ApiScheduledReportGetSpecifiedScheduledReportRequest
 */
-func (a *ScheduledReportApiService) ScheduledReportGetSpecifiedScheduledReport(ctx _context.Context, scheduledReportGuid string) ApiScheduledReportGetSpecifiedScheduledReportRequest {
+func (a *ScheduledReportApiService) ScheduledReportGetSpecifiedScheduledReport(ctx context.Context, scheduledReportGuid string) ApiScheduledReportGetSpecifiedScheduledReportRequest {
 	return ApiScheduledReportGetSpecifiedScheduledReportRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -396,27 +384,25 @@ func (a *ScheduledReportApiService) ScheduledReportGetSpecifiedScheduledReport(c
 
 // Execute executes the request
 //  @return ScheduledReport
-func (a *ScheduledReportApiService) ScheduledReportGetSpecifiedScheduledReportExecute(r ApiScheduledReportGetSpecifiedScheduledReportRequest) (ScheduledReport, *_nethttp.Response, error) {
+func (a *ScheduledReportApiService) ScheduledReportGetSpecifiedScheduledReportExecute(r ApiScheduledReportGetSpecifiedScheduledReportRequest) (*ScheduledReport, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ScheduledReport
+		formFiles            []formFile
+		localVarReturnValue  *ScheduledReport
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ScheduledReportApiService.ScheduledReportGetSpecifiedScheduledReport")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/ScheduledReport/{scheduledReportGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"scheduledReportGuid"+"}", _neturl.PathEscape(parameterToString(r.scheduledReportGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scheduledReportGuid"+"}", url.PathEscape(parameterToString(r.scheduledReportGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -435,7 +421,7 @@ func (a *ScheduledReportApiService) ScheduledReportGetSpecifiedScheduledReportEx
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -445,15 +431,15 @@ func (a *ScheduledReportApiService) ScheduledReportGetSpecifiedScheduledReportEx
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -464,7 +450,8 @@ func (a *ScheduledReportApiService) ScheduledReportGetSpecifiedScheduledReportEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -474,14 +461,15 @@ func (a *ScheduledReportApiService) ScheduledReportGetSpecifiedScheduledReportEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -492,7 +480,7 @@ func (a *ScheduledReportApiService) ScheduledReportGetSpecifiedScheduledReportEx
 }
 
 type ApiScheduledReportPartiallyUpdateScheduledReportRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *ScheduledReportApiService
 	scheduledReportGuid string
 	scheduledReport *ScheduledReport
@@ -504,18 +492,18 @@ func (r ApiScheduledReportPartiallyUpdateScheduledReportRequest) ScheduledReport
 	return r
 }
 
-func (r ApiScheduledReportPartiallyUpdateScheduledReportRequest) Execute() (ScheduledReport, *_nethttp.Response, error) {
+func (r ApiScheduledReportPartiallyUpdateScheduledReportRequest) Execute() (*ScheduledReport, *http.Response, error) {
 	return r.ApiService.ScheduledReportPartiallyUpdateScheduledReportExecute(r)
 }
 
 /*
 ScheduledReportPartiallyUpdateScheduledReport Partially update the specified scheduled report.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param scheduledReportGuid The guid of the specified scheduled report.
  @return ApiScheduledReportPartiallyUpdateScheduledReportRequest
 */
-func (a *ScheduledReportApiService) ScheduledReportPartiallyUpdateScheduledReport(ctx _context.Context, scheduledReportGuid string) ApiScheduledReportPartiallyUpdateScheduledReportRequest {
+func (a *ScheduledReportApiService) ScheduledReportPartiallyUpdateScheduledReport(ctx context.Context, scheduledReportGuid string) ApiScheduledReportPartiallyUpdateScheduledReportRequest {
 	return ApiScheduledReportPartiallyUpdateScheduledReportRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -525,30 +513,25 @@ func (a *ScheduledReportApiService) ScheduledReportPartiallyUpdateScheduledRepor
 
 // Execute executes the request
 //  @return ScheduledReport
-func (a *ScheduledReportApiService) ScheduledReportPartiallyUpdateScheduledReportExecute(r ApiScheduledReportPartiallyUpdateScheduledReportRequest) (ScheduledReport, *_nethttp.Response, error) {
+func (a *ScheduledReportApiService) ScheduledReportPartiallyUpdateScheduledReportExecute(r ApiScheduledReportPartiallyUpdateScheduledReportRequest) (*ScheduledReport, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
+		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ScheduledReport
+		formFiles            []formFile
+		localVarReturnValue  *ScheduledReport
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ScheduledReportApiService.ScheduledReportPartiallyUpdateScheduledReport")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/ScheduledReport/{scheduledReportGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"scheduledReportGuid"+"}", _neturl.PathEscape(parameterToString(r.scheduledReportGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scheduledReportGuid"+"}", url.PathEscape(parameterToString(r.scheduledReportGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.scheduledReport == nil {
-		return localVarReturnValue, nil, reportError("scheduledReport is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -569,7 +552,7 @@ func (a *ScheduledReportApiService) ScheduledReportPartiallyUpdateScheduledRepor
 	}
 	// body params
 	localVarPostBody = r.scheduledReport
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -579,15 +562,15 @@ func (a *ScheduledReportApiService) ScheduledReportPartiallyUpdateScheduledRepor
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -598,7 +581,8 @@ func (a *ScheduledReportApiService) ScheduledReportPartiallyUpdateScheduledRepor
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -608,14 +592,15 @@ func (a *ScheduledReportApiService) ScheduledReportPartiallyUpdateScheduledRepor
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -626,7 +611,7 @@ func (a *ScheduledReportApiService) ScheduledReportPartiallyUpdateScheduledRepor
 }
 
 type ApiScheduledReportUpdateScheduledReportRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *ScheduledReportApiService
 	scheduledReportGuid string
 	scheduledReport *ScheduledReport
@@ -638,18 +623,18 @@ func (r ApiScheduledReportUpdateScheduledReportRequest) ScheduledReport(schedule
 	return r
 }
 
-func (r ApiScheduledReportUpdateScheduledReportRequest) Execute() (ScheduledReport, *_nethttp.Response, error) {
+func (r ApiScheduledReportUpdateScheduledReportRequest) Execute() (*ScheduledReport, *http.Response, error) {
 	return r.ApiService.ScheduledReportUpdateScheduledReportExecute(r)
 }
 
 /*
 ScheduledReportUpdateScheduledReport Update the specified scheduled report.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param scheduledReportGuid The guid of the specified scheduled report.
  @return ApiScheduledReportUpdateScheduledReportRequest
 */
-func (a *ScheduledReportApiService) ScheduledReportUpdateScheduledReport(ctx _context.Context, scheduledReportGuid string) ApiScheduledReportUpdateScheduledReportRequest {
+func (a *ScheduledReportApiService) ScheduledReportUpdateScheduledReport(ctx context.Context, scheduledReportGuid string) ApiScheduledReportUpdateScheduledReportRequest {
 	return ApiScheduledReportUpdateScheduledReportRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -659,30 +644,25 @@ func (a *ScheduledReportApiService) ScheduledReportUpdateScheduledReport(ctx _co
 
 // Execute executes the request
 //  @return ScheduledReport
-func (a *ScheduledReportApiService) ScheduledReportUpdateScheduledReportExecute(r ApiScheduledReportUpdateScheduledReportRequest) (ScheduledReport, *_nethttp.Response, error) {
+func (a *ScheduledReportApiService) ScheduledReportUpdateScheduledReportExecute(r ApiScheduledReportUpdateScheduledReportRequest) (*ScheduledReport, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ScheduledReport
+		formFiles            []formFile
+		localVarReturnValue  *ScheduledReport
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "ScheduledReportApiService.ScheduledReportUpdateScheduledReport")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/ScheduledReport/{scheduledReportGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"scheduledReportGuid"+"}", _neturl.PathEscape(parameterToString(r.scheduledReportGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"scheduledReportGuid"+"}", url.PathEscape(parameterToString(r.scheduledReportGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.scheduledReport == nil {
-		return localVarReturnValue, nil, reportError("scheduledReport is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -703,7 +683,7 @@ func (a *ScheduledReportApiService) ScheduledReportUpdateScheduledReportExecute(
 	}
 	// body params
 	localVarPostBody = r.scheduledReport
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -713,15 +693,15 @@ func (a *ScheduledReportApiService) ScheduledReportUpdateScheduledReportExecute(
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -732,7 +712,8 @@ func (a *ScheduledReportApiService) ScheduledReportUpdateScheduledReportExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -742,14 +723,15 @@ func (a *ScheduledReportApiService) ScheduledReportUpdateScheduledReportExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

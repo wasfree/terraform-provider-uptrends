@@ -12,27 +12,36 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // RegisterApiService RegisterApi service
 type RegisterApiService service
 
 type ApiRegisterPostRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *RegisterApiService
+	description *string
+	operatorGuid *string
 }
 
+// An optional description for the new API account, e.g. \&quot;API\&quot;. If this is empty, it will be defaulted to \&quot;API\&quot;
+func (r ApiRegisterPostRequest) Description(description string) ApiRegisterPostRequest {
+	r.description = &description
+	return r
+}
 
-func (r ApiRegisterPostRequest) Execute() (RegistrationResponse, *_nethttp.Response, error) {
+// The operator guid for which the new API account needs to be created. Leave empty to create an API acount for your own operator.
+func (r ApiRegisterPostRequest) OperatorGuid(operatorGuid string) ApiRegisterPostRequest {
+	r.operatorGuid = &operatorGuid
+	return r
+}
+
+func (r ApiRegisterPostRequest) Execute() (*RegistrationResponse, *http.Response, error) {
 	return r.ApiService.RegisterPostExecute(r)
 }
 
@@ -41,10 +50,10 @@ RegisterPost Creates a new API account.
 
 This method requires that you specify the username and password of an Uptrends operator login as authentication. When registration is successful, please save the UserName and Password fields from the response; these are your new API credentials.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiRegisterPostRequest
 */
-func (a *RegisterApiService) RegisterPost(ctx _context.Context) ApiRegisterPostRequest {
+func (a *RegisterApiService) RegisterPost(ctx context.Context) ApiRegisterPostRequest {
 	return ApiRegisterPostRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -53,27 +62,31 @@ func (a *RegisterApiService) RegisterPost(ctx _context.Context) ApiRegisterPostR
 
 // Execute executes the request
 //  @return RegistrationResponse
-func (a *RegisterApiService) RegisterPostExecute(r ApiRegisterPostRequest) (RegistrationResponse, *_nethttp.Response, error) {
+func (a *RegisterApiService) RegisterPostExecute(r ApiRegisterPostRequest) (*RegistrationResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  RegistrationResponse
+		formFiles            []formFile
+		localVarReturnValue  *RegistrationResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "RegisterApiService.RegisterPost")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Register"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
+	if r.description != nil {
+		localVarQueryParams.Add("description", parameterToString(*r.description, ""))
+	}
+	if r.operatorGuid != nil {
+		localVarQueryParams.Add("operatorGuid", parameterToString(*r.operatorGuid, ""))
+	}
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
 
@@ -91,7 +104,7 @@ func (a *RegisterApiService) RegisterPostExecute(r ApiRegisterPostRequest) (Regi
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -101,15 +114,15 @@ func (a *RegisterApiService) RegisterPostExecute(r ApiRegisterPostRequest) (Regi
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -118,7 +131,7 @@ func (a *RegisterApiService) RegisterPostExecute(r ApiRegisterPostRequest) (Regi
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

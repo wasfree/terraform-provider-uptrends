@@ -27,9 +27,11 @@ const (
 	BROWSERTYPE_PHANTOM_JS BrowserType = "PhantomJS"
 	BROWSERTYPE_PHANTOM_JS20 BrowserType = "PhantomJS20"
 	BROWSERTYPE_CHROME_WITH_EXTRA_METRICS BrowserType = "ChromeWithExtraMetrics"
+	BROWSERTYPE_EDGE BrowserType = "Edge"
 )
 
-var allowedBrowserTypeEnumValues = []BrowserType{
+// All allowed values of BrowserType enum
+var AllowedBrowserTypeEnumValues = []BrowserType{
 	"IE",
 	"Firefox",
 	"Chrome",
@@ -37,6 +39,7 @@ var allowedBrowserTypeEnumValues = []BrowserType{
 	"PhantomJS",
 	"PhantomJS20",
 	"ChromeWithExtraMetrics",
+	"Edge",
 }
 
 func (v *BrowserType) UnmarshalJSON(src []byte) error {
@@ -46,7 +49,7 @@ func (v *BrowserType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := BrowserType(value)
-	for _, existing := range allowedBrowserTypeEnumValues {
+	for _, existing := range AllowedBrowserTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -63,13 +66,13 @@ func NewBrowserTypeFromValue(v string) (*BrowserType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for BrowserType: valid values are %v", v, allowedBrowserTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for BrowserType: valid values are %v", v, AllowedBrowserTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v BrowserType) IsValid() bool {
-	for _, existing := range allowedBrowserTypeEnumValues {
+	for _, existing := range AllowedBrowserTypeEnumValues {
 		if existing == v {
 			return true
 		}

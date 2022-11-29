@@ -29,7 +29,8 @@ const (
 	INTEGRATIONTYPEENUM_GENERIC_WEBHOOK IntegrationTypeEnum = "GenericWebhook"
 )
 
-var allowedIntegrationTypeEnumEnumValues = []IntegrationTypeEnum{
+// All allowed values of IntegrationTypeEnum enum
+var AllowedIntegrationTypeEnumEnumValues = []IntegrationTypeEnum{
 	"Slack",
 	"PagerDuty",
 	"Sms",
@@ -46,7 +47,7 @@ func (v *IntegrationTypeEnum) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := IntegrationTypeEnum(value)
-	for _, existing := range allowedIntegrationTypeEnumEnumValues {
+	for _, existing := range AllowedIntegrationTypeEnumEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -63,13 +64,13 @@ func NewIntegrationTypeEnumFromValue(v string) (*IntegrationTypeEnum, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for IntegrationTypeEnum: valid values are %v", v, allowedIntegrationTypeEnumEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for IntegrationTypeEnum: valid values are %v", v, AllowedIntegrationTypeEnumEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v IntegrationTypeEnum) IsValid() bool {
-	for _, existing := range allowedIntegrationTypeEnumEnumValues {
+	for _, existing := range AllowedIntegrationTypeEnumEnumValues {
 		if existing == v {
 			return true
 		}

@@ -39,7 +39,7 @@ func NewCustomMetricWithDefaults() *CustomMetric {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *CustomMetric) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -49,15 +49,15 @@ func (o *CustomMetric) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomMetric) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *CustomMetric) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -71,7 +71,7 @@ func (o *CustomMetric) SetName(v string) {
 
 // GetVariableName returns the VariableName field value if set, zero value otherwise.
 func (o *CustomMetric) GetVariableName() string {
-	if o == nil || o.VariableName == nil {
+	if o == nil || isNil(o.VariableName) {
 		var ret string
 		return ret
 	}
@@ -81,15 +81,15 @@ func (o *CustomMetric) GetVariableName() string {
 // GetVariableNameOk returns a tuple with the VariableName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomMetric) GetVariableNameOk() (*string, bool) {
-	if o == nil || o.VariableName == nil {
-		return nil, false
+	if o == nil || isNil(o.VariableName) {
+    return nil, false
 	}
 	return o.VariableName, true
 }
 
 // HasVariableName returns a boolean if a field has been set.
 func (o *CustomMetric) HasVariableName() bool {
-	if o != nil && o.VariableName != nil {
+	if o != nil && !isNil(o.VariableName) {
 		return true
 	}
 
@@ -103,10 +103,10 @@ func (o *CustomMetric) SetVariableName(v string) {
 
 func (o CustomMetric) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
-	if o.VariableName != nil {
+	if !isNil(o.VariableName) {
 		toSerialize["VariableName"] = o.VariableName
 	}
 	return json.Marshal(toSerialize)

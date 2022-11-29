@@ -43,7 +43,7 @@ func NewFileInfoWithDefaults() *FileInfo {
 
 // GetData returns the Data field value if set, zero value otherwise.
 func (o *FileInfo) GetData() string {
-	if o == nil || o.Data == nil {
+	if o == nil || isNil(o.Data) {
 		var ret string
 		return ret
 	}
@@ -53,15 +53,15 @@ func (o *FileInfo) GetData() string {
 // GetDataOk returns a tuple with the Data field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *FileInfo) GetDataOk() (*string, bool) {
-	if o == nil || o.Data == nil {
-		return nil, false
+	if o == nil || isNil(o.Data) {
+    return nil, false
 	}
 	return o.Data, true
 }
 
 // HasData returns a boolean if a field has been set.
 func (o *FileInfo) HasData() bool {
-	if o != nil && o.Data != nil {
+	if o != nil && !isNil(o.Data) {
 		return true
 	}
 
@@ -75,7 +75,7 @@ func (o *FileInfo) SetData(v string) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *FileInfo) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -85,15 +85,15 @@ func (o *FileInfo) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *FileInfo) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *FileInfo) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -118,8 +118,8 @@ func (o *FileInfo) GetSize() int32 {
 // GetSizeOk returns a tuple with the Size field value
 // and a boolean to check if the value has been set.
 func (o *FileInfo) GetSizeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Size, true
 }
@@ -131,10 +131,10 @@ func (o *FileInfo) SetSize(v int32) {
 
 func (o FileInfo) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Data != nil {
+	if !isNil(o.Data) {
 		toSerialize["Data"] = o.Data
 	}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
 	if true {

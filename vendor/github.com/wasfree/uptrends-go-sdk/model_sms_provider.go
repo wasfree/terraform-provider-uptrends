@@ -27,7 +27,8 @@ const (
 	SMSPROVIDER_SMS_PROVIDER_USA SmsProvider = "SmsProviderUSA"
 )
 
-var allowedSmsProviderEnumValues = []SmsProvider{
+// All allowed values of SmsProvider enum
+var AllowedSmsProviderEnumValues = []SmsProvider{
 	"UseAccountSetting",
 	"SmsProviderEurope",
 	"SmsProviderInternational",
@@ -42,7 +43,7 @@ func (v *SmsProvider) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := SmsProvider(value)
-	for _, existing := range allowedSmsProviderEnumValues {
+	for _, existing := range AllowedSmsProviderEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -59,13 +60,13 @@ func NewSmsProviderFromValue(v string) (*SmsProvider, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for SmsProvider: valid values are %v", v, allowedSmsProviderEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for SmsProvider: valid values are %v", v, AllowedSmsProviderEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v SmsProvider) IsValid() bool {
-	for _, existing := range allowedSmsProviderEnumValues {
+	for _, existing := range AllowedSmsProviderEnumValues {
 		if existing == v {
 			return true
 		}

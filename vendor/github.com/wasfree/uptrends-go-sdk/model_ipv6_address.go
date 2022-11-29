@@ -18,17 +18,14 @@ import (
 type Ipv6Address struct {
 	// The IPv6 address
 	IpAddress *string `json:"IpAddress,omitempty"`
-	// This indicates whether this is a native IPv6 address
-	IsNative bool `json:"IsNative"`
 }
 
 // NewIpv6Address instantiates a new Ipv6Address object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewIpv6Address(isNative bool) *Ipv6Address {
+func NewIpv6Address() *Ipv6Address {
 	this := Ipv6Address{}
-	this.IsNative = isNative
 	return &this
 }
 
@@ -42,7 +39,7 @@ func NewIpv6AddressWithDefaults() *Ipv6Address {
 
 // GetIpAddress returns the IpAddress field value if set, zero value otherwise.
 func (o *Ipv6Address) GetIpAddress() string {
-	if o == nil || o.IpAddress == nil {
+	if o == nil || isNil(o.IpAddress) {
 		var ret string
 		return ret
 	}
@@ -52,15 +49,15 @@ func (o *Ipv6Address) GetIpAddress() string {
 // GetIpAddressOk returns a tuple with the IpAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Ipv6Address) GetIpAddressOk() (*string, bool) {
-	if o == nil || o.IpAddress == nil {
-		return nil, false
+	if o == nil || isNil(o.IpAddress) {
+    return nil, false
 	}
 	return o.IpAddress, true
 }
 
 // HasIpAddress returns a boolean if a field has been set.
 func (o *Ipv6Address) HasIpAddress() bool {
-	if o != nil && o.IpAddress != nil {
+	if o != nil && !isNil(o.IpAddress) {
 		return true
 	}
 
@@ -72,37 +69,10 @@ func (o *Ipv6Address) SetIpAddress(v string) {
 	o.IpAddress = &v
 }
 
-// GetIsNative returns the IsNative field value
-func (o *Ipv6Address) GetIsNative() bool {
-	if o == nil {
-		var ret bool
-		return ret
-	}
-
-	return o.IsNative
-}
-
-// GetIsNativeOk returns a tuple with the IsNative field value
-// and a boolean to check if the value has been set.
-func (o *Ipv6Address) GetIsNativeOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
-	}
-	return &o.IsNative, true
-}
-
-// SetIsNative sets field value
-func (o *Ipv6Address) SetIsNative(v bool) {
-	o.IsNative = v
-}
-
 func (o Ipv6Address) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.IpAddress != nil {
+	if !isNil(o.IpAddress) {
 		toSerialize["IpAddress"] = o.IpAddress
-	}
-	if true {
-		toSerialize["IsNative"] = o.IsNative
 	}
 	return json.Marshal(toSerialize)
 }

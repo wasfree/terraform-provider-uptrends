@@ -24,7 +24,8 @@ const (
 	MAINTENANCETYPES_DISABLE_NOTIFICATIONS MaintenanceTypes = "DisableNotifications"
 )
 
-var allowedMaintenanceTypesEnumValues = []MaintenanceTypes{
+// All allowed values of MaintenanceTypes enum
+var AllowedMaintenanceTypesEnumValues = []MaintenanceTypes{
 	"DisableMonitoring",
 	"DisableNotifications",
 }
@@ -36,7 +37,7 @@ func (v *MaintenanceTypes) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := MaintenanceTypes(value)
-	for _, existing := range allowedMaintenanceTypesEnumValues {
+	for _, existing := range AllowedMaintenanceTypesEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewMaintenanceTypesFromValue(v string) (*MaintenanceTypes, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for MaintenanceTypes: valid values are %v", v, allowedMaintenanceTypesEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for MaintenanceTypes: valid values are %v", v, AllowedMaintenanceTypesEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v MaintenanceTypes) IsValid() bool {
-	for _, existing := range allowedMaintenanceTypesEnumValues {
+	for _, existing := range AllowedMaintenanceTypesEnumValues {
 		if existing == v {
 			return true
 		}

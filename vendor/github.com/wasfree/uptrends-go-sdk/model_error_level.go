@@ -25,7 +25,8 @@ const (
 	ERRORLEVEL_CONFIRMED ErrorLevel = "Confirmed"
 )
 
-var allowedErrorLevelEnumValues = []ErrorLevel{
+// All allowed values of ErrorLevel enum
+var AllowedErrorLevelEnumValues = []ErrorLevel{
 	"NoError",
 	"Unconfirmed",
 	"Confirmed",
@@ -38,7 +39,7 @@ func (v *ErrorLevel) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ErrorLevel(value)
-	for _, existing := range allowedErrorLevelEnumValues {
+	for _, existing := range AllowedErrorLevelEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -55,13 +56,13 @@ func NewErrorLevelFromValue(v string) (*ErrorLevel, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for ErrorLevel: valid values are %v", v, allowedErrorLevelEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for ErrorLevel: valid values are %v", v, AllowedErrorLevelEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v ErrorLevel) IsValid() bool {
-	for _, existing := range allowedErrorLevelEnumValues {
+	for _, existing := range AllowedErrorLevelEnumValues {
 		if existing == v {
 			return true
 		}

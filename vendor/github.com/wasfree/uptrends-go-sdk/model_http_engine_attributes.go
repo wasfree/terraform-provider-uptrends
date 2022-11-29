@@ -17,9 +17,8 @@ import (
 // HttpEngineAttributes HttpEngineAttributes describes the attributes of a Multi-step Api monitor check
 type HttpEngineAttributes struct {
 	// The results of the steps 
-	StepResults *[]HttpEngineStep `json:"StepResults,omitempty"`
-	// Timing info
-	TimingInfo *StepTimingInfo `json:"TimingInfo,omitempty"`
+	StepResults []HttpEngineStep `json:"StepResults,omitempty"`
+	TimingInfo *HttpEngineAttributesTimingInfo `json:"TimingInfo,omitempty"`
 	// Number of total steps
 	TotalSteps int32 `json:"TotalSteps"`
 	// Number of passed/succeed tests
@@ -47,25 +46,25 @@ func NewHttpEngineAttributesWithDefaults() *HttpEngineAttributes {
 
 // GetStepResults returns the StepResults field value if set, zero value otherwise.
 func (o *HttpEngineAttributes) GetStepResults() []HttpEngineStep {
-	if o == nil || o.StepResults == nil {
+	if o == nil || isNil(o.StepResults) {
 		var ret []HttpEngineStep
 		return ret
 	}
-	return *o.StepResults
+	return o.StepResults
 }
 
 // GetStepResultsOk returns a tuple with the StepResults field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *HttpEngineAttributes) GetStepResultsOk() (*[]HttpEngineStep, bool) {
-	if o == nil || o.StepResults == nil {
-		return nil, false
+func (o *HttpEngineAttributes) GetStepResultsOk() ([]HttpEngineStep, bool) {
+	if o == nil || isNil(o.StepResults) {
+    return nil, false
 	}
 	return o.StepResults, true
 }
 
 // HasStepResults returns a boolean if a field has been set.
 func (o *HttpEngineAttributes) HasStepResults() bool {
-	if o != nil && o.StepResults != nil {
+	if o != nil && !isNil(o.StepResults) {
 		return true
 	}
 
@@ -74,13 +73,13 @@ func (o *HttpEngineAttributes) HasStepResults() bool {
 
 // SetStepResults gets a reference to the given []HttpEngineStep and assigns it to the StepResults field.
 func (o *HttpEngineAttributes) SetStepResults(v []HttpEngineStep) {
-	o.StepResults = &v
+	o.StepResults = v
 }
 
 // GetTimingInfo returns the TimingInfo field value if set, zero value otherwise.
-func (o *HttpEngineAttributes) GetTimingInfo() StepTimingInfo {
-	if o == nil || o.TimingInfo == nil {
-		var ret StepTimingInfo
+func (o *HttpEngineAttributes) GetTimingInfo() HttpEngineAttributesTimingInfo {
+	if o == nil || isNil(o.TimingInfo) {
+		var ret HttpEngineAttributesTimingInfo
 		return ret
 	}
 	return *o.TimingInfo
@@ -88,24 +87,24 @@ func (o *HttpEngineAttributes) GetTimingInfo() StepTimingInfo {
 
 // GetTimingInfoOk returns a tuple with the TimingInfo field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *HttpEngineAttributes) GetTimingInfoOk() (*StepTimingInfo, bool) {
-	if o == nil || o.TimingInfo == nil {
-		return nil, false
+func (o *HttpEngineAttributes) GetTimingInfoOk() (*HttpEngineAttributesTimingInfo, bool) {
+	if o == nil || isNil(o.TimingInfo) {
+    return nil, false
 	}
 	return o.TimingInfo, true
 }
 
 // HasTimingInfo returns a boolean if a field has been set.
 func (o *HttpEngineAttributes) HasTimingInfo() bool {
-	if o != nil && o.TimingInfo != nil {
+	if o != nil && !isNil(o.TimingInfo) {
 		return true
 	}
 
 	return false
 }
 
-// SetTimingInfo gets a reference to the given StepTimingInfo and assigns it to the TimingInfo field.
-func (o *HttpEngineAttributes) SetTimingInfo(v StepTimingInfo) {
+// SetTimingInfo gets a reference to the given HttpEngineAttributesTimingInfo and assigns it to the TimingInfo field.
+func (o *HttpEngineAttributes) SetTimingInfo(v HttpEngineAttributesTimingInfo) {
 	o.TimingInfo = &v
 }
 
@@ -122,8 +121,8 @@ func (o *HttpEngineAttributes) GetTotalSteps() int32 {
 // GetTotalStepsOk returns a tuple with the TotalSteps field value
 // and a boolean to check if the value has been set.
 func (o *HttpEngineAttributes) GetTotalStepsOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.TotalSteps, true
 }
@@ -146,8 +145,8 @@ func (o *HttpEngineAttributes) GetPassedSteps() int32 {
 // GetPassedStepsOk returns a tuple with the PassedSteps field value
 // and a boolean to check if the value has been set.
 func (o *HttpEngineAttributes) GetPassedStepsOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.PassedSteps, true
 }
@@ -159,10 +158,10 @@ func (o *HttpEngineAttributes) SetPassedSteps(v int32) {
 
 func (o HttpEngineAttributes) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.StepResults != nil {
+	if !isNil(o.StepResults) {
 		toSerialize["StepResults"] = o.StepResults
 	}
-	if o.TimingInfo != nil {
+	if !isNil(o.TimingInfo) {
 		toSerialize["TimingInfo"] = o.TimingInfo
 	}
 	if true {

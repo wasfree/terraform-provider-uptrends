@@ -16,14 +16,12 @@ import (
 
 // WaterfallInfo struct for WaterfallInfo
 type WaterfallInfo struct {
-	// Metrics for describing the load cycle of the entire web page.  Includes CoreWebVitals and other related metrics.
-	PageLoadMetrics *PageLoadMetrics `json:"PageLoadMetrics,omitempty"`
-	// W3C Navigation Timing metrics
-	W3CNavigationTiming *W3CNavigationTiming `json:"W3CNavigationTiming,omitempty"`
+	PageLoadMetrics *WaterfallInfoPageLoadMetrics `json:"PageLoadMetrics,omitempty"`
+	W3CNavigationTiming *WaterfallInfoW3CNavigationTiming `json:"W3CNavigationTiming,omitempty"`
 	// Elements in the waterfall
-	Elements *[]PageElement `json:"Elements,omitempty"`
+	Elements []PageElement `json:"Elements,omitempty"`
 	// List of domain groups used in the waterfall elements
-	DomainGroupNames *[]string `json:"DomainGroupNames,omitempty"`
+	DomainGroupNames []string `json:"DomainGroupNames,omitempty"`
 }
 
 // NewWaterfallInfo instantiates a new WaterfallInfo object
@@ -44,9 +42,9 @@ func NewWaterfallInfoWithDefaults() *WaterfallInfo {
 }
 
 // GetPageLoadMetrics returns the PageLoadMetrics field value if set, zero value otherwise.
-func (o *WaterfallInfo) GetPageLoadMetrics() PageLoadMetrics {
-	if o == nil || o.PageLoadMetrics == nil {
-		var ret PageLoadMetrics
+func (o *WaterfallInfo) GetPageLoadMetrics() WaterfallInfoPageLoadMetrics {
+	if o == nil || isNil(o.PageLoadMetrics) {
+		var ret WaterfallInfoPageLoadMetrics
 		return ret
 	}
 	return *o.PageLoadMetrics
@@ -54,31 +52,31 @@ func (o *WaterfallInfo) GetPageLoadMetrics() PageLoadMetrics {
 
 // GetPageLoadMetricsOk returns a tuple with the PageLoadMetrics field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *WaterfallInfo) GetPageLoadMetricsOk() (*PageLoadMetrics, bool) {
-	if o == nil || o.PageLoadMetrics == nil {
-		return nil, false
+func (o *WaterfallInfo) GetPageLoadMetricsOk() (*WaterfallInfoPageLoadMetrics, bool) {
+	if o == nil || isNil(o.PageLoadMetrics) {
+    return nil, false
 	}
 	return o.PageLoadMetrics, true
 }
 
 // HasPageLoadMetrics returns a boolean if a field has been set.
 func (o *WaterfallInfo) HasPageLoadMetrics() bool {
-	if o != nil && o.PageLoadMetrics != nil {
+	if o != nil && !isNil(o.PageLoadMetrics) {
 		return true
 	}
 
 	return false
 }
 
-// SetPageLoadMetrics gets a reference to the given PageLoadMetrics and assigns it to the PageLoadMetrics field.
-func (o *WaterfallInfo) SetPageLoadMetrics(v PageLoadMetrics) {
+// SetPageLoadMetrics gets a reference to the given WaterfallInfoPageLoadMetrics and assigns it to the PageLoadMetrics field.
+func (o *WaterfallInfo) SetPageLoadMetrics(v WaterfallInfoPageLoadMetrics) {
 	o.PageLoadMetrics = &v
 }
 
 // GetW3CNavigationTiming returns the W3CNavigationTiming field value if set, zero value otherwise.
-func (o *WaterfallInfo) GetW3CNavigationTiming() W3CNavigationTiming {
-	if o == nil || o.W3CNavigationTiming == nil {
-		var ret W3CNavigationTiming
+func (o *WaterfallInfo) GetW3CNavigationTiming() WaterfallInfoW3CNavigationTiming {
+	if o == nil || isNil(o.W3CNavigationTiming) {
+		var ret WaterfallInfoW3CNavigationTiming
 		return ret
 	}
 	return *o.W3CNavigationTiming
@@ -86,48 +84,48 @@ func (o *WaterfallInfo) GetW3CNavigationTiming() W3CNavigationTiming {
 
 // GetW3CNavigationTimingOk returns a tuple with the W3CNavigationTiming field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *WaterfallInfo) GetW3CNavigationTimingOk() (*W3CNavigationTiming, bool) {
-	if o == nil || o.W3CNavigationTiming == nil {
-		return nil, false
+func (o *WaterfallInfo) GetW3CNavigationTimingOk() (*WaterfallInfoW3CNavigationTiming, bool) {
+	if o == nil || isNil(o.W3CNavigationTiming) {
+    return nil, false
 	}
 	return o.W3CNavigationTiming, true
 }
 
 // HasW3CNavigationTiming returns a boolean if a field has been set.
 func (o *WaterfallInfo) HasW3CNavigationTiming() bool {
-	if o != nil && o.W3CNavigationTiming != nil {
+	if o != nil && !isNil(o.W3CNavigationTiming) {
 		return true
 	}
 
 	return false
 }
 
-// SetW3CNavigationTiming gets a reference to the given W3CNavigationTiming and assigns it to the W3CNavigationTiming field.
-func (o *WaterfallInfo) SetW3CNavigationTiming(v W3CNavigationTiming) {
+// SetW3CNavigationTiming gets a reference to the given WaterfallInfoW3CNavigationTiming and assigns it to the W3CNavigationTiming field.
+func (o *WaterfallInfo) SetW3CNavigationTiming(v WaterfallInfoW3CNavigationTiming) {
 	o.W3CNavigationTiming = &v
 }
 
 // GetElements returns the Elements field value if set, zero value otherwise.
 func (o *WaterfallInfo) GetElements() []PageElement {
-	if o == nil || o.Elements == nil {
+	if o == nil || isNil(o.Elements) {
 		var ret []PageElement
 		return ret
 	}
-	return *o.Elements
+	return o.Elements
 }
 
 // GetElementsOk returns a tuple with the Elements field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *WaterfallInfo) GetElementsOk() (*[]PageElement, bool) {
-	if o == nil || o.Elements == nil {
-		return nil, false
+func (o *WaterfallInfo) GetElementsOk() ([]PageElement, bool) {
+	if o == nil || isNil(o.Elements) {
+    return nil, false
 	}
 	return o.Elements, true
 }
 
 // HasElements returns a boolean if a field has been set.
 func (o *WaterfallInfo) HasElements() bool {
-	if o != nil && o.Elements != nil {
+	if o != nil && !isNil(o.Elements) {
 		return true
 	}
 
@@ -136,30 +134,30 @@ func (o *WaterfallInfo) HasElements() bool {
 
 // SetElements gets a reference to the given []PageElement and assigns it to the Elements field.
 func (o *WaterfallInfo) SetElements(v []PageElement) {
-	o.Elements = &v
+	o.Elements = v
 }
 
 // GetDomainGroupNames returns the DomainGroupNames field value if set, zero value otherwise.
 func (o *WaterfallInfo) GetDomainGroupNames() []string {
-	if o == nil || o.DomainGroupNames == nil {
+	if o == nil || isNil(o.DomainGroupNames) {
 		var ret []string
 		return ret
 	}
-	return *o.DomainGroupNames
+	return o.DomainGroupNames
 }
 
 // GetDomainGroupNamesOk returns a tuple with the DomainGroupNames field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *WaterfallInfo) GetDomainGroupNamesOk() (*[]string, bool) {
-	if o == nil || o.DomainGroupNames == nil {
-		return nil, false
+func (o *WaterfallInfo) GetDomainGroupNamesOk() ([]string, bool) {
+	if o == nil || isNil(o.DomainGroupNames) {
+    return nil, false
 	}
 	return o.DomainGroupNames, true
 }
 
 // HasDomainGroupNames returns a boolean if a field has been set.
 func (o *WaterfallInfo) HasDomainGroupNames() bool {
-	if o != nil && o.DomainGroupNames != nil {
+	if o != nil && !isNil(o.DomainGroupNames) {
 		return true
 	}
 
@@ -168,21 +166,21 @@ func (o *WaterfallInfo) HasDomainGroupNames() bool {
 
 // SetDomainGroupNames gets a reference to the given []string and assigns it to the DomainGroupNames field.
 func (o *WaterfallInfo) SetDomainGroupNames(v []string) {
-	o.DomainGroupNames = &v
+	o.DomainGroupNames = v
 }
 
 func (o WaterfallInfo) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.PageLoadMetrics != nil {
+	if !isNil(o.PageLoadMetrics) {
 		toSerialize["PageLoadMetrics"] = o.PageLoadMetrics
 	}
-	if o.W3CNavigationTiming != nil {
+	if !isNil(o.W3CNavigationTiming) {
 		toSerialize["W3CNavigationTiming"] = o.W3CNavigationTiming
 	}
-	if o.Elements != nil {
+	if !isNil(o.Elements) {
 		toSerialize["Elements"] = o.Elements
 	}
-	if o.DomainGroupNames != nil {
+	if !isNil(o.DomainGroupNames) {
 		toSerialize["DomainGroupNames"] = o.DomainGroupNames
 	}
 	return json.Marshal(toSerialize)

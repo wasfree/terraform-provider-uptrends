@@ -12,13 +12,12 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
-// StatisticsAttributes struct for StatisticsAttributes
+// StatisticsAttributes Object attributes 
 type StatisticsAttributes struct {
-	StartDateTime time.Time `json:"StartDateTime"`
-	EndDateTime time.Time `json:"EndDateTime"`
+	StartDateTime map[string]interface{} `json:"StartDateTime"`
+	EndDateTime map[string]interface{} `json:"EndDateTime"`
 	Alerts *int32 `json:"Alerts,omitempty"`
 	SlaTarget *float64 `json:"SlaTarget,omitempty"`
 	SlaTargetTotalTime *float64 `json:"SlaTargetTotalTime,omitempty"`
@@ -42,7 +41,7 @@ type StatisticsAttributes struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStatisticsAttributes(startDateTime time.Time, endDateTime time.Time) *StatisticsAttributes {
+func NewStatisticsAttributes(startDateTime map[string]interface{}, endDateTime map[string]interface{}) *StatisticsAttributes {
 	this := StatisticsAttributes{}
 	this.StartDateTime = startDateTime
 	this.EndDateTime = endDateTime
@@ -58,9 +57,9 @@ func NewStatisticsAttributesWithDefaults() *StatisticsAttributes {
 }
 
 // GetStartDateTime returns the StartDateTime field value
-func (o *StatisticsAttributes) GetStartDateTime() time.Time {
+func (o *StatisticsAttributes) GetStartDateTime() map[string]interface{} {
 	if o == nil {
-		var ret time.Time
+		var ret map[string]interface{}
 		return ret
 	}
 
@@ -69,22 +68,22 @@ func (o *StatisticsAttributes) GetStartDateTime() time.Time {
 
 // GetStartDateTimeOk returns a tuple with the StartDateTime field value
 // and a boolean to check if the value has been set.
-func (o *StatisticsAttributes) GetStartDateTimeOk() (*time.Time, bool) {
-	if o == nil  {
-		return nil, false
+func (o *StatisticsAttributes) GetStartDateTimeOk() (map[string]interface{}, bool) {
+	if o == nil {
+    return map[string]interface{}{}, false
 	}
-	return &o.StartDateTime, true
+	return o.StartDateTime, true
 }
 
 // SetStartDateTime sets field value
-func (o *StatisticsAttributes) SetStartDateTime(v time.Time) {
+func (o *StatisticsAttributes) SetStartDateTime(v map[string]interface{}) {
 	o.StartDateTime = v
 }
 
 // GetEndDateTime returns the EndDateTime field value
-func (o *StatisticsAttributes) GetEndDateTime() time.Time {
+func (o *StatisticsAttributes) GetEndDateTime() map[string]interface{} {
 	if o == nil {
-		var ret time.Time
+		var ret map[string]interface{}
 		return ret
 	}
 
@@ -93,21 +92,21 @@ func (o *StatisticsAttributes) GetEndDateTime() time.Time {
 
 // GetEndDateTimeOk returns a tuple with the EndDateTime field value
 // and a boolean to check if the value has been set.
-func (o *StatisticsAttributes) GetEndDateTimeOk() (*time.Time, bool) {
-	if o == nil  {
-		return nil, false
+func (o *StatisticsAttributes) GetEndDateTimeOk() (map[string]interface{}, bool) {
+	if o == nil {
+    return map[string]interface{}{}, false
 	}
-	return &o.EndDateTime, true
+	return o.EndDateTime, true
 }
 
 // SetEndDateTime sets field value
-func (o *StatisticsAttributes) SetEndDateTime(v time.Time) {
+func (o *StatisticsAttributes) SetEndDateTime(v map[string]interface{}) {
 	o.EndDateTime = v
 }
 
 // GetAlerts returns the Alerts field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetAlerts() int32 {
-	if o == nil || o.Alerts == nil {
+	if o == nil || isNil(o.Alerts) {
 		var ret int32
 		return ret
 	}
@@ -117,15 +116,15 @@ func (o *StatisticsAttributes) GetAlerts() int32 {
 // GetAlertsOk returns a tuple with the Alerts field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetAlertsOk() (*int32, bool) {
-	if o == nil || o.Alerts == nil {
-		return nil, false
+	if o == nil || isNil(o.Alerts) {
+    return nil, false
 	}
 	return o.Alerts, true
 }
 
 // HasAlerts returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasAlerts() bool {
-	if o != nil && o.Alerts != nil {
+	if o != nil && !isNil(o.Alerts) {
 		return true
 	}
 
@@ -139,7 +138,7 @@ func (o *StatisticsAttributes) SetAlerts(v int32) {
 
 // GetSlaTarget returns the SlaTarget field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetSlaTarget() float64 {
-	if o == nil || o.SlaTarget == nil {
+	if o == nil || isNil(o.SlaTarget) {
 		var ret float64
 		return ret
 	}
@@ -149,15 +148,15 @@ func (o *StatisticsAttributes) GetSlaTarget() float64 {
 // GetSlaTargetOk returns a tuple with the SlaTarget field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetSlaTargetOk() (*float64, bool) {
-	if o == nil || o.SlaTarget == nil {
-		return nil, false
+	if o == nil || isNil(o.SlaTarget) {
+    return nil, false
 	}
 	return o.SlaTarget, true
 }
 
 // HasSlaTarget returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasSlaTarget() bool {
-	if o != nil && o.SlaTarget != nil {
+	if o != nil && !isNil(o.SlaTarget) {
 		return true
 	}
 
@@ -171,7 +170,7 @@ func (o *StatisticsAttributes) SetSlaTarget(v float64) {
 
 // GetSlaTargetTotalTime returns the SlaTargetTotalTime field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetSlaTargetTotalTime() float64 {
-	if o == nil || o.SlaTargetTotalTime == nil {
+	if o == nil || isNil(o.SlaTargetTotalTime) {
 		var ret float64
 		return ret
 	}
@@ -181,15 +180,15 @@ func (o *StatisticsAttributes) GetSlaTargetTotalTime() float64 {
 // GetSlaTargetTotalTimeOk returns a tuple with the SlaTargetTotalTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetSlaTargetTotalTimeOk() (*float64, bool) {
-	if o == nil || o.SlaTargetTotalTime == nil {
-		return nil, false
+	if o == nil || isNil(o.SlaTargetTotalTime) {
+    return nil, false
 	}
 	return o.SlaTargetTotalTime, true
 }
 
 // HasSlaTargetTotalTime returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasSlaTargetTotalTime() bool {
-	if o != nil && o.SlaTargetTotalTime != nil {
+	if o != nil && !isNil(o.SlaTargetTotalTime) {
 		return true
 	}
 
@@ -203,7 +202,7 @@ func (o *StatisticsAttributes) SetSlaTargetTotalTime(v float64) {
 
 // GetOperatorResponseTarget returns the OperatorResponseTarget field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetOperatorResponseTarget() float64 {
-	if o == nil || o.OperatorResponseTarget == nil {
+	if o == nil || isNil(o.OperatorResponseTarget) {
 		var ret float64
 		return ret
 	}
@@ -213,15 +212,15 @@ func (o *StatisticsAttributes) GetOperatorResponseTarget() float64 {
 // GetOperatorResponseTargetOk returns a tuple with the OperatorResponseTarget field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetOperatorResponseTargetOk() (*float64, bool) {
-	if o == nil || o.OperatorResponseTarget == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorResponseTarget) {
+    return nil, false
 	}
 	return o.OperatorResponseTarget, true
 }
 
 // HasOperatorResponseTarget returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasOperatorResponseTarget() bool {
-	if o != nil && o.OperatorResponseTarget != nil {
+	if o != nil && !isNil(o.OperatorResponseTarget) {
 		return true
 	}
 
@@ -235,7 +234,7 @@ func (o *StatisticsAttributes) SetOperatorResponseTarget(v float64) {
 
 // GetOperatorResponseTime returns the OperatorResponseTime field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetOperatorResponseTime() float64 {
-	if o == nil || o.OperatorResponseTime == nil {
+	if o == nil || isNil(o.OperatorResponseTime) {
 		var ret float64
 		return ret
 	}
@@ -245,15 +244,15 @@ func (o *StatisticsAttributes) GetOperatorResponseTime() float64 {
 // GetOperatorResponseTimeOk returns a tuple with the OperatorResponseTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetOperatorResponseTimeOk() (*float64, bool) {
-	if o == nil || o.OperatorResponseTime == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorResponseTime) {
+    return nil, false
 	}
 	return o.OperatorResponseTime, true
 }
 
 // HasOperatorResponseTime returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasOperatorResponseTime() bool {
-	if o != nil && o.OperatorResponseTime != nil {
+	if o != nil && !isNil(o.OperatorResponseTime) {
 		return true
 	}
 
@@ -267,7 +266,7 @@ func (o *StatisticsAttributes) SetOperatorResponseTime(v float64) {
 
 // GetDowntimePercentage returns the DowntimePercentage field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetDowntimePercentage() float64 {
-	if o == nil || o.DowntimePercentage == nil {
+	if o == nil || isNil(o.DowntimePercentage) {
 		var ret float64
 		return ret
 	}
@@ -277,15 +276,15 @@ func (o *StatisticsAttributes) GetDowntimePercentage() float64 {
 // GetDowntimePercentageOk returns a tuple with the DowntimePercentage field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetDowntimePercentageOk() (*float64, bool) {
-	if o == nil || o.DowntimePercentage == nil {
-		return nil, false
+	if o == nil || isNil(o.DowntimePercentage) {
+    return nil, false
 	}
 	return o.DowntimePercentage, true
 }
 
 // HasDowntimePercentage returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasDowntimePercentage() bool {
-	if o != nil && o.DowntimePercentage != nil {
+	if o != nil && !isNil(o.DowntimePercentage) {
 		return true
 	}
 
@@ -299,7 +298,7 @@ func (o *StatisticsAttributes) SetDowntimePercentage(v float64) {
 
 // GetUptimePercentage returns the UptimePercentage field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetUptimePercentage() float64 {
-	if o == nil || o.UptimePercentage == nil {
+	if o == nil || isNil(o.UptimePercentage) {
 		var ret float64
 		return ret
 	}
@@ -309,15 +308,15 @@ func (o *StatisticsAttributes) GetUptimePercentage() float64 {
 // GetUptimePercentageOk returns a tuple with the UptimePercentage field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetUptimePercentageOk() (*float64, bool) {
-	if o == nil || o.UptimePercentage == nil {
-		return nil, false
+	if o == nil || isNil(o.UptimePercentage) {
+    return nil, false
 	}
 	return o.UptimePercentage, true
 }
 
 // HasUptimePercentage returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasUptimePercentage() bool {
-	if o != nil && o.UptimePercentage != nil {
+	if o != nil && !isNil(o.UptimePercentage) {
 		return true
 	}
 
@@ -331,7 +330,7 @@ func (o *StatisticsAttributes) SetUptimePercentage(v float64) {
 
 // GetChecks returns the Checks field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetChecks() int64 {
-	if o == nil || o.Checks == nil {
+	if o == nil || isNil(o.Checks) {
 		var ret int64
 		return ret
 	}
@@ -341,15 +340,15 @@ func (o *StatisticsAttributes) GetChecks() int64 {
 // GetChecksOk returns a tuple with the Checks field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetChecksOk() (*int64, bool) {
-	if o == nil || o.Checks == nil {
-		return nil, false
+	if o == nil || isNil(o.Checks) {
+    return nil, false
 	}
 	return o.Checks, true
 }
 
 // HasChecks returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasChecks() bool {
-	if o != nil && o.Checks != nil {
+	if o != nil && !isNil(o.Checks) {
 		return true
 	}
 
@@ -363,7 +362,7 @@ func (o *StatisticsAttributes) SetChecks(v int64) {
 
 // GetConfirmedErrors returns the ConfirmedErrors field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetConfirmedErrors() int32 {
-	if o == nil || o.ConfirmedErrors == nil {
+	if o == nil || isNil(o.ConfirmedErrors) {
 		var ret int32
 		return ret
 	}
@@ -373,15 +372,15 @@ func (o *StatisticsAttributes) GetConfirmedErrors() int32 {
 // GetConfirmedErrorsOk returns a tuple with the ConfirmedErrors field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetConfirmedErrorsOk() (*int32, bool) {
-	if o == nil || o.ConfirmedErrors == nil {
-		return nil, false
+	if o == nil || isNil(o.ConfirmedErrors) {
+    return nil, false
 	}
 	return o.ConfirmedErrors, true
 }
 
 // HasConfirmedErrors returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasConfirmedErrors() bool {
-	if o != nil && o.ConfirmedErrors != nil {
+	if o != nil && !isNil(o.ConfirmedErrors) {
 		return true
 	}
 
@@ -395,7 +394,7 @@ func (o *StatisticsAttributes) SetConfirmedErrors(v int32) {
 
 // GetUnconfirmedErrors returns the UnconfirmedErrors field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetUnconfirmedErrors() int32 {
-	if o == nil || o.UnconfirmedErrors == nil {
+	if o == nil || isNil(o.UnconfirmedErrors) {
 		var ret int32
 		return ret
 	}
@@ -405,15 +404,15 @@ func (o *StatisticsAttributes) GetUnconfirmedErrors() int32 {
 // GetUnconfirmedErrorsOk returns a tuple with the UnconfirmedErrors field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetUnconfirmedErrorsOk() (*int32, bool) {
-	if o == nil || o.UnconfirmedErrors == nil {
-		return nil, false
+	if o == nil || isNil(o.UnconfirmedErrors) {
+    return nil, false
 	}
 	return o.UnconfirmedErrors, true
 }
 
 // HasUnconfirmedErrors returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasUnconfirmedErrors() bool {
-	if o != nil && o.UnconfirmedErrors != nil {
+	if o != nil && !isNil(o.UnconfirmedErrors) {
 		return true
 	}
 
@@ -427,7 +426,7 @@ func (o *StatisticsAttributes) SetUnconfirmedErrors(v int32) {
 
 // GetUptime returns the Uptime field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetUptime() int64 {
-	if o == nil || o.Uptime == nil {
+	if o == nil || isNil(o.Uptime) {
 		var ret int64
 		return ret
 	}
@@ -437,15 +436,15 @@ func (o *StatisticsAttributes) GetUptime() int64 {
 // GetUptimeOk returns a tuple with the Uptime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetUptimeOk() (*int64, bool) {
-	if o == nil || o.Uptime == nil {
-		return nil, false
+	if o == nil || isNil(o.Uptime) {
+    return nil, false
 	}
 	return o.Uptime, true
 }
 
 // HasUptime returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasUptime() bool {
-	if o != nil && o.Uptime != nil {
+	if o != nil && !isNil(o.Uptime) {
 		return true
 	}
 
@@ -459,7 +458,7 @@ func (o *StatisticsAttributes) SetUptime(v int64) {
 
 // GetDowntime returns the Downtime field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetDowntime() int64 {
-	if o == nil || o.Downtime == nil {
+	if o == nil || isNil(o.Downtime) {
 		var ret int64
 		return ret
 	}
@@ -469,15 +468,15 @@ func (o *StatisticsAttributes) GetDowntime() int64 {
 // GetDowntimeOk returns a tuple with the Downtime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetDowntimeOk() (*int64, bool) {
-	if o == nil || o.Downtime == nil {
-		return nil, false
+	if o == nil || isNil(o.Downtime) {
+    return nil, false
 	}
 	return o.Downtime, true
 }
 
 // HasDowntime returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasDowntime() bool {
-	if o != nil && o.Downtime != nil {
+	if o != nil && !isNil(o.Downtime) {
 		return true
 	}
 
@@ -491,7 +490,7 @@ func (o *StatisticsAttributes) SetDowntime(v int64) {
 
 // GetTotalTime returns the TotalTime field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetTotalTime() float32 {
-	if o == nil || o.TotalTime == nil {
+	if o == nil || isNil(o.TotalTime) {
 		var ret float32
 		return ret
 	}
@@ -501,15 +500,15 @@ func (o *StatisticsAttributes) GetTotalTime() float32 {
 // GetTotalTimeOk returns a tuple with the TotalTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetTotalTimeOk() (*float32, bool) {
-	if o == nil || o.TotalTime == nil {
-		return nil, false
+	if o == nil || isNil(o.TotalTime) {
+    return nil, false
 	}
 	return o.TotalTime, true
 }
 
 // HasTotalTime returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasTotalTime() bool {
-	if o != nil && o.TotalTime != nil {
+	if o != nil && !isNil(o.TotalTime) {
 		return true
 	}
 
@@ -523,7 +522,7 @@ func (o *StatisticsAttributes) SetTotalTime(v float32) {
 
 // GetResolveTime returns the ResolveTime field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetResolveTime() float32 {
-	if o == nil || o.ResolveTime == nil {
+	if o == nil || isNil(o.ResolveTime) {
 		var ret float32
 		return ret
 	}
@@ -533,15 +532,15 @@ func (o *StatisticsAttributes) GetResolveTime() float32 {
 // GetResolveTimeOk returns a tuple with the ResolveTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetResolveTimeOk() (*float32, bool) {
-	if o == nil || o.ResolveTime == nil {
-		return nil, false
+	if o == nil || isNil(o.ResolveTime) {
+    return nil, false
 	}
 	return o.ResolveTime, true
 }
 
 // HasResolveTime returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasResolveTime() bool {
-	if o != nil && o.ResolveTime != nil {
+	if o != nil && !isNil(o.ResolveTime) {
 		return true
 	}
 
@@ -555,7 +554,7 @@ func (o *StatisticsAttributes) SetResolveTime(v float32) {
 
 // GetConnectionTime returns the ConnectionTime field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetConnectionTime() float32 {
-	if o == nil || o.ConnectionTime == nil {
+	if o == nil || isNil(o.ConnectionTime) {
 		var ret float32
 		return ret
 	}
@@ -565,15 +564,15 @@ func (o *StatisticsAttributes) GetConnectionTime() float32 {
 // GetConnectionTimeOk returns a tuple with the ConnectionTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetConnectionTimeOk() (*float32, bool) {
-	if o == nil || o.ConnectionTime == nil {
-		return nil, false
+	if o == nil || isNil(o.ConnectionTime) {
+    return nil, false
 	}
 	return o.ConnectionTime, true
 }
 
 // HasConnectionTime returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasConnectionTime() bool {
-	if o != nil && o.ConnectionTime != nil {
+	if o != nil && !isNil(o.ConnectionTime) {
 		return true
 	}
 
@@ -587,7 +586,7 @@ func (o *StatisticsAttributes) SetConnectionTime(v float32) {
 
 // GetDownloadTime returns the DownloadTime field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetDownloadTime() float32 {
-	if o == nil || o.DownloadTime == nil {
+	if o == nil || isNil(o.DownloadTime) {
 		var ret float32
 		return ret
 	}
@@ -597,15 +596,15 @@ func (o *StatisticsAttributes) GetDownloadTime() float32 {
 // GetDownloadTimeOk returns a tuple with the DownloadTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetDownloadTimeOk() (*float32, bool) {
-	if o == nil || o.DownloadTime == nil {
-		return nil, false
+	if o == nil || isNil(o.DownloadTime) {
+    return nil, false
 	}
 	return o.DownloadTime, true
 }
 
 // HasDownloadTime returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasDownloadTime() bool {
-	if o != nil && o.DownloadTime != nil {
+	if o != nil && !isNil(o.DownloadTime) {
 		return true
 	}
 
@@ -619,7 +618,7 @@ func (o *StatisticsAttributes) SetDownloadTime(v float32) {
 
 // GetTotalBytes returns the TotalBytes field value if set, zero value otherwise.
 func (o *StatisticsAttributes) GetTotalBytes() int64 {
-	if o == nil || o.TotalBytes == nil {
+	if o == nil || isNil(o.TotalBytes) {
 		var ret int64
 		return ret
 	}
@@ -629,15 +628,15 @@ func (o *StatisticsAttributes) GetTotalBytes() int64 {
 // GetTotalBytesOk returns a tuple with the TotalBytes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StatisticsAttributes) GetTotalBytesOk() (*int64, bool) {
-	if o == nil || o.TotalBytes == nil {
-		return nil, false
+	if o == nil || isNil(o.TotalBytes) {
+    return nil, false
 	}
 	return o.TotalBytes, true
 }
 
 // HasTotalBytes returns a boolean if a field has been set.
 func (o *StatisticsAttributes) HasTotalBytes() bool {
-	if o != nil && o.TotalBytes != nil {
+	if o != nil && !isNil(o.TotalBytes) {
 		return true
 	}
 
@@ -657,55 +656,55 @@ func (o StatisticsAttributes) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["EndDateTime"] = o.EndDateTime
 	}
-	if o.Alerts != nil {
+	if !isNil(o.Alerts) {
 		toSerialize["Alerts"] = o.Alerts
 	}
-	if o.SlaTarget != nil {
+	if !isNil(o.SlaTarget) {
 		toSerialize["SlaTarget"] = o.SlaTarget
 	}
-	if o.SlaTargetTotalTime != nil {
+	if !isNil(o.SlaTargetTotalTime) {
 		toSerialize["SlaTargetTotalTime"] = o.SlaTargetTotalTime
 	}
-	if o.OperatorResponseTarget != nil {
+	if !isNil(o.OperatorResponseTarget) {
 		toSerialize["OperatorResponseTarget"] = o.OperatorResponseTarget
 	}
-	if o.OperatorResponseTime != nil {
+	if !isNil(o.OperatorResponseTime) {
 		toSerialize["OperatorResponseTime"] = o.OperatorResponseTime
 	}
-	if o.DowntimePercentage != nil {
+	if !isNil(o.DowntimePercentage) {
 		toSerialize["DowntimePercentage"] = o.DowntimePercentage
 	}
-	if o.UptimePercentage != nil {
+	if !isNil(o.UptimePercentage) {
 		toSerialize["UptimePercentage"] = o.UptimePercentage
 	}
-	if o.Checks != nil {
+	if !isNil(o.Checks) {
 		toSerialize["Checks"] = o.Checks
 	}
-	if o.ConfirmedErrors != nil {
+	if !isNil(o.ConfirmedErrors) {
 		toSerialize["ConfirmedErrors"] = o.ConfirmedErrors
 	}
-	if o.UnconfirmedErrors != nil {
+	if !isNil(o.UnconfirmedErrors) {
 		toSerialize["UnconfirmedErrors"] = o.UnconfirmedErrors
 	}
-	if o.Uptime != nil {
+	if !isNil(o.Uptime) {
 		toSerialize["Uptime"] = o.Uptime
 	}
-	if o.Downtime != nil {
+	if !isNil(o.Downtime) {
 		toSerialize["Downtime"] = o.Downtime
 	}
-	if o.TotalTime != nil {
+	if !isNil(o.TotalTime) {
 		toSerialize["TotalTime"] = o.TotalTime
 	}
-	if o.ResolveTime != nil {
+	if !isNil(o.ResolveTime) {
 		toSerialize["ResolveTime"] = o.ResolveTime
 	}
-	if o.ConnectionTime != nil {
+	if !isNil(o.ConnectionTime) {
 		toSerialize["ConnectionTime"] = o.ConnectionTime
 	}
-	if o.DownloadTime != nil {
+	if !isNil(o.DownloadTime) {
 		toSerialize["DownloadTime"] = o.DownloadTime
 	}
-	if o.TotalBytes != nil {
+	if !isNil(o.TotalBytes) {
 		toSerialize["TotalBytes"] = o.TotalBytes
 	}
 	return json.Marshal(toSerialize)

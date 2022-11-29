@@ -48,7 +48,7 @@ func NewEscalationLevelWithDefaults() *EscalationLevel {
 
 // GetEscalationMode returns the EscalationMode field value if set, zero value otherwise.
 func (o *EscalationLevel) GetEscalationMode() EscalationMode {
-	if o == nil || o.EscalationMode == nil {
+	if o == nil || isNil(o.EscalationMode) {
 		var ret EscalationMode
 		return ret
 	}
@@ -58,15 +58,15 @@ func (o *EscalationLevel) GetEscalationMode() EscalationMode {
 // GetEscalationModeOk returns a tuple with the EscalationMode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevel) GetEscalationModeOk() (*EscalationMode, bool) {
-	if o == nil || o.EscalationMode == nil {
-		return nil, false
+	if o == nil || isNil(o.EscalationMode) {
+    return nil, false
 	}
 	return o.EscalationMode, true
 }
 
 // HasEscalationMode returns a boolean if a field has been set.
 func (o *EscalationLevel) HasEscalationMode() bool {
-	if o != nil && o.EscalationMode != nil {
+	if o != nil && !isNil(o.EscalationMode) {
 		return true
 	}
 
@@ -80,7 +80,7 @@ func (o *EscalationLevel) SetEscalationMode(v EscalationMode) {
 
 // GetId returns the Id field value if set, zero value otherwise.
 func (o *EscalationLevel) GetId() int32 {
-	if o == nil || o.Id == nil {
+	if o == nil || isNil(o.Id) {
 		var ret int32
 		return ret
 	}
@@ -90,15 +90,15 @@ func (o *EscalationLevel) GetId() int32 {
 // GetIdOk returns a tuple with the Id field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevel) GetIdOk() (*int32, bool) {
-	if o == nil || o.Id == nil {
-		return nil, false
+	if o == nil || isNil(o.Id) {
+    return nil, false
 	}
 	return o.Id, true
 }
 
 // HasId returns a boolean if a field has been set.
 func (o *EscalationLevel) HasId() bool {
-	if o != nil && o.Id != nil {
+	if o != nil && !isNil(o.Id) {
 		return true
 	}
 
@@ -112,7 +112,7 @@ func (o *EscalationLevel) SetId(v int32) {
 
 // GetThresholdErrorCount returns the ThresholdErrorCount field value if set, zero value otherwise.
 func (o *EscalationLevel) GetThresholdErrorCount() int32 {
-	if o == nil || o.ThresholdErrorCount == nil {
+	if o == nil || isNil(o.ThresholdErrorCount) {
 		var ret int32
 		return ret
 	}
@@ -122,15 +122,15 @@ func (o *EscalationLevel) GetThresholdErrorCount() int32 {
 // GetThresholdErrorCountOk returns a tuple with the ThresholdErrorCount field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevel) GetThresholdErrorCountOk() (*int32, bool) {
-	if o == nil || o.ThresholdErrorCount == nil {
-		return nil, false
+	if o == nil || isNil(o.ThresholdErrorCount) {
+    return nil, false
 	}
 	return o.ThresholdErrorCount, true
 }
 
 // HasThresholdErrorCount returns a boolean if a field has been set.
 func (o *EscalationLevel) HasThresholdErrorCount() bool {
-	if o != nil && o.ThresholdErrorCount != nil {
+	if o != nil && !isNil(o.ThresholdErrorCount) {
 		return true
 	}
 
@@ -144,7 +144,7 @@ func (o *EscalationLevel) SetThresholdErrorCount(v int32) {
 
 // GetThresholdMinutes returns the ThresholdMinutes field value if set, zero value otherwise.
 func (o *EscalationLevel) GetThresholdMinutes() int32 {
-	if o == nil || o.ThresholdMinutes == nil {
+	if o == nil || isNil(o.ThresholdMinutes) {
 		var ret int32
 		return ret
 	}
@@ -154,15 +154,15 @@ func (o *EscalationLevel) GetThresholdMinutes() int32 {
 // GetThresholdMinutesOk returns a tuple with the ThresholdMinutes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevel) GetThresholdMinutesOk() (*int32, bool) {
-	if o == nil || o.ThresholdMinutes == nil {
-		return nil, false
+	if o == nil || isNil(o.ThresholdMinutes) {
+    return nil, false
 	}
 	return o.ThresholdMinutes, true
 }
 
 // HasThresholdMinutes returns a boolean if a field has been set.
 func (o *EscalationLevel) HasThresholdMinutes() bool {
-	if o != nil && o.ThresholdMinutes != nil {
+	if o != nil && !isNil(o.ThresholdMinutes) {
 		return true
 	}
 
@@ -176,7 +176,7 @@ func (o *EscalationLevel) SetThresholdMinutes(v int32) {
 
 // GetIsActive returns the IsActive field value if set, zero value otherwise.
 func (o *EscalationLevel) GetIsActive() bool {
-	if o == nil || o.IsActive == nil {
+	if o == nil || isNil(o.IsActive) {
 		var ret bool
 		return ret
 	}
@@ -186,15 +186,15 @@ func (o *EscalationLevel) GetIsActive() bool {
 // GetIsActiveOk returns a tuple with the IsActive field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevel) GetIsActiveOk() (*bool, bool) {
-	if o == nil || o.IsActive == nil {
-		return nil, false
+	if o == nil || isNil(o.IsActive) {
+    return nil, false
 	}
 	return o.IsActive, true
 }
 
 // HasIsActive returns a boolean if a field has been set.
 func (o *EscalationLevel) HasIsActive() bool {
-	if o != nil && o.IsActive != nil {
+	if o != nil && !isNil(o.IsActive) {
 		return true
 	}
 
@@ -208,7 +208,7 @@ func (o *EscalationLevel) SetIsActive(v bool) {
 
 // GetMessage returns the Message field value if set, zero value otherwise.
 func (o *EscalationLevel) GetMessage() string {
-	if o == nil || o.Message == nil {
+	if o == nil || isNil(o.Message) {
 		var ret string
 		return ret
 	}
@@ -218,15 +218,15 @@ func (o *EscalationLevel) GetMessage() string {
 // GetMessageOk returns a tuple with the Message field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevel) GetMessageOk() (*string, bool) {
-	if o == nil || o.Message == nil {
-		return nil, false
+	if o == nil || isNil(o.Message) {
+    return nil, false
 	}
 	return o.Message, true
 }
 
 // HasMessage returns a boolean if a field has been set.
 func (o *EscalationLevel) HasMessage() bool {
-	if o != nil && o.Message != nil {
+	if o != nil && !isNil(o.Message) {
 		return true
 	}
 
@@ -240,7 +240,7 @@ func (o *EscalationLevel) SetMessage(v string) {
 
 // GetNumberOfReminders returns the NumberOfReminders field value if set, zero value otherwise.
 func (o *EscalationLevel) GetNumberOfReminders() int32 {
-	if o == nil || o.NumberOfReminders == nil {
+	if o == nil || isNil(o.NumberOfReminders) {
 		var ret int32
 		return ret
 	}
@@ -250,15 +250,15 @@ func (o *EscalationLevel) GetNumberOfReminders() int32 {
 // GetNumberOfRemindersOk returns a tuple with the NumberOfReminders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevel) GetNumberOfRemindersOk() (*int32, bool) {
-	if o == nil || o.NumberOfReminders == nil {
-		return nil, false
+	if o == nil || isNil(o.NumberOfReminders) {
+    return nil, false
 	}
 	return o.NumberOfReminders, true
 }
 
 // HasNumberOfReminders returns a boolean if a field has been set.
 func (o *EscalationLevel) HasNumberOfReminders() bool {
-	if o != nil && o.NumberOfReminders != nil {
+	if o != nil && !isNil(o.NumberOfReminders) {
 		return true
 	}
 
@@ -272,7 +272,7 @@ func (o *EscalationLevel) SetNumberOfReminders(v int32) {
 
 // GetReminderDelay returns the ReminderDelay field value if set, zero value otherwise.
 func (o *EscalationLevel) GetReminderDelay() int32 {
-	if o == nil || o.ReminderDelay == nil {
+	if o == nil || isNil(o.ReminderDelay) {
 		var ret int32
 		return ret
 	}
@@ -282,15 +282,15 @@ func (o *EscalationLevel) GetReminderDelay() int32 {
 // GetReminderDelayOk returns a tuple with the ReminderDelay field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevel) GetReminderDelayOk() (*int32, bool) {
-	if o == nil || o.ReminderDelay == nil {
-		return nil, false
+	if o == nil || isNil(o.ReminderDelay) {
+    return nil, false
 	}
 	return o.ReminderDelay, true
 }
 
 // HasReminderDelay returns a boolean if a field has been set.
 func (o *EscalationLevel) HasReminderDelay() bool {
-	if o != nil && o.ReminderDelay != nil {
+	if o != nil && !isNil(o.ReminderDelay) {
 		return true
 	}
 
@@ -304,7 +304,7 @@ func (o *EscalationLevel) SetReminderDelay(v int32) {
 
 // GetIncludeTraceRoute returns the IncludeTraceRoute field value if set, zero value otherwise.
 func (o *EscalationLevel) GetIncludeTraceRoute() bool {
-	if o == nil || o.IncludeTraceRoute == nil {
+	if o == nil || isNil(o.IncludeTraceRoute) {
 		var ret bool
 		return ret
 	}
@@ -314,15 +314,15 @@ func (o *EscalationLevel) GetIncludeTraceRoute() bool {
 // GetIncludeTraceRouteOk returns a tuple with the IncludeTraceRoute field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevel) GetIncludeTraceRouteOk() (*bool, bool) {
-	if o == nil || o.IncludeTraceRoute == nil {
-		return nil, false
+	if o == nil || isNil(o.IncludeTraceRoute) {
+    return nil, false
 	}
 	return o.IncludeTraceRoute, true
 }
 
 // HasIncludeTraceRoute returns a boolean if a field has been set.
 func (o *EscalationLevel) HasIncludeTraceRoute() bool {
-	if o != nil && o.IncludeTraceRoute != nil {
+	if o != nil && !isNil(o.IncludeTraceRoute) {
 		return true
 	}
 
@@ -336,7 +336,7 @@ func (o *EscalationLevel) SetIncludeTraceRoute(v bool) {
 
 // GetHash returns the Hash field value if set, zero value otherwise.
 func (o *EscalationLevel) GetHash() string {
-	if o == nil || o.Hash == nil {
+	if o == nil || isNil(o.Hash) {
 		var ret string
 		return ret
 	}
@@ -346,15 +346,15 @@ func (o *EscalationLevel) GetHash() string {
 // GetHashOk returns a tuple with the Hash field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *EscalationLevel) GetHashOk() (*string, bool) {
-	if o == nil || o.Hash == nil {
-		return nil, false
+	if o == nil || isNil(o.Hash) {
+    return nil, false
 	}
 	return o.Hash, true
 }
 
 // HasHash returns a boolean if a field has been set.
 func (o *EscalationLevel) HasHash() bool {
-	if o != nil && o.Hash != nil {
+	if o != nil && !isNil(o.Hash) {
 		return true
 	}
 
@@ -368,34 +368,34 @@ func (o *EscalationLevel) SetHash(v string) {
 
 func (o EscalationLevel) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.EscalationMode != nil {
+	if !isNil(o.EscalationMode) {
 		toSerialize["EscalationMode"] = o.EscalationMode
 	}
-	if o.Id != nil {
+	if !isNil(o.Id) {
 		toSerialize["Id"] = o.Id
 	}
-	if o.ThresholdErrorCount != nil {
+	if !isNil(o.ThresholdErrorCount) {
 		toSerialize["ThresholdErrorCount"] = o.ThresholdErrorCount
 	}
-	if o.ThresholdMinutes != nil {
+	if !isNil(o.ThresholdMinutes) {
 		toSerialize["ThresholdMinutes"] = o.ThresholdMinutes
 	}
-	if o.IsActive != nil {
+	if !isNil(o.IsActive) {
 		toSerialize["IsActive"] = o.IsActive
 	}
-	if o.Message != nil {
+	if !isNil(o.Message) {
 		toSerialize["Message"] = o.Message
 	}
-	if o.NumberOfReminders != nil {
+	if !isNil(o.NumberOfReminders) {
 		toSerialize["NumberOfReminders"] = o.NumberOfReminders
 	}
-	if o.ReminderDelay != nil {
+	if !isNil(o.ReminderDelay) {
 		toSerialize["ReminderDelay"] = o.ReminderDelay
 	}
-	if o.IncludeTraceRoute != nil {
+	if !isNil(o.IncludeTraceRoute) {
 		toSerialize["IncludeTraceRoute"] = o.IncludeTraceRoute
 	}
-	if o.Hash != nil {
+	if !isNil(o.Hash) {
 		toSerialize["Hash"] = o.Hash
 	}
 	return json.Marshal(toSerialize)

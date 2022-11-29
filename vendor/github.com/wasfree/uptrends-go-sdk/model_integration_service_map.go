@@ -52,8 +52,8 @@ func (o *IntegrationServiceMap) GetMonitorGuid() string {
 // GetMonitorGuidOk returns a tuple with the MonitorGuid field value
 // and a boolean to check if the value has been set.
 func (o *IntegrationServiceMap) GetMonitorGuidOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.MonitorGuid, true
 }
@@ -76,8 +76,8 @@ func (o *IntegrationServiceMap) GetIntegrationServiceGuid() string {
 // GetIntegrationServiceGuidOk returns a tuple with the IntegrationServiceGuid field value
 // and a boolean to check if the value has been set.
 func (o *IntegrationServiceMap) GetIntegrationServiceGuidOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.IntegrationServiceGuid, true
 }

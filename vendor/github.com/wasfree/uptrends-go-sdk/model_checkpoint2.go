@@ -16,10 +16,14 @@ import (
 
 // Checkpoint2 struct for Checkpoint2
 type Checkpoint2 struct {
-	Attributes *CheckpointAttributes `json:"Attributes,omitempty"`
+	Attributes *Checkpoint2Attributes `json:"Attributes,omitempty"`
+	// Identifier 
 	Id int32 `json:"Id"`
+	// Object type
 	Type *string `json:"Type,omitempty"`
-	Relationships *[]RelationObject `json:"Relationships,omitempty"`
+	// Relationships of the object
+	Relationships []RelationObject `json:"Relationships,omitempty"`
+	// Links related to the object
 	Links *map[string]string `json:"Links,omitempty"`
 }
 
@@ -42,9 +46,9 @@ func NewCheckpoint2WithDefaults() *Checkpoint2 {
 }
 
 // GetAttributes returns the Attributes field value if set, zero value otherwise.
-func (o *Checkpoint2) GetAttributes() CheckpointAttributes {
-	if o == nil || o.Attributes == nil {
-		var ret CheckpointAttributes
+func (o *Checkpoint2) GetAttributes() Checkpoint2Attributes {
+	if o == nil || isNil(o.Attributes) {
+		var ret Checkpoint2Attributes
 		return ret
 	}
 	return *o.Attributes
@@ -52,24 +56,24 @@ func (o *Checkpoint2) GetAttributes() CheckpointAttributes {
 
 // GetAttributesOk returns a tuple with the Attributes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Checkpoint2) GetAttributesOk() (*CheckpointAttributes, bool) {
-	if o == nil || o.Attributes == nil {
-		return nil, false
+func (o *Checkpoint2) GetAttributesOk() (*Checkpoint2Attributes, bool) {
+	if o == nil || isNil(o.Attributes) {
+    return nil, false
 	}
 	return o.Attributes, true
 }
 
 // HasAttributes returns a boolean if a field has been set.
 func (o *Checkpoint2) HasAttributes() bool {
-	if o != nil && o.Attributes != nil {
+	if o != nil && !isNil(o.Attributes) {
 		return true
 	}
 
 	return false
 }
 
-// SetAttributes gets a reference to the given CheckpointAttributes and assigns it to the Attributes field.
-func (o *Checkpoint2) SetAttributes(v CheckpointAttributes) {
+// SetAttributes gets a reference to the given Checkpoint2Attributes and assigns it to the Attributes field.
+func (o *Checkpoint2) SetAttributes(v Checkpoint2Attributes) {
 	o.Attributes = &v
 }
 
@@ -86,8 +90,8 @@ func (o *Checkpoint2) GetId() int32 {
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
 func (o *Checkpoint2) GetIdOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Id, true
 }
@@ -99,7 +103,7 @@ func (o *Checkpoint2) SetId(v int32) {
 
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *Checkpoint2) GetType() string {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
 	}
@@ -109,15 +113,15 @@ func (o *Checkpoint2) GetType() string {
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Checkpoint2) GetTypeOk() (*string, bool) {
-	if o == nil || o.Type == nil {
-		return nil, false
+	if o == nil || isNil(o.Type) {
+    return nil, false
 	}
 	return o.Type, true
 }
 
 // HasType returns a boolean if a field has been set.
 func (o *Checkpoint2) HasType() bool {
-	if o != nil && o.Type != nil {
+	if o != nil && !isNil(o.Type) {
 		return true
 	}
 
@@ -131,25 +135,25 @@ func (o *Checkpoint2) SetType(v string) {
 
 // GetRelationships returns the Relationships field value if set, zero value otherwise.
 func (o *Checkpoint2) GetRelationships() []RelationObject {
-	if o == nil || o.Relationships == nil {
+	if o == nil || isNil(o.Relationships) {
 		var ret []RelationObject
 		return ret
 	}
-	return *o.Relationships
+	return o.Relationships
 }
 
 // GetRelationshipsOk returns a tuple with the Relationships field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Checkpoint2) GetRelationshipsOk() (*[]RelationObject, bool) {
-	if o == nil || o.Relationships == nil {
-		return nil, false
+func (o *Checkpoint2) GetRelationshipsOk() ([]RelationObject, bool) {
+	if o == nil || isNil(o.Relationships) {
+    return nil, false
 	}
 	return o.Relationships, true
 }
 
 // HasRelationships returns a boolean if a field has been set.
 func (o *Checkpoint2) HasRelationships() bool {
-	if o != nil && o.Relationships != nil {
+	if o != nil && !isNil(o.Relationships) {
 		return true
 	}
 
@@ -158,12 +162,12 @@ func (o *Checkpoint2) HasRelationships() bool {
 
 // SetRelationships gets a reference to the given []RelationObject and assigns it to the Relationships field.
 func (o *Checkpoint2) SetRelationships(v []RelationObject) {
-	o.Relationships = &v
+	o.Relationships = v
 }
 
 // GetLinks returns the Links field value if set, zero value otherwise.
 func (o *Checkpoint2) GetLinks() map[string]string {
-	if o == nil || o.Links == nil {
+	if o == nil || isNil(o.Links) {
 		var ret map[string]string
 		return ret
 	}
@@ -173,15 +177,15 @@ func (o *Checkpoint2) GetLinks() map[string]string {
 // GetLinksOk returns a tuple with the Links field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Checkpoint2) GetLinksOk() (*map[string]string, bool) {
-	if o == nil || o.Links == nil {
-		return nil, false
+	if o == nil || isNil(o.Links) {
+    return nil, false
 	}
 	return o.Links, true
 }
 
 // HasLinks returns a boolean if a field has been set.
 func (o *Checkpoint2) HasLinks() bool {
-	if o != nil && o.Links != nil {
+	if o != nil && !isNil(o.Links) {
 		return true
 	}
 
@@ -195,19 +199,19 @@ func (o *Checkpoint2) SetLinks(v map[string]string) {
 
 func (o Checkpoint2) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Attributes != nil {
+	if !isNil(o.Attributes) {
 		toSerialize["Attributes"] = o.Attributes
 	}
 	if true {
 		toSerialize["Id"] = o.Id
 	}
-	if o.Type != nil {
+	if !isNil(o.Type) {
 		toSerialize["Type"] = o.Type
 	}
-	if o.Relationships != nil {
+	if !isNil(o.Relationships) {
 		toSerialize["Relationships"] = o.Relationships
 	}
-	if o.Links != nil {
+	if !isNil(o.Links) {
 		toSerialize["Links"] = o.Links
 	}
 	return json.Marshal(toSerialize)

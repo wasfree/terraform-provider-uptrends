@@ -240,7 +240,7 @@ github.com/vmihailenco/msgpack/v4/codes
 github.com/vmihailenco/tagparser
 github.com/vmihailenco/tagparser/internal
 github.com/vmihailenco/tagparser/internal/parser
-# github.com/wasfree/uptrends-go-sdk v1.1.0
+# github.com/wasfree/uptrends-go-sdk v1.2.0
 ## explicit; go 1.17
 github.com/wasfree/uptrends-go-sdk
 # github.com/zclconf/go-cty v1.12.1
@@ -283,7 +283,7 @@ golang.org/x/net/http2/hpack
 golang.org/x/net/idna
 golang.org/x/net/internal/timeseries
 golang.org/x/net/trace
-# golang.org/x/oauth2 v0.1.0
+# golang.org/x/oauth2 v0.2.0
 ## explicit; go 1.17
 golang.org/x/oauth2
 golang.org/x/oauth2/internal

@@ -22,11 +22,14 @@ type MsaBodyType string
 const (
 	MSABODYTYPE_RAW MsaBodyType = "Raw"
 	MSABODYTYPE_VAULT_FILES MsaBodyType = "VaultFiles"
+	MSABODYTYPE_VAULT_FILE_AS_BINARY MsaBodyType = "VaultFileAsBinary"
 )
 
-var allowedMsaBodyTypeEnumValues = []MsaBodyType{
+// All allowed values of MsaBodyType enum
+var AllowedMsaBodyTypeEnumValues = []MsaBodyType{
 	"Raw",
 	"VaultFiles",
+	"VaultFileAsBinary",
 }
 
 func (v *MsaBodyType) UnmarshalJSON(src []byte) error {
@@ -36,7 +39,7 @@ func (v *MsaBodyType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := MsaBodyType(value)
-	for _, existing := range allowedMsaBodyTypeEnumValues {
+	for _, existing := range AllowedMsaBodyTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +56,13 @@ func NewMsaBodyTypeFromValue(v string) (*MsaBodyType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for MsaBodyType: valid values are %v", v, allowedMsaBodyTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for MsaBodyType: valid values are %v", v, AllowedMsaBodyTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v MsaBodyType) IsValid() bool {
-	for _, existing := range allowedMsaBodyTypeEnumValues {
+	for _, existing := range AllowedMsaBodyTypeEnumValues {
 		if existing == v {
 			return true
 		}

@@ -12,17 +12,16 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // StepTimingInfo struct for StepTimingInfo
 type StepTimingInfo struct {
 	Description *string `json:"Description,omitempty"`
-	StartUtc time.Time `json:"StartUtc"`
-	EndUtc time.Time `json:"EndUtc"`
+	StartUtc map[string]interface{} `json:"StartUtc"`
+	EndUtc map[string]interface{} `json:"EndUtc"`
 	ElapsedMilliseconds int64 `json:"ElapsedMilliseconds"`
 	DelayMilliseconds int64 `json:"DelayMilliseconds"`
-	SubTimingInfos *[]StepTimingInfo `json:"SubTimingInfos,omitempty"`
+	SubTimingInfos []StepTimingInfo `json:"SubTimingInfos,omitempty"`
 	// If true, this TimingInfo should be counted as part of the sum of its siblings. If false, the TimingInfo should be discarded (e.g. for PreDelays we don't want to count).
 	IsValid bool `json:"IsValid"`
 }
@@ -31,7 +30,7 @@ type StepTimingInfo struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewStepTimingInfo(startUtc time.Time, endUtc time.Time, elapsedMilliseconds int64, delayMilliseconds int64, isValid bool) *StepTimingInfo {
+func NewStepTimingInfo(startUtc map[string]interface{}, endUtc map[string]interface{}, elapsedMilliseconds int64, delayMilliseconds int64, isValid bool) *StepTimingInfo {
 	this := StepTimingInfo{}
 	this.StartUtc = startUtc
 	this.EndUtc = endUtc
@@ -51,7 +50,7 @@ func NewStepTimingInfoWithDefaults() *StepTimingInfo {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *StepTimingInfo) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -61,15 +60,15 @@ func (o *StepTimingInfo) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *StepTimingInfo) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *StepTimingInfo) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -82,9 +81,9 @@ func (o *StepTimingInfo) SetDescription(v string) {
 }
 
 // GetStartUtc returns the StartUtc field value
-func (o *StepTimingInfo) GetStartUtc() time.Time {
+func (o *StepTimingInfo) GetStartUtc() map[string]interface{} {
 	if o == nil {
-		var ret time.Time
+		var ret map[string]interface{}
 		return ret
 	}
 
@@ -93,22 +92,22 @@ func (o *StepTimingInfo) GetStartUtc() time.Time {
 
 // GetStartUtcOk returns a tuple with the StartUtc field value
 // and a boolean to check if the value has been set.
-func (o *StepTimingInfo) GetStartUtcOk() (*time.Time, bool) {
-	if o == nil  {
-		return nil, false
+func (o *StepTimingInfo) GetStartUtcOk() (map[string]interface{}, bool) {
+	if o == nil {
+    return map[string]interface{}{}, false
 	}
-	return &o.StartUtc, true
+	return o.StartUtc, true
 }
 
 // SetStartUtc sets field value
-func (o *StepTimingInfo) SetStartUtc(v time.Time) {
+func (o *StepTimingInfo) SetStartUtc(v map[string]interface{}) {
 	o.StartUtc = v
 }
 
 // GetEndUtc returns the EndUtc field value
-func (o *StepTimingInfo) GetEndUtc() time.Time {
+func (o *StepTimingInfo) GetEndUtc() map[string]interface{} {
 	if o == nil {
-		var ret time.Time
+		var ret map[string]interface{}
 		return ret
 	}
 
@@ -117,15 +116,15 @@ func (o *StepTimingInfo) GetEndUtc() time.Time {
 
 // GetEndUtcOk returns a tuple with the EndUtc field value
 // and a boolean to check if the value has been set.
-func (o *StepTimingInfo) GetEndUtcOk() (*time.Time, bool) {
-	if o == nil  {
-		return nil, false
+func (o *StepTimingInfo) GetEndUtcOk() (map[string]interface{}, bool) {
+	if o == nil {
+    return map[string]interface{}{}, false
 	}
-	return &o.EndUtc, true
+	return o.EndUtc, true
 }
 
 // SetEndUtc sets field value
-func (o *StepTimingInfo) SetEndUtc(v time.Time) {
+func (o *StepTimingInfo) SetEndUtc(v map[string]interface{}) {
 	o.EndUtc = v
 }
 
@@ -142,8 +141,8 @@ func (o *StepTimingInfo) GetElapsedMilliseconds() int64 {
 // GetElapsedMillisecondsOk returns a tuple with the ElapsedMilliseconds field value
 // and a boolean to check if the value has been set.
 func (o *StepTimingInfo) GetElapsedMillisecondsOk() (*int64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ElapsedMilliseconds, true
 }
@@ -166,8 +165,8 @@ func (o *StepTimingInfo) GetDelayMilliseconds() int64 {
 // GetDelayMillisecondsOk returns a tuple with the DelayMilliseconds field value
 // and a boolean to check if the value has been set.
 func (o *StepTimingInfo) GetDelayMillisecondsOk() (*int64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.DelayMilliseconds, true
 }
@@ -179,25 +178,25 @@ func (o *StepTimingInfo) SetDelayMilliseconds(v int64) {
 
 // GetSubTimingInfos returns the SubTimingInfos field value if set, zero value otherwise.
 func (o *StepTimingInfo) GetSubTimingInfos() []StepTimingInfo {
-	if o == nil || o.SubTimingInfos == nil {
+	if o == nil || isNil(o.SubTimingInfos) {
 		var ret []StepTimingInfo
 		return ret
 	}
-	return *o.SubTimingInfos
+	return o.SubTimingInfos
 }
 
 // GetSubTimingInfosOk returns a tuple with the SubTimingInfos field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *StepTimingInfo) GetSubTimingInfosOk() (*[]StepTimingInfo, bool) {
-	if o == nil || o.SubTimingInfos == nil {
-		return nil, false
+func (o *StepTimingInfo) GetSubTimingInfosOk() ([]StepTimingInfo, bool) {
+	if o == nil || isNil(o.SubTimingInfos) {
+    return nil, false
 	}
 	return o.SubTimingInfos, true
 }
 
 // HasSubTimingInfos returns a boolean if a field has been set.
 func (o *StepTimingInfo) HasSubTimingInfos() bool {
-	if o != nil && o.SubTimingInfos != nil {
+	if o != nil && !isNil(o.SubTimingInfos) {
 		return true
 	}
 
@@ -206,7 +205,7 @@ func (o *StepTimingInfo) HasSubTimingInfos() bool {
 
 // SetSubTimingInfos gets a reference to the given []StepTimingInfo and assigns it to the SubTimingInfos field.
 func (o *StepTimingInfo) SetSubTimingInfos(v []StepTimingInfo) {
-	o.SubTimingInfos = &v
+	o.SubTimingInfos = v
 }
 
 // GetIsValid returns the IsValid field value
@@ -222,8 +221,8 @@ func (o *StepTimingInfo) GetIsValid() bool {
 // GetIsValidOk returns a tuple with the IsValid field value
 // and a boolean to check if the value has been set.
 func (o *StepTimingInfo) GetIsValidOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.IsValid, true
 }
@@ -235,7 +234,7 @@ func (o *StepTimingInfo) SetIsValid(v bool) {
 
 func (o StepTimingInfo) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["Description"] = o.Description
 	}
 	if true {
@@ -250,7 +249,7 @@ func (o StepTimingInfo) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["DelayMilliseconds"] = o.DelayMilliseconds
 	}
-	if o.SubTimingInfos != nil {
+	if !isNil(o.SubTimingInfos) {
 		toSerialize["SubTimingInfos"] = o.SubTimingInfos
 	}
 	if true {

@@ -26,7 +26,8 @@ const (
 	MONITORGROUPAUTHORIZATIONTYPE_CREATE_AND_DELETE_MONITORS_IN_GROUP MonitorGroupAuthorizationType = "CreateAndDeleteMonitorsInGroup"
 )
 
-var allowedMonitorGroupAuthorizationTypeEnumValues = []MonitorGroupAuthorizationType{
+// All allowed values of MonitorGroupAuthorizationType enum
+var AllowedMonitorGroupAuthorizationTypeEnumValues = []MonitorGroupAuthorizationType{
 	"ViewMonitorDataInGroup",
 	"ViewMonitorsInGroup",
 	"EditMonitorsInGroup",
@@ -40,7 +41,7 @@ func (v *MonitorGroupAuthorizationType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := MonitorGroupAuthorizationType(value)
-	for _, existing := range allowedMonitorGroupAuthorizationTypeEnumValues {
+	for _, existing := range AllowedMonitorGroupAuthorizationTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -57,13 +58,13 @@ func NewMonitorGroupAuthorizationTypeFromValue(v string) (*MonitorGroupAuthoriza
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for MonitorGroupAuthorizationType: valid values are %v", v, allowedMonitorGroupAuthorizationTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for MonitorGroupAuthorizationType: valid values are %v", v, AllowedMonitorGroupAuthorizationTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v MonitorGroupAuthorizationType) IsValid() bool {
-	for _, existing := range allowedMonitorGroupAuthorizationTypeEnumValues {
+	for _, existing := range AllowedMonitorGroupAuthorizationTypeEnumValues {
 		if existing == v {
 			return true
 		}

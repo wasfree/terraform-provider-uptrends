@@ -24,7 +24,8 @@ const (
 	VAULTSECTIONAUTHORIZATIONTYPE_CHANGE_VAULT_SECTION VaultSectionAuthorizationType = "ChangeVaultSection"
 )
 
-var allowedVaultSectionAuthorizationTypeEnumValues = []VaultSectionAuthorizationType{
+// All allowed values of VaultSectionAuthorizationType enum
+var AllowedVaultSectionAuthorizationTypeEnumValues = []VaultSectionAuthorizationType{
 	"ViewVaultSection",
 	"ChangeVaultSection",
 }
@@ -36,7 +37,7 @@ func (v *VaultSectionAuthorizationType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := VaultSectionAuthorizationType(value)
-	for _, existing := range allowedVaultSectionAuthorizationTypeEnumValues {
+	for _, existing := range AllowedVaultSectionAuthorizationTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewVaultSectionAuthorizationTypeFromValue(v string) (*VaultSectionAuthoriza
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for VaultSectionAuthorizationType: valid values are %v", v, allowedVaultSectionAuthorizationTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for VaultSectionAuthorizationType: valid values are %v", v, AllowedVaultSectionAuthorizationTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v VaultSectionAuthorizationType) IsValid() bool {
-	for _, existing := range allowedVaultSectionAuthorizationTypeEnumValues {
+	for _, existing := range AllowedVaultSectionAuthorizationTypeEnumValues {
 		if existing == v {
 			return true
 		}

@@ -24,13 +24,16 @@ const (
 	USERDEFINEDFUNCTIONTYPE_REGEX UserDefinedFunctionType = "Regex"
 	USERDEFINEDFUNCTIONTYPE_JWT_ENCODE UserDefinedFunctionType = "JwtEncode"
 	USERDEFINEDFUNCTIONTYPE_JWT_DECODE UserDefinedFunctionType = "JwtDecode"
+	USERDEFINEDFUNCTIONTYPE_HASH UserDefinedFunctionType = "Hash"
 )
 
-var allowedUserDefinedFunctionTypeEnumValues = []UserDefinedFunctionType{
+// All allowed values of UserDefinedFunctionType enum
+var AllowedUserDefinedFunctionTypeEnumValues = []UserDefinedFunctionType{
 	"Mapping",
 	"Regex",
 	"JwtEncode",
 	"JwtDecode",
+	"Hash",
 }
 
 func (v *UserDefinedFunctionType) UnmarshalJSON(src []byte) error {
@@ -40,7 +43,7 @@ func (v *UserDefinedFunctionType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := UserDefinedFunctionType(value)
-	for _, existing := range allowedUserDefinedFunctionTypeEnumValues {
+	for _, existing := range AllowedUserDefinedFunctionTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -57,13 +60,13 @@ func NewUserDefinedFunctionTypeFromValue(v string) (*UserDefinedFunctionType, er
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for UserDefinedFunctionType: valid values are %v", v, allowedUserDefinedFunctionTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for UserDefinedFunctionType: valid values are %v", v, AllowedUserDefinedFunctionTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v UserDefinedFunctionType) IsValid() bool {
-	for _, existing := range allowedUserDefinedFunctionTypeEnumValues {
+	for _, existing := range AllowedUserDefinedFunctionTypeEnumValues {
 		if existing == v {
 			return true
 		}

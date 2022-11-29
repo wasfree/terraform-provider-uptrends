@@ -18,7 +18,7 @@ import (
 type AssertionResultsInfo struct {
 	TotalAssertions int32 `json:"TotalAssertions"`
 	PassedAssertions int32 `json:"PassedAssertions"`
-	AssertionInfos *[]AssertionInfo `json:"AssertionInfos,omitempty"`
+	AssertionInfos []AssertionInfo `json:"AssertionInfos,omitempty"`
 }
 
 // NewAssertionResultsInfo instantiates a new AssertionResultsInfo object
@@ -53,8 +53,8 @@ func (o *AssertionResultsInfo) GetTotalAssertions() int32 {
 // GetTotalAssertionsOk returns a tuple with the TotalAssertions field value
 // and a boolean to check if the value has been set.
 func (o *AssertionResultsInfo) GetTotalAssertionsOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.TotalAssertions, true
 }
@@ -77,8 +77,8 @@ func (o *AssertionResultsInfo) GetPassedAssertions() int32 {
 // GetPassedAssertionsOk returns a tuple with the PassedAssertions field value
 // and a boolean to check if the value has been set.
 func (o *AssertionResultsInfo) GetPassedAssertionsOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.PassedAssertions, true
 }
@@ -90,25 +90,25 @@ func (o *AssertionResultsInfo) SetPassedAssertions(v int32) {
 
 // GetAssertionInfos returns the AssertionInfos field value if set, zero value otherwise.
 func (o *AssertionResultsInfo) GetAssertionInfos() []AssertionInfo {
-	if o == nil || o.AssertionInfos == nil {
+	if o == nil || isNil(o.AssertionInfos) {
 		var ret []AssertionInfo
 		return ret
 	}
-	return *o.AssertionInfos
+	return o.AssertionInfos
 }
 
 // GetAssertionInfosOk returns a tuple with the AssertionInfos field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AssertionResultsInfo) GetAssertionInfosOk() (*[]AssertionInfo, bool) {
-	if o == nil || o.AssertionInfos == nil {
-		return nil, false
+func (o *AssertionResultsInfo) GetAssertionInfosOk() ([]AssertionInfo, bool) {
+	if o == nil || isNil(o.AssertionInfos) {
+    return nil, false
 	}
 	return o.AssertionInfos, true
 }
 
 // HasAssertionInfos returns a boolean if a field has been set.
 func (o *AssertionResultsInfo) HasAssertionInfos() bool {
-	if o != nil && o.AssertionInfos != nil {
+	if o != nil && !isNil(o.AssertionInfos) {
 		return true
 	}
 
@@ -117,7 +117,7 @@ func (o *AssertionResultsInfo) HasAssertionInfos() bool {
 
 // SetAssertionInfos gets a reference to the given []AssertionInfo and assigns it to the AssertionInfos field.
 func (o *AssertionResultsInfo) SetAssertionInfos(v []AssertionInfo) {
-	o.AssertionInfos = &v
+	o.AssertionInfos = v
 }
 
 func (o AssertionResultsInfo) MarshalJSON() ([]byte, error) {
@@ -128,7 +128,7 @@ func (o AssertionResultsInfo) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["PassedAssertions"] = o.PassedAssertions
 	}
-	if o.AssertionInfos != nil {
+	if !isNil(o.AssertionInfos) {
 		toSerialize["AssertionInfos"] = o.AssertionInfos
 	}
 	return json.Marshal(toSerialize)

@@ -28,7 +28,8 @@ const (
 	THROTTLINGVALUE__4_G ThrottlingValue = "4G"
 )
 
-var allowedThrottlingValueEnumValues = []ThrottlingValue{
+// All allowed values of ThrottlingValue enum
+var AllowedThrottlingValueEnumValues = []ThrottlingValue{
 	"Adsl",
 	"Fiber",
 	"Cable",
@@ -44,7 +45,7 @@ func (v *ThrottlingValue) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ThrottlingValue(value)
-	for _, existing := range allowedThrottlingValueEnumValues {
+	for _, existing := range AllowedThrottlingValueEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -61,13 +62,13 @@ func NewThrottlingValueFromValue(v string) (*ThrottlingValue, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for ThrottlingValue: valid values are %v", v, allowedThrottlingValueEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for ThrottlingValue: valid values are %v", v, AllowedThrottlingValueEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v ThrottlingValue) IsValid() bool {
-	for _, existing := range allowedThrottlingValueEnumValues {
+	for _, existing := range AllowedThrottlingValueEnumValues {
 		if existing == v {
 			return true
 		}

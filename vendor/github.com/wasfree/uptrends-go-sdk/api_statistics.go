@@ -12,29 +12,24 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
-	"time"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // StatisticsApiService StatisticsApi service
 type StatisticsApiService service
 
 type ApiStatisticsGetMonitorGroupStatisticsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *StatisticsApiService
 	monitorGroupGuid string
 	filter *string
-	start *time.Time
-	end *time.Time
+	start *interface{}
+	end *interface{}
 	presetPeriod *string
 }
 
@@ -43,34 +38,37 @@ func (r ApiStatisticsGetMonitorGroupStatisticsRequest) Filter(filter string) Api
 	r.filter = &filter
 	return r
 }
+
 // The start of a custom period (can&#39;t be used together with the PresetPeriod parameter)
-func (r ApiStatisticsGetMonitorGroupStatisticsRequest) Start(start time.Time) ApiStatisticsGetMonitorGroupStatisticsRequest {
+func (r ApiStatisticsGetMonitorGroupStatisticsRequest) Start(start interface{}) ApiStatisticsGetMonitorGroupStatisticsRequest {
 	r.start = &start
 	return r
 }
+
 // The end of a custom period
-func (r ApiStatisticsGetMonitorGroupStatisticsRequest) End(end time.Time) ApiStatisticsGetMonitorGroupStatisticsRequest {
+func (r ApiStatisticsGetMonitorGroupStatisticsRequest) End(end interface{}) ApiStatisticsGetMonitorGroupStatisticsRequest {
 	r.end = &end
 	return r
 }
+
 // The requested time period.
 func (r ApiStatisticsGetMonitorGroupStatisticsRequest) PresetPeriod(presetPeriod string) ApiStatisticsGetMonitorGroupStatisticsRequest {
 	r.presetPeriod = &presetPeriod
 	return r
 }
 
-func (r ApiStatisticsGetMonitorGroupStatisticsRequest) Execute() (StatisticsResponse, *_nethttp.Response, error) {
+func (r ApiStatisticsGetMonitorGroupStatisticsRequest) Execute() (*StatisticsResponse, *http.Response, error) {
 	return r.ApiService.StatisticsGetMonitorGroupStatisticsExecute(r)
 }
 
 /*
 StatisticsGetMonitorGroupStatistics Gets the monitor group statistics.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The Guid of the monitor group.
  @return ApiStatisticsGetMonitorGroupStatisticsRequest
 */
-func (a *StatisticsApiService) StatisticsGetMonitorGroupStatistics(ctx _context.Context, monitorGroupGuid string) ApiStatisticsGetMonitorGroupStatisticsRequest {
+func (a *StatisticsApiService) StatisticsGetMonitorGroupStatistics(ctx context.Context, monitorGroupGuid string) ApiStatisticsGetMonitorGroupStatisticsRequest {
 	return ApiStatisticsGetMonitorGroupStatisticsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -80,27 +78,25 @@ func (a *StatisticsApiService) StatisticsGetMonitorGroupStatistics(ctx _context.
 
 // Execute executes the request
 //  @return StatisticsResponse
-func (a *StatisticsApiService) StatisticsGetMonitorGroupStatisticsExecute(r ApiStatisticsGetMonitorGroupStatisticsRequest) (StatisticsResponse, *_nethttp.Response, error) {
+func (a *StatisticsApiService) StatisticsGetMonitorGroupStatisticsExecute(r ApiStatisticsGetMonitorGroupStatisticsRequest) (*StatisticsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  StatisticsResponse
+		formFiles            []formFile
+		localVarReturnValue  *StatisticsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "StatisticsApiService.StatisticsGetMonitorGroupStatistics")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Statistics/MonitorGroup/{monitorGroupGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	if r.filter != nil {
 		localVarQueryParams.Add("Filter", parameterToString(*r.filter, ""))
@@ -131,7 +127,7 @@ func (a *StatisticsApiService) StatisticsGetMonitorGroupStatisticsExecute(r ApiS
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -141,15 +137,15 @@ func (a *StatisticsApiService) StatisticsGetMonitorGroupStatisticsExecute(r ApiS
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -160,7 +156,8 @@ func (a *StatisticsApiService) StatisticsGetMonitorGroupStatisticsExecute(r ApiS
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -170,14 +167,15 @@ func (a *StatisticsApiService) StatisticsGetMonitorGroupStatisticsExecute(r ApiS
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -188,12 +186,12 @@ func (a *StatisticsApiService) StatisticsGetMonitorGroupStatisticsExecute(r ApiS
 }
 
 type ApiStatisticsGetMonitorStatisticsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *StatisticsApiService
 	monitorGuid string
 	filter *string
-	start *time.Time
-	end *time.Time
+	start *interface{}
+	end *interface{}
 	presetPeriod *string
 }
 
@@ -202,34 +200,37 @@ func (r ApiStatisticsGetMonitorStatisticsRequest) Filter(filter string) ApiStati
 	r.filter = &filter
 	return r
 }
+
 // The start of a custom period (can&#39;t be used together with the PresetPeriod parameter)
-func (r ApiStatisticsGetMonitorStatisticsRequest) Start(start time.Time) ApiStatisticsGetMonitorStatisticsRequest {
+func (r ApiStatisticsGetMonitorStatisticsRequest) Start(start interface{}) ApiStatisticsGetMonitorStatisticsRequest {
 	r.start = &start
 	return r
 }
+
 // The end of a custom period
-func (r ApiStatisticsGetMonitorStatisticsRequest) End(end time.Time) ApiStatisticsGetMonitorStatisticsRequest {
+func (r ApiStatisticsGetMonitorStatisticsRequest) End(end interface{}) ApiStatisticsGetMonitorStatisticsRequest {
 	r.end = &end
 	return r
 }
+
 // The requested time period.
 func (r ApiStatisticsGetMonitorStatisticsRequest) PresetPeriod(presetPeriod string) ApiStatisticsGetMonitorStatisticsRequest {
 	r.presetPeriod = &presetPeriod
 	return r
 }
 
-func (r ApiStatisticsGetMonitorStatisticsRequest) Execute() (StatisticsResponse, *_nethttp.Response, error) {
+func (r ApiStatisticsGetMonitorStatisticsRequest) Execute() (*StatisticsResponse, *http.Response, error) {
 	return r.ApiService.StatisticsGetMonitorStatisticsExecute(r)
 }
 
 /*
 StatisticsGetMonitorStatistics Gets the monitor statistics.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGuid The Guid of the monitor.
  @return ApiStatisticsGetMonitorStatisticsRequest
 */
-func (a *StatisticsApiService) StatisticsGetMonitorStatistics(ctx _context.Context, monitorGuid string) ApiStatisticsGetMonitorStatisticsRequest {
+func (a *StatisticsApiService) StatisticsGetMonitorStatistics(ctx context.Context, monitorGuid string) ApiStatisticsGetMonitorStatisticsRequest {
 	return ApiStatisticsGetMonitorStatisticsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -239,27 +240,25 @@ func (a *StatisticsApiService) StatisticsGetMonitorStatistics(ctx _context.Conte
 
 // Execute executes the request
 //  @return StatisticsResponse
-func (a *StatisticsApiService) StatisticsGetMonitorStatisticsExecute(r ApiStatisticsGetMonitorStatisticsRequest) (StatisticsResponse, *_nethttp.Response, error) {
+func (a *StatisticsApiService) StatisticsGetMonitorStatisticsExecute(r ApiStatisticsGetMonitorStatisticsRequest) (*StatisticsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  StatisticsResponse
+		formFiles            []formFile
+		localVarReturnValue  *StatisticsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "StatisticsApiService.StatisticsGetMonitorStatistics")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Statistics/Monitor/{monitorGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", url.PathEscape(parameterToString(r.monitorGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	if r.filter != nil {
 		localVarQueryParams.Add("Filter", parameterToString(*r.filter, ""))
@@ -290,7 +289,7 @@ func (a *StatisticsApiService) StatisticsGetMonitorStatisticsExecute(r ApiStatis
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -300,15 +299,15 @@ func (a *StatisticsApiService) StatisticsGetMonitorStatisticsExecute(r ApiStatis
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -319,7 +318,8 @@ func (a *StatisticsApiService) StatisticsGetMonitorStatisticsExecute(r ApiStatis
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -329,14 +329,15 @@ func (a *StatisticsApiService) StatisticsGetMonitorStatisticsExecute(r ApiStatis
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

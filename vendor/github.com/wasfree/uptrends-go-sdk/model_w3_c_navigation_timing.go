@@ -18,7 +18,7 @@ import (
 type W3CNavigationTiming struct {
 	// Equal to the requestStart as defined by the W3C.  It is a timestamp indicating when the browser starts requesting the resource from the webserver after the DNS lookup and TCP connection.
 	RequestStart int32 `json:"RequestStart"`
-	// Equal to the difference between requestStart and responseStart as defined by the W3C.  In short, it's the time between when the first request was sent from browser to server, and when the first bytes of the following response were received by the browser.
+	// Equal to the difference between navigationStart and responseStart as defined by the W3C.  In short, it's the time between when the first request was sent from browser to server, and when the first bytes of the following response were received by the browser.
 	TimeToFirstByte int32 `json:"TimeToFirstByte"`
 	// Equal to domInteractive as defined by W3C.  It is a timestamp, indicating the document readiness is set to 'interactive', to indicate that the browser has stopped parsing the page and the user can start interacting with it.  Resources such as scripts, images, stylesheets, or frames may still be loading.
 	DomInteractive int32 `json:"DomInteractive"`
@@ -63,8 +63,8 @@ func (o *W3CNavigationTiming) GetRequestStart() int32 {
 // GetRequestStartOk returns a tuple with the RequestStart field value
 // and a boolean to check if the value has been set.
 func (o *W3CNavigationTiming) GetRequestStartOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.RequestStart, true
 }
@@ -87,8 +87,8 @@ func (o *W3CNavigationTiming) GetTimeToFirstByte() int32 {
 // GetTimeToFirstByteOk returns a tuple with the TimeToFirstByte field value
 // and a boolean to check if the value has been set.
 func (o *W3CNavigationTiming) GetTimeToFirstByteOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.TimeToFirstByte, true
 }
@@ -111,8 +111,8 @@ func (o *W3CNavigationTiming) GetDomInteractive() int32 {
 // GetDomInteractiveOk returns a tuple with the DomInteractive field value
 // and a boolean to check if the value has been set.
 func (o *W3CNavigationTiming) GetDomInteractiveOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.DomInteractive, true
 }
@@ -135,8 +135,8 @@ func (o *W3CNavigationTiming) GetDomComplete() int32 {
 // GetDomCompleteOk returns a tuple with the DomComplete field value
 // and a boolean to check if the value has been set.
 func (o *W3CNavigationTiming) GetDomCompleteOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.DomComplete, true
 }
@@ -159,8 +159,8 @@ func (o *W3CNavigationTiming) GetLoadEvent() int32 {
 // GetLoadEventOk returns a tuple with the LoadEvent field value
 // and a boolean to check if the value has been set.
 func (o *W3CNavigationTiming) GetLoadEventOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.LoadEvent, true
 }

@@ -12,7 +12,6 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // MaintenancePeriod struct for MaintenancePeriod
@@ -22,9 +21,9 @@ type MaintenancePeriod struct {
 	// The schedule mode (one time, daily, weekly, monthly)
 	ScheduleMode ScheduleMode `json:"ScheduleMode"`
 	// The start date/time for this schedule (for one-time schedules only)
-	StartDateTime *time.Time `json:"StartDateTime,omitempty"`
+	StartDateTime map[string]interface{} `json:"StartDateTime,omitempty"`
 	// The end date/time for this maintenance period (for one-time maintenance periods only)
-	EndDateTime *time.Time `json:"EndDateTime,omitempty"`
+	EndDateTime map[string]interface{} `json:"EndDateTime,omitempty"`
 	// The weekday for this maintenance period (for weekly maintenance periods only)
 	WeekDay *DayOfWeek `json:"WeekDay,omitempty"`
 	// the month day for this maintenance period (for montly maintenance periods only)
@@ -72,8 +71,8 @@ func (o *MaintenancePeriod) GetId() int32 {
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
 func (o *MaintenancePeriod) GetIdOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Id, true
 }
@@ -96,8 +95,8 @@ func (o *MaintenancePeriod) GetScheduleMode() ScheduleMode {
 // GetScheduleModeOk returns a tuple with the ScheduleMode field value
 // and a boolean to check if the value has been set.
 func (o *MaintenancePeriod) GetScheduleModeOk() (*ScheduleMode, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ScheduleMode, true
 }
@@ -108,72 +107,72 @@ func (o *MaintenancePeriod) SetScheduleMode(v ScheduleMode) {
 }
 
 // GetStartDateTime returns the StartDateTime field value if set, zero value otherwise.
-func (o *MaintenancePeriod) GetStartDateTime() time.Time {
-	if o == nil || o.StartDateTime == nil {
-		var ret time.Time
+func (o *MaintenancePeriod) GetStartDateTime() map[string]interface{} {
+	if o == nil || isNil(o.StartDateTime) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.StartDateTime
+	return o.StartDateTime
 }
 
 // GetStartDateTimeOk returns a tuple with the StartDateTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MaintenancePeriod) GetStartDateTimeOk() (*time.Time, bool) {
-	if o == nil || o.StartDateTime == nil {
-		return nil, false
+func (o *MaintenancePeriod) GetStartDateTimeOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.StartDateTime) {
+    return map[string]interface{}{}, false
 	}
 	return o.StartDateTime, true
 }
 
 // HasStartDateTime returns a boolean if a field has been set.
 func (o *MaintenancePeriod) HasStartDateTime() bool {
-	if o != nil && o.StartDateTime != nil {
+	if o != nil && !isNil(o.StartDateTime) {
 		return true
 	}
 
 	return false
 }
 
-// SetStartDateTime gets a reference to the given time.Time and assigns it to the StartDateTime field.
-func (o *MaintenancePeriod) SetStartDateTime(v time.Time) {
-	o.StartDateTime = &v
+// SetStartDateTime gets a reference to the given map[string]interface{} and assigns it to the StartDateTime field.
+func (o *MaintenancePeriod) SetStartDateTime(v map[string]interface{}) {
+	o.StartDateTime = v
 }
 
 // GetEndDateTime returns the EndDateTime field value if set, zero value otherwise.
-func (o *MaintenancePeriod) GetEndDateTime() time.Time {
-	if o == nil || o.EndDateTime == nil {
-		var ret time.Time
+func (o *MaintenancePeriod) GetEndDateTime() map[string]interface{} {
+	if o == nil || isNil(o.EndDateTime) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.EndDateTime
+	return o.EndDateTime
 }
 
 // GetEndDateTimeOk returns a tuple with the EndDateTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MaintenancePeriod) GetEndDateTimeOk() (*time.Time, bool) {
-	if o == nil || o.EndDateTime == nil {
-		return nil, false
+func (o *MaintenancePeriod) GetEndDateTimeOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.EndDateTime) {
+    return map[string]interface{}{}, false
 	}
 	return o.EndDateTime, true
 }
 
 // HasEndDateTime returns a boolean if a field has been set.
 func (o *MaintenancePeriod) HasEndDateTime() bool {
-	if o != nil && o.EndDateTime != nil {
+	if o != nil && !isNil(o.EndDateTime) {
 		return true
 	}
 
 	return false
 }
 
-// SetEndDateTime gets a reference to the given time.Time and assigns it to the EndDateTime field.
-func (o *MaintenancePeriod) SetEndDateTime(v time.Time) {
-	o.EndDateTime = &v
+// SetEndDateTime gets a reference to the given map[string]interface{} and assigns it to the EndDateTime field.
+func (o *MaintenancePeriod) SetEndDateTime(v map[string]interface{}) {
+	o.EndDateTime = v
 }
 
 // GetWeekDay returns the WeekDay field value if set, zero value otherwise.
 func (o *MaintenancePeriod) GetWeekDay() DayOfWeek {
-	if o == nil || o.WeekDay == nil {
+	if o == nil || isNil(o.WeekDay) {
 		var ret DayOfWeek
 		return ret
 	}
@@ -183,15 +182,15 @@ func (o *MaintenancePeriod) GetWeekDay() DayOfWeek {
 // GetWeekDayOk returns a tuple with the WeekDay field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MaintenancePeriod) GetWeekDayOk() (*DayOfWeek, bool) {
-	if o == nil || o.WeekDay == nil {
-		return nil, false
+	if o == nil || isNil(o.WeekDay) {
+    return nil, false
 	}
 	return o.WeekDay, true
 }
 
 // HasWeekDay returns a boolean if a field has been set.
 func (o *MaintenancePeriod) HasWeekDay() bool {
-	if o != nil && o.WeekDay != nil {
+	if o != nil && !isNil(o.WeekDay) {
 		return true
 	}
 
@@ -205,7 +204,7 @@ func (o *MaintenancePeriod) SetWeekDay(v DayOfWeek) {
 
 // GetMonthDay returns the MonthDay field value if set, zero value otherwise.
 func (o *MaintenancePeriod) GetMonthDay() int32 {
-	if o == nil || o.MonthDay == nil {
+	if o == nil || isNil(o.MonthDay) {
 		var ret int32
 		return ret
 	}
@@ -215,15 +214,15 @@ func (o *MaintenancePeriod) GetMonthDay() int32 {
 // GetMonthDayOk returns a tuple with the MonthDay field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MaintenancePeriod) GetMonthDayOk() (*int32, bool) {
-	if o == nil || o.MonthDay == nil {
-		return nil, false
+	if o == nil || isNil(o.MonthDay) {
+    return nil, false
 	}
 	return o.MonthDay, true
 }
 
 // HasMonthDay returns a boolean if a field has been set.
 func (o *MaintenancePeriod) HasMonthDay() bool {
-	if o != nil && o.MonthDay != nil {
+	if o != nil && !isNil(o.MonthDay) {
 		return true
 	}
 
@@ -237,7 +236,7 @@ func (o *MaintenancePeriod) SetMonthDay(v int32) {
 
 // GetStartTime returns the StartTime field value if set, zero value otherwise.
 func (o *MaintenancePeriod) GetStartTime() string {
-	if o == nil || o.StartTime == nil {
+	if o == nil || isNil(o.StartTime) {
 		var ret string
 		return ret
 	}
@@ -247,15 +246,15 @@ func (o *MaintenancePeriod) GetStartTime() string {
 // GetStartTimeOk returns a tuple with the StartTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MaintenancePeriod) GetStartTimeOk() (*string, bool) {
-	if o == nil || o.StartTime == nil {
-		return nil, false
+	if o == nil || isNil(o.StartTime) {
+    return nil, false
 	}
 	return o.StartTime, true
 }
 
 // HasStartTime returns a boolean if a field has been set.
 func (o *MaintenancePeriod) HasStartTime() bool {
-	if o != nil && o.StartTime != nil {
+	if o != nil && !isNil(o.StartTime) {
 		return true
 	}
 
@@ -269,7 +268,7 @@ func (o *MaintenancePeriod) SetStartTime(v string) {
 
 // GetEndTime returns the EndTime field value if set, zero value otherwise.
 func (o *MaintenancePeriod) GetEndTime() string {
-	if o == nil || o.EndTime == nil {
+	if o == nil || isNil(o.EndTime) {
 		var ret string
 		return ret
 	}
@@ -279,15 +278,15 @@ func (o *MaintenancePeriod) GetEndTime() string {
 // GetEndTimeOk returns a tuple with the EndTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MaintenancePeriod) GetEndTimeOk() (*string, bool) {
-	if o == nil || o.EndTime == nil {
-		return nil, false
+	if o == nil || isNil(o.EndTime) {
+    return nil, false
 	}
 	return o.EndTime, true
 }
 
 // HasEndTime returns a boolean if a field has been set.
 func (o *MaintenancePeriod) HasEndTime() bool {
-	if o != nil && o.EndTime != nil {
+	if o != nil && !isNil(o.EndTime) {
 		return true
 	}
 
@@ -312,8 +311,8 @@ func (o *MaintenancePeriod) GetMaintenanceType() MaintenanceTypes {
 // GetMaintenanceTypeOk returns a tuple with the MaintenanceType field value
 // and a boolean to check if the value has been set.
 func (o *MaintenancePeriod) GetMaintenanceTypeOk() (*MaintenanceTypes, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.MaintenanceType, true
 }
@@ -325,7 +324,7 @@ func (o *MaintenancePeriod) SetMaintenanceType(v MaintenanceTypes) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *MaintenancePeriod) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -335,15 +334,15 @@ func (o *MaintenancePeriod) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MaintenancePeriod) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *MaintenancePeriod) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -363,28 +362,28 @@ func (o MaintenancePeriod) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["ScheduleMode"] = o.ScheduleMode
 	}
-	if o.StartDateTime != nil {
+	if !isNil(o.StartDateTime) {
 		toSerialize["StartDateTime"] = o.StartDateTime
 	}
-	if o.EndDateTime != nil {
+	if !isNil(o.EndDateTime) {
 		toSerialize["EndDateTime"] = o.EndDateTime
 	}
-	if o.WeekDay != nil {
+	if !isNil(o.WeekDay) {
 		toSerialize["WeekDay"] = o.WeekDay
 	}
-	if o.MonthDay != nil {
+	if !isNil(o.MonthDay) {
 		toSerialize["MonthDay"] = o.MonthDay
 	}
-	if o.StartTime != nil {
+	if !isNil(o.StartTime) {
 		toSerialize["StartTime"] = o.StartTime
 	}
-	if o.EndTime != nil {
+	if !isNil(o.EndTime) {
 		toSerialize["EndTime"] = o.EndTime
 	}
 	if true {
 		toSerialize["MaintenanceType"] = o.MaintenanceType
 	}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["Description"] = o.Description
 	}
 	return json.Marshal(toSerialize)

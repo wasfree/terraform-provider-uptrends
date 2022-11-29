@@ -20,6 +20,8 @@ type HttpAttributes struct {
 	ResponseBody *string `json:"ResponseBody,omitempty"`
 	// The HTTP response headers retrieved from the target 
 	ResponseHeaders *string `json:"ResponseHeaders,omitempty"`
+	// The URL of the HTTP Check. 
+	Url *string `json:"Url,omitempty"`
 }
 
 // NewHttpAttributes instantiates a new HttpAttributes object
@@ -41,7 +43,7 @@ func NewHttpAttributesWithDefaults() *HttpAttributes {
 
 // GetResponseBody returns the ResponseBody field value if set, zero value otherwise.
 func (o *HttpAttributes) GetResponseBody() string {
-	if o == nil || o.ResponseBody == nil {
+	if o == nil || isNil(o.ResponseBody) {
 		var ret string
 		return ret
 	}
@@ -51,15 +53,15 @@ func (o *HttpAttributes) GetResponseBody() string {
 // GetResponseBodyOk returns a tuple with the ResponseBody field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpAttributes) GetResponseBodyOk() (*string, bool) {
-	if o == nil || o.ResponseBody == nil {
-		return nil, false
+	if o == nil || isNil(o.ResponseBody) {
+    return nil, false
 	}
 	return o.ResponseBody, true
 }
 
 // HasResponseBody returns a boolean if a field has been set.
 func (o *HttpAttributes) HasResponseBody() bool {
-	if o != nil && o.ResponseBody != nil {
+	if o != nil && !isNil(o.ResponseBody) {
 		return true
 	}
 
@@ -73,7 +75,7 @@ func (o *HttpAttributes) SetResponseBody(v string) {
 
 // GetResponseHeaders returns the ResponseHeaders field value if set, zero value otherwise.
 func (o *HttpAttributes) GetResponseHeaders() string {
-	if o == nil || o.ResponseHeaders == nil {
+	if o == nil || isNil(o.ResponseHeaders) {
 		var ret string
 		return ret
 	}
@@ -83,15 +85,15 @@ func (o *HttpAttributes) GetResponseHeaders() string {
 // GetResponseHeadersOk returns a tuple with the ResponseHeaders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpAttributes) GetResponseHeadersOk() (*string, bool) {
-	if o == nil || o.ResponseHeaders == nil {
-		return nil, false
+	if o == nil || isNil(o.ResponseHeaders) {
+    return nil, false
 	}
 	return o.ResponseHeaders, true
 }
 
 // HasResponseHeaders returns a boolean if a field has been set.
 func (o *HttpAttributes) HasResponseHeaders() bool {
-	if o != nil && o.ResponseHeaders != nil {
+	if o != nil && !isNil(o.ResponseHeaders) {
 		return true
 	}
 
@@ -103,13 +105,48 @@ func (o *HttpAttributes) SetResponseHeaders(v string) {
 	o.ResponseHeaders = &v
 }
 
+// GetUrl returns the Url field value if set, zero value otherwise.
+func (o *HttpAttributes) GetUrl() string {
+	if o == nil || isNil(o.Url) {
+		var ret string
+		return ret
+	}
+	return *o.Url
+}
+
+// GetUrlOk returns a tuple with the Url field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *HttpAttributes) GetUrlOk() (*string, bool) {
+	if o == nil || isNil(o.Url) {
+    return nil, false
+	}
+	return o.Url, true
+}
+
+// HasUrl returns a boolean if a field has been set.
+func (o *HttpAttributes) HasUrl() bool {
+	if o != nil && !isNil(o.Url) {
+		return true
+	}
+
+	return false
+}
+
+// SetUrl gets a reference to the given string and assigns it to the Url field.
+func (o *HttpAttributes) SetUrl(v string) {
+	o.Url = &v
+}
+
 func (o HttpAttributes) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.ResponseBody != nil {
+	if !isNil(o.ResponseBody) {
 		toSerialize["ResponseBody"] = o.ResponseBody
 	}
-	if o.ResponseHeaders != nil {
+	if !isNil(o.ResponseHeaders) {
 		toSerialize["ResponseHeaders"] = o.ResponseHeaders
+	}
+	if !isNil(o.Url) {
+		toSerialize["Url"] = o.Url
 	}
 	return json.Marshal(toSerialize)
 }

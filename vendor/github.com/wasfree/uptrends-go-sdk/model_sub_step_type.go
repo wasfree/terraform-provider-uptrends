@@ -33,7 +33,8 @@ const (
 	SUBSTEPTYPE_SWITCH_TO_TAB SubStepType = "SwitchToTab"
 )
 
-var allowedSubStepTypeEnumValues = []SubStepType{
+// All allowed values of SubStepType enum
+var AllowedSubStepTypeEnumValues = []SubStepType{
 	"Navigate",
 	"Click",
 	"Set",
@@ -54,7 +55,7 @@ func (v *SubStepType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := SubStepType(value)
-	for _, existing := range allowedSubStepTypeEnumValues {
+	for _, existing := range AllowedSubStepTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -71,13 +72,13 @@ func NewSubStepTypeFromValue(v string) (*SubStepType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for SubStepType: valid values are %v", v, allowedSubStepTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for SubStepType: valid values are %v", v, AllowedSubStepTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v SubStepType) IsValid() bool {
-	for _, existing := range allowedSubStepTypeEnumValues {
+	for _, existing := range AllowedSubStepTypeEnumValues {
 		if existing == v {
 			return true
 		}

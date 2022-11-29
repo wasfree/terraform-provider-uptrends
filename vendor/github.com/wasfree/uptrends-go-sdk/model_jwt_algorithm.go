@@ -25,7 +25,8 @@ const (
 	JWTALGORITHM_HS512 JwtAlgorithm = "HS512"
 )
 
-var allowedJwtAlgorithmEnumValues = []JwtAlgorithm{
+// All allowed values of JwtAlgorithm enum
+var AllowedJwtAlgorithmEnumValues = []JwtAlgorithm{
 	"HS256",
 	"HS384",
 	"HS512",
@@ -38,7 +39,7 @@ func (v *JwtAlgorithm) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := JwtAlgorithm(value)
-	for _, existing := range allowedJwtAlgorithmEnumValues {
+	for _, existing := range AllowedJwtAlgorithmEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -55,13 +56,13 @@ func NewJwtAlgorithmFromValue(v string) (*JwtAlgorithm, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for JwtAlgorithm: valid values are %v", v, allowedJwtAlgorithmEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for JwtAlgorithm: valid values are %v", v, AllowedJwtAlgorithmEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v JwtAlgorithm) IsValid() bool {
-	for _, existing := range allowedJwtAlgorithmEnumValues {
+	for _, existing := range AllowedJwtAlgorithmEnumValues {
 		if existing == v {
 			return true
 		}

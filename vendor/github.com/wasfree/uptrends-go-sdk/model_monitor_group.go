@@ -22,6 +22,18 @@ type MonitorGroup struct {
 	Description *string `json:"Description,omitempty"`
 	// Indicates whether this is the default group for all probes
 	IsAll bool `json:"IsAll"`
+	// Indicates whether the monitor quota is unlimited Only administrators can change this
+	IsQuotaUnlimited *bool `json:"IsQuotaUnlimited,omitempty"`
+	// The basic monitor quota for the monitor group Only administrators can change this
+	BasicMonitorQuota *int32 `json:"BasicMonitorQuota,omitempty"`
+	// The browser monitor quota for the monitor group Only administrators can change this
+	BrowserMonitorQuota *int32 `json:"BrowserMonitorQuota,omitempty"`
+	// The transaction monitor quota for the monitor group Only administrators can change this
+	TransactionMonitorQuota *int32 `json:"TransactionMonitorQuota,omitempty"`
+	// The api monitor quota for the monitor group Only administrators can change this
+	ApiMonitorQuota *int32 `json:"ApiMonitorQuota,omitempty"`
+	// The classic quota for the monitor group Only administrators can change this
+	ClassicQuota *int32 `json:"ClassicQuota,omitempty"`
 }
 
 // NewMonitorGroup instantiates a new MonitorGroup object
@@ -44,7 +56,7 @@ func NewMonitorGroupWithDefaults() *MonitorGroup {
 
 // GetMonitorGroupGuid returns the MonitorGroupGuid field value if set, zero value otherwise.
 func (o *MonitorGroup) GetMonitorGroupGuid() string {
-	if o == nil || o.MonitorGroupGuid == nil {
+	if o == nil || isNil(o.MonitorGroupGuid) {
 		var ret string
 		return ret
 	}
@@ -54,15 +66,15 @@ func (o *MonitorGroup) GetMonitorGroupGuid() string {
 // GetMonitorGroupGuidOk returns a tuple with the MonitorGroupGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorGroup) GetMonitorGroupGuidOk() (*string, bool) {
-	if o == nil || o.MonitorGroupGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.MonitorGroupGuid) {
+    return nil, false
 	}
 	return o.MonitorGroupGuid, true
 }
 
 // HasMonitorGroupGuid returns a boolean if a field has been set.
 func (o *MonitorGroup) HasMonitorGroupGuid() bool {
-	if o != nil && o.MonitorGroupGuid != nil {
+	if o != nil && !isNil(o.MonitorGroupGuid) {
 		return true
 	}
 
@@ -76,7 +88,7 @@ func (o *MonitorGroup) SetMonitorGroupGuid(v string) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *MonitorGroup) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -86,15 +98,15 @@ func (o *MonitorGroup) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorGroup) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *MonitorGroup) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -119,8 +131,8 @@ func (o *MonitorGroup) GetIsAll() bool {
 // GetIsAllOk returns a tuple with the IsAll field value
 // and a boolean to check if the value has been set.
 func (o *MonitorGroup) GetIsAllOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.IsAll, true
 }
@@ -130,16 +142,226 @@ func (o *MonitorGroup) SetIsAll(v bool) {
 	o.IsAll = v
 }
 
+// GetIsQuotaUnlimited returns the IsQuotaUnlimited field value if set, zero value otherwise.
+func (o *MonitorGroup) GetIsQuotaUnlimited() bool {
+	if o == nil || isNil(o.IsQuotaUnlimited) {
+		var ret bool
+		return ret
+	}
+	return *o.IsQuotaUnlimited
+}
+
+// GetIsQuotaUnlimitedOk returns a tuple with the IsQuotaUnlimited field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MonitorGroup) GetIsQuotaUnlimitedOk() (*bool, bool) {
+	if o == nil || isNil(o.IsQuotaUnlimited) {
+    return nil, false
+	}
+	return o.IsQuotaUnlimited, true
+}
+
+// HasIsQuotaUnlimited returns a boolean if a field has been set.
+func (o *MonitorGroup) HasIsQuotaUnlimited() bool {
+	if o != nil && !isNil(o.IsQuotaUnlimited) {
+		return true
+	}
+
+	return false
+}
+
+// SetIsQuotaUnlimited gets a reference to the given bool and assigns it to the IsQuotaUnlimited field.
+func (o *MonitorGroup) SetIsQuotaUnlimited(v bool) {
+	o.IsQuotaUnlimited = &v
+}
+
+// GetBasicMonitorQuota returns the BasicMonitorQuota field value if set, zero value otherwise.
+func (o *MonitorGroup) GetBasicMonitorQuota() int32 {
+	if o == nil || isNil(o.BasicMonitorQuota) {
+		var ret int32
+		return ret
+	}
+	return *o.BasicMonitorQuota
+}
+
+// GetBasicMonitorQuotaOk returns a tuple with the BasicMonitorQuota field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MonitorGroup) GetBasicMonitorQuotaOk() (*int32, bool) {
+	if o == nil || isNil(o.BasicMonitorQuota) {
+    return nil, false
+	}
+	return o.BasicMonitorQuota, true
+}
+
+// HasBasicMonitorQuota returns a boolean if a field has been set.
+func (o *MonitorGroup) HasBasicMonitorQuota() bool {
+	if o != nil && !isNil(o.BasicMonitorQuota) {
+		return true
+	}
+
+	return false
+}
+
+// SetBasicMonitorQuota gets a reference to the given int32 and assigns it to the BasicMonitorQuota field.
+func (o *MonitorGroup) SetBasicMonitorQuota(v int32) {
+	o.BasicMonitorQuota = &v
+}
+
+// GetBrowserMonitorQuota returns the BrowserMonitorQuota field value if set, zero value otherwise.
+func (o *MonitorGroup) GetBrowserMonitorQuota() int32 {
+	if o == nil || isNil(o.BrowserMonitorQuota) {
+		var ret int32
+		return ret
+	}
+	return *o.BrowserMonitorQuota
+}
+
+// GetBrowserMonitorQuotaOk returns a tuple with the BrowserMonitorQuota field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MonitorGroup) GetBrowserMonitorQuotaOk() (*int32, bool) {
+	if o == nil || isNil(o.BrowserMonitorQuota) {
+    return nil, false
+	}
+	return o.BrowserMonitorQuota, true
+}
+
+// HasBrowserMonitorQuota returns a boolean if a field has been set.
+func (o *MonitorGroup) HasBrowserMonitorQuota() bool {
+	if o != nil && !isNil(o.BrowserMonitorQuota) {
+		return true
+	}
+
+	return false
+}
+
+// SetBrowserMonitorQuota gets a reference to the given int32 and assigns it to the BrowserMonitorQuota field.
+func (o *MonitorGroup) SetBrowserMonitorQuota(v int32) {
+	o.BrowserMonitorQuota = &v
+}
+
+// GetTransactionMonitorQuota returns the TransactionMonitorQuota field value if set, zero value otherwise.
+func (o *MonitorGroup) GetTransactionMonitorQuota() int32 {
+	if o == nil || isNil(o.TransactionMonitorQuota) {
+		var ret int32
+		return ret
+	}
+	return *o.TransactionMonitorQuota
+}
+
+// GetTransactionMonitorQuotaOk returns a tuple with the TransactionMonitorQuota field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MonitorGroup) GetTransactionMonitorQuotaOk() (*int32, bool) {
+	if o == nil || isNil(o.TransactionMonitorQuota) {
+    return nil, false
+	}
+	return o.TransactionMonitorQuota, true
+}
+
+// HasTransactionMonitorQuota returns a boolean if a field has been set.
+func (o *MonitorGroup) HasTransactionMonitorQuota() bool {
+	if o != nil && !isNil(o.TransactionMonitorQuota) {
+		return true
+	}
+
+	return false
+}
+
+// SetTransactionMonitorQuota gets a reference to the given int32 and assigns it to the TransactionMonitorQuota field.
+func (o *MonitorGroup) SetTransactionMonitorQuota(v int32) {
+	o.TransactionMonitorQuota = &v
+}
+
+// GetApiMonitorQuota returns the ApiMonitorQuota field value if set, zero value otherwise.
+func (o *MonitorGroup) GetApiMonitorQuota() int32 {
+	if o == nil || isNil(o.ApiMonitorQuota) {
+		var ret int32
+		return ret
+	}
+	return *o.ApiMonitorQuota
+}
+
+// GetApiMonitorQuotaOk returns a tuple with the ApiMonitorQuota field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MonitorGroup) GetApiMonitorQuotaOk() (*int32, bool) {
+	if o == nil || isNil(o.ApiMonitorQuota) {
+    return nil, false
+	}
+	return o.ApiMonitorQuota, true
+}
+
+// HasApiMonitorQuota returns a boolean if a field has been set.
+func (o *MonitorGroup) HasApiMonitorQuota() bool {
+	if o != nil && !isNil(o.ApiMonitorQuota) {
+		return true
+	}
+
+	return false
+}
+
+// SetApiMonitorQuota gets a reference to the given int32 and assigns it to the ApiMonitorQuota field.
+func (o *MonitorGroup) SetApiMonitorQuota(v int32) {
+	o.ApiMonitorQuota = &v
+}
+
+// GetClassicQuota returns the ClassicQuota field value if set, zero value otherwise.
+func (o *MonitorGroup) GetClassicQuota() int32 {
+	if o == nil || isNil(o.ClassicQuota) {
+		var ret int32
+		return ret
+	}
+	return *o.ClassicQuota
+}
+
+// GetClassicQuotaOk returns a tuple with the ClassicQuota field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MonitorGroup) GetClassicQuotaOk() (*int32, bool) {
+	if o == nil || isNil(o.ClassicQuota) {
+    return nil, false
+	}
+	return o.ClassicQuota, true
+}
+
+// HasClassicQuota returns a boolean if a field has been set.
+func (o *MonitorGroup) HasClassicQuota() bool {
+	if o != nil && !isNil(o.ClassicQuota) {
+		return true
+	}
+
+	return false
+}
+
+// SetClassicQuota gets a reference to the given int32 and assigns it to the ClassicQuota field.
+func (o *MonitorGroup) SetClassicQuota(v int32) {
+	o.ClassicQuota = &v
+}
+
 func (o MonitorGroup) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.MonitorGroupGuid != nil {
+	if !isNil(o.MonitorGroupGuid) {
 		toSerialize["MonitorGroupGuid"] = o.MonitorGroupGuid
 	}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["Description"] = o.Description
 	}
 	if true {
 		toSerialize["IsAll"] = o.IsAll
+	}
+	if !isNil(o.IsQuotaUnlimited) {
+		toSerialize["IsQuotaUnlimited"] = o.IsQuotaUnlimited
+	}
+	if !isNil(o.BasicMonitorQuota) {
+		toSerialize["BasicMonitorQuota"] = o.BasicMonitorQuota
+	}
+	if !isNil(o.BrowserMonitorQuota) {
+		toSerialize["BrowserMonitorQuota"] = o.BrowserMonitorQuota
+	}
+	if !isNil(o.TransactionMonitorQuota) {
+		toSerialize["TransactionMonitorQuota"] = o.TransactionMonitorQuota
+	}
+	if !isNil(o.ApiMonitorQuota) {
+		toSerialize["ApiMonitorQuota"] = o.ApiMonitorQuota
+	}
+	if !isNil(o.ClassicQuota) {
+		toSerialize["ClassicQuota"] = o.ClassicQuota
 	}
 	return json.Marshal(toSerialize)
 }

@@ -12,23 +12,19 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // AlertDefinitionApiService AlertDefinitionApi service
 type AlertDefinitionApiService service
 
 type ApiAlertDefinitionAddIntegrationToEscalationLevelRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
@@ -41,19 +37,19 @@ func (r ApiAlertDefinitionAddIntegrationToEscalationLevelRequest) EscalationLeve
 	return r
 }
 
-func (r ApiAlertDefinitionAddIntegrationToEscalationLevelRequest) Execute() (AlertDefinitionMonitorGroup, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionAddIntegrationToEscalationLevelRequest) Execute() (*Integration, *http.Response, error) {
 	return r.ApiService.AlertDefinitionAddIntegrationToEscalationLevelExecute(r)
 }
 
 /*
 AlertDefinitionAddIntegrationToEscalationLevel Adds an integration to a specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @return ApiAlertDefinitionAddIntegrationToEscalationLevelRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLevel(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionAddIntegrationToEscalationLevelRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLevel(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionAddIntegrationToEscalationLevelRequest {
 	return ApiAlertDefinitionAddIntegrationToEscalationLevelRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -63,32 +59,27 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLev
 }
 
 // Execute executes the request
-//  @return AlertDefinitionMonitorGroup
-func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLevelExecute(r ApiAlertDefinitionAddIntegrationToEscalationLevelRequest) (AlertDefinitionMonitorGroup, *_nethttp.Response, error) {
+//  @return Integration
+func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLevelExecute(r ApiAlertDefinitionAddIntegrationToEscalationLevelRequest) (*Integration, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  AlertDefinitionMonitorGroup
+		formFiles            []formFile
+		localVarReturnValue  *Integration
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionAddIntegrationToEscalationLevel")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.escalationLevelIntegration == nil {
-		return localVarReturnValue, nil, reportError("escalationLevelIntegration is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -109,7 +100,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLev
 	}
 	// body params
 	localVarPostBody = r.escalationLevelIntegration
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -119,15 +110,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLev
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -138,7 +129,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLev
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -148,7 +140,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLev
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -158,14 +151,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLev
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -176,26 +170,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddIntegrationToEscalationLev
 }
 
 type ApiAlertDefinitionAddMonitorGroupToAlertDefinitionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	monitorGroupGuid string
 }
 
-
-func (r ApiAlertDefinitionAddMonitorGroupToAlertDefinitionRequest) Execute() (AlertDefinitionMonitorGroup, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionAddMonitorGroupToAlertDefinitionRequest) Execute() (*AlertDefinitionMonitorGroup, *http.Response, error) {
 	return r.ApiService.AlertDefinitionAddMonitorGroupToAlertDefinitionExecute(r)
 }
 
 /*
 AlertDefinitionAddMonitorGroupToAlertDefinition Adds a monitor group to the specified alert definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition to modify.
  @param monitorGroupGuid The Guid of the monitor group to add.
  @return ApiAlertDefinitionAddMonitorGroupToAlertDefinitionRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinition(ctx _context.Context, alertDefinitionGuid string, monitorGroupGuid string) ApiAlertDefinitionAddMonitorGroupToAlertDefinitionRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinition(ctx context.Context, alertDefinitionGuid string, monitorGroupGuid string) ApiAlertDefinitionAddMonitorGroupToAlertDefinitionRequest {
 	return ApiAlertDefinitionAddMonitorGroupToAlertDefinitionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -206,28 +199,26 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinit
 
 // Execute executes the request
 //  @return AlertDefinitionMonitorGroup
-func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinitionExecute(r ApiAlertDefinitionAddMonitorGroupToAlertDefinitionRequest) (AlertDefinitionMonitorGroup, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinitionExecute(r ApiAlertDefinitionAddMonitorGroupToAlertDefinitionRequest) (*AlertDefinitionMonitorGroup, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  AlertDefinitionMonitorGroup
+		formFiles            []formFile
+		localVarReturnValue  *AlertDefinitionMonitorGroup
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionAddMonitorGroupToAlertDefinition")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/Member/MonitorGroup/{monitorGroupGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -246,7 +237,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinit
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -256,15 +247,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinit
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -275,7 +266,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinit
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -285,7 +277,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinit
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -295,14 +288,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinit
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -313,26 +307,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorGroupToAlertDefinit
 }
 
 type ApiAlertDefinitionAddMonitorToAlertDefinitionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	monitorGuid string
 }
 
-
-func (r ApiAlertDefinitionAddMonitorToAlertDefinitionRequest) Execute() (AlertDefinitionMonitor, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionAddMonitorToAlertDefinitionRequest) Execute() (*AlertDefinitionMonitor, *http.Response, error) {
 	return r.ApiService.AlertDefinitionAddMonitorToAlertDefinitionExecute(r)
 }
 
 /*
 AlertDefinitionAddMonitorToAlertDefinition Adds a monitor to the specified alert definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition to modify.
  @param monitorGuid The Guid of the monitor to add.
  @return ApiAlertDefinitionAddMonitorToAlertDefinitionRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinition(ctx _context.Context, alertDefinitionGuid string, monitorGuid string) ApiAlertDefinitionAddMonitorToAlertDefinitionRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinition(ctx context.Context, alertDefinitionGuid string, monitorGuid string) ApiAlertDefinitionAddMonitorToAlertDefinitionRequest {
 	return ApiAlertDefinitionAddMonitorToAlertDefinitionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -343,28 +336,26 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinition(c
 
 // Execute executes the request
 //  @return AlertDefinitionMonitor
-func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinitionExecute(r ApiAlertDefinitionAddMonitorToAlertDefinitionRequest) (AlertDefinitionMonitor, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinitionExecute(r ApiAlertDefinitionAddMonitorToAlertDefinitionRequest) (*AlertDefinitionMonitor, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  AlertDefinitionMonitor
+		formFiles            []formFile
+		localVarReturnValue  *AlertDefinitionMonitor
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionAddMonitorToAlertDefinition")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/Member/Monitor/{monitorGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", url.PathEscape(parameterToString(r.monitorGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -383,7 +374,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinitionEx
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -393,15 +384,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinitionEx
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -412,7 +403,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinitionEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -422,7 +414,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinitionEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -432,14 +425,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinitionEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -450,28 +444,27 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddMonitorToAlertDefinitionEx
 }
 
 type ApiAlertDefinitionAddOperatorGroupToEscalationLevelRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
 	operatorGroupGuid string
 }
 
-
-func (r ApiAlertDefinitionAddOperatorGroupToEscalationLevelRequest) Execute() (AlertDefinitionOperatorGroup, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionAddOperatorGroupToEscalationLevelRequest) Execute() (*AlertDefinitionOperatorGroup, *http.Response, error) {
 	return r.ApiService.AlertDefinitionAddOperatorGroupToEscalationLevelExecute(r)
 }
 
 /*
 AlertDefinitionAddOperatorGroupToEscalationLevel Adds an operator group to the specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @param operatorGroupGuid The Guid of the operator group to add.
  @return ApiAlertDefinitionAddOperatorGroupToEscalationLevelRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationLevel(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32, operatorGroupGuid string) ApiAlertDefinitionAddOperatorGroupToEscalationLevelRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationLevel(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32, operatorGroupGuid string) ApiAlertDefinitionAddOperatorGroupToEscalationLevelRequest {
 	return ApiAlertDefinitionAddOperatorGroupToEscalationLevelRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -483,29 +476,27 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationL
 
 // Execute executes the request
 //  @return AlertDefinitionOperatorGroup
-func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationLevelExecute(r ApiAlertDefinitionAddOperatorGroupToEscalationLevelRequest) (AlertDefinitionOperatorGroup, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationLevelExecute(r ApiAlertDefinitionAddOperatorGroupToEscalationLevelRequest) (*AlertDefinitionOperatorGroup, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  AlertDefinitionOperatorGroup
+		formFiles            []formFile
+		localVarReturnValue  *AlertDefinitionOperatorGroup
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionAddOperatorGroupToEscalationLevel")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Member/OperatorGroup/{operatorGroupGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"operatorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.operatorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"operatorGroupGuid"+"}", url.PathEscape(parameterToString(r.operatorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -524,7 +515,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationL
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -534,15 +525,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationL
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -553,7 +544,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationL
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -563,7 +555,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationL
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -573,14 +566,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationL
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -591,28 +585,27 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorGroupToEscalationL
 }
 
 type ApiAlertDefinitionAddOperatorToEscalationLevelRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
 	operatorGuid string
 }
 
-
-func (r ApiAlertDefinitionAddOperatorToEscalationLevelRequest) Execute() (AlertDefinitionOperator, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionAddOperatorToEscalationLevelRequest) Execute() (*AlertDefinitionOperator, *http.Response, error) {
 	return r.ApiService.AlertDefinitionAddOperatorToEscalationLevelExecute(r)
 }
 
 /*
 AlertDefinitionAddOperatorToEscalationLevel Adds an operator to the specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @param operatorGuid The Guid of the operator to add.
  @return ApiAlertDefinitionAddOperatorToEscalationLevelRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevel(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32, operatorGuid string) ApiAlertDefinitionAddOperatorToEscalationLevelRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevel(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32, operatorGuid string) ApiAlertDefinitionAddOperatorToEscalationLevelRequest {
 	return ApiAlertDefinitionAddOperatorToEscalationLevelRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -624,29 +617,27 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevel(
 
 // Execute executes the request
 //  @return AlertDefinitionOperator
-func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevelExecute(r ApiAlertDefinitionAddOperatorToEscalationLevelRequest) (AlertDefinitionOperator, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevelExecute(r ApiAlertDefinitionAddOperatorToEscalationLevelRequest) (*AlertDefinitionOperator, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  AlertDefinitionOperator
+		formFiles            []formFile
+		localVarReturnValue  *AlertDefinitionOperator
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionAddOperatorToEscalationLevel")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Member/Operator/{operatorGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"operatorGuid"+"}", _neturl.PathEscape(parameterToString(r.operatorGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"operatorGuid"+"}", url.PathEscape(parameterToString(r.operatorGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -665,7 +656,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevelE
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -675,15 +666,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevelE
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -694,7 +685,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevelE
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -704,7 +696,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevelE
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -714,14 +707,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevelE
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -732,7 +726,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionAddOperatorToEscalationLevelE
 }
 
 type ApiAlertDefinitionCreateAlertDefinitionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinition *AlertDefinition
 }
@@ -743,17 +737,17 @@ func (r ApiAlertDefinitionCreateAlertDefinitionRequest) AlertDefinition(alertDef
 	return r
 }
 
-func (r ApiAlertDefinitionCreateAlertDefinitionRequest) Execute() (AlertDefinition, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionCreateAlertDefinitionRequest) Execute() (*AlertDefinition, *http.Response, error) {
 	return r.ApiService.AlertDefinitionCreateAlertDefinitionExecute(r)
 }
 
 /*
 AlertDefinitionCreateAlertDefinition Creates a new alert definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiAlertDefinitionCreateAlertDefinitionRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionCreateAlertDefinition(ctx _context.Context) ApiAlertDefinitionCreateAlertDefinitionRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionCreateAlertDefinition(ctx context.Context) ApiAlertDefinitionCreateAlertDefinitionRequest {
 	return ApiAlertDefinitionCreateAlertDefinitionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -762,29 +756,24 @@ func (a *AlertDefinitionApiService) AlertDefinitionCreateAlertDefinition(ctx _co
 
 // Execute executes the request
 //  @return AlertDefinition
-func (a *AlertDefinitionApiService) AlertDefinitionCreateAlertDefinitionExecute(r ApiAlertDefinitionCreateAlertDefinitionRequest) (AlertDefinition, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionCreateAlertDefinitionExecute(r ApiAlertDefinitionCreateAlertDefinitionRequest) (*AlertDefinition, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  AlertDefinition
+		formFiles            []formFile
+		localVarReturnValue  *AlertDefinition
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionCreateAlertDefinition")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.alertDefinition == nil {
-		return localVarReturnValue, nil, reportError("alertDefinition is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -805,7 +794,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionCreateAlertDefinitionExecute(
 	}
 	// body params
 	localVarPostBody = r.alertDefinition
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -815,15 +804,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionCreateAlertDefinitionExecute(
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -834,7 +823,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionCreateAlertDefinitionExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -844,14 +834,146 @@ func (a *AlertDefinitionApiService) AlertDefinitionCreateAlertDefinitionExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiAlertDefinitionCreateAuthorizationForAlertDefinitionRequest struct {
+	ctx context.Context
+	ApiService *AlertDefinitionApiService
+	alertDefinitionGuid string
+	alertDefinitionAuthorization *AlertDefinitionAuthorization
+}
+
+// Authorization to add
+func (r ApiAlertDefinitionCreateAuthorizationForAlertDefinitionRequest) AlertDefinitionAuthorization(alertDefinitionAuthorization AlertDefinitionAuthorization) ApiAlertDefinitionCreateAuthorizationForAlertDefinitionRequest {
+	r.alertDefinitionAuthorization = &alertDefinitionAuthorization
+	return r
+}
+
+func (r ApiAlertDefinitionCreateAuthorizationForAlertDefinitionRequest) Execute() ([]AlertDefinitionAuthorization, *http.Response, error) {
+	return r.ApiService.AlertDefinitionCreateAuthorizationForAlertDefinitionExecute(r)
+}
+
+/*
+AlertDefinitionCreateAuthorizationForAlertDefinition Create authorizations for alert definition If the wanted authorizations requires other authorizations, these will be added as well
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param alertDefinitionGuid The alert definition GUID
+ @return ApiAlertDefinitionCreateAuthorizationForAlertDefinitionRequest
+*/
+func (a *AlertDefinitionApiService) AlertDefinitionCreateAuthorizationForAlertDefinition(ctx context.Context, alertDefinitionGuid string) ApiAlertDefinitionCreateAuthorizationForAlertDefinitionRequest {
+	return ApiAlertDefinitionCreateAuthorizationForAlertDefinitionRequest{
+		ApiService: a,
+		ctx: ctx,
+		alertDefinitionGuid: alertDefinitionGuid,
+	}
+}
+
+// Execute executes the request
+//  @return []AlertDefinitionAuthorization
+func (a *AlertDefinitionApiService) AlertDefinitionCreateAuthorizationForAlertDefinitionExecute(r ApiAlertDefinitionCreateAuthorizationForAlertDefinitionRequest) ([]AlertDefinitionAuthorization, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodPost
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  []AlertDefinitionAuthorization
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionCreateAuthorizationForAlertDefinition")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/Authorizations"
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.alertDefinitionAuthorization
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -862,24 +984,23 @@ func (a *AlertDefinitionApiService) AlertDefinitionCreateAlertDefinitionExecute(
 }
 
 type ApiAlertDefinitionDeleteAlertDefinitionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 }
 
-
-func (r ApiAlertDefinitionDeleteAlertDefinitionRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionDeleteAlertDefinitionRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionDeleteAlertDefinitionExecute(r)
 }
 
 /*
 AlertDefinitionDeleteAlertDefinition Deletes an existing alert definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition to remove.
  @return ApiAlertDefinitionDeleteAlertDefinitionRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinition(ctx _context.Context, alertDefinitionGuid string) ApiAlertDefinitionDeleteAlertDefinitionRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinition(ctx context.Context, alertDefinitionGuid string) ApiAlertDefinitionDeleteAlertDefinitionRequest {
 	return ApiAlertDefinitionDeleteAlertDefinitionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -888,26 +1009,24 @@ func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinition(ctx _co
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinitionExecute(r ApiAlertDefinitionDeleteAlertDefinitionRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinitionExecute(r ApiAlertDefinitionDeleteAlertDefinitionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionDeleteAlertDefinition")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -926,7 +1045,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinitionExecute(
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -936,15 +1055,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinitionExecute(
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -955,7 +1074,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinitionExecute(
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -965,7 +1085,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinitionExecute(
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -975,7 +1096,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinitionExecute(
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -983,51 +1105,54 @@ func (a *AlertDefinitionApiService) AlertDefinitionDeleteAlertDefinitionExecute(
 	return localVarHTTPResponse, nil
 }
 
-type ApiAlertDefinitionGetAllAlertDefinitionsRequest struct {
-	ctx _context.Context
+type ApiAlertDefinitionDeleteAuthorizationForAlertDefinitionRequest struct {
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
+	alertDefinitionGuid string
+	authorizationGuid string
 }
 
-
-func (r ApiAlertDefinitionGetAllAlertDefinitionsRequest) Execute() ([]AlertDefinition, *_nethttp.Response, error) {
-	return r.ApiService.AlertDefinitionGetAllAlertDefinitionsExecute(r)
+func (r ApiAlertDefinitionDeleteAuthorizationForAlertDefinitionRequest) Execute() (*http.Response, error) {
+	return r.ApiService.AlertDefinitionDeleteAuthorizationForAlertDefinitionExecute(r)
 }
 
 /*
-AlertDefinitionGetAllAlertDefinitions Gets a list of all alert definitions.
+AlertDefinitionDeleteAuthorizationForAlertDefinition Delete alert definition authorization for alert definition
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiAlertDefinitionGetAllAlertDefinitionsRequest
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param alertDefinitionGuid The alert definition GUID
+ @param authorizationGuid The authorization GUID that needs to be deleted
+ @return ApiAlertDefinitionDeleteAuthorizationForAlertDefinitionRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionGetAllAlertDefinitions(ctx _context.Context) ApiAlertDefinitionGetAllAlertDefinitionsRequest {
-	return ApiAlertDefinitionGetAllAlertDefinitionsRequest{
+func (a *AlertDefinitionApiService) AlertDefinitionDeleteAuthorizationForAlertDefinition(ctx context.Context, alertDefinitionGuid string, authorizationGuid string) ApiAlertDefinitionDeleteAuthorizationForAlertDefinitionRequest {
+	return ApiAlertDefinitionDeleteAuthorizationForAlertDefinitionRequest{
 		ApiService: a,
 		ctx: ctx,
+		alertDefinitionGuid: alertDefinitionGuid,
+		authorizationGuid: authorizationGuid,
 	}
 }
 
 // Execute executes the request
-//  @return []AlertDefinition
-func (a *AlertDefinitionApiService) AlertDefinitionGetAllAlertDefinitionsExecute(r ApiAlertDefinitionGetAllAlertDefinitionsRequest) ([]AlertDefinition, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionDeleteAuthorizationForAlertDefinitionExecute(r ApiAlertDefinitionDeleteAuthorizationForAlertDefinitionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  []AlertDefinition
+		formFiles            []formFile
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionGetAllAlertDefinitions")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionDeleteAuthorizationForAlertDefinition")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/AlertDefinition"
+	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/Authorizations/{authorizationGuid}"
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"authorizationGuid"+"}", url.PathEscape(parameterToString(r.authorizationGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1046,7 +1171,116 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllAlertDefinitionsExecute
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiAlertDefinitionGetAllAlertDefinitionsRequest struct {
+	ctx context.Context
+	ApiService *AlertDefinitionApiService
+}
+
+func (r ApiAlertDefinitionGetAllAlertDefinitionsRequest) Execute() ([]AlertDefinition, *http.Response, error) {
+	return r.ApiService.AlertDefinitionGetAllAlertDefinitionsExecute(r)
+}
+
+/*
+AlertDefinitionGetAllAlertDefinitions Gets a list of all alert definitions.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiAlertDefinitionGetAllAlertDefinitionsRequest
+*/
+func (a *AlertDefinitionApiService) AlertDefinitionGetAllAlertDefinitions(ctx context.Context) ApiAlertDefinitionGetAllAlertDefinitionsRequest {
+	return ApiAlertDefinitionGetAllAlertDefinitionsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return []AlertDefinition
+func (a *AlertDefinitionApiService) AlertDefinitionGetAllAlertDefinitionsExecute(r ApiAlertDefinitionGetAllAlertDefinitionsRequest) ([]AlertDefinition, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  []AlertDefinition
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionGetAllAlertDefinitions")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/AlertDefinition"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1056,15 +1290,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllAlertDefinitionsExecute
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1075,7 +1309,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllAlertDefinitionsExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1085,14 +1320,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllAlertDefinitionsExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1103,26 +1339,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllAlertDefinitionsExecute
 }
 
 type ApiAlertDefinitionGetAllEscalationLevelIntegrationsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
 }
 
-
-func (r ApiAlertDefinitionGetAllEscalationLevelIntegrationsRequest) Execute() ([]Integration, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionGetAllEscalationLevelIntegrationsRequest) Execute() ([]Integration, *http.Response, error) {
 	return r.ApiService.AlertDefinitionGetAllEscalationLevelIntegrationsExecute(r)
 }
 
 /*
 AlertDefinitionGetAllEscalationLevelIntegrations Gets all integrations for a specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @return ApiAlertDefinitionGetAllEscalationLevelIntegrationsRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrations(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionGetAllEscalationLevelIntegrationsRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrations(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionGetAllEscalationLevelIntegrationsRequest {
 	return ApiAlertDefinitionGetAllEscalationLevelIntegrationsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1133,28 +1368,26 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrat
 
 // Execute executes the request
 //  @return []Integration
-func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrationsExecute(r ApiAlertDefinitionGetAllEscalationLevelIntegrationsRequest) ([]Integration, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrationsExecute(r ApiAlertDefinitionGetAllEscalationLevelIntegrationsRequest) ([]Integration, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []Integration
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionGetAllEscalationLevelIntegrations")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1173,7 +1406,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrat
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1183,15 +1416,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrat
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1202,7 +1435,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrat
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1212,7 +1446,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrat
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1222,14 +1457,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrat
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1240,24 +1476,23 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelIntegrat
 }
 
 type ApiAlertDefinitionGetAllEscalationLevelsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 }
 
-
-func (r ApiAlertDefinitionGetAllEscalationLevelsRequest) Execute() ([]EscalationLevel, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionGetAllEscalationLevelsRequest) Execute() ([]EscalationLevel, *http.Response, error) {
 	return r.ApiService.AlertDefinitionGetAllEscalationLevelsExecute(r)
 }
 
 /*
 AlertDefinitionGetAllEscalationLevels Gets all escalation level information for the specified alert definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition for which to return all escalation levels.
  @return ApiAlertDefinitionGetAllEscalationLevelsRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevels(ctx _context.Context, alertDefinitionGuid string) ApiAlertDefinitionGetAllEscalationLevelsRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevels(ctx context.Context, alertDefinitionGuid string) ApiAlertDefinitionGetAllEscalationLevelsRequest {
 	return ApiAlertDefinitionGetAllEscalationLevelsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1267,27 +1502,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevels(ctx _c
 
 // Execute executes the request
 //  @return []EscalationLevel
-func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelsExecute(r ApiAlertDefinitionGetAllEscalationLevelsRequest) ([]EscalationLevel, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelsExecute(r ApiAlertDefinitionGetAllEscalationLevelsRequest) ([]EscalationLevel, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []EscalationLevel
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionGetAllEscalationLevels")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1306,7 +1539,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelsExecute
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1316,15 +1549,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelsExecute
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1335,7 +1568,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelsExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1345,7 +1579,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelsExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1355,14 +1590,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelsExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1373,24 +1609,23 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllEscalationLevelsExecute
 }
 
 type ApiAlertDefinitionGetAllMembersRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 }
 
-
-func (r ApiAlertDefinitionGetAllMembersRequest) Execute() ([]AlertDefinitionMember, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionGetAllMembersRequest) Execute() ([]AlertDefinitionMember, *http.Response, error) {
 	return r.ApiService.AlertDefinitionGetAllMembersExecute(r)
 }
 
 /*
 AlertDefinitionGetAllMembers Gets a list of all monitor and monitor group guids for the specified alert definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition for which to return the members.
  @return ApiAlertDefinitionGetAllMembersRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembers(ctx _context.Context, alertDefinitionGuid string) ApiAlertDefinitionGetAllMembersRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembers(ctx context.Context, alertDefinitionGuid string) ApiAlertDefinitionGetAllMembersRequest {
 	return ApiAlertDefinitionGetAllMembersRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1400,27 +1635,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembers(ctx _context.Co
 
 // Execute executes the request
 //  @return []AlertDefinitionMember
-func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembersExecute(r ApiAlertDefinitionGetAllMembersRequest) ([]AlertDefinitionMember, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembersExecute(r ApiAlertDefinitionGetAllMembersRequest) ([]AlertDefinitionMember, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []AlertDefinitionMember
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionGetAllMembers")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/Member"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1439,7 +1672,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembersExecute(r ApiAle
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1449,15 +1682,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembersExecute(r ApiAle
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1468,7 +1701,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembersExecute(r ApiAle
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1478,7 +1712,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembersExecute(r ApiAle
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1488,14 +1723,137 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembersExecute(r ApiAle
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiAlertDefinitionGetAuthorizationsOfAlertDefinitionRequest struct {
+	ctx context.Context
+	ApiService *AlertDefinitionApiService
+	alertDefinitionGuid string
+}
+
+func (r ApiAlertDefinitionGetAuthorizationsOfAlertDefinitionRequest) Execute() ([]AlertDefinitionAuthorization, *http.Response, error) {
+	return r.ApiService.AlertDefinitionGetAuthorizationsOfAlertDefinitionExecute(r)
+}
+
+/*
+AlertDefinitionGetAuthorizationsOfAlertDefinition Get authorizations of alert definition
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param alertDefinitionGuid The alert definition GUID
+ @return ApiAlertDefinitionGetAuthorizationsOfAlertDefinitionRequest
+*/
+func (a *AlertDefinitionApiService) AlertDefinitionGetAuthorizationsOfAlertDefinition(ctx context.Context, alertDefinitionGuid string) ApiAlertDefinitionGetAuthorizationsOfAlertDefinitionRequest {
+	return ApiAlertDefinitionGetAuthorizationsOfAlertDefinitionRequest{
+		ApiService: a,
+		ctx: ctx,
+		alertDefinitionGuid: alertDefinitionGuid,
+	}
+}
+
+// Execute executes the request
+//  @return []AlertDefinitionAuthorization
+func (a *AlertDefinitionApiService) AlertDefinitionGetAuthorizationsOfAlertDefinitionExecute(r ApiAlertDefinitionGetAuthorizationsOfAlertDefinitionRequest) ([]AlertDefinitionAuthorization, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  []AlertDefinitionAuthorization
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionGetAuthorizationsOfAlertDefinition")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/Authorizations"
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1506,26 +1864,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetAllMembersExecute(r ApiAle
 }
 
 type ApiAlertDefinitionGetEscalationLevelRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
 }
 
-
-func (r ApiAlertDefinitionGetEscalationLevelRequest) Execute() (EscalationLevel, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionGetEscalationLevelRequest) Execute() (*EscalationLevel, *http.Response, error) {
 	return r.ApiService.AlertDefinitionGetEscalationLevelExecute(r)
 }
 
 /*
 AlertDefinitionGetEscalationLevel Gets the escalation level information of the specified alert definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @return ApiAlertDefinitionGetEscalationLevelRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevel(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionGetEscalationLevelRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevel(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionGetEscalationLevelRequest {
 	return ApiAlertDefinitionGetEscalationLevelRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1536,28 +1893,26 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevel(ctx _conte
 
 // Execute executes the request
 //  @return EscalationLevel
-func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelExecute(r ApiAlertDefinitionGetEscalationLevelRequest) (EscalationLevel, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelExecute(r ApiAlertDefinitionGetEscalationLevelRequest) (*EscalationLevel, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  EscalationLevel
+		formFiles            []formFile
+		localVarReturnValue  *EscalationLevel
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionGetEscalationLevel")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1576,7 +1931,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelExecute(r A
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1586,15 +1941,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelExecute(r A
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1605,7 +1960,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelExecute(r A
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1615,7 +1971,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelExecute(r A
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1625,14 +1982,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelExecute(r A
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1643,28 +2001,27 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelExecute(r A
 }
 
 type ApiAlertDefinitionGetEscalationLevelIntegrationRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
 	integrationGuid string
 }
 
-
-func (r ApiAlertDefinitionGetEscalationLevelIntegrationRequest) Execute() (Integration, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionGetEscalationLevelIntegrationRequest) Execute() (*Integration, *http.Response, error) {
 	return r.ApiService.AlertDefinitionGetEscalationLevelIntegrationExecute(r)
 }
 
 /*
 AlertDefinitionGetEscalationLevelIntegration Gets a single integration for a specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @param integrationGuid The Guid of the integration.
  @return ApiAlertDefinitionGetEscalationLevelIntegrationRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegration(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32, integrationGuid string) ApiAlertDefinitionGetEscalationLevelIntegrationRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegration(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32, integrationGuid string) ApiAlertDefinitionGetEscalationLevelIntegrationRequest {
 	return ApiAlertDefinitionGetEscalationLevelIntegrationRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1676,29 +2033,27 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegration
 
 // Execute executes the request
 //  @return Integration
-func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegrationExecute(r ApiAlertDefinitionGetEscalationLevelIntegrationRequest) (Integration, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegrationExecute(r ApiAlertDefinitionGetEscalationLevelIntegrationRequest) (*Integration, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  Integration
+		formFiles            []formFile
+		localVarReturnValue  *Integration
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionGetEscalationLevelIntegration")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration/{integrationGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", _neturl.PathEscape(parameterToString(r.integrationGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", url.PathEscape(parameterToString(r.integrationGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1717,7 +2072,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegration
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1727,15 +2082,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegration
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1746,7 +2101,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegration
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1756,7 +2112,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegration
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1766,14 +2123,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegration
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1784,26 +2142,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelIntegration
 }
 
 type ApiAlertDefinitionGetEscalationLevelOperatorRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
 }
 
-
-func (r ApiAlertDefinitionGetEscalationLevelOperatorRequest) Execute() ([]AlertEscalationLevelMember, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionGetEscalationLevelOperatorRequest) Execute() ([]AlertEscalationLevelMember, *http.Response, error) {
 	return r.ApiService.AlertDefinitionGetEscalationLevelOperatorExecute(r)
 }
 
 /*
 AlertDefinitionGetEscalationLevelOperator Gets the operator and operator group guids for the specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @return ApiAlertDefinitionGetEscalationLevelOperatorRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperator(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionGetEscalationLevelOperatorRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperator(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionGetEscalationLevelOperatorRequest {
 	return ApiAlertDefinitionGetEscalationLevelOperatorRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1814,28 +2171,26 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperator(ct
 
 // Execute executes the request
 //  @return []AlertEscalationLevelMember
-func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperatorExecute(r ApiAlertDefinitionGetEscalationLevelOperatorRequest) ([]AlertEscalationLevelMember, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperatorExecute(r ApiAlertDefinitionGetEscalationLevelOperatorRequest) ([]AlertEscalationLevelMember, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []AlertEscalationLevelMember
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionGetEscalationLevelOperator")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Member"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1854,7 +2209,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperatorExe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1864,15 +2219,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperatorExe
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1883,7 +2238,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperatorExe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -1893,7 +2249,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperatorExe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1903,14 +2260,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperatorExe
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1921,24 +2279,23 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetEscalationLevelOperatorExe
 }
 
 type ApiAlertDefinitionGetSpecifiedAlertDefinitionsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 }
 
-
-func (r ApiAlertDefinitionGetSpecifiedAlertDefinitionsRequest) Execute() (AlertDefinition, *_nethttp.Response, error) {
+func (r ApiAlertDefinitionGetSpecifiedAlertDefinitionsRequest) Execute() (*AlertDefinition, *http.Response, error) {
 	return r.ApiService.AlertDefinitionGetSpecifiedAlertDefinitionsExecute(r)
 }
 
 /*
 AlertDefinitionGetSpecifiedAlertDefinitions Gets the specified alert definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @return ApiAlertDefinitionGetSpecifiedAlertDefinitionsRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionGetSpecifiedAlertDefinitions(ctx _context.Context, alertDefinitionGuid string) ApiAlertDefinitionGetSpecifiedAlertDefinitionsRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionGetSpecifiedAlertDefinitions(ctx context.Context, alertDefinitionGuid string) ApiAlertDefinitionGetSpecifiedAlertDefinitionsRequest {
 	return ApiAlertDefinitionGetSpecifiedAlertDefinitionsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1948,27 +2305,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetSpecifiedAlertDefinitions(
 
 // Execute executes the request
 //  @return AlertDefinition
-func (a *AlertDefinitionApiService) AlertDefinitionGetSpecifiedAlertDefinitionsExecute(r ApiAlertDefinitionGetSpecifiedAlertDefinitionsRequest) (AlertDefinition, *_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionGetSpecifiedAlertDefinitionsExecute(r ApiAlertDefinitionGetSpecifiedAlertDefinitionsRequest) (*AlertDefinition, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  AlertDefinition
+		formFiles            []formFile
+		localVarReturnValue  *AlertDefinition
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionGetSpecifiedAlertDefinitions")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1987,7 +2342,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetSpecifiedAlertDefinitionsE
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1997,15 +2352,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetSpecifiedAlertDefinitionsE
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2016,7 +2371,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetSpecifiedAlertDefinitionsE
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2026,14 +2382,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetSpecifiedAlertDefinitionsE
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -2044,7 +2401,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionGetSpecifiedAlertDefinitionsE
 }
 
 type ApiAlertDefinitionPatchAlertDefinitionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	alertDefinition *AlertDefinition
@@ -2056,7 +2413,7 @@ func (r ApiAlertDefinitionPatchAlertDefinitionRequest) AlertDefinition(alertDefi
 	return r
 }
 
-func (r ApiAlertDefinitionPatchAlertDefinitionRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionPatchAlertDefinitionRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionPatchAlertDefinitionExecute(r)
 }
 
@@ -2065,11 +2422,11 @@ AlertDefinitionPatchAlertDefinition Partially updates the definition for the spe
 
 This methods accepts parts of an alert definition. Fields that do not require changes can be omitted.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition that should be updated.
  @return ApiAlertDefinitionPatchAlertDefinitionRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinition(ctx _context.Context, alertDefinitionGuid string) ApiAlertDefinitionPatchAlertDefinitionRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinition(ctx context.Context, alertDefinitionGuid string) ApiAlertDefinitionPatchAlertDefinitionRequest {
 	return ApiAlertDefinitionPatchAlertDefinitionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2078,29 +2435,24 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinition(ctx _con
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionExecute(r ApiAlertDefinitionPatchAlertDefinitionRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionExecute(r ApiAlertDefinitionPatchAlertDefinitionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
+		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionPatchAlertDefinition")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.alertDefinition == nil {
-		return nil, reportError("alertDefinition is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -2121,7 +2473,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionExecute(r
 	}
 	// body params
 	localVarPostBody = r.alertDefinition
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -2131,15 +2483,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionExecute(r
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2150,7 +2502,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionExecute(r
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2160,7 +2513,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionExecute(r
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2170,7 +2524,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionExecute(r
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2179,7 +2534,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionExecute(r
 }
 
 type ApiAlertDefinitionPatchAlertDefinitionEscalationRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
@@ -2192,7 +2547,7 @@ func (r ApiAlertDefinitionPatchAlertDefinitionEscalationRequest) EscalationLevel
 	return r
 }
 
-func (r ApiAlertDefinitionPatchAlertDefinitionEscalationRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionPatchAlertDefinitionEscalationRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionPatchAlertDefinitionEscalationExecute(r)
 }
 
@@ -2201,12 +2556,12 @@ AlertDefinitionPatchAlertDefinitionEscalation Partially updates the escalation l
 
 This methods only accepts a complete alert definition where all fields are specified.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition that should be updated.
  @param escalationLevelId The level number of the escalation that should be updated.
  @return ApiAlertDefinitionPatchAlertDefinitionEscalationRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalation(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionPatchAlertDefinitionEscalationRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalation(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionPatchAlertDefinitionEscalationRequest {
 	return ApiAlertDefinitionPatchAlertDefinitionEscalationRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2216,30 +2571,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalatio
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalationExecute(r ApiAlertDefinitionPatchAlertDefinitionEscalationRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalationExecute(r ApiAlertDefinitionPatchAlertDefinitionEscalationRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
+		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionPatchAlertDefinitionEscalation")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.escalationLevel == nil {
-		return nil, reportError("escalationLevel is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -2260,7 +2610,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalatio
 	}
 	// body params
 	localVarPostBody = r.escalationLevel
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -2270,15 +2620,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalatio
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2289,7 +2639,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalatio
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2299,7 +2650,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalatio
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2309,7 +2661,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalatio
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2318,7 +2671,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionPatchAlertDefinitionEscalatio
 }
 
 type ApiAlertDefinitionPutAlertDefinitionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	alertDefinition *AlertDefinition
@@ -2330,7 +2683,7 @@ func (r ApiAlertDefinitionPutAlertDefinitionRequest) AlertDefinition(alertDefini
 	return r
 }
 
-func (r ApiAlertDefinitionPutAlertDefinitionRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionPutAlertDefinitionRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionPutAlertDefinitionExecute(r)
 }
 
@@ -2339,11 +2692,11 @@ AlertDefinitionPutAlertDefinition Updates the definition for the specified alert
 
 This methods only accepts a complete alert definition where all fields are specified.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition that should be updated.
  @return ApiAlertDefinitionPutAlertDefinitionRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinition(ctx _context.Context, alertDefinitionGuid string) ApiAlertDefinitionPutAlertDefinitionRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinition(ctx context.Context, alertDefinitionGuid string) ApiAlertDefinitionPutAlertDefinitionRequest {
 	return ApiAlertDefinitionPutAlertDefinitionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2352,29 +2705,24 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinition(ctx _conte
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionExecute(r ApiAlertDefinitionPutAlertDefinitionRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionExecute(r ApiAlertDefinitionPutAlertDefinitionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionPutAlertDefinition")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.alertDefinition == nil {
-		return nil, reportError("alertDefinition is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -2395,7 +2743,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionExecute(r A
 	}
 	// body params
 	localVarPostBody = r.alertDefinition
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -2405,15 +2753,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionExecute(r A
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2424,7 +2772,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionExecute(r A
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2434,7 +2783,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionExecute(r A
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2444,7 +2794,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionExecute(r A
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2453,7 +2804,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionExecute(r A
 }
 
 type ApiAlertDefinitionPutAlertDefinitionEscalationRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
@@ -2466,7 +2817,7 @@ func (r ApiAlertDefinitionPutAlertDefinitionEscalationRequest) EscalationLevel(e
 	return r
 }
 
-func (r ApiAlertDefinitionPutAlertDefinitionEscalationRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionPutAlertDefinitionEscalationRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionPutAlertDefinitionEscalationExecute(r)
 }
 
@@ -2475,12 +2826,12 @@ AlertDefinitionPutAlertDefinitionEscalation Updates the escalation level for the
 
 This methods only accepts a complete alert definition where all fields are specified.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition that should be updated.
  @param escalationLevelId The level number of the escalation that should be updated.
  @return ApiAlertDefinitionPutAlertDefinitionEscalationRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalation(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionPutAlertDefinitionEscalationRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalation(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32) ApiAlertDefinitionPutAlertDefinitionEscalationRequest {
 	return ApiAlertDefinitionPutAlertDefinitionEscalationRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2490,30 +2841,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalation(
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalationExecute(r ApiAlertDefinitionPutAlertDefinitionEscalationRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalationExecute(r ApiAlertDefinitionPutAlertDefinitionEscalationRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionPutAlertDefinitionEscalation")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.escalationLevel == nil {
-		return nil, reportError("escalationLevel is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -2534,7 +2880,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalationE
 	}
 	// body params
 	localVarPostBody = r.escalationLevel
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -2544,15 +2890,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalationE
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2563,7 +2909,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalationE
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2573,7 +2920,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalationE
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2583,7 +2931,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalationE
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2592,28 +2941,27 @@ func (a *AlertDefinitionApiService) AlertDefinitionPutAlertDefinitionEscalationE
 }
 
 type ApiAlertDefinitionRemoveIntegrationFromEscalationLevelRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
 	integrationGuid string
 }
 
-
-func (r ApiAlertDefinitionRemoveIntegrationFromEscalationLevelRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionRemoveIntegrationFromEscalationLevelRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionRemoveIntegrationFromEscalationLevelExecute(r)
 }
 
 /*
 AlertDefinitionRemoveIntegrationFromEscalationLevel Removes an integration from a specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @param integrationGuid The Guid of the integration to remove.
  @return ApiAlertDefinitionRemoveIntegrationFromEscalationLevelRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalationLevel(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32, integrationGuid string) ApiAlertDefinitionRemoveIntegrationFromEscalationLevelRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalationLevel(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32, integrationGuid string) ApiAlertDefinitionRemoveIntegrationFromEscalationLevelRequest {
 	return ApiAlertDefinitionRemoveIntegrationFromEscalationLevelRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2624,28 +2972,26 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalati
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalationLevelExecute(r ApiAlertDefinitionRemoveIntegrationFromEscalationLevelRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalationLevelExecute(r ApiAlertDefinitionRemoveIntegrationFromEscalationLevelRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionRemoveIntegrationFromEscalationLevel")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration/{integrationGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", _neturl.PathEscape(parameterToString(r.integrationGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", url.PathEscape(parameterToString(r.integrationGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2664,7 +3010,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalati
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -2674,15 +3020,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalati
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2693,7 +3039,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalati
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2703,7 +3050,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalati
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2713,7 +3061,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalati
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2722,26 +3071,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveIntegrationFromEscalati
 }
 
 type ApiAlertDefinitionRemoveMonitorFromAlertDefinitionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	monitorGuid string
 }
 
-
-func (r ApiAlertDefinitionRemoveMonitorFromAlertDefinitionRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionRemoveMonitorFromAlertDefinitionRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionRemoveMonitorFromAlertDefinitionExecute(r)
 }
 
 /*
 AlertDefinitionRemoveMonitorFromAlertDefinition Removes a monitor for the specified alert definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition to modify.
  @param monitorGuid The Guid of the monitor to remove.
  @return ApiAlertDefinitionRemoveMonitorFromAlertDefinitionRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinition(ctx _context.Context, alertDefinitionGuid string, monitorGuid string) ApiAlertDefinitionRemoveMonitorFromAlertDefinitionRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinition(ctx context.Context, alertDefinitionGuid string, monitorGuid string) ApiAlertDefinitionRemoveMonitorFromAlertDefinitionRequest {
 	return ApiAlertDefinitionRemoveMonitorFromAlertDefinitionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2751,27 +3099,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinit
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinitionExecute(r ApiAlertDefinitionRemoveMonitorFromAlertDefinitionRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinitionExecute(r ApiAlertDefinitionRemoveMonitorFromAlertDefinitionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionRemoveMonitorFromAlertDefinition")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/Member/Monitor/{monitorGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", url.PathEscape(parameterToString(r.monitorGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2790,7 +3136,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinit
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -2800,15 +3146,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinit
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2819,7 +3165,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinit
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2829,7 +3176,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinit
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2839,7 +3187,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinit
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2848,26 +3197,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorFromAlertDefinit
 }
 
 type ApiAlertDefinitionRemoveMonitorGroupFromAlertDefinitionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	monitorGroupGuid string
 }
 
-
-func (r ApiAlertDefinitionRemoveMonitorGroupFromAlertDefinitionRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionRemoveMonitorGroupFromAlertDefinitionRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionRemoveMonitorGroupFromAlertDefinitionExecute(r)
 }
 
 /*
 AlertDefinitionRemoveMonitorGroupFromAlertDefinition Removes a monitor group for the specified alert definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition to modify.
  @param monitorGroupGuid The Guid of the monitor group to remove.
  @return ApiAlertDefinitionRemoveMonitorGroupFromAlertDefinitionRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDefinition(ctx _context.Context, alertDefinitionGuid string, monitorGroupGuid string) ApiAlertDefinitionRemoveMonitorGroupFromAlertDefinitionRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDefinition(ctx context.Context, alertDefinitionGuid string, monitorGroupGuid string) ApiAlertDefinitionRemoveMonitorGroupFromAlertDefinitionRequest {
 	return ApiAlertDefinitionRemoveMonitorGroupFromAlertDefinitionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -2877,27 +3225,25 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDe
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDefinitionExecute(r ApiAlertDefinitionRemoveMonitorGroupFromAlertDefinitionRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDefinitionExecute(r ApiAlertDefinitionRemoveMonitorGroupFromAlertDefinitionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionRemoveMonitorGroupFromAlertDefinition")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/Member/MonitorGroup/{monitorGroupGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -2916,7 +3262,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -2926,15 +3272,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDe
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -2945,7 +3291,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -2955,7 +3302,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -2965,7 +3313,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -2974,28 +3323,27 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveMonitorGroupFromAlertDe
 }
 
 type ApiAlertDefinitionRemoveOperatorFromEscalationLevelRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
 	operatorGuid string
 }
 
-
-func (r ApiAlertDefinitionRemoveOperatorFromEscalationLevelRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionRemoveOperatorFromEscalationLevelRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionRemoveOperatorFromEscalationLevelExecute(r)
 }
 
 /*
 AlertDefinitionRemoveOperatorFromEscalationLevel Removes an operator for the specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @param operatorGuid The Guid of the operator to remove.
  @return ApiAlertDefinitionRemoveOperatorFromEscalationLevelRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationLevel(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32, operatorGuid string) ApiAlertDefinitionRemoveOperatorFromEscalationLevelRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationLevel(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32, operatorGuid string) ApiAlertDefinitionRemoveOperatorFromEscalationLevelRequest {
 	return ApiAlertDefinitionRemoveOperatorFromEscalationLevelRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -3006,28 +3354,26 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationL
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationLevelExecute(r ApiAlertDefinitionRemoveOperatorFromEscalationLevelRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationLevelExecute(r ApiAlertDefinitionRemoveOperatorFromEscalationLevelRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionRemoveOperatorFromEscalationLevel")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Member/Operator/{operatorGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"operatorGuid"+"}", _neturl.PathEscape(parameterToString(r.operatorGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"operatorGuid"+"}", url.PathEscape(parameterToString(r.operatorGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -3046,7 +3392,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationL
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -3056,15 +3402,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationL
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -3075,7 +3421,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationL
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -3085,7 +3432,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationL
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -3095,7 +3443,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationL
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -3104,28 +3453,27 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorFromEscalationL
 }
 
 type ApiAlertDefinitionRemoveOperatorGroupFromEscalationLevelRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
 	operatorGroupGuid string
 }
 
-
-func (r ApiAlertDefinitionRemoveOperatorGroupFromEscalationLevelRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionRemoveOperatorGroupFromEscalationLevelRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionRemoveOperatorGroupFromEscalationLevelExecute(r)
 }
 
 /*
 AlertDefinitionRemoveOperatorGroupFromEscalationLevel Removes an operator group for the specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @param operatorGroupGuid The Guid of the operator group to remove.
  @return ApiAlertDefinitionRemoveOperatorGroupFromEscalationLevelRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscalationLevel(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32, operatorGroupGuid string) ApiAlertDefinitionRemoveOperatorGroupFromEscalationLevelRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscalationLevel(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32, operatorGroupGuid string) ApiAlertDefinitionRemoveOperatorGroupFromEscalationLevelRequest {
 	return ApiAlertDefinitionRemoveOperatorGroupFromEscalationLevelRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -3136,28 +3484,26 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscala
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscalationLevelExecute(r ApiAlertDefinitionRemoveOperatorGroupFromEscalationLevelRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscalationLevelExecute(r ApiAlertDefinitionRemoveOperatorGroupFromEscalationLevelRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionRemoveOperatorGroupFromEscalationLevel")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Member/OperatorGroup/{operatorGroupGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"operatorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.operatorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"operatorGroupGuid"+"}", url.PathEscape(parameterToString(r.operatorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -3176,7 +3522,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscala
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -3186,15 +3532,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscala
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -3205,7 +3551,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscala
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -3215,7 +3562,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscala
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -3225,7 +3573,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscala
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -3234,7 +3583,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionRemoveOperatorGroupFromEscala
 }
 
 type ApiAlertDefinitionUpdateIntegrationForEscalationWithPatchRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
@@ -3248,20 +3597,20 @@ func (r ApiAlertDefinitionUpdateIntegrationForEscalationWithPatchRequest) Escala
 	return r
 }
 
-func (r ApiAlertDefinitionUpdateIntegrationForEscalationWithPatchRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionUpdateIntegrationForEscalationWithPatchRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionUpdateIntegrationForEscalationWithPatchExecute(r)
 }
 
 /*
 AlertDefinitionUpdateIntegrationForEscalationWithPatch Partially updates an integration for a specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @param integrationGuid The Guid of the integration to update.
  @return ApiAlertDefinitionUpdateIntegrationForEscalationWithPatchRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalationWithPatch(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32, integrationGuid string) ApiAlertDefinitionUpdateIntegrationForEscalationWithPatchRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalationWithPatch(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32, integrationGuid string) ApiAlertDefinitionUpdateIntegrationForEscalationWithPatchRequest {
 	return ApiAlertDefinitionUpdateIntegrationForEscalationWithPatchRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -3272,31 +3621,26 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalationWithPatchExecute(r ApiAlertDefinitionUpdateIntegrationForEscalationWithPatchRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalationWithPatchExecute(r ApiAlertDefinitionUpdateIntegrationForEscalationWithPatchRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
+		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionUpdateIntegrationForEscalationWithPatch")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration/{integrationGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", _neturl.PathEscape(parameterToString(r.integrationGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", url.PathEscape(parameterToString(r.integrationGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.escalationLevelIntegration == nil {
-		return nil, reportError("escalationLevelIntegration is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -3317,7 +3661,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 	}
 	// body params
 	localVarPostBody = r.escalationLevelIntegration
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -3327,15 +3671,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -3346,7 +3690,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -3356,7 +3701,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -3366,7 +3712,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -3375,7 +3722,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 }
 
 type ApiAlertDefinitionUpdateIntegrationForEscalationWithPutRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertDefinitionApiService
 	alertDefinitionGuid string
 	escalationLevelId int32
@@ -3389,20 +3736,20 @@ func (r ApiAlertDefinitionUpdateIntegrationForEscalationWithPutRequest) Escalati
 	return r
 }
 
-func (r ApiAlertDefinitionUpdateIntegrationForEscalationWithPutRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiAlertDefinitionUpdateIntegrationForEscalationWithPutRequest) Execute() (*http.Response, error) {
 	return r.ApiService.AlertDefinitionUpdateIntegrationForEscalationWithPutExecute(r)
 }
 
 /*
 AlertDefinitionUpdateIntegrationForEscalationWithPut Updates an integration for a specified escalation level.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param alertDefinitionGuid The Guid of the alert definition.
  @param escalationLevelId The escalation level id.
  @param integrationGuid The Guid of the integration to update.
  @return ApiAlertDefinitionUpdateIntegrationForEscalationWithPutRequest
 */
-func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalationWithPut(ctx _context.Context, alertDefinitionGuid string, escalationLevelId int32, integrationGuid string) ApiAlertDefinitionUpdateIntegrationForEscalationWithPutRequest {
+func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalationWithPut(ctx context.Context, alertDefinitionGuid string, escalationLevelId int32, integrationGuid string) ApiAlertDefinitionUpdateIntegrationForEscalationWithPutRequest {
 	return ApiAlertDefinitionUpdateIntegrationForEscalationWithPutRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -3413,31 +3760,26 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 }
 
 // Execute executes the request
-func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalationWithPutExecute(r ApiAlertDefinitionUpdateIntegrationForEscalationWithPutRequest) (*_nethttp.Response, error) {
+func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalationWithPutExecute(r ApiAlertDefinitionUpdateIntegrationForEscalationWithPutRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertDefinitionApiService.AlertDefinitionUpdateIntegrationForEscalationWithPut")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration/{integrationGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", _neturl.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", _neturl.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", _neturl.PathEscape(parameterToString(r.integrationGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"alertDefinitionGuid"+"}", url.PathEscape(parameterToString(r.alertDefinitionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"escalationLevelId"+"}", url.PathEscape(parameterToString(r.escalationLevelId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", url.PathEscape(parameterToString(r.integrationGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.escalationLevelIntegration == nil {
-		return nil, reportError("escalationLevelIntegration is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -3458,7 +3800,7 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 	}
 	// body params
 	localVarPostBody = r.escalationLevelIntegration
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -3468,15 +3810,15 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -3487,7 +3829,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -3497,7 +3840,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -3507,7 +3851,8 @@ func (a *AlertDefinitionApiService) AlertDefinitionUpdateIntegrationForEscalatio
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

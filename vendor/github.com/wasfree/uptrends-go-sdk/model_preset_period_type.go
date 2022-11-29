@@ -23,11 +23,16 @@ const (
 	PRESETPERIODTYPE_CURRENT_DAY PresetPeriodType = "CurrentDay"
 	PRESETPERIODTYPE_CURRENT_WEEK PresetPeriodType = "CurrentWeek"
 	PRESETPERIODTYPE_CURRENT_MONTH PresetPeriodType = "CurrentMonth"
+	PRESETPERIODTYPE_CURRENT_QUARTER PresetPeriodType = "CurrentQuarter"
 	PRESETPERIODTYPE_CURRENT_YEAR PresetPeriodType = "CurrentYear"
 	PRESETPERIODTYPE_PREVIOUS_DAY PresetPeriodType = "PreviousDay"
 	PRESETPERIODTYPE_PREVIOUS_WEEK PresetPeriodType = "PreviousWeek"
 	PRESETPERIODTYPE_PREVIOUS_MONTH PresetPeriodType = "PreviousMonth"
+	PRESETPERIODTYPE_PREVIOUS_QUARTER PresetPeriodType = "PreviousQuarter"
 	PRESETPERIODTYPE_PREVIOUS_YEAR PresetPeriodType = "PreviousYear"
+	PRESETPERIODTYPE_LAST2_HOURS PresetPeriodType = "Last2Hours"
+	PRESETPERIODTYPE_LAST6_HOURS PresetPeriodType = "Last6Hours"
+	PRESETPERIODTYPE_LAST12_HOURS PresetPeriodType = "Last12Hours"
 	PRESETPERIODTYPE_LAST24_HOURS PresetPeriodType = "Last24Hours"
 	PRESETPERIODTYPE_LAST48_HOURS PresetPeriodType = "Last48Hours"
 	PRESETPERIODTYPE_LAST7_DAYS PresetPeriodType = "Last7Days"
@@ -42,15 +47,21 @@ const (
 	PRESETPERIODTYPE_ALL PresetPeriodType = "All"
 )
 
-var allowedPresetPeriodTypeEnumValues = []PresetPeriodType{
+// All allowed values of PresetPeriodType enum
+var AllowedPresetPeriodTypeEnumValues = []PresetPeriodType{
 	"CurrentDay",
 	"CurrentWeek",
 	"CurrentMonth",
+	"CurrentQuarter",
 	"CurrentYear",
 	"PreviousDay",
 	"PreviousWeek",
 	"PreviousMonth",
+	"PreviousQuarter",
 	"PreviousYear",
+	"Last2Hours",
+	"Last6Hours",
+	"Last12Hours",
 	"Last24Hours",
 	"Last48Hours",
 	"Last7Days",
@@ -72,7 +83,7 @@ func (v *PresetPeriodType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := PresetPeriodType(value)
-	for _, existing := range allowedPresetPeriodTypeEnumValues {
+	for _, existing := range AllowedPresetPeriodTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -89,13 +100,13 @@ func NewPresetPeriodTypeFromValue(v string) (*PresetPeriodType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for PresetPeriodType: valid values are %v", v, allowedPresetPeriodTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for PresetPeriodType: valid values are %v", v, AllowedPresetPeriodTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v PresetPeriodType) IsValid() bool {
-	for _, existing := range allowedPresetPeriodTypeEnumValues {
+	for _, existing := range AllowedPresetPeriodTypeEnumValues {
 		if existing == v {
 			return true
 		}

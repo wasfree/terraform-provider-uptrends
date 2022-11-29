@@ -17,16 +17,16 @@ import (
 // MsaStep struct for MsaStep
 type MsaStep struct {
 	Url *string `json:"Url,omitempty"`
-	Method *string `json:"Method,omitempty"`
+	Method HttpMethods `json:"Method"`
 	// The body that will be send in the request. Only used if BodyType equals Raw
 	Body *string `json:"Body,omitempty"`
 	// Determines what kind of body the request will have.
 	BodyType *MsaBodyType `json:"BodyType,omitempty"`
 	// The guid of the vaultfile that will be send in the request. Only used if BodyType equals VaultFiles
 	VaultFileId *string `json:"VaultFileId,omitempty"`
-	RequestHeaders *[]ApiHttpHeaderValue `json:"RequestHeaders,omitempty"`
-	Variables *[]ApiVariableDefinition `json:"Variables,omitempty"`
-	Assertions *[]ApiAssertion `json:"Assertions,omitempty"`
+	RequestHeaders []ApiHttpHeaderValue `json:"RequestHeaders,omitempty"`
+	Variables []ApiVariableDefinition `json:"Variables,omitempty"`
+	Assertions []ApiAssertion `json:"Assertions,omitempty"`
 	Name *string `json:"Name,omitempty"`
 	UseFixedClientCertificate bool `json:"UseFixedClientCertificate"`
 	Authentication *ApiAuthenticationInfo `json:"Authentication,omitempty"`
@@ -36,14 +36,16 @@ type MsaStep struct {
 	StepType MsaStepType `json:"StepType"`
 	RetryUntilSuccessful bool `json:"RetryUntilSuccessful"`
 	MaxAttempts int32 `json:"MaxAttempts"`
+	RetryWaitMilliseconds *int32 `json:"RetryWaitMilliseconds,omitempty"`
 }
 
 // NewMsaStep instantiates a new MsaStep object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMsaStep(useFixedClientCertificate bool, ignoreCertificateErrors bool, delay int32, stepType MsaStepType, retryUntilSuccessful bool, maxAttempts int32) *MsaStep {
+func NewMsaStep(method HttpMethods, useFixedClientCertificate bool, ignoreCertificateErrors bool, delay int32, stepType MsaStepType, retryUntilSuccessful bool, maxAttempts int32) *MsaStep {
 	this := MsaStep{}
+	this.Method = method
 	this.UseFixedClientCertificate = useFixedClientCertificate
 	this.IgnoreCertificateErrors = ignoreCertificateErrors
 	this.Delay = delay
@@ -63,7 +65,7 @@ func NewMsaStepWithDefaults() *MsaStep {
 
 // GetUrl returns the Url field value if set, zero value otherwise.
 func (o *MsaStep) GetUrl() string {
-	if o == nil || o.Url == nil {
+	if o == nil || isNil(o.Url) {
 		var ret string
 		return ret
 	}
@@ -73,15 +75,15 @@ func (o *MsaStep) GetUrl() string {
 // GetUrlOk returns a tuple with the Url field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetUrlOk() (*string, bool) {
-	if o == nil || o.Url == nil {
-		return nil, false
+	if o == nil || isNil(o.Url) {
+    return nil, false
 	}
 	return o.Url, true
 }
 
 // HasUrl returns a boolean if a field has been set.
 func (o *MsaStep) HasUrl() bool {
-	if o != nil && o.Url != nil {
+	if o != nil && !isNil(o.Url) {
 		return true
 	}
 
@@ -93,41 +95,33 @@ func (o *MsaStep) SetUrl(v string) {
 	o.Url = &v
 }
 
-// GetMethod returns the Method field value if set, zero value otherwise.
-func (o *MsaStep) GetMethod() string {
-	if o == nil || o.Method == nil {
-		var ret string
+// GetMethod returns the Method field value
+func (o *MsaStep) GetMethod() HttpMethods {
+	if o == nil {
+		var ret HttpMethods
 		return ret
 	}
-	return *o.Method
+
+	return o.Method
 }
 
-// GetMethodOk returns a tuple with the Method field value if set, nil otherwise
+// GetMethodOk returns a tuple with the Method field value
 // and a boolean to check if the value has been set.
-func (o *MsaStep) GetMethodOk() (*string, bool) {
-	if o == nil || o.Method == nil {
-		return nil, false
+func (o *MsaStep) GetMethodOk() (*HttpMethods, bool) {
+	if o == nil {
+    return nil, false
 	}
-	return o.Method, true
+	return &o.Method, true
 }
 
-// HasMethod returns a boolean if a field has been set.
-func (o *MsaStep) HasMethod() bool {
-	if o != nil && o.Method != nil {
-		return true
-	}
-
-	return false
-}
-
-// SetMethod gets a reference to the given string and assigns it to the Method field.
-func (o *MsaStep) SetMethod(v string) {
-	o.Method = &v
+// SetMethod sets field value
+func (o *MsaStep) SetMethod(v HttpMethods) {
+	o.Method = v
 }
 
 // GetBody returns the Body field value if set, zero value otherwise.
 func (o *MsaStep) GetBody() string {
-	if o == nil || o.Body == nil {
+	if o == nil || isNil(o.Body) {
 		var ret string
 		return ret
 	}
@@ -137,15 +131,15 @@ func (o *MsaStep) GetBody() string {
 // GetBodyOk returns a tuple with the Body field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetBodyOk() (*string, bool) {
-	if o == nil || o.Body == nil {
-		return nil, false
+	if o == nil || isNil(o.Body) {
+    return nil, false
 	}
 	return o.Body, true
 }
 
 // HasBody returns a boolean if a field has been set.
 func (o *MsaStep) HasBody() bool {
-	if o != nil && o.Body != nil {
+	if o != nil && !isNil(o.Body) {
 		return true
 	}
 
@@ -159,7 +153,7 @@ func (o *MsaStep) SetBody(v string) {
 
 // GetBodyType returns the BodyType field value if set, zero value otherwise.
 func (o *MsaStep) GetBodyType() MsaBodyType {
-	if o == nil || o.BodyType == nil {
+	if o == nil || isNil(o.BodyType) {
 		var ret MsaBodyType
 		return ret
 	}
@@ -169,15 +163,15 @@ func (o *MsaStep) GetBodyType() MsaBodyType {
 // GetBodyTypeOk returns a tuple with the BodyType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetBodyTypeOk() (*MsaBodyType, bool) {
-	if o == nil || o.BodyType == nil {
-		return nil, false
+	if o == nil || isNil(o.BodyType) {
+    return nil, false
 	}
 	return o.BodyType, true
 }
 
 // HasBodyType returns a boolean if a field has been set.
 func (o *MsaStep) HasBodyType() bool {
-	if o != nil && o.BodyType != nil {
+	if o != nil && !isNil(o.BodyType) {
 		return true
 	}
 
@@ -191,7 +185,7 @@ func (o *MsaStep) SetBodyType(v MsaBodyType) {
 
 // GetVaultFileId returns the VaultFileId field value if set, zero value otherwise.
 func (o *MsaStep) GetVaultFileId() string {
-	if o == nil || o.VaultFileId == nil {
+	if o == nil || isNil(o.VaultFileId) {
 		var ret string
 		return ret
 	}
@@ -201,15 +195,15 @@ func (o *MsaStep) GetVaultFileId() string {
 // GetVaultFileIdOk returns a tuple with the VaultFileId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetVaultFileIdOk() (*string, bool) {
-	if o == nil || o.VaultFileId == nil {
-		return nil, false
+	if o == nil || isNil(o.VaultFileId) {
+    return nil, false
 	}
 	return o.VaultFileId, true
 }
 
 // HasVaultFileId returns a boolean if a field has been set.
 func (o *MsaStep) HasVaultFileId() bool {
-	if o != nil && o.VaultFileId != nil {
+	if o != nil && !isNil(o.VaultFileId) {
 		return true
 	}
 
@@ -223,25 +217,25 @@ func (o *MsaStep) SetVaultFileId(v string) {
 
 // GetRequestHeaders returns the RequestHeaders field value if set, zero value otherwise.
 func (o *MsaStep) GetRequestHeaders() []ApiHttpHeaderValue {
-	if o == nil || o.RequestHeaders == nil {
+	if o == nil || isNil(o.RequestHeaders) {
 		var ret []ApiHttpHeaderValue
 		return ret
 	}
-	return *o.RequestHeaders
+	return o.RequestHeaders
 }
 
 // GetRequestHeadersOk returns a tuple with the RequestHeaders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MsaStep) GetRequestHeadersOk() (*[]ApiHttpHeaderValue, bool) {
-	if o == nil || o.RequestHeaders == nil {
-		return nil, false
+func (o *MsaStep) GetRequestHeadersOk() ([]ApiHttpHeaderValue, bool) {
+	if o == nil || isNil(o.RequestHeaders) {
+    return nil, false
 	}
 	return o.RequestHeaders, true
 }
 
 // HasRequestHeaders returns a boolean if a field has been set.
 func (o *MsaStep) HasRequestHeaders() bool {
-	if o != nil && o.RequestHeaders != nil {
+	if o != nil && !isNil(o.RequestHeaders) {
 		return true
 	}
 
@@ -250,30 +244,30 @@ func (o *MsaStep) HasRequestHeaders() bool {
 
 // SetRequestHeaders gets a reference to the given []ApiHttpHeaderValue and assigns it to the RequestHeaders field.
 func (o *MsaStep) SetRequestHeaders(v []ApiHttpHeaderValue) {
-	o.RequestHeaders = &v
+	o.RequestHeaders = v
 }
 
 // GetVariables returns the Variables field value if set, zero value otherwise.
 func (o *MsaStep) GetVariables() []ApiVariableDefinition {
-	if o == nil || o.Variables == nil {
+	if o == nil || isNil(o.Variables) {
 		var ret []ApiVariableDefinition
 		return ret
 	}
-	return *o.Variables
+	return o.Variables
 }
 
 // GetVariablesOk returns a tuple with the Variables field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MsaStep) GetVariablesOk() (*[]ApiVariableDefinition, bool) {
-	if o == nil || o.Variables == nil {
-		return nil, false
+func (o *MsaStep) GetVariablesOk() ([]ApiVariableDefinition, bool) {
+	if o == nil || isNil(o.Variables) {
+    return nil, false
 	}
 	return o.Variables, true
 }
 
 // HasVariables returns a boolean if a field has been set.
 func (o *MsaStep) HasVariables() bool {
-	if o != nil && o.Variables != nil {
+	if o != nil && !isNil(o.Variables) {
 		return true
 	}
 
@@ -282,30 +276,30 @@ func (o *MsaStep) HasVariables() bool {
 
 // SetVariables gets a reference to the given []ApiVariableDefinition and assigns it to the Variables field.
 func (o *MsaStep) SetVariables(v []ApiVariableDefinition) {
-	o.Variables = &v
+	o.Variables = v
 }
 
 // GetAssertions returns the Assertions field value if set, zero value otherwise.
 func (o *MsaStep) GetAssertions() []ApiAssertion {
-	if o == nil || o.Assertions == nil {
+	if o == nil || isNil(o.Assertions) {
 		var ret []ApiAssertion
 		return ret
 	}
-	return *o.Assertions
+	return o.Assertions
 }
 
 // GetAssertionsOk returns a tuple with the Assertions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MsaStep) GetAssertionsOk() (*[]ApiAssertion, bool) {
-	if o == nil || o.Assertions == nil {
-		return nil, false
+func (o *MsaStep) GetAssertionsOk() ([]ApiAssertion, bool) {
+	if o == nil || isNil(o.Assertions) {
+    return nil, false
 	}
 	return o.Assertions, true
 }
 
 // HasAssertions returns a boolean if a field has been set.
 func (o *MsaStep) HasAssertions() bool {
-	if o != nil && o.Assertions != nil {
+	if o != nil && !isNil(o.Assertions) {
 		return true
 	}
 
@@ -314,12 +308,12 @@ func (o *MsaStep) HasAssertions() bool {
 
 // SetAssertions gets a reference to the given []ApiAssertion and assigns it to the Assertions field.
 func (o *MsaStep) SetAssertions(v []ApiAssertion) {
-	o.Assertions = &v
+	o.Assertions = v
 }
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *MsaStep) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -329,15 +323,15 @@ func (o *MsaStep) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *MsaStep) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -362,8 +356,8 @@ func (o *MsaStep) GetUseFixedClientCertificate() bool {
 // GetUseFixedClientCertificateOk returns a tuple with the UseFixedClientCertificate field value
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetUseFixedClientCertificateOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.UseFixedClientCertificate, true
 }
@@ -375,7 +369,7 @@ func (o *MsaStep) SetUseFixedClientCertificate(v bool) {
 
 // GetAuthentication returns the Authentication field value if set, zero value otherwise.
 func (o *MsaStep) GetAuthentication() ApiAuthenticationInfo {
-	if o == nil || o.Authentication == nil {
+	if o == nil || isNil(o.Authentication) {
 		var ret ApiAuthenticationInfo
 		return ret
 	}
@@ -385,15 +379,15 @@ func (o *MsaStep) GetAuthentication() ApiAuthenticationInfo {
 // GetAuthenticationOk returns a tuple with the Authentication field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetAuthenticationOk() (*ApiAuthenticationInfo, bool) {
-	if o == nil || o.Authentication == nil {
-		return nil, false
+	if o == nil || isNil(o.Authentication) {
+    return nil, false
 	}
 	return o.Authentication, true
 }
 
 // HasAuthentication returns a boolean if a field has been set.
 func (o *MsaStep) HasAuthentication() bool {
-	if o != nil && o.Authentication != nil {
+	if o != nil && !isNil(o.Authentication) {
 		return true
 	}
 
@@ -418,8 +412,8 @@ func (o *MsaStep) GetIgnoreCertificateErrors() bool {
 // GetIgnoreCertificateErrorsOk returns a tuple with the IgnoreCertificateErrors field value
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetIgnoreCertificateErrorsOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.IgnoreCertificateErrors, true
 }
@@ -431,7 +425,7 @@ func (o *MsaStep) SetIgnoreCertificateErrors(v bool) {
 
 // GetClientCertificateVaultItem returns the ClientCertificateVaultItem field value if set, zero value otherwise.
 func (o *MsaStep) GetClientCertificateVaultItem() string {
-	if o == nil || o.ClientCertificateVaultItem == nil {
+	if o == nil || isNil(o.ClientCertificateVaultItem) {
 		var ret string
 		return ret
 	}
@@ -441,15 +435,15 @@ func (o *MsaStep) GetClientCertificateVaultItem() string {
 // GetClientCertificateVaultItemOk returns a tuple with the ClientCertificateVaultItem field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetClientCertificateVaultItemOk() (*string, bool) {
-	if o == nil || o.ClientCertificateVaultItem == nil {
-		return nil, false
+	if o == nil || isNil(o.ClientCertificateVaultItem) {
+    return nil, false
 	}
 	return o.ClientCertificateVaultItem, true
 }
 
 // HasClientCertificateVaultItem returns a boolean if a field has been set.
 func (o *MsaStep) HasClientCertificateVaultItem() bool {
-	if o != nil && o.ClientCertificateVaultItem != nil {
+	if o != nil && !isNil(o.ClientCertificateVaultItem) {
 		return true
 	}
 
@@ -474,8 +468,8 @@ func (o *MsaStep) GetDelay() int32 {
 // GetDelayOk returns a tuple with the Delay field value
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetDelayOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Delay, true
 }
@@ -498,8 +492,8 @@ func (o *MsaStep) GetStepType() MsaStepType {
 // GetStepTypeOk returns a tuple with the StepType field value
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetStepTypeOk() (*MsaStepType, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.StepType, true
 }
@@ -522,8 +516,8 @@ func (o *MsaStep) GetRetryUntilSuccessful() bool {
 // GetRetryUntilSuccessfulOk returns a tuple with the RetryUntilSuccessful field value
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetRetryUntilSuccessfulOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.RetryUntilSuccessful, true
 }
@@ -546,8 +540,8 @@ func (o *MsaStep) GetMaxAttempts() int32 {
 // GetMaxAttemptsOk returns a tuple with the MaxAttempts field value
 // and a boolean to check if the value has been set.
 func (o *MsaStep) GetMaxAttemptsOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.MaxAttempts, true
 }
@@ -557,45 +551,77 @@ func (o *MsaStep) SetMaxAttempts(v int32) {
 	o.MaxAttempts = v
 }
 
+// GetRetryWaitMilliseconds returns the RetryWaitMilliseconds field value if set, zero value otherwise.
+func (o *MsaStep) GetRetryWaitMilliseconds() int32 {
+	if o == nil || isNil(o.RetryWaitMilliseconds) {
+		var ret int32
+		return ret
+	}
+	return *o.RetryWaitMilliseconds
+}
+
+// GetRetryWaitMillisecondsOk returns a tuple with the RetryWaitMilliseconds field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MsaStep) GetRetryWaitMillisecondsOk() (*int32, bool) {
+	if o == nil || isNil(o.RetryWaitMilliseconds) {
+    return nil, false
+	}
+	return o.RetryWaitMilliseconds, true
+}
+
+// HasRetryWaitMilliseconds returns a boolean if a field has been set.
+func (o *MsaStep) HasRetryWaitMilliseconds() bool {
+	if o != nil && !isNil(o.RetryWaitMilliseconds) {
+		return true
+	}
+
+	return false
+}
+
+// SetRetryWaitMilliseconds gets a reference to the given int32 and assigns it to the RetryWaitMilliseconds field.
+func (o *MsaStep) SetRetryWaitMilliseconds(v int32) {
+	o.RetryWaitMilliseconds = &v
+}
+
 func (o MsaStep) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Url != nil {
+	if !isNil(o.Url) {
 		toSerialize["Url"] = o.Url
 	}
-	if o.Method != nil {
+	if true {
 		toSerialize["Method"] = o.Method
 	}
-	if o.Body != nil {
+	if !isNil(o.Body) {
 		toSerialize["Body"] = o.Body
 	}
-	if o.BodyType != nil {
+	if !isNil(o.BodyType) {
 		toSerialize["BodyType"] = o.BodyType
 	}
-	if o.VaultFileId != nil {
+	if !isNil(o.VaultFileId) {
 		toSerialize["VaultFileId"] = o.VaultFileId
 	}
-	if o.RequestHeaders != nil {
+	if !isNil(o.RequestHeaders) {
 		toSerialize["RequestHeaders"] = o.RequestHeaders
 	}
-	if o.Variables != nil {
+	if !isNil(o.Variables) {
 		toSerialize["Variables"] = o.Variables
 	}
-	if o.Assertions != nil {
+	if !isNil(o.Assertions) {
 		toSerialize["Assertions"] = o.Assertions
 	}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
 	if true {
 		toSerialize["UseFixedClientCertificate"] = o.UseFixedClientCertificate
 	}
-	if o.Authentication != nil {
+	if !isNil(o.Authentication) {
 		toSerialize["Authentication"] = o.Authentication
 	}
 	if true {
 		toSerialize["IgnoreCertificateErrors"] = o.IgnoreCertificateErrors
 	}
-	if o.ClientCertificateVaultItem != nil {
+	if !isNil(o.ClientCertificateVaultItem) {
 		toSerialize["ClientCertificateVaultItem"] = o.ClientCertificateVaultItem
 	}
 	if true {
@@ -609,6 +635,9 @@ func (o MsaStep) MarshalJSON() ([]byte, error) {
 	}
 	if true {
 		toSerialize["MaxAttempts"] = o.MaxAttempts
+	}
+	if !isNil(o.RetryWaitMilliseconds) {
+		toSerialize["RetryWaitMilliseconds"] = o.RetryWaitMilliseconds
 	}
 	return json.Marshal(toSerialize)
 }

@@ -48,7 +48,7 @@ func NewRegistrationResponseWithDefaults() *RegistrationResponse {
 
 // GetUserName returns the UserName field value if set, zero value otherwise.
 func (o *RegistrationResponse) GetUserName() string {
-	if o == nil || o.UserName == nil {
+	if o == nil || isNil(o.UserName) {
 		var ret string
 		return ret
 	}
@@ -58,15 +58,15 @@ func (o *RegistrationResponse) GetUserName() string {
 // GetUserNameOk returns a tuple with the UserName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *RegistrationResponse) GetUserNameOk() (*string, bool) {
-	if o == nil || o.UserName == nil {
-		return nil, false
+	if o == nil || isNil(o.UserName) {
+    return nil, false
 	}
 	return o.UserName, true
 }
 
 // HasUserName returns a boolean if a field has been set.
 func (o *RegistrationResponse) HasUserName() bool {
-	if o != nil && o.UserName != nil {
+	if o != nil && !isNil(o.UserName) {
 		return true
 	}
 
@@ -80,7 +80,7 @@ func (o *RegistrationResponse) SetUserName(v string) {
 
 // GetPassword returns the Password field value if set, zero value otherwise.
 func (o *RegistrationResponse) GetPassword() string {
-	if o == nil || o.Password == nil {
+	if o == nil || isNil(o.Password) {
 		var ret string
 		return ret
 	}
@@ -90,15 +90,15 @@ func (o *RegistrationResponse) GetPassword() string {
 // GetPasswordOk returns a tuple with the Password field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *RegistrationResponse) GetPasswordOk() (*string, bool) {
-	if o == nil || o.Password == nil {
-		return nil, false
+	if o == nil || isNil(o.Password) {
+    return nil, false
 	}
 	return o.Password, true
 }
 
 // HasPassword returns a boolean if a field has been set.
 func (o *RegistrationResponse) HasPassword() bool {
-	if o != nil && o.Password != nil {
+	if o != nil && !isNil(o.Password) {
 		return true
 	}
 
@@ -112,7 +112,7 @@ func (o *RegistrationResponse) SetPassword(v string) {
 
 // GetAccountId returns the AccountId field value if set, zero value otherwise.
 func (o *RegistrationResponse) GetAccountId() string {
-	if o == nil || o.AccountId == nil {
+	if o == nil || isNil(o.AccountId) {
 		var ret string
 		return ret
 	}
@@ -122,15 +122,15 @@ func (o *RegistrationResponse) GetAccountId() string {
 // GetAccountIdOk returns a tuple with the AccountId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *RegistrationResponse) GetAccountIdOk() (*string, bool) {
-	if o == nil || o.AccountId == nil {
-		return nil, false
+	if o == nil || isNil(o.AccountId) {
+    return nil, false
 	}
 	return o.AccountId, true
 }
 
 // HasAccountId returns a boolean if a field has been set.
 func (o *RegistrationResponse) HasAccountId() bool {
-	if o != nil && o.AccountId != nil {
+	if o != nil && !isNil(o.AccountId) {
 		return true
 	}
 
@@ -144,7 +144,7 @@ func (o *RegistrationResponse) SetAccountId(v string) {
 
 // GetOperatorName returns the OperatorName field value if set, zero value otherwise.
 func (o *RegistrationResponse) GetOperatorName() string {
-	if o == nil || o.OperatorName == nil {
+	if o == nil || isNil(o.OperatorName) {
 		var ret string
 		return ret
 	}
@@ -154,15 +154,15 @@ func (o *RegistrationResponse) GetOperatorName() string {
 // GetOperatorNameOk returns a tuple with the OperatorName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *RegistrationResponse) GetOperatorNameOk() (*string, bool) {
-	if o == nil || o.OperatorName == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorName) {
+    return nil, false
 	}
 	return o.OperatorName, true
 }
 
 // HasOperatorName returns a boolean if a field has been set.
 func (o *RegistrationResponse) HasOperatorName() bool {
-	if o != nil && o.OperatorName != nil {
+	if o != nil && !isNil(o.OperatorName) {
 		return true
 	}
 
@@ -187,8 +187,8 @@ func (o *RegistrationResponse) GetStatus() RegisterStatus {
 // GetStatusOk returns a tuple with the Status field value
 // and a boolean to check if the value has been set.
 func (o *RegistrationResponse) GetStatusOk() (*RegisterStatus, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Status, true
 }
@@ -200,7 +200,7 @@ func (o *RegistrationResponse) SetStatus(v RegisterStatus) {
 
 // GetMessage returns the Message field value if set, zero value otherwise.
 func (o *RegistrationResponse) GetMessage() string {
-	if o == nil || o.Message == nil {
+	if o == nil || isNil(o.Message) {
 		var ret string
 		return ret
 	}
@@ -210,15 +210,15 @@ func (o *RegistrationResponse) GetMessage() string {
 // GetMessageOk returns a tuple with the Message field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *RegistrationResponse) GetMessageOk() (*string, bool) {
-	if o == nil || o.Message == nil {
-		return nil, false
+	if o == nil || isNil(o.Message) {
+    return nil, false
 	}
 	return o.Message, true
 }
 
 // HasMessage returns a boolean if a field has been set.
 func (o *RegistrationResponse) HasMessage() bool {
-	if o != nil && o.Message != nil {
+	if o != nil && !isNil(o.Message) {
 		return true
 	}
 
@@ -232,22 +232,22 @@ func (o *RegistrationResponse) SetMessage(v string) {
 
 func (o RegistrationResponse) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.UserName != nil {
+	if !isNil(o.UserName) {
 		toSerialize["UserName"] = o.UserName
 	}
-	if o.Password != nil {
+	if !isNil(o.Password) {
 		toSerialize["Password"] = o.Password
 	}
-	if o.AccountId != nil {
+	if !isNil(o.AccountId) {
 		toSerialize["AccountId"] = o.AccountId
 	}
-	if o.OperatorName != nil {
+	if !isNil(o.OperatorName) {
 		toSerialize["OperatorName"] = o.OperatorName
 	}
 	if true {
 		toSerialize["status"] = o.Status
 	}
-	if o.Message != nil {
+	if !isNil(o.Message) {
 		toSerialize["message"] = o.Message
 	}
 	return json.Marshal(toSerialize)

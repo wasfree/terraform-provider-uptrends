@@ -24,7 +24,8 @@ const (
 	IPVERSION_IP_V6 IpVersion = "IpV6"
 )
 
-var allowedIpVersionEnumValues = []IpVersion{
+// All allowed values of IpVersion enum
+var AllowedIpVersionEnumValues = []IpVersion{
 	"IpV4",
 	"IpV6",
 }
@@ -36,7 +37,7 @@ func (v *IpVersion) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := IpVersion(value)
-	for _, existing := range allowedIpVersionEnumValues {
+	for _, existing := range AllowedIpVersionEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewIpVersionFromValue(v string) (*IpVersion, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for IpVersion: valid values are %v", v, allowedIpVersionEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for IpVersion: valid values are %v", v, AllowedIpVersionEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v IpVersion) IsValid() bool {
-	for _, existing := range allowedIpVersionEnumValues {
+	for _, existing := range AllowedIpVersionEnumValues {
 		if existing == v {
 			return true
 		}

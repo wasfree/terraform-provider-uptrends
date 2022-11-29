@@ -21,6 +21,7 @@ type CustomizationInfo struct {
 	TextColor *string `json:"TextColor,omitempty"`
 	TitleText *string `json:"TitleText,omitempty"`
 	FooterText *string `json:"FooterText,omitempty"`
+	MonitorNameOverrideFieldName *string `json:"MonitorNameOverrideFieldName,omitempty"`
 	SortColumnsNewToOld bool `json:"SortColumnsNewToOld"`
 	SortRowsProperty SortOrderEnum `json:"SortRowsProperty"`
 	CommentTitle *string `json:"CommentTitle,omitempty"`
@@ -48,7 +49,7 @@ func NewCustomizationInfoWithDefaults() *CustomizationInfo {
 
 // GetMainColor returns the MainColor field value if set, zero value otherwise.
 func (o *CustomizationInfo) GetMainColor() string {
-	if o == nil || o.MainColor == nil {
+	if o == nil || isNil(o.MainColor) {
 		var ret string
 		return ret
 	}
@@ -58,15 +59,15 @@ func (o *CustomizationInfo) GetMainColor() string {
 // GetMainColorOk returns a tuple with the MainColor field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomizationInfo) GetMainColorOk() (*string, bool) {
-	if o == nil || o.MainColor == nil {
-		return nil, false
+	if o == nil || isNil(o.MainColor) {
+    return nil, false
 	}
 	return o.MainColor, true
 }
 
 // HasMainColor returns a boolean if a field has been set.
 func (o *CustomizationInfo) HasMainColor() bool {
-	if o != nil && o.MainColor != nil {
+	if o != nil && !isNil(o.MainColor) {
 		return true
 	}
 
@@ -80,7 +81,7 @@ func (o *CustomizationInfo) SetMainColor(v string) {
 
 // GetBackgroundColor returns the BackgroundColor field value if set, zero value otherwise.
 func (o *CustomizationInfo) GetBackgroundColor() string {
-	if o == nil || o.BackgroundColor == nil {
+	if o == nil || isNil(o.BackgroundColor) {
 		var ret string
 		return ret
 	}
@@ -90,15 +91,15 @@ func (o *CustomizationInfo) GetBackgroundColor() string {
 // GetBackgroundColorOk returns a tuple with the BackgroundColor field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomizationInfo) GetBackgroundColorOk() (*string, bool) {
-	if o == nil || o.BackgroundColor == nil {
-		return nil, false
+	if o == nil || isNil(o.BackgroundColor) {
+    return nil, false
 	}
 	return o.BackgroundColor, true
 }
 
 // HasBackgroundColor returns a boolean if a field has been set.
 func (o *CustomizationInfo) HasBackgroundColor() bool {
-	if o != nil && o.BackgroundColor != nil {
+	if o != nil && !isNil(o.BackgroundColor) {
 		return true
 	}
 
@@ -112,7 +113,7 @@ func (o *CustomizationInfo) SetBackgroundColor(v string) {
 
 // GetTextColor returns the TextColor field value if set, zero value otherwise.
 func (o *CustomizationInfo) GetTextColor() string {
-	if o == nil || o.TextColor == nil {
+	if o == nil || isNil(o.TextColor) {
 		var ret string
 		return ret
 	}
@@ -122,15 +123,15 @@ func (o *CustomizationInfo) GetTextColor() string {
 // GetTextColorOk returns a tuple with the TextColor field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomizationInfo) GetTextColorOk() (*string, bool) {
-	if o == nil || o.TextColor == nil {
-		return nil, false
+	if o == nil || isNil(o.TextColor) {
+    return nil, false
 	}
 	return o.TextColor, true
 }
 
 // HasTextColor returns a boolean if a field has been set.
 func (o *CustomizationInfo) HasTextColor() bool {
-	if o != nil && o.TextColor != nil {
+	if o != nil && !isNil(o.TextColor) {
 		return true
 	}
 
@@ -144,7 +145,7 @@ func (o *CustomizationInfo) SetTextColor(v string) {
 
 // GetTitleText returns the TitleText field value if set, zero value otherwise.
 func (o *CustomizationInfo) GetTitleText() string {
-	if o == nil || o.TitleText == nil {
+	if o == nil || isNil(o.TitleText) {
 		var ret string
 		return ret
 	}
@@ -154,15 +155,15 @@ func (o *CustomizationInfo) GetTitleText() string {
 // GetTitleTextOk returns a tuple with the TitleText field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomizationInfo) GetTitleTextOk() (*string, bool) {
-	if o == nil || o.TitleText == nil {
-		return nil, false
+	if o == nil || isNil(o.TitleText) {
+    return nil, false
 	}
 	return o.TitleText, true
 }
 
 // HasTitleText returns a boolean if a field has been set.
 func (o *CustomizationInfo) HasTitleText() bool {
-	if o != nil && o.TitleText != nil {
+	if o != nil && !isNil(o.TitleText) {
 		return true
 	}
 
@@ -176,7 +177,7 @@ func (o *CustomizationInfo) SetTitleText(v string) {
 
 // GetFooterText returns the FooterText field value if set, zero value otherwise.
 func (o *CustomizationInfo) GetFooterText() string {
-	if o == nil || o.FooterText == nil {
+	if o == nil || isNil(o.FooterText) {
 		var ret string
 		return ret
 	}
@@ -186,15 +187,15 @@ func (o *CustomizationInfo) GetFooterText() string {
 // GetFooterTextOk returns a tuple with the FooterText field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomizationInfo) GetFooterTextOk() (*string, bool) {
-	if o == nil || o.FooterText == nil {
-		return nil, false
+	if o == nil || isNil(o.FooterText) {
+    return nil, false
 	}
 	return o.FooterText, true
 }
 
 // HasFooterText returns a boolean if a field has been set.
 func (o *CustomizationInfo) HasFooterText() bool {
-	if o != nil && o.FooterText != nil {
+	if o != nil && !isNil(o.FooterText) {
 		return true
 	}
 
@@ -204,6 +205,38 @@ func (o *CustomizationInfo) HasFooterText() bool {
 // SetFooterText gets a reference to the given string and assigns it to the FooterText field.
 func (o *CustomizationInfo) SetFooterText(v string) {
 	o.FooterText = &v
+}
+
+// GetMonitorNameOverrideFieldName returns the MonitorNameOverrideFieldName field value if set, zero value otherwise.
+func (o *CustomizationInfo) GetMonitorNameOverrideFieldName() string {
+	if o == nil || isNil(o.MonitorNameOverrideFieldName) {
+		var ret string
+		return ret
+	}
+	return *o.MonitorNameOverrideFieldName
+}
+
+// GetMonitorNameOverrideFieldNameOk returns a tuple with the MonitorNameOverrideFieldName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *CustomizationInfo) GetMonitorNameOverrideFieldNameOk() (*string, bool) {
+	if o == nil || isNil(o.MonitorNameOverrideFieldName) {
+    return nil, false
+	}
+	return o.MonitorNameOverrideFieldName, true
+}
+
+// HasMonitorNameOverrideFieldName returns a boolean if a field has been set.
+func (o *CustomizationInfo) HasMonitorNameOverrideFieldName() bool {
+	if o != nil && !isNil(o.MonitorNameOverrideFieldName) {
+		return true
+	}
+
+	return false
+}
+
+// SetMonitorNameOverrideFieldName gets a reference to the given string and assigns it to the MonitorNameOverrideFieldName field.
+func (o *CustomizationInfo) SetMonitorNameOverrideFieldName(v string) {
+	o.MonitorNameOverrideFieldName = &v
 }
 
 // GetSortColumnsNewToOld returns the SortColumnsNewToOld field value
@@ -219,8 +252,8 @@ func (o *CustomizationInfo) GetSortColumnsNewToOld() bool {
 // GetSortColumnsNewToOldOk returns a tuple with the SortColumnsNewToOld field value
 // and a boolean to check if the value has been set.
 func (o *CustomizationInfo) GetSortColumnsNewToOldOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.SortColumnsNewToOld, true
 }
@@ -243,8 +276,8 @@ func (o *CustomizationInfo) GetSortRowsProperty() SortOrderEnum {
 // GetSortRowsPropertyOk returns a tuple with the SortRowsProperty field value
 // and a boolean to check if the value has been set.
 func (o *CustomizationInfo) GetSortRowsPropertyOk() (*SortOrderEnum, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.SortRowsProperty, true
 }
@@ -256,7 +289,7 @@ func (o *CustomizationInfo) SetSortRowsProperty(v SortOrderEnum) {
 
 // GetCommentTitle returns the CommentTitle field value if set, zero value otherwise.
 func (o *CustomizationInfo) GetCommentTitle() string {
-	if o == nil || o.CommentTitle == nil {
+	if o == nil || isNil(o.CommentTitle) {
 		var ret string
 		return ret
 	}
@@ -266,15 +299,15 @@ func (o *CustomizationInfo) GetCommentTitle() string {
 // GetCommentTitleOk returns a tuple with the CommentTitle field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomizationInfo) GetCommentTitleOk() (*string, bool) {
-	if o == nil || o.CommentTitle == nil {
-		return nil, false
+	if o == nil || isNil(o.CommentTitle) {
+    return nil, false
 	}
 	return o.CommentTitle, true
 }
 
 // HasCommentTitle returns a boolean if a field has been set.
 func (o *CustomizationInfo) HasCommentTitle() bool {
-	if o != nil && o.CommentTitle != nil {
+	if o != nil && !isNil(o.CommentTitle) {
 		return true
 	}
 
@@ -288,7 +321,7 @@ func (o *CustomizationInfo) SetCommentTitle(v string) {
 
 // GetCommentText returns the CommentText field value if set, zero value otherwise.
 func (o *CustomizationInfo) GetCommentText() string {
-	if o == nil || o.CommentText == nil {
+	if o == nil || isNil(o.CommentText) {
 		var ret string
 		return ret
 	}
@@ -298,15 +331,15 @@ func (o *CustomizationInfo) GetCommentText() string {
 // GetCommentTextOk returns a tuple with the CommentText field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CustomizationInfo) GetCommentTextOk() (*string, bool) {
-	if o == nil || o.CommentText == nil {
-		return nil, false
+	if o == nil || isNil(o.CommentText) {
+    return nil, false
 	}
 	return o.CommentText, true
 }
 
 // HasCommentText returns a boolean if a field has been set.
 func (o *CustomizationInfo) HasCommentText() bool {
-	if o != nil && o.CommentText != nil {
+	if o != nil && !isNil(o.CommentText) {
 		return true
 	}
 
@@ -320,20 +353,23 @@ func (o *CustomizationInfo) SetCommentText(v string) {
 
 func (o CustomizationInfo) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.MainColor != nil {
+	if !isNil(o.MainColor) {
 		toSerialize["MainColor"] = o.MainColor
 	}
-	if o.BackgroundColor != nil {
+	if !isNil(o.BackgroundColor) {
 		toSerialize["BackgroundColor"] = o.BackgroundColor
 	}
-	if o.TextColor != nil {
+	if !isNil(o.TextColor) {
 		toSerialize["TextColor"] = o.TextColor
 	}
-	if o.TitleText != nil {
+	if !isNil(o.TitleText) {
 		toSerialize["TitleText"] = o.TitleText
 	}
-	if o.FooterText != nil {
+	if !isNil(o.FooterText) {
 		toSerialize["FooterText"] = o.FooterText
+	}
+	if !isNil(o.MonitorNameOverrideFieldName) {
+		toSerialize["MonitorNameOverrideFieldName"] = o.MonitorNameOverrideFieldName
 	}
 	if true {
 		toSerialize["SortColumnsNewToOld"] = o.SortColumnsNewToOld
@@ -341,10 +377,10 @@ func (o CustomizationInfo) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["SortRowsProperty"] = o.SortRowsProperty
 	}
-	if o.CommentTitle != nil {
+	if !isNil(o.CommentTitle) {
 		toSerialize["CommentTitle"] = o.CommentTitle
 	}
-	if o.CommentText != nil {
+	if !isNil(o.CommentText) {
 		toSerialize["CommentText"] = o.CommentText
 	}
 	return json.Marshal(toSerialize)

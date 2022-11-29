@@ -54,8 +54,8 @@ func (o *AlertDefinitionOperatorGroup) GetAlertDefinition() string {
 // GetAlertDefinitionOk returns a tuple with the AlertDefinition field value
 // and a boolean to check if the value has been set.
 func (o *AlertDefinitionOperatorGroup) GetAlertDefinitionOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.AlertDefinition, true
 }
@@ -78,8 +78,8 @@ func (o *AlertDefinitionOperatorGroup) GetEscalationlevel() int32 {
 // GetEscalationlevelOk returns a tuple with the Escalationlevel field value
 // and a boolean to check if the value has been set.
 func (o *AlertDefinitionOperatorGroup) GetEscalationlevelOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Escalationlevel, true
 }
@@ -102,8 +102,8 @@ func (o *AlertDefinitionOperatorGroup) GetOperatorGroup() string {
 // GetOperatorGroupOk returns a tuple with the OperatorGroup field value
 // and a boolean to check if the value has been set.
 func (o *AlertDefinitionOperatorGroup) GetOperatorGroupOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.OperatorGroup, true
 }
