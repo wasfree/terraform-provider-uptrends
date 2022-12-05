@@ -58,8 +58,8 @@ func (o *AssertionInfo) GetCompleted() bool {
 // GetCompletedOk returns a tuple with the Completed field value
 // and a boolean to check if the value has been set.
 func (o *AssertionInfo) GetCompletedOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Completed, true
 }
@@ -82,8 +82,8 @@ func (o *AssertionInfo) GetPassed() bool {
 // GetPassedOk returns a tuple with the Passed field value
 // and a boolean to check if the value has been set.
 func (o *AssertionInfo) GetPassedOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Passed, true
 }
@@ -95,7 +95,7 @@ func (o *AssertionInfo) SetPassed(v bool) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *AssertionInfo) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -105,15 +105,15 @@ func (o *AssertionInfo) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssertionInfo) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *AssertionInfo) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -127,7 +127,7 @@ func (o *AssertionInfo) SetDescription(v string) {
 
 // GetExceptionDescription returns the ExceptionDescription field value if set, zero value otherwise.
 func (o *AssertionInfo) GetExceptionDescription() string {
-	if o == nil || o.ExceptionDescription == nil {
+	if o == nil || isNil(o.ExceptionDescription) {
 		var ret string
 		return ret
 	}
@@ -137,15 +137,15 @@ func (o *AssertionInfo) GetExceptionDescription() string {
 // GetExceptionDescriptionOk returns a tuple with the ExceptionDescription field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AssertionInfo) GetExceptionDescriptionOk() (*string, bool) {
-	if o == nil || o.ExceptionDescription == nil {
-		return nil, false
+	if o == nil || isNil(o.ExceptionDescription) {
+    return nil, false
 	}
 	return o.ExceptionDescription, true
 }
 
 // HasExceptionDescription returns a boolean if a field has been set.
 func (o *AssertionInfo) HasExceptionDescription() bool {
-	if o != nil && o.ExceptionDescription != nil {
+	if o != nil && !isNil(o.ExceptionDescription) {
 		return true
 	}
 
@@ -165,10 +165,10 @@ func (o AssertionInfo) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["Passed"] = o.Passed
 	}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["Description"] = o.Description
 	}
-	if o.ExceptionDescription != nil {
+	if !isNil(o.ExceptionDescription) {
 		toSerialize["ExceptionDescription"] = o.ExceptionDescription
 	}
 	return json.Marshal(toSerialize)

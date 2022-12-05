@@ -258,7 +258,7 @@ func monitorFullPageCheckRead(ctx context.Context, d *schema.ResourceData, meta 
 		return diag.FromErr(err)
 	}
 
-	return readMonitorFullPageCheckStruct(&resp, d)
+	return readMonitorFullPageCheckStruct(resp, d)
 }
 
 func monitorFullPageCheckUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
@@ -399,13 +399,13 @@ func readMonitorFullPageCheckStruct(m *uptrends.Monitor, d *schema.ResourceData)
 	if err := d.Set("block_uptrends_rum", m.BlockUptrendsRum); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("block_urls", SliceStringToSliceInterface(m.BlockUrls)); err != nil {
+	if err := d.Set("block_urls", SliceStringToSliceInterface(&m.BlockUrls)); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("request_headers", flattenRequestHeader(m.RequestHeaders)); err != nil {
+	if err := d.Set("request_headers", flattenRequestHeader(&m.RequestHeaders)); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("match_pattern", flattenPatternMatch(m.MatchPatterns)); err != nil {
+	if err := d.Set("match_pattern", flattenPatternMatch(&m.MatchPatterns)); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("browser_window_dimensions", flattenBrowserWindowDimensions(m.BrowserWindowDimensions)); err != nil {

@@ -12,19 +12,18 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
-// AlertAttributes Alert attributes 
+// AlertAttributes Object attributes 
 type AlertAttributes struct {
 	// Alert type indicating if this was an Error or Ok alert.
 	AlertType AlertType `json:"AlertType"`
 	// The monitor identifier.
 	MonitorGuid string `json:"MonitorGuid"`
 	// Date/time stamp of the alert.
-	Timestamp time.Time `json:"Timestamp"`
+	Timestamp map[string]interface{} `json:"Timestamp"`
 	// Date/time stamp of the first monitor check.
-	FirstError time.Time `json:"FirstError"`
+	FirstError map[string]interface{} `json:"FirstError"`
 	// The Id of the monitor check that triggered this alert.
 	MonitorCheckId int64 `json:"MonitorCheckId"`
 	// The Id of the first monitor check error that led to this alert.
@@ -41,7 +40,7 @@ type AlertAttributes struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewAlertAttributes(alertType AlertType, monitorGuid string, timestamp time.Time, firstError time.Time, monitorCheckId int64, firstErrorMonitorCheckId int64) *AlertAttributes {
+func NewAlertAttributes(alertType AlertType, monitorGuid string, timestamp map[string]interface{}, firstError map[string]interface{}, monitorCheckId int64, firstErrorMonitorCheckId int64) *AlertAttributes {
 	this := AlertAttributes{}
 	this.AlertType = alertType
 	this.MonitorGuid = monitorGuid
@@ -73,8 +72,8 @@ func (o *AlertAttributes) GetAlertType() AlertType {
 // GetAlertTypeOk returns a tuple with the AlertType field value
 // and a boolean to check if the value has been set.
 func (o *AlertAttributes) GetAlertTypeOk() (*AlertType, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.AlertType, true
 }
@@ -97,8 +96,8 @@ func (o *AlertAttributes) GetMonitorGuid() string {
 // GetMonitorGuidOk returns a tuple with the MonitorGuid field value
 // and a boolean to check if the value has been set.
 func (o *AlertAttributes) GetMonitorGuidOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.MonitorGuid, true
 }
@@ -109,9 +108,9 @@ func (o *AlertAttributes) SetMonitorGuid(v string) {
 }
 
 // GetTimestamp returns the Timestamp field value
-func (o *AlertAttributes) GetTimestamp() time.Time {
+func (o *AlertAttributes) GetTimestamp() map[string]interface{} {
 	if o == nil {
-		var ret time.Time
+		var ret map[string]interface{}
 		return ret
 	}
 
@@ -120,22 +119,22 @@ func (o *AlertAttributes) GetTimestamp() time.Time {
 
 // GetTimestampOk returns a tuple with the Timestamp field value
 // and a boolean to check if the value has been set.
-func (o *AlertAttributes) GetTimestampOk() (*time.Time, bool) {
-	if o == nil  {
-		return nil, false
+func (o *AlertAttributes) GetTimestampOk() (map[string]interface{}, bool) {
+	if o == nil {
+    return map[string]interface{}{}, false
 	}
-	return &o.Timestamp, true
+	return o.Timestamp, true
 }
 
 // SetTimestamp sets field value
-func (o *AlertAttributes) SetTimestamp(v time.Time) {
+func (o *AlertAttributes) SetTimestamp(v map[string]interface{}) {
 	o.Timestamp = v
 }
 
 // GetFirstError returns the FirstError field value
-func (o *AlertAttributes) GetFirstError() time.Time {
+func (o *AlertAttributes) GetFirstError() map[string]interface{} {
 	if o == nil {
-		var ret time.Time
+		var ret map[string]interface{}
 		return ret
 	}
 
@@ -144,15 +143,15 @@ func (o *AlertAttributes) GetFirstError() time.Time {
 
 // GetFirstErrorOk returns a tuple with the FirstError field value
 // and a boolean to check if the value has been set.
-func (o *AlertAttributes) GetFirstErrorOk() (*time.Time, bool) {
-	if o == nil  {
-		return nil, false
+func (o *AlertAttributes) GetFirstErrorOk() (map[string]interface{}, bool) {
+	if o == nil {
+    return map[string]interface{}{}, false
 	}
-	return &o.FirstError, true
+	return o.FirstError, true
 }
 
 // SetFirstError sets field value
-func (o *AlertAttributes) SetFirstError(v time.Time) {
+func (o *AlertAttributes) SetFirstError(v map[string]interface{}) {
 	o.FirstError = v
 }
 
@@ -169,8 +168,8 @@ func (o *AlertAttributes) GetMonitorCheckId() int64 {
 // GetMonitorCheckIdOk returns a tuple with the MonitorCheckId field value
 // and a boolean to check if the value has been set.
 func (o *AlertAttributes) GetMonitorCheckIdOk() (*int64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.MonitorCheckId, true
 }
@@ -193,8 +192,8 @@ func (o *AlertAttributes) GetFirstErrorMonitorCheckId() int64 {
 // GetFirstErrorMonitorCheckIdOk returns a tuple with the FirstErrorMonitorCheckId field value
 // and a boolean to check if the value has been set.
 func (o *AlertAttributes) GetFirstErrorMonitorCheckIdOk() (*int64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.FirstErrorMonitorCheckId, true
 }
@@ -206,7 +205,7 @@ func (o *AlertAttributes) SetFirstErrorMonitorCheckId(v int64) {
 
 // GetErrorDescription returns the ErrorDescription field value if set, zero value otherwise.
 func (o *AlertAttributes) GetErrorDescription() string {
-	if o == nil || o.ErrorDescription == nil {
+	if o == nil || isNil(o.ErrorDescription) {
 		var ret string
 		return ret
 	}
@@ -216,15 +215,15 @@ func (o *AlertAttributes) GetErrorDescription() string {
 // GetErrorDescriptionOk returns a tuple with the ErrorDescription field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertAttributes) GetErrorDescriptionOk() (*string, bool) {
-	if o == nil || o.ErrorDescription == nil {
-		return nil, false
+	if o == nil || isNil(o.ErrorDescription) {
+    return nil, false
 	}
 	return o.ErrorDescription, true
 }
 
 // HasErrorDescription returns a boolean if a field has been set.
 func (o *AlertAttributes) HasErrorDescription() bool {
-	if o != nil && o.ErrorDescription != nil {
+	if o != nil && !isNil(o.ErrorDescription) {
 		return true
 	}
 
@@ -238,7 +237,7 @@ func (o *AlertAttributes) SetErrorDescription(v string) {
 
 // GetErrorMessage returns the ErrorMessage field value if set, zero value otherwise.
 func (o *AlertAttributes) GetErrorMessage() string {
-	if o == nil || o.ErrorMessage == nil {
+	if o == nil || isNil(o.ErrorMessage) {
 		var ret string
 		return ret
 	}
@@ -248,15 +247,15 @@ func (o *AlertAttributes) GetErrorMessage() string {
 // GetErrorMessageOk returns a tuple with the ErrorMessage field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertAttributes) GetErrorMessageOk() (*string, bool) {
-	if o == nil || o.ErrorMessage == nil {
-		return nil, false
+	if o == nil || isNil(o.ErrorMessage) {
+    return nil, false
 	}
 	return o.ErrorMessage, true
 }
 
 // HasErrorMessage returns a boolean if a field has been set.
 func (o *AlertAttributes) HasErrorMessage() bool {
-	if o != nil && o.ErrorMessage != nil {
+	if o != nil && !isNil(o.ErrorMessage) {
 		return true
 	}
 
@@ -270,7 +269,7 @@ func (o *AlertAttributes) SetErrorMessage(v string) {
 
 // GetIncidentKey returns the IncidentKey field value if set, zero value otherwise.
 func (o *AlertAttributes) GetIncidentKey() string {
-	if o == nil || o.IncidentKey == nil {
+	if o == nil || isNil(o.IncidentKey) {
 		var ret string
 		return ret
 	}
@@ -280,15 +279,15 @@ func (o *AlertAttributes) GetIncidentKey() string {
 // GetIncidentKeyOk returns a tuple with the IncidentKey field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertAttributes) GetIncidentKeyOk() (*string, bool) {
-	if o == nil || o.IncidentKey == nil {
-		return nil, false
+	if o == nil || isNil(o.IncidentKey) {
+    return nil, false
 	}
 	return o.IncidentKey, true
 }
 
 // HasIncidentKey returns a boolean if a field has been set.
 func (o *AlertAttributes) HasIncidentKey() bool {
-	if o != nil && o.IncidentKey != nil {
+	if o != nil && !isNil(o.IncidentKey) {
 		return true
 	}
 
@@ -320,13 +319,13 @@ func (o AlertAttributes) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["FirstErrorMonitorCheckId"] = o.FirstErrorMonitorCheckId
 	}
-	if o.ErrorDescription != nil {
+	if !isNil(o.ErrorDescription) {
 		toSerialize["ErrorDescription"] = o.ErrorDescription
 	}
-	if o.ErrorMessage != nil {
+	if !isNil(o.ErrorMessage) {
 		toSerialize["ErrorMessage"] = o.ErrorMessage
 	}
-	if o.IncidentKey != nil {
+	if !isNil(o.IncidentKey) {
 		toSerialize["IncidentKey"] = o.IncidentKey
 	}
 	return json.Marshal(toSerialize)

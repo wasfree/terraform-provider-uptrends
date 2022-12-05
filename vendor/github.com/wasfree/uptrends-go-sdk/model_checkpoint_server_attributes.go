@@ -14,14 +14,14 @@ import (
 	"encoding/json"
 )
 
-// CheckpointServerAttributes Checkpoint server attributes
+// CheckpointServerAttributes Object attributes 
 type CheckpointServerAttributes struct {
 	// The ipv4 address
 	Ip4Address *string `json:"Ip4Address,omitempty"`
 	// The ipv6 address
 	IpV6Address *string `json:"IpV6Address,omitempty"`
 	// List of server's capabilities
-	Capabilities *[]CapabilityFilterEnum `json:"Capabilities,omitempty"`
+	Capabilities []CapabilityFilterEnum `json:"Capabilities,omitempty"`
 }
 
 // NewCheckpointServerAttributes instantiates a new CheckpointServerAttributes object
@@ -43,7 +43,7 @@ func NewCheckpointServerAttributesWithDefaults() *CheckpointServerAttributes {
 
 // GetIp4Address returns the Ip4Address field value if set, zero value otherwise.
 func (o *CheckpointServerAttributes) GetIp4Address() string {
-	if o == nil || o.Ip4Address == nil {
+	if o == nil || isNil(o.Ip4Address) {
 		var ret string
 		return ret
 	}
@@ -53,15 +53,15 @@ func (o *CheckpointServerAttributes) GetIp4Address() string {
 // GetIp4AddressOk returns a tuple with the Ip4Address field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CheckpointServerAttributes) GetIp4AddressOk() (*string, bool) {
-	if o == nil || o.Ip4Address == nil {
-		return nil, false
+	if o == nil || isNil(o.Ip4Address) {
+    return nil, false
 	}
 	return o.Ip4Address, true
 }
 
 // HasIp4Address returns a boolean if a field has been set.
 func (o *CheckpointServerAttributes) HasIp4Address() bool {
-	if o != nil && o.Ip4Address != nil {
+	if o != nil && !isNil(o.Ip4Address) {
 		return true
 	}
 
@@ -75,7 +75,7 @@ func (o *CheckpointServerAttributes) SetIp4Address(v string) {
 
 // GetIpV6Address returns the IpV6Address field value if set, zero value otherwise.
 func (o *CheckpointServerAttributes) GetIpV6Address() string {
-	if o == nil || o.IpV6Address == nil {
+	if o == nil || isNil(o.IpV6Address) {
 		var ret string
 		return ret
 	}
@@ -85,15 +85,15 @@ func (o *CheckpointServerAttributes) GetIpV6Address() string {
 // GetIpV6AddressOk returns a tuple with the IpV6Address field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CheckpointServerAttributes) GetIpV6AddressOk() (*string, bool) {
-	if o == nil || o.IpV6Address == nil {
-		return nil, false
+	if o == nil || isNil(o.IpV6Address) {
+    return nil, false
 	}
 	return o.IpV6Address, true
 }
 
 // HasIpV6Address returns a boolean if a field has been set.
 func (o *CheckpointServerAttributes) HasIpV6Address() bool {
-	if o != nil && o.IpV6Address != nil {
+	if o != nil && !isNil(o.IpV6Address) {
 		return true
 	}
 
@@ -107,25 +107,25 @@ func (o *CheckpointServerAttributes) SetIpV6Address(v string) {
 
 // GetCapabilities returns the Capabilities field value if set, zero value otherwise.
 func (o *CheckpointServerAttributes) GetCapabilities() []CapabilityFilterEnum {
-	if o == nil || o.Capabilities == nil {
+	if o == nil || isNil(o.Capabilities) {
 		var ret []CapabilityFilterEnum
 		return ret
 	}
-	return *o.Capabilities
+	return o.Capabilities
 }
 
 // GetCapabilitiesOk returns a tuple with the Capabilities field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckpointServerAttributes) GetCapabilitiesOk() (*[]CapabilityFilterEnum, bool) {
-	if o == nil || o.Capabilities == nil {
-		return nil, false
+func (o *CheckpointServerAttributes) GetCapabilitiesOk() ([]CapabilityFilterEnum, bool) {
+	if o == nil || isNil(o.Capabilities) {
+    return nil, false
 	}
 	return o.Capabilities, true
 }
 
 // HasCapabilities returns a boolean if a field has been set.
 func (o *CheckpointServerAttributes) HasCapabilities() bool {
-	if o != nil && o.Capabilities != nil {
+	if o != nil && !isNil(o.Capabilities) {
 		return true
 	}
 
@@ -134,18 +134,18 @@ func (o *CheckpointServerAttributes) HasCapabilities() bool {
 
 // SetCapabilities gets a reference to the given []CapabilityFilterEnum and assigns it to the Capabilities field.
 func (o *CheckpointServerAttributes) SetCapabilities(v []CapabilityFilterEnum) {
-	o.Capabilities = &v
+	o.Capabilities = v
 }
 
 func (o CheckpointServerAttributes) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Ip4Address != nil {
+	if !isNil(o.Ip4Address) {
 		toSerialize["Ip4Address"] = o.Ip4Address
 	}
-	if o.IpV6Address != nil {
+	if !isNil(o.IpV6Address) {
 		toSerialize["IpV6Address"] = o.IpV6Address
 	}
-	if o.Capabilities != nil {
+	if !isNil(o.Capabilities) {
 		toSerialize["Capabilities"] = o.Capabilities
 	}
 	return json.Marshal(toSerialize)

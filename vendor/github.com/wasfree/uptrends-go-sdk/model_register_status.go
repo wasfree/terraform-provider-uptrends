@@ -24,7 +24,8 @@ const (
 	REGISTERSTATUS_UNEXPECTED_ERROR RegisterStatus = "UnexpectedError"
 )
 
-var allowedRegisterStatusEnumValues = []RegisterStatus{
+// All allowed values of RegisterStatus enum
+var AllowedRegisterStatusEnumValues = []RegisterStatus{
 	"OK",
 	"UnexpectedError",
 }
@@ -36,7 +37,7 @@ func (v *RegisterStatus) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := RegisterStatus(value)
-	for _, existing := range allowedRegisterStatusEnumValues {
+	for _, existing := range AllowedRegisterStatusEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewRegisterStatusFromValue(v string) (*RegisterStatus, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for RegisterStatus: valid values are %v", v, allowedRegisterStatusEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for RegisterStatus: valid values are %v", v, AllowedRegisterStatusEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v RegisterStatus) IsValid() bool {
-	for _, existing := range allowedRegisterStatusEnumValues {
+	for _, existing := range AllowedRegisterStatusEnumValues {
 		if existing == v {
 			return true
 		}

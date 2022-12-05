@@ -41,7 +41,7 @@ func NewAlertEscalationLevelMemberWithDefaults() *AlertEscalationLevelMember {
 
 // GetOperatorGuid returns the OperatorGuid field value if set, zero value otherwise.
 func (o *AlertEscalationLevelMember) GetOperatorGuid() string {
-	if o == nil || o.OperatorGuid == nil {
+	if o == nil || isNil(o.OperatorGuid) {
 		var ret string
 		return ret
 	}
@@ -51,15 +51,15 @@ func (o *AlertEscalationLevelMember) GetOperatorGuid() string {
 // GetOperatorGuidOk returns a tuple with the OperatorGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertEscalationLevelMember) GetOperatorGuidOk() (*string, bool) {
-	if o == nil || o.OperatorGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorGuid) {
+    return nil, false
 	}
 	return o.OperatorGuid, true
 }
 
 // HasOperatorGuid returns a boolean if a field has been set.
 func (o *AlertEscalationLevelMember) HasOperatorGuid() bool {
-	if o != nil && o.OperatorGuid != nil {
+	if o != nil && !isNil(o.OperatorGuid) {
 		return true
 	}
 
@@ -73,7 +73,7 @@ func (o *AlertEscalationLevelMember) SetOperatorGuid(v string) {
 
 // GetOperatorGroupGuid returns the OperatorGroupGuid field value if set, zero value otherwise.
 func (o *AlertEscalationLevelMember) GetOperatorGroupGuid() string {
-	if o == nil || o.OperatorGroupGuid == nil {
+	if o == nil || isNil(o.OperatorGroupGuid) {
 		var ret string
 		return ret
 	}
@@ -83,15 +83,15 @@ func (o *AlertEscalationLevelMember) GetOperatorGroupGuid() string {
 // GetOperatorGroupGuidOk returns a tuple with the OperatorGroupGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertEscalationLevelMember) GetOperatorGroupGuidOk() (*string, bool) {
-	if o == nil || o.OperatorGroupGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorGroupGuid) {
+    return nil, false
 	}
 	return o.OperatorGroupGuid, true
 }
 
 // HasOperatorGroupGuid returns a boolean if a field has been set.
 func (o *AlertEscalationLevelMember) HasOperatorGroupGuid() bool {
-	if o != nil && o.OperatorGroupGuid != nil {
+	if o != nil && !isNil(o.OperatorGroupGuid) {
 		return true
 	}
 
@@ -105,10 +105,10 @@ func (o *AlertEscalationLevelMember) SetOperatorGroupGuid(v string) {
 
 func (o AlertEscalationLevelMember) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.OperatorGuid != nil {
+	if !isNil(o.OperatorGuid) {
 		toSerialize["OperatorGuid"] = o.OperatorGuid
 	}
-	if o.OperatorGroupGuid != nil {
+	if !isNil(o.OperatorGroupGuid) {
 		toSerialize["OperatorGroupGuid"] = o.OperatorGroupGuid
 	}
 	return json.Marshal(toSerialize)

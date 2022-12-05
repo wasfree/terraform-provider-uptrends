@@ -41,7 +41,7 @@ func NewPatternMatchWithDefaults() *PatternMatch {
 
 // GetPattern returns the Pattern field value if set, zero value otherwise.
 func (o *PatternMatch) GetPattern() string {
-	if o == nil || o.Pattern == nil {
+	if o == nil || isNil(o.Pattern) {
 		var ret string
 		return ret
 	}
@@ -51,15 +51,15 @@ func (o *PatternMatch) GetPattern() string {
 // GetPatternOk returns a tuple with the Pattern field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PatternMatch) GetPatternOk() (*string, bool) {
-	if o == nil || o.Pattern == nil {
-		return nil, false
+	if o == nil || isNil(o.Pattern) {
+    return nil, false
 	}
 	return o.Pattern, true
 }
 
 // HasPattern returns a boolean if a field has been set.
 func (o *PatternMatch) HasPattern() bool {
-	if o != nil && o.Pattern != nil {
+	if o != nil && !isNil(o.Pattern) {
 		return true
 	}
 
@@ -84,8 +84,8 @@ func (o *PatternMatch) GetIsPositive() bool {
 // GetIsPositiveOk returns a tuple with the IsPositive field value
 // and a boolean to check if the value has been set.
 func (o *PatternMatch) GetIsPositiveOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.IsPositive, true
 }
@@ -97,7 +97,7 @@ func (o *PatternMatch) SetIsPositive(v bool) {
 
 // GetDateTime returns the DateTime field value if set, zero value otherwise.
 func (o *PatternMatch) GetDateTime() DateTimePatternMatch {
-	if o == nil || o.DateTime == nil {
+	if o == nil || isNil(o.DateTime) {
 		var ret DateTimePatternMatch
 		return ret
 	}
@@ -107,15 +107,15 @@ func (o *PatternMatch) GetDateTime() DateTimePatternMatch {
 // GetDateTimeOk returns a tuple with the DateTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PatternMatch) GetDateTimeOk() (*DateTimePatternMatch, bool) {
-	if o == nil || o.DateTime == nil {
-		return nil, false
+	if o == nil || isNil(o.DateTime) {
+    return nil, false
 	}
 	return o.DateTime, true
 }
 
 // HasDateTime returns a boolean if a field has been set.
 func (o *PatternMatch) HasDateTime() bool {
-	if o != nil && o.DateTime != nil {
+	if o != nil && !isNil(o.DateTime) {
 		return true
 	}
 
@@ -129,13 +129,13 @@ func (o *PatternMatch) SetDateTime(v DateTimePatternMatch) {
 
 func (o PatternMatch) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Pattern != nil {
+	if !isNil(o.Pattern) {
 		toSerialize["Pattern"] = o.Pattern
 	}
 	if true {
 		toSerialize["IsPositive"] = o.IsPositive
 	}
-	if o.DateTime != nil {
+	if !isNil(o.DateTime) {
 		toSerialize["DateTime"] = o.DateTime
 	}
 	return json.Marshal(toSerialize)

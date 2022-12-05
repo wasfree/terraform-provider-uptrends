@@ -27,7 +27,8 @@ const (
 	SCHEDULETYPE_YEARLY ScheduleType = "Yearly"
 )
 
-var allowedScheduleTypeEnumValues = []ScheduleType{
+// All allowed values of ScheduleType enum
+var AllowedScheduleTypeEnumValues = []ScheduleType{
 	"Daily",
 	"Weekly",
 	"Monthly",
@@ -42,7 +43,7 @@ func (v *ScheduleType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ScheduleType(value)
-	for _, existing := range allowedScheduleTypeEnumValues {
+	for _, existing := range AllowedScheduleTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -59,13 +60,13 @@ func NewScheduleTypeFromValue(v string) (*ScheduleType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for ScheduleType: valid values are %v", v, allowedScheduleTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for ScheduleType: valid values are %v", v, AllowedScheduleTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v ScheduleType) IsValid() bool {
-	for _, existing := range allowedScheduleTypeEnumValues {
+	for _, existing := range AllowedScheduleTypeEnumValues {
 		if existing == v {
 			return true
 		}

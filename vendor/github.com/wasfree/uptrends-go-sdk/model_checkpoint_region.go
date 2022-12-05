@@ -18,7 +18,7 @@ import (
 type CheckpointRegion struct {
 	Id int32 `json:"Id"`
 	Name *string `json:"Name,omitempty"`
-	ChildRegions *[]int32 `json:"ChildRegions,omitempty"`
+	ChildRegions []int32 `json:"ChildRegions,omitempty"`
 }
 
 // NewCheckpointRegion instantiates a new CheckpointRegion object
@@ -52,8 +52,8 @@ func (o *CheckpointRegion) GetId() int32 {
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
 func (o *CheckpointRegion) GetIdOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Id, true
 }
@@ -65,7 +65,7 @@ func (o *CheckpointRegion) SetId(v int32) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *CheckpointRegion) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -75,15 +75,15 @@ func (o *CheckpointRegion) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CheckpointRegion) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *CheckpointRegion) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -97,25 +97,25 @@ func (o *CheckpointRegion) SetName(v string) {
 
 // GetChildRegions returns the ChildRegions field value if set, zero value otherwise.
 func (o *CheckpointRegion) GetChildRegions() []int32 {
-	if o == nil || o.ChildRegions == nil {
+	if o == nil || isNil(o.ChildRegions) {
 		var ret []int32
 		return ret
 	}
-	return *o.ChildRegions
+	return o.ChildRegions
 }
 
 // GetChildRegionsOk returns a tuple with the ChildRegions field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckpointRegion) GetChildRegionsOk() (*[]int32, bool) {
-	if o == nil || o.ChildRegions == nil {
-		return nil, false
+func (o *CheckpointRegion) GetChildRegionsOk() ([]int32, bool) {
+	if o == nil || isNil(o.ChildRegions) {
+    return nil, false
 	}
 	return o.ChildRegions, true
 }
 
 // HasChildRegions returns a boolean if a field has been set.
 func (o *CheckpointRegion) HasChildRegions() bool {
-	if o != nil && o.ChildRegions != nil {
+	if o != nil && !isNil(o.ChildRegions) {
 		return true
 	}
 
@@ -124,7 +124,7 @@ func (o *CheckpointRegion) HasChildRegions() bool {
 
 // SetChildRegions gets a reference to the given []int32 and assigns it to the ChildRegions field.
 func (o *CheckpointRegion) SetChildRegions(v []int32) {
-	o.ChildRegions = &v
+	o.ChildRegions = v
 }
 
 func (o CheckpointRegion) MarshalJSON() ([]byte, error) {
@@ -132,10 +132,10 @@ func (o CheckpointRegion) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["Id"] = o.Id
 	}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
-	if o.ChildRegions != nil {
+	if !isNil(o.ChildRegions) {
 		toSerialize["ChildRegions"] = o.ChildRegions
 	}
 	return json.Marshal(toSerialize)

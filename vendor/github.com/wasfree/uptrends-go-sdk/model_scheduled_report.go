@@ -48,7 +48,7 @@ func NewScheduledReportWithDefaults() *ScheduledReport {
 
 // GetScheduledReportGuid returns the ScheduledReportGuid field value if set, zero value otherwise.
 func (o *ScheduledReport) GetScheduledReportGuid() string {
-	if o == nil || o.ScheduledReportGuid == nil {
+	if o == nil || isNil(o.ScheduledReportGuid) {
 		var ret string
 		return ret
 	}
@@ -58,15 +58,15 @@ func (o *ScheduledReport) GetScheduledReportGuid() string {
 // GetScheduledReportGuidOk returns a tuple with the ScheduledReportGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetScheduledReportGuidOk() (*string, bool) {
-	if o == nil || o.ScheduledReportGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.ScheduledReportGuid) {
+    return nil, false
 	}
 	return o.ScheduledReportGuid, true
 }
 
 // HasScheduledReportGuid returns a boolean if a field has been set.
 func (o *ScheduledReport) HasScheduledReportGuid() bool {
-	if o != nil && o.ScheduledReportGuid != nil {
+	if o != nil && !isNil(o.ScheduledReportGuid) {
 		return true
 	}
 
@@ -80,7 +80,7 @@ func (o *ScheduledReport) SetScheduledReportGuid(v string) {
 
 // GetHash returns the Hash field value if set, zero value otherwise.
 func (o *ScheduledReport) GetHash() string {
-	if o == nil || o.Hash == nil {
+	if o == nil || isNil(o.Hash) {
 		var ret string
 		return ret
 	}
@@ -90,15 +90,15 @@ func (o *ScheduledReport) GetHash() string {
 // GetHashOk returns a tuple with the Hash field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetHashOk() (*string, bool) {
-	if o == nil || o.Hash == nil {
-		return nil, false
+	if o == nil || isNil(o.Hash) {
+    return nil, false
 	}
 	return o.Hash, true
 }
 
 // HasHash returns a boolean if a field has been set.
 func (o *ScheduledReport) HasHash() bool {
-	if o != nil && o.Hash != nil {
+	if o != nil && !isNil(o.Hash) {
 		return true
 	}
 
@@ -112,7 +112,7 @@ func (o *ScheduledReport) SetHash(v string) {
 
 // GetDashboardGuid returns the DashboardGuid field value if set, zero value otherwise.
 func (o *ScheduledReport) GetDashboardGuid() string {
-	if o == nil || o.DashboardGuid == nil {
+	if o == nil || isNil(o.DashboardGuid) {
 		var ret string
 		return ret
 	}
@@ -122,15 +122,15 @@ func (o *ScheduledReport) GetDashboardGuid() string {
 // GetDashboardGuidOk returns a tuple with the DashboardGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetDashboardGuidOk() (*string, bool) {
-	if o == nil || o.DashboardGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.DashboardGuid) {
+    return nil, false
 	}
 	return o.DashboardGuid, true
 }
 
 // HasDashboardGuid returns a boolean if a field has been set.
 func (o *ScheduledReport) HasDashboardGuid() bool {
-	if o != nil && o.DashboardGuid != nil {
+	if o != nil && !isNil(o.DashboardGuid) {
 		return true
 	}
 
@@ -144,7 +144,7 @@ func (o *ScheduledReport) SetDashboardGuid(v string) {
 
 // GetDashboardGuidSpecified returns the DashboardGuidSpecified field value if set, zero value otherwise.
 func (o *ScheduledReport) GetDashboardGuidSpecified() bool {
-	if o == nil || o.DashboardGuidSpecified == nil {
+	if o == nil || isNil(o.DashboardGuidSpecified) {
 		var ret bool
 		return ret
 	}
@@ -154,15 +154,15 @@ func (o *ScheduledReport) GetDashboardGuidSpecified() bool {
 // GetDashboardGuidSpecifiedOk returns a tuple with the DashboardGuidSpecified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetDashboardGuidSpecifiedOk() (*bool, bool) {
-	if o == nil || o.DashboardGuidSpecified == nil {
-		return nil, false
+	if o == nil || isNil(o.DashboardGuidSpecified) {
+    return nil, false
 	}
 	return o.DashboardGuidSpecified, true
 }
 
 // HasDashboardGuidSpecified returns a boolean if a field has been set.
 func (o *ScheduledReport) HasDashboardGuidSpecified() bool {
-	if o != nil && o.DashboardGuidSpecified != nil {
+	if o != nil && !isNil(o.DashboardGuidSpecified) {
 		return true
 	}
 
@@ -176,7 +176,7 @@ func (o *ScheduledReport) SetDashboardGuidSpecified(v bool) {
 
 // GetFileType returns the FileType field value if set, zero value otherwise.
 func (o *ScheduledReport) GetFileType() ScheduledReportFileType {
-	if o == nil || o.FileType == nil {
+	if o == nil || isNil(o.FileType) {
 		var ret ScheduledReportFileType
 		return ret
 	}
@@ -186,15 +186,15 @@ func (o *ScheduledReport) GetFileType() ScheduledReportFileType {
 // GetFileTypeOk returns a tuple with the FileType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetFileTypeOk() (*ScheduledReportFileType, bool) {
-	if o == nil || o.FileType == nil {
-		return nil, false
+	if o == nil || isNil(o.FileType) {
+    return nil, false
 	}
 	return o.FileType, true
 }
 
 // HasFileType returns a boolean if a field has been set.
 func (o *ScheduledReport) HasFileType() bool {
-	if o != nil && o.FileType != nil {
+	if o != nil && !isNil(o.FileType) {
 		return true
 	}
 
@@ -208,7 +208,7 @@ func (o *ScheduledReport) SetFileType(v ScheduledReportFileType) {
 
 // GetIsActive returns the IsActive field value if set, zero value otherwise.
 func (o *ScheduledReport) GetIsActive() bool {
-	if o == nil || o.IsActive == nil {
+	if o == nil || isNil(o.IsActive) {
 		var ret bool
 		return ret
 	}
@@ -218,15 +218,15 @@ func (o *ScheduledReport) GetIsActive() bool {
 // GetIsActiveOk returns a tuple with the IsActive field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetIsActiveOk() (*bool, bool) {
-	if o == nil || o.IsActive == nil {
-		return nil, false
+	if o == nil || isNil(o.IsActive) {
+    return nil, false
 	}
 	return o.IsActive, true
 }
 
 // HasIsActive returns a boolean if a field has been set.
 func (o *ScheduledReport) HasIsActive() bool {
-	if o != nil && o.IsActive != nil {
+	if o != nil && !isNil(o.IsActive) {
 		return true
 	}
 
@@ -240,7 +240,7 @@ func (o *ScheduledReport) SetIsActive(v bool) {
 
 // GetSchedule returns the Schedule field value if set, zero value otherwise.
 func (o *ScheduledReport) GetSchedule() Schedule {
-	if o == nil || o.Schedule == nil {
+	if o == nil || isNil(o.Schedule) {
 		var ret Schedule
 		return ret
 	}
@@ -250,15 +250,15 @@ func (o *ScheduledReport) GetSchedule() Schedule {
 // GetScheduleOk returns a tuple with the Schedule field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetScheduleOk() (*Schedule, bool) {
-	if o == nil || o.Schedule == nil {
-		return nil, false
+	if o == nil || isNil(o.Schedule) {
+    return nil, false
 	}
 	return o.Schedule, true
 }
 
 // HasSchedule returns a boolean if a field has been set.
 func (o *ScheduledReport) HasSchedule() bool {
-	if o != nil && o.Schedule != nil {
+	if o != nil && !isNil(o.Schedule) {
 		return true
 	}
 
@@ -272,7 +272,7 @@ func (o *ScheduledReport) SetSchedule(v Schedule) {
 
 // GetSelectedPeriod returns the SelectedPeriod field value if set, zero value otherwise.
 func (o *ScheduledReport) GetSelectedPeriod() PresetPeriodTypeWithExclusive {
-	if o == nil || o.SelectedPeriod == nil {
+	if o == nil || isNil(o.SelectedPeriod) {
 		var ret PresetPeriodTypeWithExclusive
 		return ret
 	}
@@ -282,15 +282,15 @@ func (o *ScheduledReport) GetSelectedPeriod() PresetPeriodTypeWithExclusive {
 // GetSelectedPeriodOk returns a tuple with the SelectedPeriod field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetSelectedPeriodOk() (*PresetPeriodTypeWithExclusive, bool) {
-	if o == nil || o.SelectedPeriod == nil {
-		return nil, false
+	if o == nil || isNil(o.SelectedPeriod) {
+    return nil, false
 	}
 	return o.SelectedPeriod, true
 }
 
 // HasSelectedPeriod returns a boolean if a field has been set.
 func (o *ScheduledReport) HasSelectedPeriod() bool {
-	if o != nil && o.SelectedPeriod != nil {
+	if o != nil && !isNil(o.SelectedPeriod) {
 		return true
 	}
 
@@ -304,7 +304,7 @@ func (o *ScheduledReport) SetSelectedPeriod(v PresetPeriodTypeWithExclusive) {
 
 // GetInternalNotes returns the InternalNotes field value if set, zero value otherwise.
 func (o *ScheduledReport) GetInternalNotes() string {
-	if o == nil || o.InternalNotes == nil {
+	if o == nil || isNil(o.InternalNotes) {
 		var ret string
 		return ret
 	}
@@ -314,15 +314,15 @@ func (o *ScheduledReport) GetInternalNotes() string {
 // GetInternalNotesOk returns a tuple with the InternalNotes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetInternalNotesOk() (*string, bool) {
-	if o == nil || o.InternalNotes == nil {
-		return nil, false
+	if o == nil || isNil(o.InternalNotes) {
+    return nil, false
 	}
 	return o.InternalNotes, true
 }
 
 // HasInternalNotes returns a boolean if a field has been set.
 func (o *ScheduledReport) HasInternalNotes() bool {
-	if o != nil && o.InternalNotes != nil {
+	if o != nil && !isNil(o.InternalNotes) {
 		return true
 	}
 
@@ -336,7 +336,7 @@ func (o *ScheduledReport) SetInternalNotes(v string) {
 
 // GetNotes returns the Notes field value if set, zero value otherwise.
 func (o *ScheduledReport) GetNotes() string {
-	if o == nil || o.Notes == nil {
+	if o == nil || isNil(o.Notes) {
 		var ret string
 		return ret
 	}
@@ -346,15 +346,15 @@ func (o *ScheduledReport) GetNotes() string {
 // GetNotesOk returns a tuple with the Notes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetNotesOk() (*string, bool) {
-	if o == nil || o.Notes == nil {
-		return nil, false
+	if o == nil || isNil(o.Notes) {
+    return nil, false
 	}
 	return o.Notes, true
 }
 
 // HasNotes returns a boolean if a field has been set.
 func (o *ScheduledReport) HasNotes() bool {
-	if o != nil && o.Notes != nil {
+	if o != nil && !isNil(o.Notes) {
 		return true
 	}
 
@@ -368,7 +368,7 @@ func (o *ScheduledReport) SetNotes(v string) {
 
 // GetRecipients returns the Recipients field value if set, zero value otherwise.
 func (o *ScheduledReport) GetRecipients() Recipients {
-	if o == nil || o.Recipients == nil {
+	if o == nil || isNil(o.Recipients) {
 		var ret Recipients
 		return ret
 	}
@@ -378,15 +378,15 @@ func (o *ScheduledReport) GetRecipients() Recipients {
 // GetRecipientsOk returns a tuple with the Recipients field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ScheduledReport) GetRecipientsOk() (*Recipients, bool) {
-	if o == nil || o.Recipients == nil {
-		return nil, false
+	if o == nil || isNil(o.Recipients) {
+    return nil, false
 	}
 	return o.Recipients, true
 }
 
 // HasRecipients returns a boolean if a field has been set.
 func (o *ScheduledReport) HasRecipients() bool {
-	if o != nil && o.Recipients != nil {
+	if o != nil && !isNil(o.Recipients) {
 		return true
 	}
 
@@ -400,37 +400,37 @@ func (o *ScheduledReport) SetRecipients(v Recipients) {
 
 func (o ScheduledReport) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.ScheduledReportGuid != nil {
+	if !isNil(o.ScheduledReportGuid) {
 		toSerialize["ScheduledReportGuid"] = o.ScheduledReportGuid
 	}
-	if o.Hash != nil {
+	if !isNil(o.Hash) {
 		toSerialize["Hash"] = o.Hash
 	}
-	if o.DashboardGuid != nil {
+	if !isNil(o.DashboardGuid) {
 		toSerialize["DashboardGuid"] = o.DashboardGuid
 	}
-	if o.DashboardGuidSpecified != nil {
+	if !isNil(o.DashboardGuidSpecified) {
 		toSerialize["DashboardGuidSpecified"] = o.DashboardGuidSpecified
 	}
-	if o.FileType != nil {
+	if !isNil(o.FileType) {
 		toSerialize["FileType"] = o.FileType
 	}
-	if o.IsActive != nil {
+	if !isNil(o.IsActive) {
 		toSerialize["IsActive"] = o.IsActive
 	}
-	if o.Schedule != nil {
+	if !isNil(o.Schedule) {
 		toSerialize["Schedule"] = o.Schedule
 	}
-	if o.SelectedPeriod != nil {
+	if !isNil(o.SelectedPeriod) {
 		toSerialize["SelectedPeriod"] = o.SelectedPeriod
 	}
-	if o.InternalNotes != nil {
+	if !isNil(o.InternalNotes) {
 		toSerialize["InternalNotes"] = o.InternalNotes
 	}
-	if o.Notes != nil {
+	if !isNil(o.Notes) {
 		toSerialize["Notes"] = o.Notes
 	}
-	if o.Recipients != nil {
+	if !isNil(o.Recipients) {
 		toSerialize["Recipients"] = o.Recipients
 	}
 	return json.Marshal(toSerialize)

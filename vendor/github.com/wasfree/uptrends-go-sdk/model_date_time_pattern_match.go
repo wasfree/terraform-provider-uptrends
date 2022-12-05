@@ -52,8 +52,8 @@ func (o *DateTimePatternMatch) GetOffsetUTC() int32 {
 // GetOffsetUTCOk returns a tuple with the OffsetUTC field value
 // and a boolean to check if the value has been set.
 func (o *DateTimePatternMatch) GetOffsetUTCOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.OffsetUTC, true
 }
@@ -76,8 +76,8 @@ func (o *DateTimePatternMatch) GetMaxDifference() int32 {
 // GetMaxDifferenceOk returns a tuple with the MaxDifference field value
 // and a boolean to check if the value has been set.
 func (o *DateTimePatternMatch) GetMaxDifferenceOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.MaxDifference, true
 }

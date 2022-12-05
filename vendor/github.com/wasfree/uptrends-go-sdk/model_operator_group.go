@@ -44,7 +44,7 @@ func NewOperatorGroupWithDefaults() *OperatorGroup {
 
 // GetOperatorGroupGuid returns the OperatorGroupGuid field value if set, zero value otherwise.
 func (o *OperatorGroup) GetOperatorGroupGuid() string {
-	if o == nil || o.OperatorGroupGuid == nil {
+	if o == nil || isNil(o.OperatorGroupGuid) {
 		var ret string
 		return ret
 	}
@@ -54,15 +54,15 @@ func (o *OperatorGroup) GetOperatorGroupGuid() string {
 // GetOperatorGroupGuidOk returns a tuple with the OperatorGroupGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OperatorGroup) GetOperatorGroupGuidOk() (*string, bool) {
-	if o == nil || o.OperatorGroupGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorGroupGuid) {
+    return nil, false
 	}
 	return o.OperatorGroupGuid, true
 }
 
 // HasOperatorGroupGuid returns a boolean if a field has been set.
 func (o *OperatorGroup) HasOperatorGroupGuid() bool {
-	if o != nil && o.OperatorGroupGuid != nil {
+	if o != nil && !isNil(o.OperatorGroupGuid) {
 		return true
 	}
 
@@ -76,7 +76,7 @@ func (o *OperatorGroup) SetOperatorGroupGuid(v string) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *OperatorGroup) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -86,15 +86,15 @@ func (o *OperatorGroup) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OperatorGroup) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *OperatorGroup) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -108,7 +108,7 @@ func (o *OperatorGroup) SetDescription(v string) {
 
 // GetIsEveryone returns the IsEveryone field value if set, zero value otherwise.
 func (o *OperatorGroup) GetIsEveryone() bool {
-	if o == nil || o.IsEveryone == nil {
+	if o == nil || isNil(o.IsEveryone) {
 		var ret bool
 		return ret
 	}
@@ -118,15 +118,15 @@ func (o *OperatorGroup) GetIsEveryone() bool {
 // GetIsEveryoneOk returns a tuple with the IsEveryone field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OperatorGroup) GetIsEveryoneOk() (*bool, bool) {
-	if o == nil || o.IsEveryone == nil {
-		return nil, false
+	if o == nil || isNil(o.IsEveryone) {
+    return nil, false
 	}
 	return o.IsEveryone, true
 }
 
 // HasIsEveryone returns a boolean if a field has been set.
 func (o *OperatorGroup) HasIsEveryone() bool {
-	if o != nil && o.IsEveryone != nil {
+	if o != nil && !isNil(o.IsEveryone) {
 		return true
 	}
 
@@ -140,7 +140,7 @@ func (o *OperatorGroup) SetIsEveryone(v bool) {
 
 // GetIsAdministratorsGroup returns the IsAdministratorsGroup field value if set, zero value otherwise.
 func (o *OperatorGroup) GetIsAdministratorsGroup() bool {
-	if o == nil || o.IsAdministratorsGroup == nil {
+	if o == nil || isNil(o.IsAdministratorsGroup) {
 		var ret bool
 		return ret
 	}
@@ -150,15 +150,15 @@ func (o *OperatorGroup) GetIsAdministratorsGroup() bool {
 // GetIsAdministratorsGroupOk returns a tuple with the IsAdministratorsGroup field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OperatorGroup) GetIsAdministratorsGroupOk() (*bool, bool) {
-	if o == nil || o.IsAdministratorsGroup == nil {
-		return nil, false
+	if o == nil || isNil(o.IsAdministratorsGroup) {
+    return nil, false
 	}
 	return o.IsAdministratorsGroup, true
 }
 
 // HasIsAdministratorsGroup returns a boolean if a field has been set.
 func (o *OperatorGroup) HasIsAdministratorsGroup() bool {
-	if o != nil && o.IsAdministratorsGroup != nil {
+	if o != nil && !isNil(o.IsAdministratorsGroup) {
 		return true
 	}
 
@@ -172,16 +172,16 @@ func (o *OperatorGroup) SetIsAdministratorsGroup(v bool) {
 
 func (o OperatorGroup) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.OperatorGroupGuid != nil {
+	if !isNil(o.OperatorGroupGuid) {
 		toSerialize["OperatorGroupGuid"] = o.OperatorGroupGuid
 	}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["Description"] = o.Description
 	}
-	if o.IsEveryone != nil {
+	if !isNil(o.IsEveryone) {
 		toSerialize["IsEveryone"] = o.IsEveryone
 	}
-	if o.IsAdministratorsGroup != nil {
+	if !isNil(o.IsAdministratorsGroup) {
 		toSerialize["IsAdministratorsGroup"] = o.IsAdministratorsGroup
 	}
 	return json.Marshal(toSerialize)

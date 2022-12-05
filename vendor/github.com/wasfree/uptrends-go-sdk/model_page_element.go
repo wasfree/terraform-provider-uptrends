@@ -53,8 +53,8 @@ type PageElement struct {
 	// The HTTP response headers retrieved
 	ResponseHeaders *string `json:"ResponseHeaders,omitempty"`
 	// The IP address that was found for the specified domain name as part of this monitor check.
-	ResolvedIpAddress *map[string]interface{} `json:"ResolvedIpAddress,omitempty"`
-	GroupIds *[]int32 `json:"GroupIds,omitempty"`
+	ResolvedIpAddress map[string]interface{} `json:"ResolvedIpAddress,omitempty"`
+	GroupIds []int32 `json:"GroupIds,omitempty"`
 	// Was the Url excluded from waterfall (timing) data by the user?
 	UrlIsBlocked bool `json:"UrlIsBlocked"`
 }
@@ -104,8 +104,8 @@ func (o *PageElement) GetIndex() int32 {
 // GetIndexOk returns a tuple with the Index field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetIndexOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Index, true
 }
@@ -128,8 +128,8 @@ func (o *PageElement) GetStartTime() int32 {
 // GetStartTimeOk returns a tuple with the StartTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetStartTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.StartTime, true
 }
@@ -152,8 +152,8 @@ func (o *PageElement) GetQueueTime() int32 {
 // GetQueueTimeOk returns a tuple with the QueueTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetQueueTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.QueueTime, true
 }
@@ -176,8 +176,8 @@ func (o *PageElement) GetResolveTime() int32 {
 // GetResolveTimeOk returns a tuple with the ResolveTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetResolveTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ResolveTime, true
 }
@@ -200,8 +200,8 @@ func (o *PageElement) GetConnectTime() int32 {
 // GetConnectTimeOk returns a tuple with the ConnectTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetConnectTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ConnectTime, true
 }
@@ -224,8 +224,8 @@ func (o *PageElement) GetStaleTime() int32 {
 // GetStaleTimeOk returns a tuple with the StaleTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetStaleTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.StaleTime, true
 }
@@ -248,8 +248,8 @@ func (o *PageElement) GetHttpsHandshakeTime() int32 {
 // GetHttpsHandshakeTimeOk returns a tuple with the HttpsHandshakeTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetHttpsHandshakeTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.HttpsHandshakeTime, true
 }
@@ -272,8 +272,8 @@ func (o *PageElement) GetSendTime() int32 {
 // GetSendTimeOk returns a tuple with the SendTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetSendTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.SendTime, true
 }
@@ -296,8 +296,8 @@ func (o *PageElement) GetWaitTime() int32 {
 // GetWaitTimeOk returns a tuple with the WaitTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetWaitTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.WaitTime, true
 }
@@ -320,8 +320,8 @@ func (o *PageElement) GetReceiveTime() int32 {
 // GetReceiveTimeOk returns a tuple with the ReceiveTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetReceiveTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ReceiveTime, true
 }
@@ -344,8 +344,8 @@ func (o *PageElement) GetTimeoutTime() int32 {
 // GetTimeoutTimeOk returns a tuple with the TimeoutTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetTimeoutTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.TimeoutTime, true
 }
@@ -368,8 +368,8 @@ func (o *PageElement) GetTotalTime() int32 {
 // GetTotalTimeOk returns a tuple with the TotalTime field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetTotalTimeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.TotalTime, true
 }
@@ -392,8 +392,8 @@ func (o *PageElement) GetHttpStatusCode() int32 {
 // GetHttpStatusCodeOk returns a tuple with the HttpStatusCode field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetHttpStatusCodeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.HttpStatusCode, true
 }
@@ -405,7 +405,7 @@ func (o *PageElement) SetHttpStatusCode(v int32) {
 
 // GetUrl returns the Url field value if set, zero value otherwise.
 func (o *PageElement) GetUrl() string {
-	if o == nil || o.Url == nil {
+	if o == nil || isNil(o.Url) {
 		var ret string
 		return ret
 	}
@@ -415,15 +415,15 @@ func (o *PageElement) GetUrl() string {
 // GetUrlOk returns a tuple with the Url field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetUrlOk() (*string, bool) {
-	if o == nil || o.Url == nil {
-		return nil, false
+	if o == nil || isNil(o.Url) {
+    return nil, false
 	}
 	return o.Url, true
 }
 
 // HasUrl returns a boolean if a field has been set.
 func (o *PageElement) HasUrl() bool {
-	if o != nil && o.Url != nil {
+	if o != nil && !isNil(o.Url) {
 		return true
 	}
 
@@ -448,8 +448,8 @@ func (o *PageElement) GetTotalBytes() int32 {
 // GetTotalBytesOk returns a tuple with the TotalBytes field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetTotalBytesOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.TotalBytes, true
 }
@@ -461,7 +461,7 @@ func (o *PageElement) SetTotalBytes(v int32) {
 
 // GetElementType returns the ElementType field value if set, zero value otherwise.
 func (o *PageElement) GetElementType() string {
-	if o == nil || o.ElementType == nil {
+	if o == nil || isNil(o.ElementType) {
 		var ret string
 		return ret
 	}
@@ -471,15 +471,15 @@ func (o *PageElement) GetElementType() string {
 // GetElementTypeOk returns a tuple with the ElementType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetElementTypeOk() (*string, bool) {
-	if o == nil || o.ElementType == nil {
-		return nil, false
+	if o == nil || isNil(o.ElementType) {
+    return nil, false
 	}
 	return o.ElementType, true
 }
 
 // HasElementType returns a boolean if a field has been set.
 func (o *PageElement) HasElementType() bool {
-	if o != nil && o.ElementType != nil {
+	if o != nil && !isNil(o.ElementType) {
 		return true
 	}
 
@@ -493,7 +493,7 @@ func (o *PageElement) SetElementType(v string) {
 
 // GetRequestHeaders returns the RequestHeaders field value if set, zero value otherwise.
 func (o *PageElement) GetRequestHeaders() string {
-	if o == nil || o.RequestHeaders == nil {
+	if o == nil || isNil(o.RequestHeaders) {
 		var ret string
 		return ret
 	}
@@ -503,15 +503,15 @@ func (o *PageElement) GetRequestHeaders() string {
 // GetRequestHeadersOk returns a tuple with the RequestHeaders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetRequestHeadersOk() (*string, bool) {
-	if o == nil || o.RequestHeaders == nil {
-		return nil, false
+	if o == nil || isNil(o.RequestHeaders) {
+    return nil, false
 	}
 	return o.RequestHeaders, true
 }
 
 // HasRequestHeaders returns a boolean if a field has been set.
 func (o *PageElement) HasRequestHeaders() bool {
-	if o != nil && o.RequestHeaders != nil {
+	if o != nil && !isNil(o.RequestHeaders) {
 		return true
 	}
 
@@ -525,7 +525,7 @@ func (o *PageElement) SetRequestHeaders(v string) {
 
 // GetResponseHeaders returns the ResponseHeaders field value if set, zero value otherwise.
 func (o *PageElement) GetResponseHeaders() string {
-	if o == nil || o.ResponseHeaders == nil {
+	if o == nil || isNil(o.ResponseHeaders) {
 		var ret string
 		return ret
 	}
@@ -535,15 +535,15 @@ func (o *PageElement) GetResponseHeaders() string {
 // GetResponseHeadersOk returns a tuple with the ResponseHeaders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetResponseHeadersOk() (*string, bool) {
-	if o == nil || o.ResponseHeaders == nil {
-		return nil, false
+	if o == nil || isNil(o.ResponseHeaders) {
+    return nil, false
 	}
 	return o.ResponseHeaders, true
 }
 
 // HasResponseHeaders returns a boolean if a field has been set.
 func (o *PageElement) HasResponseHeaders() bool {
-	if o != nil && o.ResponseHeaders != nil {
+	if o != nil && !isNil(o.ResponseHeaders) {
 		return true
 	}
 
@@ -557,25 +557,25 @@ func (o *PageElement) SetResponseHeaders(v string) {
 
 // GetResolvedIpAddress returns the ResolvedIpAddress field value if set, zero value otherwise.
 func (o *PageElement) GetResolvedIpAddress() map[string]interface{} {
-	if o == nil || o.ResolvedIpAddress == nil {
+	if o == nil || isNil(o.ResolvedIpAddress) {
 		var ret map[string]interface{}
 		return ret
 	}
-	return *o.ResolvedIpAddress
+	return o.ResolvedIpAddress
 }
 
 // GetResolvedIpAddressOk returns a tuple with the ResolvedIpAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PageElement) GetResolvedIpAddressOk() (*map[string]interface{}, bool) {
-	if o == nil || o.ResolvedIpAddress == nil {
-		return nil, false
+func (o *PageElement) GetResolvedIpAddressOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.ResolvedIpAddress) {
+    return map[string]interface{}{}, false
 	}
 	return o.ResolvedIpAddress, true
 }
 
 // HasResolvedIpAddress returns a boolean if a field has been set.
 func (o *PageElement) HasResolvedIpAddress() bool {
-	if o != nil && o.ResolvedIpAddress != nil {
+	if o != nil && !isNil(o.ResolvedIpAddress) {
 		return true
 	}
 
@@ -584,30 +584,30 @@ func (o *PageElement) HasResolvedIpAddress() bool {
 
 // SetResolvedIpAddress gets a reference to the given map[string]interface{} and assigns it to the ResolvedIpAddress field.
 func (o *PageElement) SetResolvedIpAddress(v map[string]interface{}) {
-	o.ResolvedIpAddress = &v
+	o.ResolvedIpAddress = v
 }
 
 // GetGroupIds returns the GroupIds field value if set, zero value otherwise.
 func (o *PageElement) GetGroupIds() []int32 {
-	if o == nil || o.GroupIds == nil {
+	if o == nil || isNil(o.GroupIds) {
 		var ret []int32
 		return ret
 	}
-	return *o.GroupIds
+	return o.GroupIds
 }
 
 // GetGroupIdsOk returns a tuple with the GroupIds field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *PageElement) GetGroupIdsOk() (*[]int32, bool) {
-	if o == nil || o.GroupIds == nil {
-		return nil, false
+func (o *PageElement) GetGroupIdsOk() ([]int32, bool) {
+	if o == nil || isNil(o.GroupIds) {
+    return nil, false
 	}
 	return o.GroupIds, true
 }
 
 // HasGroupIds returns a boolean if a field has been set.
 func (o *PageElement) HasGroupIds() bool {
-	if o != nil && o.GroupIds != nil {
+	if o != nil && !isNil(o.GroupIds) {
 		return true
 	}
 
@@ -616,7 +616,7 @@ func (o *PageElement) HasGroupIds() bool {
 
 // SetGroupIds gets a reference to the given []int32 and assigns it to the GroupIds field.
 func (o *PageElement) SetGroupIds(v []int32) {
-	o.GroupIds = &v
+	o.GroupIds = v
 }
 
 // GetUrlIsBlocked returns the UrlIsBlocked field value
@@ -632,8 +632,8 @@ func (o *PageElement) GetUrlIsBlocked() bool {
 // GetUrlIsBlockedOk returns a tuple with the UrlIsBlocked field value
 // and a boolean to check if the value has been set.
 func (o *PageElement) GetUrlIsBlockedOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.UrlIsBlocked, true
 }
@@ -684,25 +684,25 @@ func (o PageElement) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["HttpStatusCode"] = o.HttpStatusCode
 	}
-	if o.Url != nil {
+	if !isNil(o.Url) {
 		toSerialize["Url"] = o.Url
 	}
 	if true {
 		toSerialize["TotalBytes"] = o.TotalBytes
 	}
-	if o.ElementType != nil {
+	if !isNil(o.ElementType) {
 		toSerialize["ElementType"] = o.ElementType
 	}
-	if o.RequestHeaders != nil {
+	if !isNil(o.RequestHeaders) {
 		toSerialize["RequestHeaders"] = o.RequestHeaders
 	}
-	if o.ResponseHeaders != nil {
+	if !isNil(o.ResponseHeaders) {
 		toSerialize["ResponseHeaders"] = o.ResponseHeaders
 	}
-	if o.ResolvedIpAddress != nil {
+	if !isNil(o.ResolvedIpAddress) {
 		toSerialize["ResolvedIpAddress"] = o.ResolvedIpAddress
 	}
-	if o.GroupIds != nil {
+	if !isNil(o.GroupIds) {
 		toSerialize["GroupIds"] = o.GroupIds
 	}
 	if true {

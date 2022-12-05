@@ -12,23 +12,19 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // SLAApiService SLAApi service
 type SLAApiService service
 
 type ApiSlaCreateSlaRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	sla *Sla
 }
@@ -39,17 +35,17 @@ func (r ApiSlaCreateSlaRequest) Sla(sla Sla) ApiSlaCreateSlaRequest {
 	return r
 }
 
-func (r ApiSlaCreateSlaRequest) Execute() (Sla, *_nethttp.Response, error) {
+func (r ApiSlaCreateSlaRequest) Execute() (*Sla, *http.Response, error) {
 	return r.ApiService.SlaCreateSlaExecute(r)
 }
 
 /*
 SlaCreateSla Creates a new SLA.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiSlaCreateSlaRequest
 */
-func (a *SLAApiService) SlaCreateSla(ctx _context.Context) ApiSlaCreateSlaRequest {
+func (a *SLAApiService) SlaCreateSla(ctx context.Context) ApiSlaCreateSlaRequest {
 	return ApiSlaCreateSlaRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -58,29 +54,24 @@ func (a *SLAApiService) SlaCreateSla(ctx _context.Context) ApiSlaCreateSlaReques
 
 // Execute executes the request
 //  @return Sla
-func (a *SLAApiService) SlaCreateSlaExecute(r ApiSlaCreateSlaRequest) (Sla, *_nethttp.Response, error) {
+func (a *SLAApiService) SlaCreateSlaExecute(r ApiSlaCreateSlaRequest) (*Sla, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  Sla
+		formFiles            []formFile
+		localVarReturnValue  *Sla
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaCreateSla")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.sla == nil {
-		return localVarReturnValue, nil, reportError("sla is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -101,7 +92,7 @@ func (a *SLAApiService) SlaCreateSlaExecute(r ApiSlaCreateSlaRequest) (Sla, *_ne
 	}
 	// body params
 	localVarPostBody = r.sla
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -111,15 +102,15 @@ func (a *SLAApiService) SlaCreateSlaExecute(r ApiSlaCreateSlaRequest) (Sla, *_ne
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -130,7 +121,8 @@ func (a *SLAApiService) SlaCreateSlaExecute(r ApiSlaCreateSlaRequest) (Sla, *_ne
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -140,14 +132,15 @@ func (a *SLAApiService) SlaCreateSlaExecute(r ApiSlaCreateSlaRequest) (Sla, *_ne
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -158,26 +151,25 @@ func (a *SLAApiService) SlaCreateSlaExecute(r ApiSlaCreateSlaRequest) (Sla, *_ne
 }
 
 type ApiSlaDeleteExclusionPeriodRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	slaGuid string
 	exclusionPeriodId int32
 }
 
-
-func (r ApiSlaDeleteExclusionPeriodRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiSlaDeleteExclusionPeriodRequest) Execute() (*http.Response, error) {
 	return r.ApiService.SlaDeleteExclusionPeriodExecute(r)
 }
 
 /*
 SlaDeleteExclusionPeriod Deletes the specified exclusion period for the specified SLA.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param slaGuid The Guid of the sla definition.
  @param exclusionPeriodId The id of the exclusion period.
  @return ApiSlaDeleteExclusionPeriodRequest
 */
-func (a *SLAApiService) SlaDeleteExclusionPeriod(ctx _context.Context, slaGuid string, exclusionPeriodId int32) ApiSlaDeleteExclusionPeriodRequest {
+func (a *SLAApiService) SlaDeleteExclusionPeriod(ctx context.Context, slaGuid string, exclusionPeriodId int32) ApiSlaDeleteExclusionPeriodRequest {
 	return ApiSlaDeleteExclusionPeriodRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -187,27 +179,25 @@ func (a *SLAApiService) SlaDeleteExclusionPeriod(ctx _context.Context, slaGuid s
 }
 
 // Execute executes the request
-func (a *SLAApiService) SlaDeleteExclusionPeriodExecute(r ApiSlaDeleteExclusionPeriodRequest) (*_nethttp.Response, error) {
+func (a *SLAApiService) SlaDeleteExclusionPeriodExecute(r ApiSlaDeleteExclusionPeriodRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaDeleteExclusionPeriod")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla/{slaGuid}/ExclusionPeriod/{exclusionPeriodId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", _neturl.PathEscape(parameterToString(r.slaGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"exclusionPeriodId"+"}", _neturl.PathEscape(parameterToString(r.exclusionPeriodId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", url.PathEscape(parameterToString(r.slaGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"exclusionPeriodId"+"}", url.PathEscape(parameterToString(r.exclusionPeriodId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -226,7 +216,7 @@ func (a *SLAApiService) SlaDeleteExclusionPeriodExecute(r ApiSlaDeleteExclusionP
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -236,15 +226,15 @@ func (a *SLAApiService) SlaDeleteExclusionPeriodExecute(r ApiSlaDeleteExclusionP
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -255,7 +245,8 @@ func (a *SLAApiService) SlaDeleteExclusionPeriodExecute(r ApiSlaDeleteExclusionP
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -265,7 +256,8 @@ func (a *SLAApiService) SlaDeleteExclusionPeriodExecute(r ApiSlaDeleteExclusionP
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -274,24 +266,23 @@ func (a *SLAApiService) SlaDeleteExclusionPeriodExecute(r ApiSlaDeleteExclusionP
 }
 
 type ApiSlaDeleteSlaRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	slaGuid string
 }
 
-
-func (r ApiSlaDeleteSlaRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiSlaDeleteSlaRequest) Execute() (*http.Response, error) {
 	return r.ApiService.SlaDeleteSlaExecute(r)
 }
 
 /*
 SlaDeleteSla Deletes the specified SLA.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param slaGuid The Guid of the SLA definition that should be deleted.
  @return ApiSlaDeleteSlaRequest
 */
-func (a *SLAApiService) SlaDeleteSla(ctx _context.Context, slaGuid string) ApiSlaDeleteSlaRequest {
+func (a *SLAApiService) SlaDeleteSla(ctx context.Context, slaGuid string) ApiSlaDeleteSlaRequest {
 	return ApiSlaDeleteSlaRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -300,26 +291,24 @@ func (a *SLAApiService) SlaDeleteSla(ctx _context.Context, slaGuid string) ApiSl
 }
 
 // Execute executes the request
-func (a *SLAApiService) SlaDeleteSlaExecute(r ApiSlaDeleteSlaRequest) (*_nethttp.Response, error) {
+func (a *SLAApiService) SlaDeleteSlaExecute(r ApiSlaDeleteSlaRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaDeleteSla")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla/{slaGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", _neturl.PathEscape(parameterToString(r.slaGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", url.PathEscape(parameterToString(r.slaGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -338,7 +327,7 @@ func (a *SLAApiService) SlaDeleteSlaExecute(r ApiSlaDeleteSlaRequest) (*_nethttp
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -348,15 +337,15 @@ func (a *SLAApiService) SlaDeleteSlaExecute(r ApiSlaDeleteSlaRequest) (*_nethttp
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -367,7 +356,8 @@ func (a *SLAApiService) SlaDeleteSlaExecute(r ApiSlaDeleteSlaRequest) (*_nethttp
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -377,7 +367,8 @@ func (a *SLAApiService) SlaDeleteSlaExecute(r ApiSlaDeleteSlaRequest) (*_nethttp
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -387,7 +378,8 @@ func (a *SLAApiService) SlaDeleteSlaExecute(r ApiSlaDeleteSlaRequest) (*_nethttp
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -396,26 +388,25 @@ func (a *SLAApiService) SlaDeleteSlaExecute(r ApiSlaDeleteSlaRequest) (*_nethttp
 }
 
 type ApiSlaGetExclusionPeriodRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	slaGuid string
 	exclusionPeriodId int32
 }
 
-
-func (r ApiSlaGetExclusionPeriodRequest) Execute() (ExclusionPeriod, *_nethttp.Response, error) {
+func (r ApiSlaGetExclusionPeriodRequest) Execute() (*ExclusionPeriod, *http.Response, error) {
 	return r.ApiService.SlaGetExclusionPeriodExecute(r)
 }
 
 /*
 SlaGetExclusionPeriod Gets the specified exclusion period for the specified SLA.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param slaGuid The Guid of the SLA definition.
  @param exclusionPeriodId The id of the exclusion period.
  @return ApiSlaGetExclusionPeriodRequest
 */
-func (a *SLAApiService) SlaGetExclusionPeriod(ctx _context.Context, slaGuid string, exclusionPeriodId int32) ApiSlaGetExclusionPeriodRequest {
+func (a *SLAApiService) SlaGetExclusionPeriod(ctx context.Context, slaGuid string, exclusionPeriodId int32) ApiSlaGetExclusionPeriodRequest {
 	return ApiSlaGetExclusionPeriodRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -426,28 +417,26 @@ func (a *SLAApiService) SlaGetExclusionPeriod(ctx _context.Context, slaGuid stri
 
 // Execute executes the request
 //  @return ExclusionPeriod
-func (a *SLAApiService) SlaGetExclusionPeriodExecute(r ApiSlaGetExclusionPeriodRequest) (ExclusionPeriod, *_nethttp.Response, error) {
+func (a *SLAApiService) SlaGetExclusionPeriodExecute(r ApiSlaGetExclusionPeriodRequest) (*ExclusionPeriod, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ExclusionPeriod
+		formFiles            []formFile
+		localVarReturnValue  *ExclusionPeriod
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaGetExclusionPeriod")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla/{slaGuid}/ExclusionPeriod/{exclusionPeriodId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", _neturl.PathEscape(parameterToString(r.slaGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"exclusionPeriodId"+"}", _neturl.PathEscape(parameterToString(r.exclusionPeriodId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", url.PathEscape(parameterToString(r.slaGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"exclusionPeriodId"+"}", url.PathEscape(parameterToString(r.exclusionPeriodId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -466,7 +455,7 @@ func (a *SLAApiService) SlaGetExclusionPeriodExecute(r ApiSlaGetExclusionPeriodR
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -476,15 +465,15 @@ func (a *SLAApiService) SlaGetExclusionPeriodExecute(r ApiSlaGetExclusionPeriodR
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -495,7 +484,8 @@ func (a *SLAApiService) SlaGetExclusionPeriodExecute(r ApiSlaGetExclusionPeriodR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -505,14 +495,15 @@ func (a *SLAApiService) SlaGetExclusionPeriodExecute(r ApiSlaGetExclusionPeriodR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -523,24 +514,23 @@ func (a *SLAApiService) SlaGetExclusionPeriodExecute(r ApiSlaGetExclusionPeriodR
 }
 
 type ApiSlaGetExclusionPeriodsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	slaGuid string
 }
 
-
-func (r ApiSlaGetExclusionPeriodsRequest) Execute() ([]ExclusionPeriod, *_nethttp.Response, error) {
+func (r ApiSlaGetExclusionPeriodsRequest) Execute() ([]ExclusionPeriod, *http.Response, error) {
 	return r.ApiService.SlaGetExclusionPeriodsExecute(r)
 }
 
 /*
 SlaGetExclusionPeriods Gets a list of all exclusion periods for the specified SLA.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param slaGuid The Guid of the SLA definition.
  @return ApiSlaGetExclusionPeriodsRequest
 */
-func (a *SLAApiService) SlaGetExclusionPeriods(ctx _context.Context, slaGuid string) ApiSlaGetExclusionPeriodsRequest {
+func (a *SLAApiService) SlaGetExclusionPeriods(ctx context.Context, slaGuid string) ApiSlaGetExclusionPeriodsRequest {
 	return ApiSlaGetExclusionPeriodsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -550,27 +540,25 @@ func (a *SLAApiService) SlaGetExclusionPeriods(ctx _context.Context, slaGuid str
 
 // Execute executes the request
 //  @return []ExclusionPeriod
-func (a *SLAApiService) SlaGetExclusionPeriodsExecute(r ApiSlaGetExclusionPeriodsRequest) ([]ExclusionPeriod, *_nethttp.Response, error) {
+func (a *SLAApiService) SlaGetExclusionPeriodsExecute(r ApiSlaGetExclusionPeriodsRequest) ([]ExclusionPeriod, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []ExclusionPeriod
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaGetExclusionPeriods")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla/{slaGuid}/ExclusionPeriod"
-	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", _neturl.PathEscape(parameterToString(r.slaGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", url.PathEscape(parameterToString(r.slaGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -589,7 +577,7 @@ func (a *SLAApiService) SlaGetExclusionPeriodsExecute(r ApiSlaGetExclusionPeriod
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -599,15 +587,15 @@ func (a *SLAApiService) SlaGetExclusionPeriodsExecute(r ApiSlaGetExclusionPeriod
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -618,7 +606,8 @@ func (a *SLAApiService) SlaGetExclusionPeriodsExecute(r ApiSlaGetExclusionPeriod
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -628,14 +617,15 @@ func (a *SLAApiService) SlaGetExclusionPeriodsExecute(r ApiSlaGetExclusionPeriod
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -646,24 +636,23 @@ func (a *SLAApiService) SlaGetExclusionPeriodsExecute(r ApiSlaGetExclusionPeriod
 }
 
 type ApiSlaGetSlaRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	slaGuid string
 }
 
-
-func (r ApiSlaGetSlaRequest) Execute() (Sla, *_nethttp.Response, error) {
+func (r ApiSlaGetSlaRequest) Execute() (*Sla, *http.Response, error) {
 	return r.ApiService.SlaGetSlaExecute(r)
 }
 
 /*
 SlaGetSla Gets the specified SLA definition.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param slaGuid The Guid of the SLA definition.
  @return ApiSlaGetSlaRequest
 */
-func (a *SLAApiService) SlaGetSla(ctx _context.Context, slaGuid string) ApiSlaGetSlaRequest {
+func (a *SLAApiService) SlaGetSla(ctx context.Context, slaGuid string) ApiSlaGetSlaRequest {
 	return ApiSlaGetSlaRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -673,27 +662,25 @@ func (a *SLAApiService) SlaGetSla(ctx _context.Context, slaGuid string) ApiSlaGe
 
 // Execute executes the request
 //  @return Sla
-func (a *SLAApiService) SlaGetSlaExecute(r ApiSlaGetSlaRequest) (Sla, *_nethttp.Response, error) {
+func (a *SLAApiService) SlaGetSlaExecute(r ApiSlaGetSlaRequest) (*Sla, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  Sla
+		formFiles            []formFile
+		localVarReturnValue  *Sla
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaGetSla")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla/{slaGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", _neturl.PathEscape(parameterToString(r.slaGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", url.PathEscape(parameterToString(r.slaGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -712,7 +699,7 @@ func (a *SLAApiService) SlaGetSlaExecute(r ApiSlaGetSlaRequest) (Sla, *_nethttp.
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -722,15 +709,15 @@ func (a *SLAApiService) SlaGetSlaExecute(r ApiSlaGetSlaRequest) (Sla, *_nethttp.
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -741,7 +728,8 @@ func (a *SLAApiService) SlaGetSlaExecute(r ApiSlaGetSlaRequest) (Sla, *_nethttp.
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 403 {
@@ -751,7 +739,8 @@ func (a *SLAApiService) SlaGetSlaExecute(r ApiSlaGetSlaRequest) (Sla, *_nethttp.
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -761,14 +750,15 @@ func (a *SLAApiService) SlaGetSlaExecute(r ApiSlaGetSlaRequest) (Sla, *_nethttp.
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -779,22 +769,21 @@ func (a *SLAApiService) SlaGetSlaExecute(r ApiSlaGetSlaRequest) (Sla, *_nethttp.
 }
 
 type ApiSlaGetSlasRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 }
 
-
-func (r ApiSlaGetSlasRequest) Execute() ([]Sla, *_nethttp.Response, error) {
+func (r ApiSlaGetSlasRequest) Execute() ([]Sla, *http.Response, error) {
 	return r.ApiService.SlaGetSlasExecute(r)
 }
 
 /*
 SlaGetSlas Gets a list of all SLA definitions.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiSlaGetSlasRequest
 */
-func (a *SLAApiService) SlaGetSlas(ctx _context.Context) ApiSlaGetSlasRequest {
+func (a *SLAApiService) SlaGetSlas(ctx context.Context) ApiSlaGetSlasRequest {
 	return ApiSlaGetSlasRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -803,26 +792,24 @@ func (a *SLAApiService) SlaGetSlas(ctx _context.Context) ApiSlaGetSlasRequest {
 
 // Execute executes the request
 //  @return []Sla
-func (a *SLAApiService) SlaGetSlasExecute(r ApiSlaGetSlasRequest) ([]Sla, *_nethttp.Response, error) {
+func (a *SLAApiService) SlaGetSlasExecute(r ApiSlaGetSlasRequest) ([]Sla, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []Sla
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaGetSlas")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -841,7 +828,7 @@ func (a *SLAApiService) SlaGetSlasExecute(r ApiSlaGetSlasRequest) ([]Sla, *_neth
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -851,15 +838,15 @@ func (a *SLAApiService) SlaGetSlasExecute(r ApiSlaGetSlasRequest) ([]Sla, *_neth
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -870,14 +857,15 @@ func (a *SLAApiService) SlaGetSlasExecute(r ApiSlaGetSlasRequest) ([]Sla, *_neth
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -888,7 +876,7 @@ func (a *SLAApiService) SlaGetSlasExecute(r ApiSlaGetSlasRequest) ([]Sla, *_neth
 }
 
 type ApiSlaPatchExclusionPeriodRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	slaGuid string
 	exclusionPeriodId int32
@@ -901,19 +889,19 @@ func (r ApiSlaPatchExclusionPeriodRequest) ExclusionPeriod(exclusionPeriod Exclu
 	return r
 }
 
-func (r ApiSlaPatchExclusionPeriodRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiSlaPatchExclusionPeriodRequest) Execute() (*http.Response, error) {
 	return r.ApiService.SlaPatchExclusionPeriodExecute(r)
 }
 
 /*
 SlaPatchExclusionPeriod Partially updates the specified exclusion period for the specified SLA.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param slaGuid The Guid of the SLA definition.
  @param exclusionPeriodId The id of the exclusion period.
  @return ApiSlaPatchExclusionPeriodRequest
 */
-func (a *SLAApiService) SlaPatchExclusionPeriod(ctx _context.Context, slaGuid string, exclusionPeriodId int32) ApiSlaPatchExclusionPeriodRequest {
+func (a *SLAApiService) SlaPatchExclusionPeriod(ctx context.Context, slaGuid string, exclusionPeriodId int32) ApiSlaPatchExclusionPeriodRequest {
 	return ApiSlaPatchExclusionPeriodRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -923,30 +911,25 @@ func (a *SLAApiService) SlaPatchExclusionPeriod(ctx _context.Context, slaGuid st
 }
 
 // Execute executes the request
-func (a *SLAApiService) SlaPatchExclusionPeriodExecute(r ApiSlaPatchExclusionPeriodRequest) (*_nethttp.Response, error) {
+func (a *SLAApiService) SlaPatchExclusionPeriodExecute(r ApiSlaPatchExclusionPeriodRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
+		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaPatchExclusionPeriod")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla/{slaGuid}/ExclusionPeriod/{exclusionPeriodId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", _neturl.PathEscape(parameterToString(r.slaGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"exclusionPeriodId"+"}", _neturl.PathEscape(parameterToString(r.exclusionPeriodId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", url.PathEscape(parameterToString(r.slaGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"exclusionPeriodId"+"}", url.PathEscape(parameterToString(r.exclusionPeriodId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.exclusionPeriod == nil {
-		return nil, reportError("exclusionPeriod is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -967,7 +950,7 @@ func (a *SLAApiService) SlaPatchExclusionPeriodExecute(r ApiSlaPatchExclusionPer
 	}
 	// body params
 	localVarPostBody = r.exclusionPeriod
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -977,15 +960,15 @@ func (a *SLAApiService) SlaPatchExclusionPeriodExecute(r ApiSlaPatchExclusionPer
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -996,7 +979,8 @@ func (a *SLAApiService) SlaPatchExclusionPeriodExecute(r ApiSlaPatchExclusionPer
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1006,7 +990,8 @@ func (a *SLAApiService) SlaPatchExclusionPeriodExecute(r ApiSlaPatchExclusionPer
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1015,7 +1000,7 @@ func (a *SLAApiService) SlaPatchExclusionPeriodExecute(r ApiSlaPatchExclusionPer
 }
 
 type ApiSlaPatchSlaRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	slaGuid string
 	sla *Sla
@@ -1027,7 +1012,7 @@ func (r ApiSlaPatchSlaRequest) Sla(sla Sla) ApiSlaPatchSlaRequest {
 	return r
 }
 
-func (r ApiSlaPatchSlaRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiSlaPatchSlaRequest) Execute() (*http.Response, error) {
 	return r.ApiService.SlaPatchSlaExecute(r)
 }
 
@@ -1036,11 +1021,11 @@ SlaPatchSla Partially updates the definition of the specified SLA.
 
 This methods accepts parts of a SLA definition. We recommend retrieving the existing definition first (using the GET method). You can then process the changes you want to make and send back these changes only using this PATCH method.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param slaGuid The Guid of the SLA that should be updated.
  @return ApiSlaPatchSlaRequest
 */
-func (a *SLAApiService) SlaPatchSla(ctx _context.Context, slaGuid string) ApiSlaPatchSlaRequest {
+func (a *SLAApiService) SlaPatchSla(ctx context.Context, slaGuid string) ApiSlaPatchSlaRequest {
 	return ApiSlaPatchSlaRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1049,29 +1034,24 @@ func (a *SLAApiService) SlaPatchSla(ctx _context.Context, slaGuid string) ApiSla
 }
 
 // Execute executes the request
-func (a *SLAApiService) SlaPatchSlaExecute(r ApiSlaPatchSlaRequest) (*_nethttp.Response, error) {
+func (a *SLAApiService) SlaPatchSlaExecute(r ApiSlaPatchSlaRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
+		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaPatchSla")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla/{slaGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", _neturl.PathEscape(parameterToString(r.slaGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", url.PathEscape(parameterToString(r.slaGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.sla == nil {
-		return nil, reportError("sla is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -1092,7 +1072,7 @@ func (a *SLAApiService) SlaPatchSlaExecute(r ApiSlaPatchSlaRequest) (*_nethttp.R
 	}
 	// body params
 	localVarPostBody = r.sla
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1102,15 +1082,15 @@ func (a *SLAApiService) SlaPatchSlaExecute(r ApiSlaPatchSlaRequest) (*_nethttp.R
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1121,7 +1101,8 @@ func (a *SLAApiService) SlaPatchSlaExecute(r ApiSlaPatchSlaRequest) (*_nethttp.R
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1131,7 +1112,8 @@ func (a *SLAApiService) SlaPatchSlaExecute(r ApiSlaPatchSlaRequest) (*_nethttp.R
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1140,7 +1122,7 @@ func (a *SLAApiService) SlaPatchSlaExecute(r ApiSlaPatchSlaRequest) (*_nethttp.R
 }
 
 type ApiSlaPostExclusionPeriodRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	slaGuid string
 	exclusionPeriod *ExclusionPeriod
@@ -1152,18 +1134,18 @@ func (r ApiSlaPostExclusionPeriodRequest) ExclusionPeriod(exclusionPeriod Exclus
 	return r
 }
 
-func (r ApiSlaPostExclusionPeriodRequest) Execute() (ExclusionPeriod, *_nethttp.Response, error) {
+func (r ApiSlaPostExclusionPeriodRequest) Execute() (*ExclusionPeriod, *http.Response, error) {
 	return r.ApiService.SlaPostExclusionPeriodExecute(r)
 }
 
 /*
 SlaPostExclusionPeriod Creates a new exclusion period for the specified SLA.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param slaGuid The Guid of the SLA definition.
  @return ApiSlaPostExclusionPeriodRequest
 */
-func (a *SLAApiService) SlaPostExclusionPeriod(ctx _context.Context, slaGuid string) ApiSlaPostExclusionPeriodRequest {
+func (a *SLAApiService) SlaPostExclusionPeriod(ctx context.Context, slaGuid string) ApiSlaPostExclusionPeriodRequest {
 	return ApiSlaPostExclusionPeriodRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1173,30 +1155,25 @@ func (a *SLAApiService) SlaPostExclusionPeriod(ctx _context.Context, slaGuid str
 
 // Execute executes the request
 //  @return ExclusionPeriod
-func (a *SLAApiService) SlaPostExclusionPeriodExecute(r ApiSlaPostExclusionPeriodRequest) (ExclusionPeriod, *_nethttp.Response, error) {
+func (a *SLAApiService) SlaPostExclusionPeriodExecute(r ApiSlaPostExclusionPeriodRequest) (*ExclusionPeriod, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ExclusionPeriod
+		formFiles            []formFile
+		localVarReturnValue  *ExclusionPeriod
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaPostExclusionPeriod")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla/{slaGuid}/ExclusionPeriod"
-	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", _neturl.PathEscape(parameterToString(r.slaGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", url.PathEscape(parameterToString(r.slaGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.exclusionPeriod == nil {
-		return localVarReturnValue, nil, reportError("exclusionPeriod is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -1217,7 +1194,7 @@ func (a *SLAApiService) SlaPostExclusionPeriodExecute(r ApiSlaPostExclusionPerio
 	}
 	// body params
 	localVarPostBody = r.exclusionPeriod
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1227,15 +1204,15 @@ func (a *SLAApiService) SlaPostExclusionPeriodExecute(r ApiSlaPostExclusionPerio
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1246,7 +1223,8 @@ func (a *SLAApiService) SlaPostExclusionPeriodExecute(r ApiSlaPostExclusionPerio
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1256,14 +1234,15 @@ func (a *SLAApiService) SlaPostExclusionPeriodExecute(r ApiSlaPostExclusionPerio
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1274,7 +1253,7 @@ func (a *SLAApiService) SlaPostExclusionPeriodExecute(r ApiSlaPostExclusionPerio
 }
 
 type ApiSlaPutExclusionPeriodRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	slaGuid string
 	exclusionPeriodId int32
@@ -1287,19 +1266,19 @@ func (r ApiSlaPutExclusionPeriodRequest) ExclusionPeriod(exclusionPeriod Exclusi
 	return r
 }
 
-func (r ApiSlaPutExclusionPeriodRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiSlaPutExclusionPeriodRequest) Execute() (*http.Response, error) {
 	return r.ApiService.SlaPutExclusionPeriodExecute(r)
 }
 
 /*
 SlaPutExclusionPeriod Updates the specified exclusion period for the specified SLA.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param slaGuid The Guid of the SLA definition.
  @param exclusionPeriodId The id of the exclusion period.
  @return ApiSlaPutExclusionPeriodRequest
 */
-func (a *SLAApiService) SlaPutExclusionPeriod(ctx _context.Context, slaGuid string, exclusionPeriodId int32) ApiSlaPutExclusionPeriodRequest {
+func (a *SLAApiService) SlaPutExclusionPeriod(ctx context.Context, slaGuid string, exclusionPeriodId int32) ApiSlaPutExclusionPeriodRequest {
 	return ApiSlaPutExclusionPeriodRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1309,30 +1288,25 @@ func (a *SLAApiService) SlaPutExclusionPeriod(ctx _context.Context, slaGuid stri
 }
 
 // Execute executes the request
-func (a *SLAApiService) SlaPutExclusionPeriodExecute(r ApiSlaPutExclusionPeriodRequest) (*_nethttp.Response, error) {
+func (a *SLAApiService) SlaPutExclusionPeriodExecute(r ApiSlaPutExclusionPeriodRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaPutExclusionPeriod")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla/{slaGuid}/ExclusionPeriod/{exclusionPeriodId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", _neturl.PathEscape(parameterToString(r.slaGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"exclusionPeriodId"+"}", _neturl.PathEscape(parameterToString(r.exclusionPeriodId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", url.PathEscape(parameterToString(r.slaGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"exclusionPeriodId"+"}", url.PathEscape(parameterToString(r.exclusionPeriodId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.exclusionPeriod == nil {
-		return nil, reportError("exclusionPeriod is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -1353,7 +1327,7 @@ func (a *SLAApiService) SlaPutExclusionPeriodExecute(r ApiSlaPutExclusionPeriodR
 	}
 	// body params
 	localVarPostBody = r.exclusionPeriod
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1363,15 +1337,15 @@ func (a *SLAApiService) SlaPutExclusionPeriodExecute(r ApiSlaPutExclusionPeriodR
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1382,7 +1356,8 @@ func (a *SLAApiService) SlaPutExclusionPeriodExecute(r ApiSlaPutExclusionPeriodR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1392,7 +1367,8 @@ func (a *SLAApiService) SlaPutExclusionPeriodExecute(r ApiSlaPutExclusionPeriodR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1401,7 +1377,7 @@ func (a *SLAApiService) SlaPutExclusionPeriodExecute(r ApiSlaPutExclusionPeriodR
 }
 
 type ApiSlaPutSlaRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *SLAApiService
 	slaGuid string
 	sla *Sla
@@ -1413,7 +1389,7 @@ func (r ApiSlaPutSlaRequest) Sla(sla Sla) ApiSlaPutSlaRequest {
 	return r
 }
 
-func (r ApiSlaPutSlaRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiSlaPutSlaRequest) Execute() (*http.Response, error) {
 	return r.ApiService.SlaPutSlaExecute(r)
 }
 
@@ -1422,11 +1398,11 @@ SlaPutSla Updates the definition of the specified SLA.
 
 This methods only accepts a complete SLA definition. We recommend retrieving the existing definition first (using the GET method). You can then process the changes you want to make and send back the updated definition using this PUT method.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param slaGuid The Guid of the SLA that should be updated.
  @return ApiSlaPutSlaRequest
 */
-func (a *SLAApiService) SlaPutSla(ctx _context.Context, slaGuid string) ApiSlaPutSlaRequest {
+func (a *SLAApiService) SlaPutSla(ctx context.Context, slaGuid string) ApiSlaPutSlaRequest {
 	return ApiSlaPutSlaRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1435,29 +1411,24 @@ func (a *SLAApiService) SlaPutSla(ctx _context.Context, slaGuid string) ApiSlaPu
 }
 
 // Execute executes the request
-func (a *SLAApiService) SlaPutSlaExecute(r ApiSlaPutSlaRequest) (*_nethttp.Response, error) {
+func (a *SLAApiService) SlaPutSlaExecute(r ApiSlaPutSlaRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "SLAApiService.SlaPutSla")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Sla/{slaGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", _neturl.PathEscape(parameterToString(r.slaGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"slaGuid"+"}", url.PathEscape(parameterToString(r.slaGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.sla == nil {
-		return nil, reportError("sla is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -1478,7 +1449,7 @@ func (a *SLAApiService) SlaPutSlaExecute(r ApiSlaPutSlaRequest) (*_nethttp.Respo
 	}
 	// body params
 	localVarPostBody = r.sla
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1488,15 +1459,15 @@ func (a *SLAApiService) SlaPutSlaExecute(r ApiSlaPutSlaRequest) (*_nethttp.Respo
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1507,7 +1478,8 @@ func (a *SLAApiService) SlaPutSlaExecute(r ApiSlaPutSlaRequest) (*_nethttp.Respo
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1517,7 +1489,8 @@ func (a *SLAApiService) SlaPutSlaExecute(r ApiSlaPutSlaRequest) (*_nethttp.Respo
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

@@ -23,7 +23,7 @@ type TransactionStep struct {
 	// Number of milliseconds it took for this step to succeed
 	TotalTime float64 `json:"TotalTime"`
 	// Text representation of the step element results
-	Elements *[]string `json:"Elements,omitempty"`
+	Elements []string `json:"Elements,omitempty"`
 	// Did this step result in an error?
 	HasError bool `json:"HasError"`
 }
@@ -61,8 +61,8 @@ func (o *TransactionStep) GetStepNumber() int32 {
 // GetStepNumberOk returns a tuple with the StepNumber field value
 // and a boolean to check if the value has been set.
 func (o *TransactionStep) GetStepNumberOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.StepNumber, true
 }
@@ -74,7 +74,7 @@ func (o *TransactionStep) SetStepNumber(v int32) {
 
 // GetStepName returns the StepName field value if set, zero value otherwise.
 func (o *TransactionStep) GetStepName() string {
-	if o == nil || o.StepName == nil {
+	if o == nil || isNil(o.StepName) {
 		var ret string
 		return ret
 	}
@@ -84,15 +84,15 @@ func (o *TransactionStep) GetStepName() string {
 // GetStepNameOk returns a tuple with the StepName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TransactionStep) GetStepNameOk() (*string, bool) {
-	if o == nil || o.StepName == nil {
-		return nil, false
+	if o == nil || isNil(o.StepName) {
+    return nil, false
 	}
 	return o.StepName, true
 }
 
 // HasStepName returns a boolean if a field has been set.
 func (o *TransactionStep) HasStepName() bool {
-	if o != nil && o.StepName != nil {
+	if o != nil && !isNil(o.StepName) {
 		return true
 	}
 
@@ -117,8 +117,8 @@ func (o *TransactionStep) GetTotalTime() float64 {
 // GetTotalTimeOk returns a tuple with the TotalTime field value
 // and a boolean to check if the value has been set.
 func (o *TransactionStep) GetTotalTimeOk() (*float64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.TotalTime, true
 }
@@ -130,25 +130,25 @@ func (o *TransactionStep) SetTotalTime(v float64) {
 
 // GetElements returns the Elements field value if set, zero value otherwise.
 func (o *TransactionStep) GetElements() []string {
-	if o == nil || o.Elements == nil {
+	if o == nil || isNil(o.Elements) {
 		var ret []string
 		return ret
 	}
-	return *o.Elements
+	return o.Elements
 }
 
 // GetElementsOk returns a tuple with the Elements field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TransactionStep) GetElementsOk() (*[]string, bool) {
-	if o == nil || o.Elements == nil {
-		return nil, false
+func (o *TransactionStep) GetElementsOk() ([]string, bool) {
+	if o == nil || isNil(o.Elements) {
+    return nil, false
 	}
 	return o.Elements, true
 }
 
 // HasElements returns a boolean if a field has been set.
 func (o *TransactionStep) HasElements() bool {
-	if o != nil && o.Elements != nil {
+	if o != nil && !isNil(o.Elements) {
 		return true
 	}
 
@@ -157,7 +157,7 @@ func (o *TransactionStep) HasElements() bool {
 
 // SetElements gets a reference to the given []string and assigns it to the Elements field.
 func (o *TransactionStep) SetElements(v []string) {
-	o.Elements = &v
+	o.Elements = v
 }
 
 // GetHasError returns the HasError field value
@@ -173,8 +173,8 @@ func (o *TransactionStep) GetHasError() bool {
 // GetHasErrorOk returns a tuple with the HasError field value
 // and a boolean to check if the value has been set.
 func (o *TransactionStep) GetHasErrorOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.HasError, true
 }
@@ -189,13 +189,13 @@ func (o TransactionStep) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["StepNumber"] = o.StepNumber
 	}
-	if o.StepName != nil {
+	if !isNil(o.StepName) {
 		toSerialize["StepName"] = o.StepName
 	}
 	if true {
 		toSerialize["TotalTime"] = o.TotalTime
 	}
-	if o.Elements != nil {
+	if !isNil(o.Elements) {
 		toSerialize["Elements"] = o.Elements
 	}
 	if true {

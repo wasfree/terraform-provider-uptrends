@@ -47,7 +47,7 @@ func NewPageLoadMetricsWithDefaults() *PageLoadMetrics {
 
 // GetCumulativeLayoutShift returns the CumulativeLayoutShift field value if set, zero value otherwise.
 func (o *PageLoadMetrics) GetCumulativeLayoutShift() float32 {
-	if o == nil || o.CumulativeLayoutShift == nil {
+	if o == nil || isNil(o.CumulativeLayoutShift) {
 		var ret float32
 		return ret
 	}
@@ -57,15 +57,15 @@ func (o *PageLoadMetrics) GetCumulativeLayoutShift() float32 {
 // GetCumulativeLayoutShiftOk returns a tuple with the CumulativeLayoutShift field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PageLoadMetrics) GetCumulativeLayoutShiftOk() (*float32, bool) {
-	if o == nil || o.CumulativeLayoutShift == nil {
-		return nil, false
+	if o == nil || isNil(o.CumulativeLayoutShift) {
+    return nil, false
 	}
 	return o.CumulativeLayoutShift, true
 }
 
 // HasCumulativeLayoutShift returns a boolean if a field has been set.
 func (o *PageLoadMetrics) HasCumulativeLayoutShift() bool {
-	if o != nil && o.CumulativeLayoutShift != nil {
+	if o != nil && !isNil(o.CumulativeLayoutShift) {
 		return true
 	}
 
@@ -79,7 +79,7 @@ func (o *PageLoadMetrics) SetCumulativeLayoutShift(v float32) {
 
 // GetFirstContentfulPaint returns the FirstContentfulPaint field value if set, zero value otherwise.
 func (o *PageLoadMetrics) GetFirstContentfulPaint() int32 {
-	if o == nil || o.FirstContentfulPaint == nil {
+	if o == nil || isNil(o.FirstContentfulPaint) {
 		var ret int32
 		return ret
 	}
@@ -89,15 +89,15 @@ func (o *PageLoadMetrics) GetFirstContentfulPaint() int32 {
 // GetFirstContentfulPaintOk returns a tuple with the FirstContentfulPaint field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PageLoadMetrics) GetFirstContentfulPaintOk() (*int32, bool) {
-	if o == nil || o.FirstContentfulPaint == nil {
-		return nil, false
+	if o == nil || isNil(o.FirstContentfulPaint) {
+    return nil, false
 	}
 	return o.FirstContentfulPaint, true
 }
 
 // HasFirstContentfulPaint returns a boolean if a field has been set.
 func (o *PageLoadMetrics) HasFirstContentfulPaint() bool {
-	if o != nil && o.FirstContentfulPaint != nil {
+	if o != nil && !isNil(o.FirstContentfulPaint) {
 		return true
 	}
 
@@ -111,7 +111,7 @@ func (o *PageLoadMetrics) SetFirstContentfulPaint(v int32) {
 
 // GetLargestContentfulPaint returns the LargestContentfulPaint field value if set, zero value otherwise.
 func (o *PageLoadMetrics) GetLargestContentfulPaint() int32 {
-	if o == nil || o.LargestContentfulPaint == nil {
+	if o == nil || isNil(o.LargestContentfulPaint) {
 		var ret int32
 		return ret
 	}
@@ -121,15 +121,15 @@ func (o *PageLoadMetrics) GetLargestContentfulPaint() int32 {
 // GetLargestContentfulPaintOk returns a tuple with the LargestContentfulPaint field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PageLoadMetrics) GetLargestContentfulPaintOk() (*int32, bool) {
-	if o == nil || o.LargestContentfulPaint == nil {
-		return nil, false
+	if o == nil || isNil(o.LargestContentfulPaint) {
+    return nil, false
 	}
 	return o.LargestContentfulPaint, true
 }
 
 // HasLargestContentfulPaint returns a boolean if a field has been set.
 func (o *PageLoadMetrics) HasLargestContentfulPaint() bool {
-	if o != nil && o.LargestContentfulPaint != nil {
+	if o != nil && !isNil(o.LargestContentfulPaint) {
 		return true
 	}
 
@@ -143,7 +143,7 @@ func (o *PageLoadMetrics) SetLargestContentfulPaint(v int32) {
 
 // GetTotalBlockingTime returns the TotalBlockingTime field value if set, zero value otherwise.
 func (o *PageLoadMetrics) GetTotalBlockingTime() int32 {
-	if o == nil || o.TotalBlockingTime == nil {
+	if o == nil || isNil(o.TotalBlockingTime) {
 		var ret int32
 		return ret
 	}
@@ -153,15 +153,15 @@ func (o *PageLoadMetrics) GetTotalBlockingTime() int32 {
 // GetTotalBlockingTimeOk returns a tuple with the TotalBlockingTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PageLoadMetrics) GetTotalBlockingTimeOk() (*int32, bool) {
-	if o == nil || o.TotalBlockingTime == nil {
-		return nil, false
+	if o == nil || isNil(o.TotalBlockingTime) {
+    return nil, false
 	}
 	return o.TotalBlockingTime, true
 }
 
 // HasTotalBlockingTime returns a boolean if a field has been set.
 func (o *PageLoadMetrics) HasTotalBlockingTime() bool {
-	if o != nil && o.TotalBlockingTime != nil {
+	if o != nil && !isNil(o.TotalBlockingTime) {
 		return true
 	}
 
@@ -175,7 +175,7 @@ func (o *PageLoadMetrics) SetTotalBlockingTime(v int32) {
 
 // GetTimeToInteractive returns the TimeToInteractive field value if set, zero value otherwise.
 func (o *PageLoadMetrics) GetTimeToInteractive() int32 {
-	if o == nil || o.TimeToInteractive == nil {
+	if o == nil || isNil(o.TimeToInteractive) {
 		var ret int32
 		return ret
 	}
@@ -185,15 +185,15 @@ func (o *PageLoadMetrics) GetTimeToInteractive() int32 {
 // GetTimeToInteractiveOk returns a tuple with the TimeToInteractive field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PageLoadMetrics) GetTimeToInteractiveOk() (*int32, bool) {
-	if o == nil || o.TimeToInteractive == nil {
-		return nil, false
+	if o == nil || isNil(o.TimeToInteractive) {
+    return nil, false
 	}
 	return o.TimeToInteractive, true
 }
 
 // HasTimeToInteractive returns a boolean if a field has been set.
 func (o *PageLoadMetrics) HasTimeToInteractive() bool {
-	if o != nil && o.TimeToInteractive != nil {
+	if o != nil && !isNil(o.TimeToInteractive) {
 		return true
 	}
 
@@ -207,19 +207,19 @@ func (o *PageLoadMetrics) SetTimeToInteractive(v int32) {
 
 func (o PageLoadMetrics) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.CumulativeLayoutShift != nil {
+	if !isNil(o.CumulativeLayoutShift) {
 		toSerialize["CumulativeLayoutShift"] = o.CumulativeLayoutShift
 	}
-	if o.FirstContentfulPaint != nil {
+	if !isNil(o.FirstContentfulPaint) {
 		toSerialize["FirstContentfulPaint"] = o.FirstContentfulPaint
 	}
-	if o.LargestContentfulPaint != nil {
+	if !isNil(o.LargestContentfulPaint) {
 		toSerialize["LargestContentfulPaint"] = o.LargestContentfulPaint
 	}
-	if o.TotalBlockingTime != nil {
+	if !isNil(o.TotalBlockingTime) {
 		toSerialize["TotalBlockingTime"] = o.TotalBlockingTime
 	}
-	if o.TimeToInteractive != nil {
+	if !isNil(o.TimeToInteractive) {
 		toSerialize["TimeToInteractive"] = o.TimeToInteractive
 	}
 	return json.Marshal(toSerialize)

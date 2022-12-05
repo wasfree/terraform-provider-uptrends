@@ -17,9 +17,13 @@ import (
 // MonitorStatus struct for MonitorStatus
 type MonitorStatus struct {
 	Attributes *MonitorStatusAttributes `json:"Attributes,omitempty"`
+	// Identifier 
 	Id string `json:"Id"`
+	// Object type
 	Type *string `json:"Type,omitempty"`
-	Relationships *[]RelationObject `json:"Relationships,omitempty"`
+	// Relationships of the object
+	Relationships []RelationObject `json:"Relationships,omitempty"`
+	// Links related to the object
 	Links *map[string]string `json:"Links,omitempty"`
 }
 
@@ -43,7 +47,7 @@ func NewMonitorStatusWithDefaults() *MonitorStatus {
 
 // GetAttributes returns the Attributes field value if set, zero value otherwise.
 func (o *MonitorStatus) GetAttributes() MonitorStatusAttributes {
-	if o == nil || o.Attributes == nil {
+	if o == nil || isNil(o.Attributes) {
 		var ret MonitorStatusAttributes
 		return ret
 	}
@@ -53,15 +57,15 @@ func (o *MonitorStatus) GetAttributes() MonitorStatusAttributes {
 // GetAttributesOk returns a tuple with the Attributes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorStatus) GetAttributesOk() (*MonitorStatusAttributes, bool) {
-	if o == nil || o.Attributes == nil {
-		return nil, false
+	if o == nil || isNil(o.Attributes) {
+    return nil, false
 	}
 	return o.Attributes, true
 }
 
 // HasAttributes returns a boolean if a field has been set.
 func (o *MonitorStatus) HasAttributes() bool {
-	if o != nil && o.Attributes != nil {
+	if o != nil && !isNil(o.Attributes) {
 		return true
 	}
 
@@ -86,8 +90,8 @@ func (o *MonitorStatus) GetId() string {
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
 func (o *MonitorStatus) GetIdOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Id, true
 }
@@ -99,7 +103,7 @@ func (o *MonitorStatus) SetId(v string) {
 
 // GetType returns the Type field value if set, zero value otherwise.
 func (o *MonitorStatus) GetType() string {
-	if o == nil || o.Type == nil {
+	if o == nil || isNil(o.Type) {
 		var ret string
 		return ret
 	}
@@ -109,15 +113,15 @@ func (o *MonitorStatus) GetType() string {
 // GetTypeOk returns a tuple with the Type field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorStatus) GetTypeOk() (*string, bool) {
-	if o == nil || o.Type == nil {
-		return nil, false
+	if o == nil || isNil(o.Type) {
+    return nil, false
 	}
 	return o.Type, true
 }
 
 // HasType returns a boolean if a field has been set.
 func (o *MonitorStatus) HasType() bool {
-	if o != nil && o.Type != nil {
+	if o != nil && !isNil(o.Type) {
 		return true
 	}
 
@@ -131,25 +135,25 @@ func (o *MonitorStatus) SetType(v string) {
 
 // GetRelationships returns the Relationships field value if set, zero value otherwise.
 func (o *MonitorStatus) GetRelationships() []RelationObject {
-	if o == nil || o.Relationships == nil {
+	if o == nil || isNil(o.Relationships) {
 		var ret []RelationObject
 		return ret
 	}
-	return *o.Relationships
+	return o.Relationships
 }
 
 // GetRelationshipsOk returns a tuple with the Relationships field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MonitorStatus) GetRelationshipsOk() (*[]RelationObject, bool) {
-	if o == nil || o.Relationships == nil {
-		return nil, false
+func (o *MonitorStatus) GetRelationshipsOk() ([]RelationObject, bool) {
+	if o == nil || isNil(o.Relationships) {
+    return nil, false
 	}
 	return o.Relationships, true
 }
 
 // HasRelationships returns a boolean if a field has been set.
 func (o *MonitorStatus) HasRelationships() bool {
-	if o != nil && o.Relationships != nil {
+	if o != nil && !isNil(o.Relationships) {
 		return true
 	}
 
@@ -158,12 +162,12 @@ func (o *MonitorStatus) HasRelationships() bool {
 
 // SetRelationships gets a reference to the given []RelationObject and assigns it to the Relationships field.
 func (o *MonitorStatus) SetRelationships(v []RelationObject) {
-	o.Relationships = &v
+	o.Relationships = v
 }
 
 // GetLinks returns the Links field value if set, zero value otherwise.
 func (o *MonitorStatus) GetLinks() map[string]string {
-	if o == nil || o.Links == nil {
+	if o == nil || isNil(o.Links) {
 		var ret map[string]string
 		return ret
 	}
@@ -173,15 +177,15 @@ func (o *MonitorStatus) GetLinks() map[string]string {
 // GetLinksOk returns a tuple with the Links field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorStatus) GetLinksOk() (*map[string]string, bool) {
-	if o == nil || o.Links == nil {
-		return nil, false
+	if o == nil || isNil(o.Links) {
+    return nil, false
 	}
 	return o.Links, true
 }
 
 // HasLinks returns a boolean if a field has been set.
 func (o *MonitorStatus) HasLinks() bool {
-	if o != nil && o.Links != nil {
+	if o != nil && !isNil(o.Links) {
 		return true
 	}
 
@@ -195,19 +199,19 @@ func (o *MonitorStatus) SetLinks(v map[string]string) {
 
 func (o MonitorStatus) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Attributes != nil {
+	if !isNil(o.Attributes) {
 		toSerialize["Attributes"] = o.Attributes
 	}
 	if true {
 		toSerialize["Id"] = o.Id
 	}
-	if o.Type != nil {
+	if !isNil(o.Type) {
 		toSerialize["Type"] = o.Type
 	}
-	if o.Relationships != nil {
+	if !isNil(o.Relationships) {
 		toSerialize["Relationships"] = o.Relationships
 	}
-	if o.Links != nil {
+	if !isNil(o.Links) {
 		toSerialize["Links"] = o.Links
 	}
 	return json.Marshal(toSerialize)

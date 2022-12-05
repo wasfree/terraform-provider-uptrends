@@ -25,7 +25,8 @@ const (
 	ALERTTYPE_REMINDER AlertType = "Reminder"
 )
 
-var allowedAlertTypeEnumValues = []AlertType{
+// All allowed values of AlertType enum
+var AllowedAlertTypeEnumValues = []AlertType{
 	"Ok",
 	"Error",
 	"Reminder",
@@ -38,7 +39,7 @@ func (v *AlertType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := AlertType(value)
-	for _, existing := range allowedAlertTypeEnumValues {
+	for _, existing := range AllowedAlertTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -55,13 +56,13 @@ func NewAlertTypeFromValue(v string) (*AlertType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for AlertType: valid values are %v", v, allowedAlertTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for AlertType: valid values are %v", v, AllowedAlertTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v AlertType) IsValid() bool {
-	for _, existing := range allowedAlertTypeEnumValues {
+	for _, existing := range AllowedAlertTypeEnumValues {
 		if existing == v {
 			return true
 		}

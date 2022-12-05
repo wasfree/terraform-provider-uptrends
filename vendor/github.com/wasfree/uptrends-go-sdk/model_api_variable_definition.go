@@ -19,7 +19,7 @@ type ApiVariableDefinition struct {
 	Source ApiVariableSourceType `json:"Source"`
 	Property *string `json:"Property,omitempty"`
 	Name *string `json:"Name,omitempty"`
-	Arguments *[]ApiVariableDefinition `json:"Arguments,omitempty"`
+	Arguments []ApiVariableDefinition `json:"Arguments,omitempty"`
 }
 
 // NewApiVariableDefinition instantiates a new ApiVariableDefinition object
@@ -53,8 +53,8 @@ func (o *ApiVariableDefinition) GetSource() ApiVariableSourceType {
 // GetSourceOk returns a tuple with the Source field value
 // and a boolean to check if the value has been set.
 func (o *ApiVariableDefinition) GetSourceOk() (*ApiVariableSourceType, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Source, true
 }
@@ -66,7 +66,7 @@ func (o *ApiVariableDefinition) SetSource(v ApiVariableSourceType) {
 
 // GetProperty returns the Property field value if set, zero value otherwise.
 func (o *ApiVariableDefinition) GetProperty() string {
-	if o == nil || o.Property == nil {
+	if o == nil || isNil(o.Property) {
 		var ret string
 		return ret
 	}
@@ -76,15 +76,15 @@ func (o *ApiVariableDefinition) GetProperty() string {
 // GetPropertyOk returns a tuple with the Property field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiVariableDefinition) GetPropertyOk() (*string, bool) {
-	if o == nil || o.Property == nil {
-		return nil, false
+	if o == nil || isNil(o.Property) {
+    return nil, false
 	}
 	return o.Property, true
 }
 
 // HasProperty returns a boolean if a field has been set.
 func (o *ApiVariableDefinition) HasProperty() bool {
-	if o != nil && o.Property != nil {
+	if o != nil && !isNil(o.Property) {
 		return true
 	}
 
@@ -98,7 +98,7 @@ func (o *ApiVariableDefinition) SetProperty(v string) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *ApiVariableDefinition) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -108,15 +108,15 @@ func (o *ApiVariableDefinition) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiVariableDefinition) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *ApiVariableDefinition) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -130,25 +130,25 @@ func (o *ApiVariableDefinition) SetName(v string) {
 
 // GetArguments returns the Arguments field value if set, zero value otherwise.
 func (o *ApiVariableDefinition) GetArguments() []ApiVariableDefinition {
-	if o == nil || o.Arguments == nil {
+	if o == nil || isNil(o.Arguments) {
 		var ret []ApiVariableDefinition
 		return ret
 	}
-	return *o.Arguments
+	return o.Arguments
 }
 
 // GetArgumentsOk returns a tuple with the Arguments field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ApiVariableDefinition) GetArgumentsOk() (*[]ApiVariableDefinition, bool) {
-	if o == nil || o.Arguments == nil {
-		return nil, false
+func (o *ApiVariableDefinition) GetArgumentsOk() ([]ApiVariableDefinition, bool) {
+	if o == nil || isNil(o.Arguments) {
+    return nil, false
 	}
 	return o.Arguments, true
 }
 
 // HasArguments returns a boolean if a field has been set.
 func (o *ApiVariableDefinition) HasArguments() bool {
-	if o != nil && o.Arguments != nil {
+	if o != nil && !isNil(o.Arguments) {
 		return true
 	}
 
@@ -157,7 +157,7 @@ func (o *ApiVariableDefinition) HasArguments() bool {
 
 // SetArguments gets a reference to the given []ApiVariableDefinition and assigns it to the Arguments field.
 func (o *ApiVariableDefinition) SetArguments(v []ApiVariableDefinition) {
-	o.Arguments = &v
+	o.Arguments = v
 }
 
 func (o ApiVariableDefinition) MarshalJSON() ([]byte, error) {
@@ -165,13 +165,13 @@ func (o ApiVariableDefinition) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["Source"] = o.Source
 	}
-	if o.Property != nil {
+	if !isNil(o.Property) {
 		toSerialize["Property"] = o.Property
 	}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
-	if o.Arguments != nil {
+	if !isNil(o.Arguments) {
 		toSerialize["Arguments"] = o.Arguments
 	}
 	return json.Marshal(toSerialize)

@@ -12,12 +12,11 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // MetaData struct for MetaData
 type MetaData struct {
-	Timestamp *time.Time `json:"Timestamp,omitempty"`
+	Timestamp map[string]interface{} `json:"Timestamp,omitempty"`
 	Period *PeriodMetaData `json:"Period,omitempty"`
 }
 
@@ -39,40 +38,40 @@ func NewMetaDataWithDefaults() *MetaData {
 }
 
 // GetTimestamp returns the Timestamp field value if set, zero value otherwise.
-func (o *MetaData) GetTimestamp() time.Time {
-	if o == nil || o.Timestamp == nil {
-		var ret time.Time
+func (o *MetaData) GetTimestamp() map[string]interface{} {
+	if o == nil || isNil(o.Timestamp) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.Timestamp
+	return o.Timestamp
 }
 
 // GetTimestampOk returns a tuple with the Timestamp field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MetaData) GetTimestampOk() (*time.Time, bool) {
-	if o == nil || o.Timestamp == nil {
-		return nil, false
+func (o *MetaData) GetTimestampOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.Timestamp) {
+    return map[string]interface{}{}, false
 	}
 	return o.Timestamp, true
 }
 
 // HasTimestamp returns a boolean if a field has been set.
 func (o *MetaData) HasTimestamp() bool {
-	if o != nil && o.Timestamp != nil {
+	if o != nil && !isNil(o.Timestamp) {
 		return true
 	}
 
 	return false
 }
 
-// SetTimestamp gets a reference to the given time.Time and assigns it to the Timestamp field.
-func (o *MetaData) SetTimestamp(v time.Time) {
-	o.Timestamp = &v
+// SetTimestamp gets a reference to the given map[string]interface{} and assigns it to the Timestamp field.
+func (o *MetaData) SetTimestamp(v map[string]interface{}) {
+	o.Timestamp = v
 }
 
 // GetPeriod returns the Period field value if set, zero value otherwise.
 func (o *MetaData) GetPeriod() PeriodMetaData {
-	if o == nil || o.Period == nil {
+	if o == nil || isNil(o.Period) {
 		var ret PeriodMetaData
 		return ret
 	}
@@ -82,15 +81,15 @@ func (o *MetaData) GetPeriod() PeriodMetaData {
 // GetPeriodOk returns a tuple with the Period field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MetaData) GetPeriodOk() (*PeriodMetaData, bool) {
-	if o == nil || o.Period == nil {
-		return nil, false
+	if o == nil || isNil(o.Period) {
+    return nil, false
 	}
 	return o.Period, true
 }
 
 // HasPeriod returns a boolean if a field has been set.
 func (o *MetaData) HasPeriod() bool {
-	if o != nil && o.Period != nil {
+	if o != nil && !isNil(o.Period) {
 		return true
 	}
 
@@ -104,10 +103,10 @@ func (o *MetaData) SetPeriod(v PeriodMetaData) {
 
 func (o MetaData) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Timestamp != nil {
+	if !isNil(o.Timestamp) {
 		toSerialize["Timestamp"] = o.Timestamp
 	}
-	if o.Period != nil {
+	if !isNil(o.Period) {
 		toSerialize["Period"] = o.Period
 	}
 	return json.Marshal(toSerialize)

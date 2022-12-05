@@ -12,32 +12,27 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
-	"time"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // AlertApiService AlertApi service
 type AlertApiService service
 
 type ApiAlertGetMonitorAlertsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertApiService
 	monitorGuid string
 	includeReminders *bool
 	cursor *string
 	sorting *string
 	take *int32
-	start *time.Time
-	end *time.Time
+	start *interface{}
+	end *interface{}
 	presetPeriod *string
 }
 
@@ -46,49 +41,55 @@ func (r ApiAlertGetMonitorAlertsRequest) IncludeReminders(includeReminders bool)
 	r.includeReminders = &includeReminders
 	return r
 }
+
 // A cursor value that should be used for traversing the dataset.
 func (r ApiAlertGetMonitorAlertsRequest) Cursor(cursor string) ApiAlertGetMonitorAlertsRequest {
 	r.cursor = &cursor
 	return r
 }
+
 // Sorting direction based on timestamp.
 func (r ApiAlertGetMonitorAlertsRequest) Sorting(sorting string) ApiAlertGetMonitorAlertsRequest {
 	r.sorting = &sorting
 	return r
 }
+
 // The number of records to return (Max value &#x3D; 100)
 func (r ApiAlertGetMonitorAlertsRequest) Take(take int32) ApiAlertGetMonitorAlertsRequest {
 	r.take = &take
 	return r
 }
+
 // The start of a custom period (can&#39;t be used together with the PresetPeriod parameter)
-func (r ApiAlertGetMonitorAlertsRequest) Start(start time.Time) ApiAlertGetMonitorAlertsRequest {
+func (r ApiAlertGetMonitorAlertsRequest) Start(start interface{}) ApiAlertGetMonitorAlertsRequest {
 	r.start = &start
 	return r
 }
+
 // The end of a custom period
-func (r ApiAlertGetMonitorAlertsRequest) End(end time.Time) ApiAlertGetMonitorAlertsRequest {
+func (r ApiAlertGetMonitorAlertsRequest) End(end interface{}) ApiAlertGetMonitorAlertsRequest {
 	r.end = &end
 	return r
 }
+
 // The requested time period.
 func (r ApiAlertGetMonitorAlertsRequest) PresetPeriod(presetPeriod string) ApiAlertGetMonitorAlertsRequest {
 	r.presetPeriod = &presetPeriod
 	return r
 }
 
-func (r ApiAlertGetMonitorAlertsRequest) Execute() (AlertResponse, *_nethttp.Response, error) {
+func (r ApiAlertGetMonitorAlertsRequest) Execute() (*AlertResponse, *http.Response, error) {
 	return r.ApiService.AlertGetMonitorAlertsExecute(r)
 }
 
 /*
 AlertGetMonitorAlerts Returns alerts for a specific monitor.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGuid The Guid of the monitor to get alerts for.
  @return ApiAlertGetMonitorAlertsRequest
 */
-func (a *AlertApiService) AlertGetMonitorAlerts(ctx _context.Context, monitorGuid string) ApiAlertGetMonitorAlertsRequest {
+func (a *AlertApiService) AlertGetMonitorAlerts(ctx context.Context, monitorGuid string) ApiAlertGetMonitorAlertsRequest {
 	return ApiAlertGetMonitorAlertsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -98,27 +99,25 @@ func (a *AlertApiService) AlertGetMonitorAlerts(ctx _context.Context, monitorGui
 
 // Execute executes the request
 //  @return AlertResponse
-func (a *AlertApiService) AlertGetMonitorAlertsExecute(r ApiAlertGetMonitorAlertsRequest) (AlertResponse, *_nethttp.Response, error) {
+func (a *AlertApiService) AlertGetMonitorAlertsExecute(r ApiAlertGetMonitorAlertsRequest) (*AlertResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  AlertResponse
+		formFiles            []formFile
+		localVarReturnValue  *AlertResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertApiService.AlertGetMonitorAlerts")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Alert/Monitor/{monitorGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", url.PathEscape(parameterToString(r.monitorGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	if r.includeReminders != nil {
 		localVarQueryParams.Add("IncludeReminders", parameterToString(*r.includeReminders, ""))
@@ -158,7 +157,7 @@ func (a *AlertApiService) AlertGetMonitorAlertsExecute(r ApiAlertGetMonitorAlert
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -168,15 +167,15 @@ func (a *AlertApiService) AlertGetMonitorAlertsExecute(r ApiAlertGetMonitorAlert
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -187,7 +186,8 @@ func (a *AlertApiService) AlertGetMonitorAlertsExecute(r ApiAlertGetMonitorAlert
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -197,14 +197,15 @@ func (a *AlertApiService) AlertGetMonitorAlertsExecute(r ApiAlertGetMonitorAlert
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -215,15 +216,15 @@ func (a *AlertApiService) AlertGetMonitorAlertsExecute(r ApiAlertGetMonitorAlert
 }
 
 type ApiAlertGetMonitorGroupAlertsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *AlertApiService
 	monitorGroupGuid string
 	includeReminders *bool
 	cursor *string
 	sorting *string
 	take *int32
-	start *time.Time
-	end *time.Time
+	start *interface{}
+	end *interface{}
 	presetPeriod *string
 }
 
@@ -232,49 +233,55 @@ func (r ApiAlertGetMonitorGroupAlertsRequest) IncludeReminders(includeReminders 
 	r.includeReminders = &includeReminders
 	return r
 }
+
 // A cursor value that should be used for traversing the dataset.
 func (r ApiAlertGetMonitorGroupAlertsRequest) Cursor(cursor string) ApiAlertGetMonitorGroupAlertsRequest {
 	r.cursor = &cursor
 	return r
 }
+
 // Sorting direction based on timestamp.
 func (r ApiAlertGetMonitorGroupAlertsRequest) Sorting(sorting string) ApiAlertGetMonitorGroupAlertsRequest {
 	r.sorting = &sorting
 	return r
 }
+
 // The number of records to return (Max value &#x3D; 100)
 func (r ApiAlertGetMonitorGroupAlertsRequest) Take(take int32) ApiAlertGetMonitorGroupAlertsRequest {
 	r.take = &take
 	return r
 }
+
 // The start of a custom period (can&#39;t be used together with the PresetPeriod parameter)
-func (r ApiAlertGetMonitorGroupAlertsRequest) Start(start time.Time) ApiAlertGetMonitorGroupAlertsRequest {
+func (r ApiAlertGetMonitorGroupAlertsRequest) Start(start interface{}) ApiAlertGetMonitorGroupAlertsRequest {
 	r.start = &start
 	return r
 }
+
 // The end of a custom period
-func (r ApiAlertGetMonitorGroupAlertsRequest) End(end time.Time) ApiAlertGetMonitorGroupAlertsRequest {
+func (r ApiAlertGetMonitorGroupAlertsRequest) End(end interface{}) ApiAlertGetMonitorGroupAlertsRequest {
 	r.end = &end
 	return r
 }
+
 // The requested time period.
 func (r ApiAlertGetMonitorGroupAlertsRequest) PresetPeriod(presetPeriod string) ApiAlertGetMonitorGroupAlertsRequest {
 	r.presetPeriod = &presetPeriod
 	return r
 }
 
-func (r ApiAlertGetMonitorGroupAlertsRequest) Execute() (AlertResponse, *_nethttp.Response, error) {
+func (r ApiAlertGetMonitorGroupAlertsRequest) Execute() (*AlertResponse, *http.Response, error) {
 	return r.ApiService.AlertGetMonitorGroupAlertsExecute(r)
 }
 
 /*
 AlertGetMonitorGroupAlerts Returns alerts for a specific monitor group.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The Guid of the monitor group to get alerts for.
  @return ApiAlertGetMonitorGroupAlertsRequest
 */
-func (a *AlertApiService) AlertGetMonitorGroupAlerts(ctx _context.Context, monitorGroupGuid string) ApiAlertGetMonitorGroupAlertsRequest {
+func (a *AlertApiService) AlertGetMonitorGroupAlerts(ctx context.Context, monitorGroupGuid string) ApiAlertGetMonitorGroupAlertsRequest {
 	return ApiAlertGetMonitorGroupAlertsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -284,27 +291,25 @@ func (a *AlertApiService) AlertGetMonitorGroupAlerts(ctx _context.Context, monit
 
 // Execute executes the request
 //  @return AlertResponse
-func (a *AlertApiService) AlertGetMonitorGroupAlertsExecute(r ApiAlertGetMonitorGroupAlertsRequest) (AlertResponse, *_nethttp.Response, error) {
+func (a *AlertApiService) AlertGetMonitorGroupAlertsExecute(r ApiAlertGetMonitorGroupAlertsRequest) (*AlertResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  AlertResponse
+		formFiles            []formFile
+		localVarReturnValue  *AlertResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "AlertApiService.AlertGetMonitorGroupAlerts")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Alert/MonitorGroup/{monitorGroupGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	if r.includeReminders != nil {
 		localVarQueryParams.Add("IncludeReminders", parameterToString(*r.includeReminders, ""))
@@ -344,7 +349,7 @@ func (a *AlertApiService) AlertGetMonitorGroupAlertsExecute(r ApiAlertGetMonitor
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -354,15 +359,15 @@ func (a *AlertApiService) AlertGetMonitorGroupAlertsExecute(r ApiAlertGetMonitor
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -373,7 +378,8 @@ func (a *AlertApiService) AlertGetMonitorGroupAlertsExecute(r ApiAlertGetMonitor
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -383,14 +389,15 @@ func (a *AlertApiService) AlertGetMonitorGroupAlertsExecute(r ApiAlertGetMonitor
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

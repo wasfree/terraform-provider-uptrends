@@ -12,32 +12,27 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
-	"time"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // MonitorCheckApiService MonitorCheckApi service
 type MonitorCheckApiService service
 
 type ApiMonitorCheckGetAccountMonitorChecksRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	errorLevel *string
 	showPartialMeasurements *bool
 	cursor *string
 	sorting *string
 	take *int32
-	start *time.Time
-	end *time.Time
+	start *interface{}
+	end *interface{}
 	presetPeriod *string
 }
 
@@ -46,53 +41,60 @@ func (r ApiMonitorCheckGetAccountMonitorChecksRequest) ErrorLevel(errorLevel str
 	r.errorLevel = &errorLevel
 	return r
 }
+
 // Show partial measurements from concurrent monitors
 func (r ApiMonitorCheckGetAccountMonitorChecksRequest) ShowPartialMeasurements(showPartialMeasurements bool) ApiMonitorCheckGetAccountMonitorChecksRequest {
 	r.showPartialMeasurements = &showPartialMeasurements
 	return r
 }
+
 // A cursor value that should be used for traversing the dataset.
 func (r ApiMonitorCheckGetAccountMonitorChecksRequest) Cursor(cursor string) ApiMonitorCheckGetAccountMonitorChecksRequest {
 	r.cursor = &cursor
 	return r
 }
+
 // Sorting direction based on timestamp.
 func (r ApiMonitorCheckGetAccountMonitorChecksRequest) Sorting(sorting string) ApiMonitorCheckGetAccountMonitorChecksRequest {
 	r.sorting = &sorting
 	return r
 }
+
 // The number of records to return (Max value &#x3D; 100)
 func (r ApiMonitorCheckGetAccountMonitorChecksRequest) Take(take int32) ApiMonitorCheckGetAccountMonitorChecksRequest {
 	r.take = &take
 	return r
 }
+
 // The start of a custom period (can&#39;t be used together with the PresetPeriod parameter)
-func (r ApiMonitorCheckGetAccountMonitorChecksRequest) Start(start time.Time) ApiMonitorCheckGetAccountMonitorChecksRequest {
+func (r ApiMonitorCheckGetAccountMonitorChecksRequest) Start(start interface{}) ApiMonitorCheckGetAccountMonitorChecksRequest {
 	r.start = &start
 	return r
 }
+
 // The end of a custom period
-func (r ApiMonitorCheckGetAccountMonitorChecksRequest) End(end time.Time) ApiMonitorCheckGetAccountMonitorChecksRequest {
+func (r ApiMonitorCheckGetAccountMonitorChecksRequest) End(end interface{}) ApiMonitorCheckGetAccountMonitorChecksRequest {
 	r.end = &end
 	return r
 }
+
 // The requested time period.
 func (r ApiMonitorCheckGetAccountMonitorChecksRequest) PresetPeriod(presetPeriod string) ApiMonitorCheckGetAccountMonitorChecksRequest {
 	r.presetPeriod = &presetPeriod
 	return r
 }
 
-func (r ApiMonitorCheckGetAccountMonitorChecksRequest) Execute() (MonitorCheckResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetAccountMonitorChecksRequest) Execute() (*MonitorCheckResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetAccountMonitorChecksExecute(r)
 }
 
 /*
 MonitorCheckGetAccountMonitorChecks Returns all monitor check data.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiMonitorCheckGetAccountMonitorChecksRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetAccountMonitorChecks(ctx _context.Context) ApiMonitorCheckGetAccountMonitorChecksRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetAccountMonitorChecks(ctx context.Context) ApiMonitorCheckGetAccountMonitorChecksRequest {
 	return ApiMonitorCheckGetAccountMonitorChecksRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -101,26 +103,24 @@ func (a *MonitorCheckApiService) MonitorCheckGetAccountMonitorChecks(ctx _contex
 
 // Execute executes the request
 //  @return MonitorCheckResponse
-func (a *MonitorCheckApiService) MonitorCheckGetAccountMonitorChecksExecute(r ApiMonitorCheckGetAccountMonitorChecksRequest) (MonitorCheckResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetAccountMonitorChecksExecute(r ApiMonitorCheckGetAccountMonitorChecksRequest) (*MonitorCheckResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  MonitorCheckResponse
+		formFiles            []formFile
+		localVarReturnValue  *MonitorCheckResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetAccountMonitorChecks")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	if r.errorLevel != nil {
 		localVarQueryParams.Add("ErrorLevel", parameterToString(*r.errorLevel, ""))
@@ -163,7 +163,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetAccountMonitorChecksExecute(r Ap
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -173,15 +173,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetAccountMonitorChecksExecute(r Ap
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -192,14 +192,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetAccountMonitorChecksExecute(r Ap
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -210,24 +211,23 @@ func (a *MonitorCheckApiService) MonitorCheckGetAccountMonitorChecksExecute(r Ap
 }
 
 type ApiMonitorCheckGetConcurrentMonitorPartialChecksRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorCheckId int64
 }
 
-
-func (r ApiMonitorCheckGetConcurrentMonitorPartialChecksRequest) Execute() (MonitorCheckResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetConcurrentMonitorPartialChecksRequest) Execute() (*MonitorCheckResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetConcurrentMonitorPartialChecksExecute(r)
 }
 
 /*
 MonitorCheckGetConcurrentMonitorPartialChecks Gets all partial checks for a concurrent monitor check
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorCheckId The monitor check Id to get the partial checks for.
  @return ApiMonitorCheckGetConcurrentMonitorPartialChecksRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetConcurrentMonitorPartialChecks(ctx _context.Context, monitorCheckId int64) ApiMonitorCheckGetConcurrentMonitorPartialChecksRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetConcurrentMonitorPartialChecks(ctx context.Context, monitorCheckId int64) ApiMonitorCheckGetConcurrentMonitorPartialChecksRequest {
 	return ApiMonitorCheckGetConcurrentMonitorPartialChecksRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -237,27 +237,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetConcurrentMonitorPartialChecks(c
 
 // Execute executes the request
 //  @return MonitorCheckResponse
-func (a *MonitorCheckApiService) MonitorCheckGetConcurrentMonitorPartialChecksExecute(r ApiMonitorCheckGetConcurrentMonitorPartialChecksRequest) (MonitorCheckResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetConcurrentMonitorPartialChecksExecute(r ApiMonitorCheckGetConcurrentMonitorPartialChecksRequest) (*MonitorCheckResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  MonitorCheckResponse
+		formFiles            []formFile
+		localVarReturnValue  *MonitorCheckResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetConcurrentMonitorPartialChecks")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/{monitorCheckId}/Concurrent"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", _neturl.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", url.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -276,7 +274,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetConcurrentMonitorPartialChecksEx
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -286,15 +284,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetConcurrentMonitorPartialChecksEx
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -305,14 +303,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetConcurrentMonitorPartialChecksEx
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -323,7 +322,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetConcurrentMonitorPartialChecksEx
 }
 
 type ApiMonitorCheckGetConsoleLogInfoRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorCheckId int64
 	step *int32
@@ -335,18 +334,18 @@ func (r ApiMonitorCheckGetConsoleLogInfoRequest) Step(step int32) ApiMonitorChec
 	return r
 }
 
-func (r ApiMonitorCheckGetConsoleLogInfoRequest) Execute() (WaterfallResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetConsoleLogInfoRequest) Execute() (*WaterfallResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetConsoleLogInfoExecute(r)
 }
 
 /*
 MonitorCheckGetConsoleLogInfo Returns console log information for a monitor check.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorCheckId The monitor check Id to get the detailed data for.
  @return ApiMonitorCheckGetConsoleLogInfoRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetConsoleLogInfo(ctx _context.Context, monitorCheckId int64) ApiMonitorCheckGetConsoleLogInfoRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetConsoleLogInfo(ctx context.Context, monitorCheckId int64) ApiMonitorCheckGetConsoleLogInfoRequest {
 	return ApiMonitorCheckGetConsoleLogInfoRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -356,27 +355,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetConsoleLogInfo(ctx _context.Cont
 
 // Execute executes the request
 //  @return WaterfallResponse
-func (a *MonitorCheckApiService) MonitorCheckGetConsoleLogInfoExecute(r ApiMonitorCheckGetConsoleLogInfoRequest) (WaterfallResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetConsoleLogInfoExecute(r ApiMonitorCheckGetConsoleLogInfoRequest) (*WaterfallResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  WaterfallResponse
+		formFiles            []formFile
+		localVarReturnValue  *WaterfallResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetConsoleLogInfo")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/{monitorCheckId}/ConsoleLog"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", _neturl.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", url.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	if r.step != nil {
 		localVarQueryParams.Add("step", parameterToString(*r.step, ""))
@@ -398,7 +395,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetConsoleLogInfoExecute(r ApiMonit
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -408,15 +405,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetConsoleLogInfoExecute(r ApiMonit
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -427,14 +424,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetConsoleLogInfoExecute(r ApiMonit
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -445,24 +443,23 @@ func (a *MonitorCheckApiService) MonitorCheckGetConsoleLogInfoExecute(r ApiMonit
 }
 
 type ApiMonitorCheckGetHttpDetailsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorCheckId int64
 }
 
-
-func (r ApiMonitorCheckGetHttpDetailsRequest) Execute() (HttpDetailsResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetHttpDetailsRequest) Execute() (*HttpDetailsResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetHttpDetailsExecute(r)
 }
 
 /*
 MonitorCheckGetHttpDetails Returns HTTP details for a monitor check.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorCheckId The monitor check Id to get the detailed data for.
  @return ApiMonitorCheckGetHttpDetailsRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetHttpDetails(ctx _context.Context, monitorCheckId int64) ApiMonitorCheckGetHttpDetailsRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetHttpDetails(ctx context.Context, monitorCheckId int64) ApiMonitorCheckGetHttpDetailsRequest {
 	return ApiMonitorCheckGetHttpDetailsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -472,27 +469,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetHttpDetails(ctx _context.Context
 
 // Execute executes the request
 //  @return HttpDetailsResponse
-func (a *MonitorCheckApiService) MonitorCheckGetHttpDetailsExecute(r ApiMonitorCheckGetHttpDetailsRequest) (HttpDetailsResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetHttpDetailsExecute(r ApiMonitorCheckGetHttpDetailsRequest) (*HttpDetailsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  HttpDetailsResponse
+		formFiles            []formFile
+		localVarReturnValue  *HttpDetailsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetHttpDetails")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/{monitorCheckId}/Http"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", _neturl.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", url.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -511,7 +506,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetHttpDetailsExecute(r ApiMonitorC
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -521,15 +516,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetHttpDetailsExecute(r ApiMonitorC
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -540,14 +535,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetHttpDetailsExecute(r ApiMonitorC
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -558,7 +554,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetHttpDetailsExecute(r ApiMonitorC
 }
 
 type ApiMonitorCheckGetMonitorCheckRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorGuid string
 	errorLevel *string
@@ -566,8 +562,8 @@ type ApiMonitorCheckGetMonitorCheckRequest struct {
 	cursor *string
 	sorting *string
 	take *int32
-	start *time.Time
-	end *time.Time
+	start *interface{}
+	end *interface{}
 	presetPeriod *string
 }
 
@@ -576,54 +572,61 @@ func (r ApiMonitorCheckGetMonitorCheckRequest) ErrorLevel(errorLevel string) Api
 	r.errorLevel = &errorLevel
 	return r
 }
+
 // Show partial measurements from concurrent monitors
 func (r ApiMonitorCheckGetMonitorCheckRequest) ShowPartialMeasurements(showPartialMeasurements bool) ApiMonitorCheckGetMonitorCheckRequest {
 	r.showPartialMeasurements = &showPartialMeasurements
 	return r
 }
+
 // A cursor value that should be used for traversing the dataset.
 func (r ApiMonitorCheckGetMonitorCheckRequest) Cursor(cursor string) ApiMonitorCheckGetMonitorCheckRequest {
 	r.cursor = &cursor
 	return r
 }
+
 // Sorting direction based on timestamp.
 func (r ApiMonitorCheckGetMonitorCheckRequest) Sorting(sorting string) ApiMonitorCheckGetMonitorCheckRequest {
 	r.sorting = &sorting
 	return r
 }
+
 // The number of records to return (Max value &#x3D; 100)
 func (r ApiMonitorCheckGetMonitorCheckRequest) Take(take int32) ApiMonitorCheckGetMonitorCheckRequest {
 	r.take = &take
 	return r
 }
+
 // The start of a custom period (can&#39;t be used together with the PresetPeriod parameter)
-func (r ApiMonitorCheckGetMonitorCheckRequest) Start(start time.Time) ApiMonitorCheckGetMonitorCheckRequest {
+func (r ApiMonitorCheckGetMonitorCheckRequest) Start(start interface{}) ApiMonitorCheckGetMonitorCheckRequest {
 	r.start = &start
 	return r
 }
+
 // The end of a custom period
-func (r ApiMonitorCheckGetMonitorCheckRequest) End(end time.Time) ApiMonitorCheckGetMonitorCheckRequest {
+func (r ApiMonitorCheckGetMonitorCheckRequest) End(end interface{}) ApiMonitorCheckGetMonitorCheckRequest {
 	r.end = &end
 	return r
 }
+
 // The requested time period.
 func (r ApiMonitorCheckGetMonitorCheckRequest) PresetPeriod(presetPeriod string) ApiMonitorCheckGetMonitorCheckRequest {
 	r.presetPeriod = &presetPeriod
 	return r
 }
 
-func (r ApiMonitorCheckGetMonitorCheckRequest) Execute() (MonitorCheckResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetMonitorCheckRequest) Execute() (*MonitorCheckResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetMonitorCheckExecute(r)
 }
 
 /*
 MonitorCheckGetMonitorCheck Returns monitor check data for a specific monitor.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGuid The Guid of the monitor to get monitor checks for.
  @return ApiMonitorCheckGetMonitorCheckRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetMonitorCheck(ctx _context.Context, monitorGuid string) ApiMonitorCheckGetMonitorCheckRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetMonitorCheck(ctx context.Context, monitorGuid string) ApiMonitorCheckGetMonitorCheckRequest {
 	return ApiMonitorCheckGetMonitorCheckRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -633,27 +636,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetMonitorCheck(ctx _context.Contex
 
 // Execute executes the request
 //  @return MonitorCheckResponse
-func (a *MonitorCheckApiService) MonitorCheckGetMonitorCheckExecute(r ApiMonitorCheckGetMonitorCheckRequest) (MonitorCheckResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetMonitorCheckExecute(r ApiMonitorCheckGetMonitorCheckRequest) (*MonitorCheckResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  MonitorCheckResponse
+		formFiles            []formFile
+		localVarReturnValue  *MonitorCheckResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetMonitorCheck")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/Monitor/{monitorGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGuid"+"}", url.PathEscape(parameterToString(r.monitorGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	if r.errorLevel != nil {
 		localVarQueryParams.Add("ErrorLevel", parameterToString(*r.errorLevel, ""))
@@ -696,7 +697,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetMonitorCheckExecute(r ApiMonitor
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -706,15 +707,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetMonitorCheckExecute(r ApiMonitor
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -725,14 +726,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetMonitorCheckExecute(r ApiMonitor
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -743,7 +745,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetMonitorCheckExecute(r ApiMonitor
 }
 
 type ApiMonitorCheckGetMonitorGroupDataRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorGroupGuid string
 	errorLevel *string
@@ -751,8 +753,8 @@ type ApiMonitorCheckGetMonitorGroupDataRequest struct {
 	cursor *string
 	sorting *string
 	take *int32
-	start *time.Time
-	end *time.Time
+	start *interface{}
+	end *interface{}
 	presetPeriod *string
 }
 
@@ -761,54 +763,61 @@ func (r ApiMonitorCheckGetMonitorGroupDataRequest) ErrorLevel(errorLevel string)
 	r.errorLevel = &errorLevel
 	return r
 }
+
 // Show partial measurements from concurrent monitors
 func (r ApiMonitorCheckGetMonitorGroupDataRequest) ShowPartialMeasurements(showPartialMeasurements bool) ApiMonitorCheckGetMonitorGroupDataRequest {
 	r.showPartialMeasurements = &showPartialMeasurements
 	return r
 }
+
 // A cursor value that should be used for traversing the dataset.
 func (r ApiMonitorCheckGetMonitorGroupDataRequest) Cursor(cursor string) ApiMonitorCheckGetMonitorGroupDataRequest {
 	r.cursor = &cursor
 	return r
 }
+
 // Sorting direction based on timestamp.
 func (r ApiMonitorCheckGetMonitorGroupDataRequest) Sorting(sorting string) ApiMonitorCheckGetMonitorGroupDataRequest {
 	r.sorting = &sorting
 	return r
 }
+
 // The number of records to return (Max value &#x3D; 100)
 func (r ApiMonitorCheckGetMonitorGroupDataRequest) Take(take int32) ApiMonitorCheckGetMonitorGroupDataRequest {
 	r.take = &take
 	return r
 }
+
 // The start of a custom period (can&#39;t be used together with the PresetPeriod parameter)
-func (r ApiMonitorCheckGetMonitorGroupDataRequest) Start(start time.Time) ApiMonitorCheckGetMonitorGroupDataRequest {
+func (r ApiMonitorCheckGetMonitorGroupDataRequest) Start(start interface{}) ApiMonitorCheckGetMonitorGroupDataRequest {
 	r.start = &start
 	return r
 }
+
 // The end of a custom period
-func (r ApiMonitorCheckGetMonitorGroupDataRequest) End(end time.Time) ApiMonitorCheckGetMonitorGroupDataRequest {
+func (r ApiMonitorCheckGetMonitorGroupDataRequest) End(end interface{}) ApiMonitorCheckGetMonitorGroupDataRequest {
 	r.end = &end
 	return r
 }
+
 // The requested time period.
 func (r ApiMonitorCheckGetMonitorGroupDataRequest) PresetPeriod(presetPeriod string) ApiMonitorCheckGetMonitorGroupDataRequest {
 	r.presetPeriod = &presetPeriod
 	return r
 }
 
-func (r ApiMonitorCheckGetMonitorGroupDataRequest) Execute() (MonitorCheckResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetMonitorGroupDataRequest) Execute() (*MonitorCheckResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetMonitorGroupDataExecute(r)
 }
 
 /*
 MonitorCheckGetMonitorGroupData Returns monitor check data for a specific monitor group.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorGroupGuid The Guid of the monitor group to get monitor checks for.
  @return ApiMonitorCheckGetMonitorGroupDataRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetMonitorGroupData(ctx _context.Context, monitorGroupGuid string) ApiMonitorCheckGetMonitorGroupDataRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetMonitorGroupData(ctx context.Context, monitorGroupGuid string) ApiMonitorCheckGetMonitorGroupDataRequest {
 	return ApiMonitorCheckGetMonitorGroupDataRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -818,27 +827,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetMonitorGroupData(ctx _context.Co
 
 // Execute executes the request
 //  @return MonitorCheckResponse
-func (a *MonitorCheckApiService) MonitorCheckGetMonitorGroupDataExecute(r ApiMonitorCheckGetMonitorGroupDataRequest) (MonitorCheckResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetMonitorGroupDataExecute(r ApiMonitorCheckGetMonitorGroupDataRequest) (*MonitorCheckResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  MonitorCheckResponse
+		formFiles            []formFile
+		localVarReturnValue  *MonitorCheckResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetMonitorGroupData")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/MonitorGroup/{monitorGroupGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", _neturl.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorGroupGuid"+"}", url.PathEscape(parameterToString(r.monitorGroupGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	if r.errorLevel != nil {
 		localVarQueryParams.Add("ErrorLevel", parameterToString(*r.errorLevel, ""))
@@ -881,7 +888,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetMonitorGroupDataExecute(r ApiMon
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -891,15 +898,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetMonitorGroupDataExecute(r ApiMon
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -910,14 +917,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetMonitorGroupDataExecute(r ApiMon
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -928,24 +936,23 @@ func (a *MonitorCheckApiService) MonitorCheckGetMonitorGroupDataExecute(r ApiMon
 }
 
 type ApiMonitorCheckGetMultistepDetailsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorCheckId int64
 }
 
-
-func (r ApiMonitorCheckGetMultistepDetailsRequest) Execute() (MsaDetailsResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetMultistepDetailsRequest) Execute() (*MsaDetailsResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetMultistepDetailsExecute(r)
 }
 
 /*
 MonitorCheckGetMultistepDetails Returns Multi-Step API details for a monitor check.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorCheckId The monitor check Id to get the detailed data for.
  @return ApiMonitorCheckGetMultistepDetailsRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetMultistepDetails(ctx _context.Context, monitorCheckId int64) ApiMonitorCheckGetMultistepDetailsRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetMultistepDetails(ctx context.Context, monitorCheckId int64) ApiMonitorCheckGetMultistepDetailsRequest {
 	return ApiMonitorCheckGetMultistepDetailsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -955,27 +962,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetMultistepDetails(ctx _context.Co
 
 // Execute executes the request
 //  @return MsaDetailsResponse
-func (a *MonitorCheckApiService) MonitorCheckGetMultistepDetailsExecute(r ApiMonitorCheckGetMultistepDetailsRequest) (MsaDetailsResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetMultistepDetailsExecute(r ApiMonitorCheckGetMultistepDetailsRequest) (*MsaDetailsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  MsaDetailsResponse
+		formFiles            []formFile
+		localVarReturnValue  *MsaDetailsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetMultistepDetails")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/{monitorCheckId}/MultiStepAPI"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", _neturl.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", url.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -994,7 +999,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetMultistepDetailsExecute(r ApiMon
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1004,15 +1009,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetMultistepDetailsExecute(r ApiMon
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1023,14 +1028,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetMultistepDetailsExecute(r ApiMon
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1041,7 +1047,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetMultistepDetailsExecute(r ApiMon
 }
 
 type ApiMonitorCheckGetPageSourceInfoRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorCheckId int64
 	step *int32
@@ -1053,18 +1059,18 @@ func (r ApiMonitorCheckGetPageSourceInfoRequest) Step(step int32) ApiMonitorChec
 	return r
 }
 
-func (r ApiMonitorCheckGetPageSourceInfoRequest) Execute() (WaterfallResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetPageSourceInfoRequest) Execute() (*WaterfallResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetPageSourceInfoExecute(r)
 }
 
 /*
 MonitorCheckGetPageSourceInfo Returns page source information for a monitor check.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorCheckId The monitor check Id to get the detailed data for.
  @return ApiMonitorCheckGetPageSourceInfoRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetPageSourceInfo(ctx _context.Context, monitorCheckId int64) ApiMonitorCheckGetPageSourceInfoRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetPageSourceInfo(ctx context.Context, monitorCheckId int64) ApiMonitorCheckGetPageSourceInfoRequest {
 	return ApiMonitorCheckGetPageSourceInfoRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1074,27 +1080,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetPageSourceInfo(ctx _context.Cont
 
 // Execute executes the request
 //  @return WaterfallResponse
-func (a *MonitorCheckApiService) MonitorCheckGetPageSourceInfoExecute(r ApiMonitorCheckGetPageSourceInfoRequest) (WaterfallResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetPageSourceInfoExecute(r ApiMonitorCheckGetPageSourceInfoRequest) (*WaterfallResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  WaterfallResponse
+		formFiles            []formFile
+		localVarReturnValue  *WaterfallResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetPageSourceInfo")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/{monitorCheckId}/PageSource"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", _neturl.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", url.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	if r.step != nil {
 		localVarQueryParams.Add("step", parameterToString(*r.step, ""))
@@ -1116,7 +1120,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetPageSourceInfoExecute(r ApiMonit
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1126,15 +1130,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetPageSourceInfoExecute(r ApiMonit
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1145,14 +1149,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetPageSourceInfoExecute(r ApiMonit
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1163,26 +1168,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetPageSourceInfoExecute(r ApiMonit
 }
 
 type ApiMonitorCheckGetScreenshotsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorCheckId int64
 	screenshotId string
 }
 
-
-func (r ApiMonitorCheckGetScreenshotsRequest) Execute() (ScreenshotResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetScreenshotsRequest) Execute() (*ScreenshotResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetScreenshotsExecute(r)
 }
 
 /*
 MonitorCheckGetScreenshots Gets a specific screenshot for a specified monitor check
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorCheckId The monitor check Id to get the screenshot data for.
  @param screenshotId The screenshot Id of the screenshot to get.
  @return ApiMonitorCheckGetScreenshotsRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetScreenshots(ctx _context.Context, monitorCheckId int64, screenshotId string) ApiMonitorCheckGetScreenshotsRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetScreenshots(ctx context.Context, monitorCheckId int64, screenshotId string) ApiMonitorCheckGetScreenshotsRequest {
 	return ApiMonitorCheckGetScreenshotsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1193,28 +1197,26 @@ func (a *MonitorCheckApiService) MonitorCheckGetScreenshots(ctx _context.Context
 
 // Execute executes the request
 //  @return ScreenshotResponse
-func (a *MonitorCheckApiService) MonitorCheckGetScreenshotsExecute(r ApiMonitorCheckGetScreenshotsRequest) (ScreenshotResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetScreenshotsExecute(r ApiMonitorCheckGetScreenshotsRequest) (*ScreenshotResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  ScreenshotResponse
+		formFiles            []formFile
+		localVarReturnValue  *ScreenshotResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetScreenshots")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/{monitorCheckId}/Screenshot/{screenshotId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", _neturl.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"screenshotId"+"}", _neturl.PathEscape(parameterToString(r.screenshotId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", url.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"screenshotId"+"}", url.PathEscape(parameterToString(r.screenshotId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1233,7 +1235,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetScreenshotsExecute(r ApiMonitorC
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1243,15 +1245,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetScreenshotsExecute(r ApiMonitorC
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1262,14 +1264,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetScreenshotsExecute(r ApiMonitorC
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1280,24 +1283,23 @@ func (a *MonitorCheckApiService) MonitorCheckGetScreenshotsExecute(r ApiMonitorC
 }
 
 type ApiMonitorCheckGetSingleMonitorCheckRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorCheckId int64
 }
 
-
-func (r ApiMonitorCheckGetSingleMonitorCheckRequest) Execute() (SingleMonitorCheckResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetSingleMonitorCheckRequest) Execute() (*SingleMonitorCheckResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetSingleMonitorCheckExecute(r)
 }
 
 /*
 MonitorCheckGetSingleMonitorCheck Returns a single monitor check.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorCheckId The Id of the monitor check to get the data for.
  @return ApiMonitorCheckGetSingleMonitorCheckRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetSingleMonitorCheck(ctx _context.Context, monitorCheckId int64) ApiMonitorCheckGetSingleMonitorCheckRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetSingleMonitorCheck(ctx context.Context, monitorCheckId int64) ApiMonitorCheckGetSingleMonitorCheckRequest {
 	return ApiMonitorCheckGetSingleMonitorCheckRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1307,27 +1309,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetSingleMonitorCheck(ctx _context.
 
 // Execute executes the request
 //  @return SingleMonitorCheckResponse
-func (a *MonitorCheckApiService) MonitorCheckGetSingleMonitorCheckExecute(r ApiMonitorCheckGetSingleMonitorCheckRequest) (SingleMonitorCheckResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetSingleMonitorCheckExecute(r ApiMonitorCheckGetSingleMonitorCheckRequest) (*SingleMonitorCheckResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  SingleMonitorCheckResponse
+		formFiles            []formFile
+		localVarReturnValue  *SingleMonitorCheckResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetSingleMonitorCheck")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/{monitorCheckId}"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", _neturl.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", url.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1346,7 +1346,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetSingleMonitorCheckExecute(r ApiM
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1356,15 +1356,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetSingleMonitorCheckExecute(r ApiM
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1375,14 +1375,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetSingleMonitorCheckExecute(r ApiM
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1393,24 +1394,23 @@ func (a *MonitorCheckApiService) MonitorCheckGetSingleMonitorCheckExecute(r ApiM
 }
 
 type ApiMonitorCheckGetTransactionDetailsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorCheckId int64
 }
 
-
-func (r ApiMonitorCheckGetTransactionDetailsRequest) Execute() (TransactionDetailsResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetTransactionDetailsRequest) Execute() (*TransactionDetailsResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetTransactionDetailsExecute(r)
 }
 
 /*
 MonitorCheckGetTransactionDetails Returns transaction step details for a monitor check.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorCheckId The monitor check Id to get the detailed data for.
  @return ApiMonitorCheckGetTransactionDetailsRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetTransactionDetails(ctx _context.Context, monitorCheckId int64) ApiMonitorCheckGetTransactionDetailsRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetTransactionDetails(ctx context.Context, monitorCheckId int64) ApiMonitorCheckGetTransactionDetailsRequest {
 	return ApiMonitorCheckGetTransactionDetailsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1420,27 +1420,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetTransactionDetails(ctx _context.
 
 // Execute executes the request
 //  @return TransactionDetailsResponse
-func (a *MonitorCheckApiService) MonitorCheckGetTransactionDetailsExecute(r ApiMonitorCheckGetTransactionDetailsRequest) (TransactionDetailsResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetTransactionDetailsExecute(r ApiMonitorCheckGetTransactionDetailsRequest) (*TransactionDetailsResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  TransactionDetailsResponse
+		formFiles            []formFile
+		localVarReturnValue  *TransactionDetailsResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetTransactionDetails")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/{monitorCheckId}/Transaction"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", _neturl.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", url.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1459,7 +1457,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetTransactionDetailsExecute(r ApiM
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1469,15 +1467,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetTransactionDetailsExecute(r ApiM
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1488,14 +1486,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetTransactionDetailsExecute(r ApiM
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1506,7 +1505,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetTransactionDetailsExecute(r ApiM
 }
 
 type ApiMonitorCheckGetWaterfallInfoRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *MonitorCheckApiService
 	monitorCheckId int64
 	step *int32
@@ -1518,18 +1517,18 @@ func (r ApiMonitorCheckGetWaterfallInfoRequest) Step(step int32) ApiMonitorCheck
 	return r
 }
 
-func (r ApiMonitorCheckGetWaterfallInfoRequest) Execute() (WaterfallResponse, *_nethttp.Response, error) {
+func (r ApiMonitorCheckGetWaterfallInfoRequest) Execute() (*WaterfallResponse, *http.Response, error) {
 	return r.ApiService.MonitorCheckGetWaterfallInfoExecute(r)
 }
 
 /*
 MonitorCheckGetWaterfallInfo Returns waterfall information for a monitor check.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param monitorCheckId The monitor check Id to get the detailed data for.
  @return ApiMonitorCheckGetWaterfallInfoRequest
 */
-func (a *MonitorCheckApiService) MonitorCheckGetWaterfallInfo(ctx _context.Context, monitorCheckId int64) ApiMonitorCheckGetWaterfallInfoRequest {
+func (a *MonitorCheckApiService) MonitorCheckGetWaterfallInfo(ctx context.Context, monitorCheckId int64) ApiMonitorCheckGetWaterfallInfoRequest {
 	return ApiMonitorCheckGetWaterfallInfoRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1539,27 +1538,25 @@ func (a *MonitorCheckApiService) MonitorCheckGetWaterfallInfo(ctx _context.Conte
 
 // Execute executes the request
 //  @return WaterfallResponse
-func (a *MonitorCheckApiService) MonitorCheckGetWaterfallInfoExecute(r ApiMonitorCheckGetWaterfallInfoRequest) (WaterfallResponse, *_nethttp.Response, error) {
+func (a *MonitorCheckApiService) MonitorCheckGetWaterfallInfoExecute(r ApiMonitorCheckGetWaterfallInfoRequest) (*WaterfallResponse, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  WaterfallResponse
+		formFiles            []formFile
+		localVarReturnValue  *WaterfallResponse
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "MonitorCheckApiService.MonitorCheckGetWaterfallInfo")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/MonitorCheck/{monitorCheckId}/Waterfall"
-	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", _neturl.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"monitorCheckId"+"}", url.PathEscape(parameterToString(r.monitorCheckId, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	if r.step != nil {
 		localVarQueryParams.Add("step", parameterToString(*r.step, ""))
@@ -1581,7 +1578,7 @@ func (a *MonitorCheckApiService) MonitorCheckGetWaterfallInfoExecute(r ApiMonito
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1591,15 +1588,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetWaterfallInfoExecute(r ApiMonito
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1610,14 +1607,15 @@ func (a *MonitorCheckApiService) MonitorCheckGetWaterfallInfoExecute(r ApiMonito
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}

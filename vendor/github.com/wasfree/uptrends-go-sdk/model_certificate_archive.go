@@ -12,7 +12,6 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // CertificateArchive struct for CertificateArchive
@@ -20,9 +19,9 @@ type CertificateArchive struct {
 	// The issuer of this certificate
 	Issuer *string `json:"Issuer,omitempty"`
 	// The start date of this certificate
-	NotBefore time.Time `json:"NotBefore"`
+	NotBefore map[string]interface{} `json:"NotBefore"`
 	// The certificate expiry date
-	NotAfter time.Time `json:"NotAfter"`
+	NotAfter map[string]interface{} `json:"NotAfter"`
 	// Used to specify a new or changed password. The value will be encrypted when stored, and will not be displayed when a CertificateArchive is retrieved.
 	Password *string `json:"Password,omitempty"`
 	// Used to specify the certificate content as a base64 string. The value will be encrypted when stored, and will not be displayed when a CertificateArchive is retrieved.
@@ -33,7 +32,7 @@ type CertificateArchive struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCertificateArchive(notBefore time.Time, notAfter time.Time) *CertificateArchive {
+func NewCertificateArchive(notBefore map[string]interface{}, notAfter map[string]interface{}) *CertificateArchive {
 	this := CertificateArchive{}
 	this.NotBefore = notBefore
 	this.NotAfter = notAfter
@@ -50,7 +49,7 @@ func NewCertificateArchiveWithDefaults() *CertificateArchive {
 
 // GetIssuer returns the Issuer field value if set, zero value otherwise.
 func (o *CertificateArchive) GetIssuer() string {
-	if o == nil || o.Issuer == nil {
+	if o == nil || isNil(o.Issuer) {
 		var ret string
 		return ret
 	}
@@ -60,15 +59,15 @@ func (o *CertificateArchive) GetIssuer() string {
 // GetIssuerOk returns a tuple with the Issuer field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CertificateArchive) GetIssuerOk() (*string, bool) {
-	if o == nil || o.Issuer == nil {
-		return nil, false
+	if o == nil || isNil(o.Issuer) {
+    return nil, false
 	}
 	return o.Issuer, true
 }
 
 // HasIssuer returns a boolean if a field has been set.
 func (o *CertificateArchive) HasIssuer() bool {
-	if o != nil && o.Issuer != nil {
+	if o != nil && !isNil(o.Issuer) {
 		return true
 	}
 
@@ -81,9 +80,9 @@ func (o *CertificateArchive) SetIssuer(v string) {
 }
 
 // GetNotBefore returns the NotBefore field value
-func (o *CertificateArchive) GetNotBefore() time.Time {
+func (o *CertificateArchive) GetNotBefore() map[string]interface{} {
 	if o == nil {
-		var ret time.Time
+		var ret map[string]interface{}
 		return ret
 	}
 
@@ -92,22 +91,22 @@ func (o *CertificateArchive) GetNotBefore() time.Time {
 
 // GetNotBeforeOk returns a tuple with the NotBefore field value
 // and a boolean to check if the value has been set.
-func (o *CertificateArchive) GetNotBeforeOk() (*time.Time, bool) {
-	if o == nil  {
-		return nil, false
+func (o *CertificateArchive) GetNotBeforeOk() (map[string]interface{}, bool) {
+	if o == nil {
+    return map[string]interface{}{}, false
 	}
-	return &o.NotBefore, true
+	return o.NotBefore, true
 }
 
 // SetNotBefore sets field value
-func (o *CertificateArchive) SetNotBefore(v time.Time) {
+func (o *CertificateArchive) SetNotBefore(v map[string]interface{}) {
 	o.NotBefore = v
 }
 
 // GetNotAfter returns the NotAfter field value
-func (o *CertificateArchive) GetNotAfter() time.Time {
+func (o *CertificateArchive) GetNotAfter() map[string]interface{} {
 	if o == nil {
-		var ret time.Time
+		var ret map[string]interface{}
 		return ret
 	}
 
@@ -116,21 +115,21 @@ func (o *CertificateArchive) GetNotAfter() time.Time {
 
 // GetNotAfterOk returns a tuple with the NotAfter field value
 // and a boolean to check if the value has been set.
-func (o *CertificateArchive) GetNotAfterOk() (*time.Time, bool) {
-	if o == nil  {
-		return nil, false
+func (o *CertificateArchive) GetNotAfterOk() (map[string]interface{}, bool) {
+	if o == nil {
+    return map[string]interface{}{}, false
 	}
-	return &o.NotAfter, true
+	return o.NotAfter, true
 }
 
 // SetNotAfter sets field value
-func (o *CertificateArchive) SetNotAfter(v time.Time) {
+func (o *CertificateArchive) SetNotAfter(v map[string]interface{}) {
 	o.NotAfter = v
 }
 
 // GetPassword returns the Password field value if set, zero value otherwise.
 func (o *CertificateArchive) GetPassword() string {
-	if o == nil || o.Password == nil {
+	if o == nil || isNil(o.Password) {
 		var ret string
 		return ret
 	}
@@ -140,15 +139,15 @@ func (o *CertificateArchive) GetPassword() string {
 // GetPasswordOk returns a tuple with the Password field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CertificateArchive) GetPasswordOk() (*string, bool) {
-	if o == nil || o.Password == nil {
-		return nil, false
+	if o == nil || isNil(o.Password) {
+    return nil, false
 	}
 	return o.Password, true
 }
 
 // HasPassword returns a boolean if a field has been set.
 func (o *CertificateArchive) HasPassword() bool {
-	if o != nil && o.Password != nil {
+	if o != nil && !isNil(o.Password) {
 		return true
 	}
 
@@ -162,7 +161,7 @@ func (o *CertificateArchive) SetPassword(v string) {
 
 // GetArchiveData returns the ArchiveData field value if set, zero value otherwise.
 func (o *CertificateArchive) GetArchiveData() string {
-	if o == nil || o.ArchiveData == nil {
+	if o == nil || isNil(o.ArchiveData) {
 		var ret string
 		return ret
 	}
@@ -172,15 +171,15 @@ func (o *CertificateArchive) GetArchiveData() string {
 // GetArchiveDataOk returns a tuple with the ArchiveData field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CertificateArchive) GetArchiveDataOk() (*string, bool) {
-	if o == nil || o.ArchiveData == nil {
-		return nil, false
+	if o == nil || isNil(o.ArchiveData) {
+    return nil, false
 	}
 	return o.ArchiveData, true
 }
 
 // HasArchiveData returns a boolean if a field has been set.
 func (o *CertificateArchive) HasArchiveData() bool {
-	if o != nil && o.ArchiveData != nil {
+	if o != nil && !isNil(o.ArchiveData) {
 		return true
 	}
 
@@ -194,7 +193,7 @@ func (o *CertificateArchive) SetArchiveData(v string) {
 
 func (o CertificateArchive) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Issuer != nil {
+	if !isNil(o.Issuer) {
 		toSerialize["Issuer"] = o.Issuer
 	}
 	if true {
@@ -203,10 +202,10 @@ func (o CertificateArchive) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["NotAfter"] = o.NotAfter
 	}
-	if o.Password != nil {
+	if !isNil(o.Password) {
 		toSerialize["Password"] = o.Password
 	}
-	if o.ArchiveData != nil {
+	if !isNil(o.ArchiveData) {
 		toSerialize["ArchiveData"] = o.ArchiveData
 	}
 	return json.Marshal(toSerialize)

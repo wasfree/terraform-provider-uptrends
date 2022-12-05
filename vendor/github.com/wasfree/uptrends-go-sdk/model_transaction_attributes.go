@@ -17,7 +17,7 @@ import (
 // TransactionAttributes struct for TransactionAttributes
 type TransactionAttributes struct {
 	// Results of the transaction steps
-	StepResults *[]TransactionStepOResourceObject `json:"StepResults,omitempty"`
+	StepResults []TransactionStepOResourceObject `json:"StepResults,omitempty"`
 	// The HTML code returned in case of errors
 	ResponseBody *string `json:"ResponseBody,omitempty"`
 }
@@ -41,25 +41,25 @@ func NewTransactionAttributesWithDefaults() *TransactionAttributes {
 
 // GetStepResults returns the StepResults field value if set, zero value otherwise.
 func (o *TransactionAttributes) GetStepResults() []TransactionStepOResourceObject {
-	if o == nil || o.StepResults == nil {
+	if o == nil || isNil(o.StepResults) {
 		var ret []TransactionStepOResourceObject
 		return ret
 	}
-	return *o.StepResults
+	return o.StepResults
 }
 
 // GetStepResultsOk returns a tuple with the StepResults field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TransactionAttributes) GetStepResultsOk() (*[]TransactionStepOResourceObject, bool) {
-	if o == nil || o.StepResults == nil {
-		return nil, false
+func (o *TransactionAttributes) GetStepResultsOk() ([]TransactionStepOResourceObject, bool) {
+	if o == nil || isNil(o.StepResults) {
+    return nil, false
 	}
 	return o.StepResults, true
 }
 
 // HasStepResults returns a boolean if a field has been set.
 func (o *TransactionAttributes) HasStepResults() bool {
-	if o != nil && o.StepResults != nil {
+	if o != nil && !isNil(o.StepResults) {
 		return true
 	}
 
@@ -68,12 +68,12 @@ func (o *TransactionAttributes) HasStepResults() bool {
 
 // SetStepResults gets a reference to the given []TransactionStepOResourceObject and assigns it to the StepResults field.
 func (o *TransactionAttributes) SetStepResults(v []TransactionStepOResourceObject) {
-	o.StepResults = &v
+	o.StepResults = v
 }
 
 // GetResponseBody returns the ResponseBody field value if set, zero value otherwise.
 func (o *TransactionAttributes) GetResponseBody() string {
-	if o == nil || o.ResponseBody == nil {
+	if o == nil || isNil(o.ResponseBody) {
 		var ret string
 		return ret
 	}
@@ -83,15 +83,15 @@ func (o *TransactionAttributes) GetResponseBody() string {
 // GetResponseBodyOk returns a tuple with the ResponseBody field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *TransactionAttributes) GetResponseBodyOk() (*string, bool) {
-	if o == nil || o.ResponseBody == nil {
-		return nil, false
+	if o == nil || isNil(o.ResponseBody) {
+    return nil, false
 	}
 	return o.ResponseBody, true
 }
 
 // HasResponseBody returns a boolean if a field has been set.
 func (o *TransactionAttributes) HasResponseBody() bool {
-	if o != nil && o.ResponseBody != nil {
+	if o != nil && !isNil(o.ResponseBody) {
 		return true
 	}
 
@@ -105,10 +105,10 @@ func (o *TransactionAttributes) SetResponseBody(v string) {
 
 func (o TransactionAttributes) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.StepResults != nil {
+	if !isNil(o.StepResults) {
 		toSerialize["StepResults"] = o.StepResults
 	}
-	if o.ResponseBody != nil {
+	if !isNil(o.ResponseBody) {
 		toSerialize["ResponseBody"] = o.ResponseBody
 	}
 	return json.Marshal(toSerialize)

@@ -16,10 +16,12 @@ import (
 
 // MonitorStatusListResponse struct for MonitorStatusListResponse
 type MonitorStatusListResponse struct {
-	Data *[]MonitorStatus `json:"Data,omitempty"`
-	Links *LinksData `json:"Links,omitempty"`
-	Relationships *[]RelationObject `json:"Relationships,omitempty"`
-	Meta *MetaData `json:"Meta,omitempty"`
+	// The resposne data/monitor checks
+	Data []MonitorStatus `json:"Data,omitempty"`
+	Links *StatisticsResponseLinks `json:"Links,omitempty"`
+	// Relationships of the object
+	Relationships []RelationObject `json:"Relationships,omitempty"`
+	Meta *StatisticsResponseMeta `json:"Meta,omitempty"`
 }
 
 // NewMonitorStatusListResponse instantiates a new MonitorStatusListResponse object
@@ -41,25 +43,25 @@ func NewMonitorStatusListResponseWithDefaults() *MonitorStatusListResponse {
 
 // GetData returns the Data field value if set, zero value otherwise.
 func (o *MonitorStatusListResponse) GetData() []MonitorStatus {
-	if o == nil || o.Data == nil {
+	if o == nil || isNil(o.Data) {
 		var ret []MonitorStatus
 		return ret
 	}
-	return *o.Data
+	return o.Data
 }
 
 // GetDataOk returns a tuple with the Data field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MonitorStatusListResponse) GetDataOk() (*[]MonitorStatus, bool) {
-	if o == nil || o.Data == nil {
-		return nil, false
+func (o *MonitorStatusListResponse) GetDataOk() ([]MonitorStatus, bool) {
+	if o == nil || isNil(o.Data) {
+    return nil, false
 	}
 	return o.Data, true
 }
 
 // HasData returns a boolean if a field has been set.
 func (o *MonitorStatusListResponse) HasData() bool {
-	if o != nil && o.Data != nil {
+	if o != nil && !isNil(o.Data) {
 		return true
 	}
 
@@ -68,13 +70,13 @@ func (o *MonitorStatusListResponse) HasData() bool {
 
 // SetData gets a reference to the given []MonitorStatus and assigns it to the Data field.
 func (o *MonitorStatusListResponse) SetData(v []MonitorStatus) {
-	o.Data = &v
+	o.Data = v
 }
 
 // GetLinks returns the Links field value if set, zero value otherwise.
-func (o *MonitorStatusListResponse) GetLinks() LinksData {
-	if o == nil || o.Links == nil {
-		var ret LinksData
+func (o *MonitorStatusListResponse) GetLinks() StatisticsResponseLinks {
+	if o == nil || isNil(o.Links) {
+		var ret StatisticsResponseLinks
 		return ret
 	}
 	return *o.Links
@@ -82,48 +84,48 @@ func (o *MonitorStatusListResponse) GetLinks() LinksData {
 
 // GetLinksOk returns a tuple with the Links field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MonitorStatusListResponse) GetLinksOk() (*LinksData, bool) {
-	if o == nil || o.Links == nil {
-		return nil, false
+func (o *MonitorStatusListResponse) GetLinksOk() (*StatisticsResponseLinks, bool) {
+	if o == nil || isNil(o.Links) {
+    return nil, false
 	}
 	return o.Links, true
 }
 
 // HasLinks returns a boolean if a field has been set.
 func (o *MonitorStatusListResponse) HasLinks() bool {
-	if o != nil && o.Links != nil {
+	if o != nil && !isNil(o.Links) {
 		return true
 	}
 
 	return false
 }
 
-// SetLinks gets a reference to the given LinksData and assigns it to the Links field.
-func (o *MonitorStatusListResponse) SetLinks(v LinksData) {
+// SetLinks gets a reference to the given StatisticsResponseLinks and assigns it to the Links field.
+func (o *MonitorStatusListResponse) SetLinks(v StatisticsResponseLinks) {
 	o.Links = &v
 }
 
 // GetRelationships returns the Relationships field value if set, zero value otherwise.
 func (o *MonitorStatusListResponse) GetRelationships() []RelationObject {
-	if o == nil || o.Relationships == nil {
+	if o == nil || isNil(o.Relationships) {
 		var ret []RelationObject
 		return ret
 	}
-	return *o.Relationships
+	return o.Relationships
 }
 
 // GetRelationshipsOk returns a tuple with the Relationships field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MonitorStatusListResponse) GetRelationshipsOk() (*[]RelationObject, bool) {
-	if o == nil || o.Relationships == nil {
-		return nil, false
+func (o *MonitorStatusListResponse) GetRelationshipsOk() ([]RelationObject, bool) {
+	if o == nil || isNil(o.Relationships) {
+    return nil, false
 	}
 	return o.Relationships, true
 }
 
 // HasRelationships returns a boolean if a field has been set.
 func (o *MonitorStatusListResponse) HasRelationships() bool {
-	if o != nil && o.Relationships != nil {
+	if o != nil && !isNil(o.Relationships) {
 		return true
 	}
 
@@ -132,13 +134,13 @@ func (o *MonitorStatusListResponse) HasRelationships() bool {
 
 // SetRelationships gets a reference to the given []RelationObject and assigns it to the Relationships field.
 func (o *MonitorStatusListResponse) SetRelationships(v []RelationObject) {
-	o.Relationships = &v
+	o.Relationships = v
 }
 
 // GetMeta returns the Meta field value if set, zero value otherwise.
-func (o *MonitorStatusListResponse) GetMeta() MetaData {
-	if o == nil || o.Meta == nil {
-		var ret MetaData
+func (o *MonitorStatusListResponse) GetMeta() StatisticsResponseMeta {
+	if o == nil || isNil(o.Meta) {
+		var ret StatisticsResponseMeta
 		return ret
 	}
 	return *o.Meta
@@ -146,39 +148,39 @@ func (o *MonitorStatusListResponse) GetMeta() MetaData {
 
 // GetMetaOk returns a tuple with the Meta field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MonitorStatusListResponse) GetMetaOk() (*MetaData, bool) {
-	if o == nil || o.Meta == nil {
-		return nil, false
+func (o *MonitorStatusListResponse) GetMetaOk() (*StatisticsResponseMeta, bool) {
+	if o == nil || isNil(o.Meta) {
+    return nil, false
 	}
 	return o.Meta, true
 }
 
 // HasMeta returns a boolean if a field has been set.
 func (o *MonitorStatusListResponse) HasMeta() bool {
-	if o != nil && o.Meta != nil {
+	if o != nil && !isNil(o.Meta) {
 		return true
 	}
 
 	return false
 }
 
-// SetMeta gets a reference to the given MetaData and assigns it to the Meta field.
-func (o *MonitorStatusListResponse) SetMeta(v MetaData) {
+// SetMeta gets a reference to the given StatisticsResponseMeta and assigns it to the Meta field.
+func (o *MonitorStatusListResponse) SetMeta(v StatisticsResponseMeta) {
 	o.Meta = &v
 }
 
 func (o MonitorStatusListResponse) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Data != nil {
+	if !isNil(o.Data) {
 		toSerialize["Data"] = o.Data
 	}
-	if o.Links != nil {
+	if !isNil(o.Links) {
 		toSerialize["Links"] = o.Links
 	}
-	if o.Relationships != nil {
+	if !isNil(o.Relationships) {
 		toSerialize["Relationships"] = o.Relationships
 	}
-	if o.Meta != nil {
+	if !isNil(o.Meta) {
 		toSerialize["Meta"] = o.Meta
 	}
 	return json.Marshal(toSerialize)

@@ -90,7 +90,7 @@ func monitorGroupUpdate(ctx context.Context, d *schema.ResourceData, meta interf
 		monitorGroup.Description = String(d.Get("description").(string))
 	}
 
-	_, err := client.MonitorGroupUpdateMonitorGroup(auth, id).Item(monitorGroup).Execute()
+	_, err := client.MonitorGroupUpdateMonitorGroup(auth, id).MonitorGroup(monitorGroup).Execute()
 	if err != nil {
 		return diag.FromErr(err)
 	}

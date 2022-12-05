@@ -18,21 +18,24 @@ import (
 type UserDefinedFunction struct {
 	Name *string `json:"Name,omitempty"`
 	Type UserDefinedFunctionType `json:"Type"`
-	Mappings *[]UserDefinedFunctionMapping `json:"Mappings,omitempty"`
+	Mappings []UserDefinedFunctionMapping `json:"Mappings,omitempty"`
 	Regex *string `json:"Regex,omitempty"`
 	// This property is not supported yet
 	JwtSigningKey *string `json:"JwtSigningKey,omitempty"`
 	// This property is not supported yet
 	JwtAlgorithm *JwtAlgorithm `json:"JwtAlgorithm,omitempty"`
+	HashKey *string `json:"HashKey,omitempty"`
+	HashAlgorithm EngineHashAlgorithm `json:"HashAlgorithm"`
 }
 
 // NewUserDefinedFunction instantiates a new UserDefinedFunction object
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewUserDefinedFunction(type_ UserDefinedFunctionType) *UserDefinedFunction {
+func NewUserDefinedFunction(type_ UserDefinedFunctionType, hashAlgorithm EngineHashAlgorithm) *UserDefinedFunction {
 	this := UserDefinedFunction{}
 	this.Type = type_
+	this.HashAlgorithm = hashAlgorithm
 	return &this
 }
 
@@ -46,7 +49,7 @@ func NewUserDefinedFunctionWithDefaults() *UserDefinedFunction {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *UserDefinedFunction) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -56,15 +59,15 @@ func (o *UserDefinedFunction) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UserDefinedFunction) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *UserDefinedFunction) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -89,8 +92,8 @@ func (o *UserDefinedFunction) GetType() UserDefinedFunctionType {
 // GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
 func (o *UserDefinedFunction) GetTypeOk() (*UserDefinedFunctionType, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Type, true
 }
@@ -102,25 +105,25 @@ func (o *UserDefinedFunction) SetType(v UserDefinedFunctionType) {
 
 // GetMappings returns the Mappings field value if set, zero value otherwise.
 func (o *UserDefinedFunction) GetMappings() []UserDefinedFunctionMapping {
-	if o == nil || o.Mappings == nil {
+	if o == nil || isNil(o.Mappings) {
 		var ret []UserDefinedFunctionMapping
 		return ret
 	}
-	return *o.Mappings
+	return o.Mappings
 }
 
 // GetMappingsOk returns a tuple with the Mappings field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *UserDefinedFunction) GetMappingsOk() (*[]UserDefinedFunctionMapping, bool) {
-	if o == nil || o.Mappings == nil {
-		return nil, false
+func (o *UserDefinedFunction) GetMappingsOk() ([]UserDefinedFunctionMapping, bool) {
+	if o == nil || isNil(o.Mappings) {
+    return nil, false
 	}
 	return o.Mappings, true
 }
 
 // HasMappings returns a boolean if a field has been set.
 func (o *UserDefinedFunction) HasMappings() bool {
-	if o != nil && o.Mappings != nil {
+	if o != nil && !isNil(o.Mappings) {
 		return true
 	}
 
@@ -129,12 +132,12 @@ func (o *UserDefinedFunction) HasMappings() bool {
 
 // SetMappings gets a reference to the given []UserDefinedFunctionMapping and assigns it to the Mappings field.
 func (o *UserDefinedFunction) SetMappings(v []UserDefinedFunctionMapping) {
-	o.Mappings = &v
+	o.Mappings = v
 }
 
 // GetRegex returns the Regex field value if set, zero value otherwise.
 func (o *UserDefinedFunction) GetRegex() string {
-	if o == nil || o.Regex == nil {
+	if o == nil || isNil(o.Regex) {
 		var ret string
 		return ret
 	}
@@ -144,15 +147,15 @@ func (o *UserDefinedFunction) GetRegex() string {
 // GetRegexOk returns a tuple with the Regex field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UserDefinedFunction) GetRegexOk() (*string, bool) {
-	if o == nil || o.Regex == nil {
-		return nil, false
+	if o == nil || isNil(o.Regex) {
+    return nil, false
 	}
 	return o.Regex, true
 }
 
 // HasRegex returns a boolean if a field has been set.
 func (o *UserDefinedFunction) HasRegex() bool {
-	if o != nil && o.Regex != nil {
+	if o != nil && !isNil(o.Regex) {
 		return true
 	}
 
@@ -166,7 +169,7 @@ func (o *UserDefinedFunction) SetRegex(v string) {
 
 // GetJwtSigningKey returns the JwtSigningKey field value if set, zero value otherwise.
 func (o *UserDefinedFunction) GetJwtSigningKey() string {
-	if o == nil || o.JwtSigningKey == nil {
+	if o == nil || isNil(o.JwtSigningKey) {
 		var ret string
 		return ret
 	}
@@ -176,15 +179,15 @@ func (o *UserDefinedFunction) GetJwtSigningKey() string {
 // GetJwtSigningKeyOk returns a tuple with the JwtSigningKey field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UserDefinedFunction) GetJwtSigningKeyOk() (*string, bool) {
-	if o == nil || o.JwtSigningKey == nil {
-		return nil, false
+	if o == nil || isNil(o.JwtSigningKey) {
+    return nil, false
 	}
 	return o.JwtSigningKey, true
 }
 
 // HasJwtSigningKey returns a boolean if a field has been set.
 func (o *UserDefinedFunction) HasJwtSigningKey() bool {
-	if o != nil && o.JwtSigningKey != nil {
+	if o != nil && !isNil(o.JwtSigningKey) {
 		return true
 	}
 
@@ -198,7 +201,7 @@ func (o *UserDefinedFunction) SetJwtSigningKey(v string) {
 
 // GetJwtAlgorithm returns the JwtAlgorithm field value if set, zero value otherwise.
 func (o *UserDefinedFunction) GetJwtAlgorithm() JwtAlgorithm {
-	if o == nil || o.JwtAlgorithm == nil {
+	if o == nil || isNil(o.JwtAlgorithm) {
 		var ret JwtAlgorithm
 		return ret
 	}
@@ -208,15 +211,15 @@ func (o *UserDefinedFunction) GetJwtAlgorithm() JwtAlgorithm {
 // GetJwtAlgorithmOk returns a tuple with the JwtAlgorithm field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *UserDefinedFunction) GetJwtAlgorithmOk() (*JwtAlgorithm, bool) {
-	if o == nil || o.JwtAlgorithm == nil {
-		return nil, false
+	if o == nil || isNil(o.JwtAlgorithm) {
+    return nil, false
 	}
 	return o.JwtAlgorithm, true
 }
 
 // HasJwtAlgorithm returns a boolean if a field has been set.
 func (o *UserDefinedFunction) HasJwtAlgorithm() bool {
-	if o != nil && o.JwtAlgorithm != nil {
+	if o != nil && !isNil(o.JwtAlgorithm) {
 		return true
 	}
 
@@ -228,25 +231,87 @@ func (o *UserDefinedFunction) SetJwtAlgorithm(v JwtAlgorithm) {
 	o.JwtAlgorithm = &v
 }
 
+// GetHashKey returns the HashKey field value if set, zero value otherwise.
+func (o *UserDefinedFunction) GetHashKey() string {
+	if o == nil || isNil(o.HashKey) {
+		var ret string
+		return ret
+	}
+	return *o.HashKey
+}
+
+// GetHashKeyOk returns a tuple with the HashKey field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *UserDefinedFunction) GetHashKeyOk() (*string, bool) {
+	if o == nil || isNil(o.HashKey) {
+    return nil, false
+	}
+	return o.HashKey, true
+}
+
+// HasHashKey returns a boolean if a field has been set.
+func (o *UserDefinedFunction) HasHashKey() bool {
+	if o != nil && !isNil(o.HashKey) {
+		return true
+	}
+
+	return false
+}
+
+// SetHashKey gets a reference to the given string and assigns it to the HashKey field.
+func (o *UserDefinedFunction) SetHashKey(v string) {
+	o.HashKey = &v
+}
+
+// GetHashAlgorithm returns the HashAlgorithm field value
+func (o *UserDefinedFunction) GetHashAlgorithm() EngineHashAlgorithm {
+	if o == nil {
+		var ret EngineHashAlgorithm
+		return ret
+	}
+
+	return o.HashAlgorithm
+}
+
+// GetHashAlgorithmOk returns a tuple with the HashAlgorithm field value
+// and a boolean to check if the value has been set.
+func (o *UserDefinedFunction) GetHashAlgorithmOk() (*EngineHashAlgorithm, bool) {
+	if o == nil {
+    return nil, false
+	}
+	return &o.HashAlgorithm, true
+}
+
+// SetHashAlgorithm sets field value
+func (o *UserDefinedFunction) SetHashAlgorithm(v EngineHashAlgorithm) {
+	o.HashAlgorithm = v
+}
+
 func (o UserDefinedFunction) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
 	if true {
 		toSerialize["Type"] = o.Type
 	}
-	if o.Mappings != nil {
+	if !isNil(o.Mappings) {
 		toSerialize["Mappings"] = o.Mappings
 	}
-	if o.Regex != nil {
+	if !isNil(o.Regex) {
 		toSerialize["Regex"] = o.Regex
 	}
-	if o.JwtSigningKey != nil {
+	if !isNil(o.JwtSigningKey) {
 		toSerialize["JwtSigningKey"] = o.JwtSigningKey
 	}
-	if o.JwtAlgorithm != nil {
+	if !isNil(o.JwtAlgorithm) {
 		toSerialize["JwtAlgorithm"] = o.JwtAlgorithm
+	}
+	if !isNil(o.HashKey) {
+		toSerialize["HashKey"] = o.HashKey
+	}
+	if true {
+		toSerialize["HashAlgorithm"] = o.HashAlgorithm
 	}
 	return json.Marshal(toSerialize)
 }

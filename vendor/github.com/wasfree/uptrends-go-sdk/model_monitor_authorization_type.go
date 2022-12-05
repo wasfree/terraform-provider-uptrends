@@ -25,7 +25,8 @@ const (
 	MONITORAUTHORIZATIONTYPE_EDIT_MONITOR MonitorAuthorizationType = "EditMonitor"
 )
 
-var allowedMonitorAuthorizationTypeEnumValues = []MonitorAuthorizationType{
+// All allowed values of MonitorAuthorizationType enum
+var AllowedMonitorAuthorizationTypeEnumValues = []MonitorAuthorizationType{
 	"ViewMonitorData",
 	"ViewMonitor",
 	"EditMonitor",
@@ -38,7 +39,7 @@ func (v *MonitorAuthorizationType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := MonitorAuthorizationType(value)
-	for _, existing := range allowedMonitorAuthorizationTypeEnumValues {
+	for _, existing := range AllowedMonitorAuthorizationTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -55,13 +56,13 @@ func NewMonitorAuthorizationTypeFromValue(v string) (*MonitorAuthorizationType, 
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for MonitorAuthorizationType: valid values are %v", v, allowedMonitorAuthorizationTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for MonitorAuthorizationType: valid values are %v", v, AllowedMonitorAuthorizationTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v MonitorAuthorizationType) IsValid() bool {
-	for _, existing := range allowedMonitorAuthorizationTypeEnumValues {
+	for _, existing := range AllowedMonitorAuthorizationTypeEnumValues {
 		if existing == v {
 			return true
 		}

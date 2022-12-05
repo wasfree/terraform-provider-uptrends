@@ -54,6 +54,7 @@ type Operator struct {
 	// This can only be set to true if the account has SSO enabled. Ommitting or providing null will use the account default
 	AllowSingleSignon *bool `json:"AllowSingleSignon,omitempty"`
 	AllowSingleSignonSpecified *bool `json:"AllowSingleSignonSpecified,omitempty"`
+	// This is used to set the default dashboard for the operator.  Valid options are: UseAccountSpecifiedDashboard (This will use the dashboard specified for the account) Any built-in dashboard: e.g. AccountOverview Any custom dashboard to which the operator has access to, defined by the guid of this dashboard
 	DefaultDashboard *string `json:"DefaultDashboard,omitempty"`
 	SetupMode *OperatorSetupMode `json:"SetupMode,omitempty"`
 }
@@ -77,7 +78,7 @@ func NewOperatorWithDefaults() *Operator {
 
 // GetOperatorGuid returns the OperatorGuid field value if set, zero value otherwise.
 func (o *Operator) GetOperatorGuid() string {
-	if o == nil || o.OperatorGuid == nil {
+	if o == nil || isNil(o.OperatorGuid) {
 		var ret string
 		return ret
 	}
@@ -87,15 +88,15 @@ func (o *Operator) GetOperatorGuid() string {
 // GetOperatorGuidOk returns a tuple with the OperatorGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetOperatorGuidOk() (*string, bool) {
-	if o == nil || o.OperatorGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorGuid) {
+    return nil, false
 	}
 	return o.OperatorGuid, true
 }
 
 // HasOperatorGuid returns a boolean if a field has been set.
 func (o *Operator) HasOperatorGuid() bool {
-	if o != nil && o.OperatorGuid != nil {
+	if o != nil && !isNil(o.OperatorGuid) {
 		return true
 	}
 
@@ -109,7 +110,7 @@ func (o *Operator) SetOperatorGuid(v string) {
 
 // GetHash returns the Hash field value if set, zero value otherwise.
 func (o *Operator) GetHash() string {
-	if o == nil || o.Hash == nil {
+	if o == nil || isNil(o.Hash) {
 		var ret string
 		return ret
 	}
@@ -119,15 +120,15 @@ func (o *Operator) GetHash() string {
 // GetHashOk returns a tuple with the Hash field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetHashOk() (*string, bool) {
-	if o == nil || o.Hash == nil {
-		return nil, false
+	if o == nil || isNil(o.Hash) {
+    return nil, false
 	}
 	return o.Hash, true
 }
 
 // HasHash returns a boolean if a field has been set.
 func (o *Operator) HasHash() bool {
-	if o != nil && o.Hash != nil {
+	if o != nil && !isNil(o.Hash) {
 		return true
 	}
 
@@ -141,7 +142,7 @@ func (o *Operator) SetHash(v string) {
 
 // GetPassword returns the Password field value if set, zero value otherwise.
 func (o *Operator) GetPassword() string {
-	if o == nil || o.Password == nil {
+	if o == nil || isNil(o.Password) {
 		var ret string
 		return ret
 	}
@@ -151,15 +152,15 @@ func (o *Operator) GetPassword() string {
 // GetPasswordOk returns a tuple with the Password field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetPasswordOk() (*string, bool) {
-	if o == nil || o.Password == nil {
-		return nil, false
+	if o == nil || isNil(o.Password) {
+    return nil, false
 	}
 	return o.Password, true
 }
 
 // HasPassword returns a boolean if a field has been set.
 func (o *Operator) HasPassword() bool {
-	if o != nil && o.Password != nil {
+	if o != nil && !isNil(o.Password) {
 		return true
 	}
 
@@ -173,7 +174,7 @@ func (o *Operator) SetPassword(v string) {
 
 // GetFullName returns the FullName field value if set, zero value otherwise.
 func (o *Operator) GetFullName() string {
-	if o == nil || o.FullName == nil {
+	if o == nil || isNil(o.FullName) {
 		var ret string
 		return ret
 	}
@@ -183,15 +184,15 @@ func (o *Operator) GetFullName() string {
 // GetFullNameOk returns a tuple with the FullName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetFullNameOk() (*string, bool) {
-	if o == nil || o.FullName == nil {
-		return nil, false
+	if o == nil || isNil(o.FullName) {
+    return nil, false
 	}
 	return o.FullName, true
 }
 
 // HasFullName returns a boolean if a field has been set.
 func (o *Operator) HasFullName() bool {
-	if o != nil && o.FullName != nil {
+	if o != nil && !isNil(o.FullName) {
 		return true
 	}
 
@@ -205,7 +206,7 @@ func (o *Operator) SetFullName(v string) {
 
 // GetEmail returns the Email field value if set, zero value otherwise.
 func (o *Operator) GetEmail() string {
-	if o == nil || o.Email == nil {
+	if o == nil || isNil(o.Email) {
 		var ret string
 		return ret
 	}
@@ -215,15 +216,15 @@ func (o *Operator) GetEmail() string {
 // GetEmailOk returns a tuple with the Email field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetEmailOk() (*string, bool) {
-	if o == nil || o.Email == nil {
-		return nil, false
+	if o == nil || isNil(o.Email) {
+    return nil, false
 	}
 	return o.Email, true
 }
 
 // HasEmail returns a boolean if a field has been set.
 func (o *Operator) HasEmail() bool {
-	if o != nil && o.Email != nil {
+	if o != nil && !isNil(o.Email) {
 		return true
 	}
 
@@ -237,7 +238,7 @@ func (o *Operator) SetEmail(v string) {
 
 // GetMobilePhone returns the MobilePhone field value if set, zero value otherwise.
 func (o *Operator) GetMobilePhone() string {
-	if o == nil || o.MobilePhone == nil {
+	if o == nil || isNil(o.MobilePhone) {
 		var ret string
 		return ret
 	}
@@ -247,15 +248,15 @@ func (o *Operator) GetMobilePhone() string {
 // GetMobilePhoneOk returns a tuple with the MobilePhone field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetMobilePhoneOk() (*string, bool) {
-	if o == nil || o.MobilePhone == nil {
-		return nil, false
+	if o == nil || isNil(o.MobilePhone) {
+    return nil, false
 	}
 	return o.MobilePhone, true
 }
 
 // HasMobilePhone returns a boolean if a field has been set.
 func (o *Operator) HasMobilePhone() bool {
-	if o != nil && o.MobilePhone != nil {
+	if o != nil && !isNil(o.MobilePhone) {
 		return true
 	}
 
@@ -269,7 +270,7 @@ func (o *Operator) SetMobilePhone(v string) {
 
 // GetOutgoingPhoneNumberId returns the OutgoingPhoneNumberId field value if set, zero value otherwise.
 func (o *Operator) GetOutgoingPhoneNumberId() int32 {
-	if o == nil || o.OutgoingPhoneNumberId == nil {
+	if o == nil || isNil(o.OutgoingPhoneNumberId) {
 		var ret int32
 		return ret
 	}
@@ -279,15 +280,15 @@ func (o *Operator) GetOutgoingPhoneNumberId() int32 {
 // GetOutgoingPhoneNumberIdOk returns a tuple with the OutgoingPhoneNumberId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetOutgoingPhoneNumberIdOk() (*int32, bool) {
-	if o == nil || o.OutgoingPhoneNumberId == nil {
-		return nil, false
+	if o == nil || isNil(o.OutgoingPhoneNumberId) {
+    return nil, false
 	}
 	return o.OutgoingPhoneNumberId, true
 }
 
 // HasOutgoingPhoneNumberId returns a boolean if a field has been set.
 func (o *Operator) HasOutgoingPhoneNumberId() bool {
-	if o != nil && o.OutgoingPhoneNumberId != nil {
+	if o != nil && !isNil(o.OutgoingPhoneNumberId) {
 		return true
 	}
 
@@ -301,7 +302,7 @@ func (o *Operator) SetOutgoingPhoneNumberId(v int32) {
 
 // GetOutgoingPhoneNumberIdSpecified returns the OutgoingPhoneNumberIdSpecified field value if set, zero value otherwise.
 func (o *Operator) GetOutgoingPhoneNumberIdSpecified() bool {
-	if o == nil || o.OutgoingPhoneNumberIdSpecified == nil {
+	if o == nil || isNil(o.OutgoingPhoneNumberIdSpecified) {
 		var ret bool
 		return ret
 	}
@@ -311,15 +312,15 @@ func (o *Operator) GetOutgoingPhoneNumberIdSpecified() bool {
 // GetOutgoingPhoneNumberIdSpecifiedOk returns a tuple with the OutgoingPhoneNumberIdSpecified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetOutgoingPhoneNumberIdSpecifiedOk() (*bool, bool) {
-	if o == nil || o.OutgoingPhoneNumberIdSpecified == nil {
-		return nil, false
+	if o == nil || isNil(o.OutgoingPhoneNumberIdSpecified) {
+    return nil, false
 	}
 	return o.OutgoingPhoneNumberIdSpecified, true
 }
 
 // HasOutgoingPhoneNumberIdSpecified returns a boolean if a field has been set.
 func (o *Operator) HasOutgoingPhoneNumberIdSpecified() bool {
-	if o != nil && o.OutgoingPhoneNumberIdSpecified != nil {
+	if o != nil && !isNil(o.OutgoingPhoneNumberIdSpecified) {
 		return true
 	}
 
@@ -333,7 +334,7 @@ func (o *Operator) SetOutgoingPhoneNumberIdSpecified(v bool) {
 
 // GetIsAccountAdministrator returns the IsAccountAdministrator field value if set, zero value otherwise.
 func (o *Operator) GetIsAccountAdministrator() bool {
-	if o == nil || o.IsAccountAdministrator == nil {
+	if o == nil || isNil(o.IsAccountAdministrator) {
 		var ret bool
 		return ret
 	}
@@ -343,15 +344,15 @@ func (o *Operator) GetIsAccountAdministrator() bool {
 // GetIsAccountAdministratorOk returns a tuple with the IsAccountAdministrator field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetIsAccountAdministratorOk() (*bool, bool) {
-	if o == nil || o.IsAccountAdministrator == nil {
-		return nil, false
+	if o == nil || isNil(o.IsAccountAdministrator) {
+    return nil, false
 	}
 	return o.IsAccountAdministrator, true
 }
 
 // HasIsAccountAdministrator returns a boolean if a field has been set.
 func (o *Operator) HasIsAccountAdministrator() bool {
-	if o != nil && o.IsAccountAdministrator != nil {
+	if o != nil && !isNil(o.IsAccountAdministrator) {
 		return true
 	}
 
@@ -365,7 +366,7 @@ func (o *Operator) SetIsAccountAdministrator(v bool) {
 
 // GetBackupEmail returns the BackupEmail field value if set, zero value otherwise.
 func (o *Operator) GetBackupEmail() string {
-	if o == nil || o.BackupEmail == nil {
+	if o == nil || isNil(o.BackupEmail) {
 		var ret string
 		return ret
 	}
@@ -375,15 +376,15 @@ func (o *Operator) GetBackupEmail() string {
 // GetBackupEmailOk returns a tuple with the BackupEmail field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetBackupEmailOk() (*string, bool) {
-	if o == nil || o.BackupEmail == nil {
-		return nil, false
+	if o == nil || isNil(o.BackupEmail) {
+    return nil, false
 	}
 	return o.BackupEmail, true
 }
 
 // HasBackupEmail returns a boolean if a field has been set.
 func (o *Operator) HasBackupEmail() bool {
-	if o != nil && o.BackupEmail != nil {
+	if o != nil && !isNil(o.BackupEmail) {
 		return true
 	}
 
@@ -397,7 +398,7 @@ func (o *Operator) SetBackupEmail(v string) {
 
 // GetIsOnDuty returns the IsOnDuty field value if set, zero value otherwise.
 func (o *Operator) GetIsOnDuty() bool {
-	if o == nil || o.IsOnDuty == nil {
+	if o == nil || isNil(o.IsOnDuty) {
 		var ret bool
 		return ret
 	}
@@ -407,15 +408,15 @@ func (o *Operator) GetIsOnDuty() bool {
 // GetIsOnDutyOk returns a tuple with the IsOnDuty field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetIsOnDutyOk() (*bool, bool) {
-	if o == nil || o.IsOnDuty == nil {
-		return nil, false
+	if o == nil || isNil(o.IsOnDuty) {
+    return nil, false
 	}
 	return o.IsOnDuty, true
 }
 
 // HasIsOnDuty returns a boolean if a field has been set.
 func (o *Operator) HasIsOnDuty() bool {
-	if o != nil && o.IsOnDuty != nil {
+	if o != nil && !isNil(o.IsOnDuty) {
 		return true
 	}
 
@@ -429,7 +430,7 @@ func (o *Operator) SetIsOnDuty(v bool) {
 
 // GetCultureName returns the CultureName field value if set, zero value otherwise.
 func (o *Operator) GetCultureName() string {
-	if o == nil || o.CultureName == nil {
+	if o == nil || isNil(o.CultureName) {
 		var ret string
 		return ret
 	}
@@ -439,15 +440,15 @@ func (o *Operator) GetCultureName() string {
 // GetCultureNameOk returns a tuple with the CultureName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetCultureNameOk() (*string, bool) {
-	if o == nil || o.CultureName == nil {
-		return nil, false
+	if o == nil || isNil(o.CultureName) {
+    return nil, false
 	}
 	return o.CultureName, true
 }
 
 // HasCultureName returns a boolean if a field has been set.
 func (o *Operator) HasCultureName() bool {
-	if o != nil && o.CultureName != nil {
+	if o != nil && !isNil(o.CultureName) {
 		return true
 	}
 
@@ -461,7 +462,7 @@ func (o *Operator) SetCultureName(v string) {
 
 // GetCultureNameSpecified returns the CultureNameSpecified field value if set, zero value otherwise.
 func (o *Operator) GetCultureNameSpecified() bool {
-	if o == nil || o.CultureNameSpecified == nil {
+	if o == nil || isNil(o.CultureNameSpecified) {
 		var ret bool
 		return ret
 	}
@@ -471,15 +472,15 @@ func (o *Operator) GetCultureNameSpecified() bool {
 // GetCultureNameSpecifiedOk returns a tuple with the CultureNameSpecified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetCultureNameSpecifiedOk() (*bool, bool) {
-	if o == nil || o.CultureNameSpecified == nil {
-		return nil, false
+	if o == nil || isNil(o.CultureNameSpecified) {
+    return nil, false
 	}
 	return o.CultureNameSpecified, true
 }
 
 // HasCultureNameSpecified returns a boolean if a field has been set.
 func (o *Operator) HasCultureNameSpecified() bool {
-	if o != nil && o.CultureNameSpecified != nil {
+	if o != nil && !isNil(o.CultureNameSpecified) {
 		return true
 	}
 
@@ -493,7 +494,7 @@ func (o *Operator) SetCultureNameSpecified(v bool) {
 
 // GetTimeZoneId returns the TimeZoneId field value if set, zero value otherwise.
 func (o *Operator) GetTimeZoneId() int32 {
-	if o == nil || o.TimeZoneId == nil {
+	if o == nil || isNil(o.TimeZoneId) {
 		var ret int32
 		return ret
 	}
@@ -503,15 +504,15 @@ func (o *Operator) GetTimeZoneId() int32 {
 // GetTimeZoneIdOk returns a tuple with the TimeZoneId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetTimeZoneIdOk() (*int32, bool) {
-	if o == nil || o.TimeZoneId == nil {
-		return nil, false
+	if o == nil || isNil(o.TimeZoneId) {
+    return nil, false
 	}
 	return o.TimeZoneId, true
 }
 
 // HasTimeZoneId returns a boolean if a field has been set.
 func (o *Operator) HasTimeZoneId() bool {
-	if o != nil && o.TimeZoneId != nil {
+	if o != nil && !isNil(o.TimeZoneId) {
 		return true
 	}
 
@@ -525,7 +526,7 @@ func (o *Operator) SetTimeZoneId(v int32) {
 
 // GetTimeZoneIdSpecified returns the TimeZoneIdSpecified field value if set, zero value otherwise.
 func (o *Operator) GetTimeZoneIdSpecified() bool {
-	if o == nil || o.TimeZoneIdSpecified == nil {
+	if o == nil || isNil(o.TimeZoneIdSpecified) {
 		var ret bool
 		return ret
 	}
@@ -535,15 +536,15 @@ func (o *Operator) GetTimeZoneIdSpecified() bool {
 // GetTimeZoneIdSpecifiedOk returns a tuple with the TimeZoneIdSpecified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetTimeZoneIdSpecifiedOk() (*bool, bool) {
-	if o == nil || o.TimeZoneIdSpecified == nil {
-		return nil, false
+	if o == nil || isNil(o.TimeZoneIdSpecified) {
+    return nil, false
 	}
 	return o.TimeZoneIdSpecified, true
 }
 
 // HasTimeZoneIdSpecified returns a boolean if a field has been set.
 func (o *Operator) HasTimeZoneIdSpecified() bool {
-	if o != nil && o.TimeZoneIdSpecified != nil {
+	if o != nil && !isNil(o.TimeZoneIdSpecified) {
 		return true
 	}
 
@@ -557,7 +558,7 @@ func (o *Operator) SetTimeZoneIdSpecified(v bool) {
 
 // GetSmsProvider returns the SmsProvider field value if set, zero value otherwise.
 func (o *Operator) GetSmsProvider() SmsProvider {
-	if o == nil || o.SmsProvider == nil {
+	if o == nil || isNil(o.SmsProvider) {
 		var ret SmsProvider
 		return ret
 	}
@@ -567,15 +568,15 @@ func (o *Operator) GetSmsProvider() SmsProvider {
 // GetSmsProviderOk returns a tuple with the SmsProvider field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetSmsProviderOk() (*SmsProvider, bool) {
-	if o == nil || o.SmsProvider == nil {
-		return nil, false
+	if o == nil || isNil(o.SmsProvider) {
+    return nil, false
 	}
 	return o.SmsProvider, true
 }
 
 // HasSmsProvider returns a boolean if a field has been set.
 func (o *Operator) HasSmsProvider() bool {
-	if o != nil && o.SmsProvider != nil {
+	if o != nil && !isNil(o.SmsProvider) {
 		return true
 	}
 
@@ -589,7 +590,7 @@ func (o *Operator) SetSmsProvider(v SmsProvider) {
 
 // GetUseNumericSender returns the UseNumericSender field value if set, zero value otherwise.
 func (o *Operator) GetUseNumericSender() bool {
-	if o == nil || o.UseNumericSender == nil {
+	if o == nil || isNil(o.UseNumericSender) {
 		var ret bool
 		return ret
 	}
@@ -599,15 +600,15 @@ func (o *Operator) GetUseNumericSender() bool {
 // GetUseNumericSenderOk returns a tuple with the UseNumericSender field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetUseNumericSenderOk() (*bool, bool) {
-	if o == nil || o.UseNumericSender == nil {
-		return nil, false
+	if o == nil || isNil(o.UseNumericSender) {
+    return nil, false
 	}
 	return o.UseNumericSender, true
 }
 
 // HasUseNumericSender returns a boolean if a field has been set.
 func (o *Operator) HasUseNumericSender() bool {
-	if o != nil && o.UseNumericSender != nil {
+	if o != nil && !isNil(o.UseNumericSender) {
 		return true
 	}
 
@@ -621,7 +622,7 @@ func (o *Operator) SetUseNumericSender(v bool) {
 
 // GetUseNumericSenderSpecified returns the UseNumericSenderSpecified field value if set, zero value otherwise.
 func (o *Operator) GetUseNumericSenderSpecified() bool {
-	if o == nil || o.UseNumericSenderSpecified == nil {
+	if o == nil || isNil(o.UseNumericSenderSpecified) {
 		var ret bool
 		return ret
 	}
@@ -631,15 +632,15 @@ func (o *Operator) GetUseNumericSenderSpecified() bool {
 // GetUseNumericSenderSpecifiedOk returns a tuple with the UseNumericSenderSpecified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetUseNumericSenderSpecifiedOk() (*bool, bool) {
-	if o == nil || o.UseNumericSenderSpecified == nil {
-		return nil, false
+	if o == nil || isNil(o.UseNumericSenderSpecified) {
+    return nil, false
 	}
 	return o.UseNumericSenderSpecified, true
 }
 
 // HasUseNumericSenderSpecified returns a boolean if a field has been set.
 func (o *Operator) HasUseNumericSenderSpecified() bool {
-	if o != nil && o.UseNumericSenderSpecified != nil {
+	if o != nil && !isNil(o.UseNumericSenderSpecified) {
 		return true
 	}
 
@@ -653,7 +654,7 @@ func (o *Operator) SetUseNumericSenderSpecified(v bool) {
 
 // GetAllowNativeLogin returns the AllowNativeLogin field value if set, zero value otherwise.
 func (o *Operator) GetAllowNativeLogin() bool {
-	if o == nil || o.AllowNativeLogin == nil {
+	if o == nil || isNil(o.AllowNativeLogin) {
 		var ret bool
 		return ret
 	}
@@ -663,15 +664,15 @@ func (o *Operator) GetAllowNativeLogin() bool {
 // GetAllowNativeLoginOk returns a tuple with the AllowNativeLogin field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetAllowNativeLoginOk() (*bool, bool) {
-	if o == nil || o.AllowNativeLogin == nil {
-		return nil, false
+	if o == nil || isNil(o.AllowNativeLogin) {
+    return nil, false
 	}
 	return o.AllowNativeLogin, true
 }
 
 // HasAllowNativeLogin returns a boolean if a field has been set.
 func (o *Operator) HasAllowNativeLogin() bool {
-	if o != nil && o.AllowNativeLogin != nil {
+	if o != nil && !isNil(o.AllowNativeLogin) {
 		return true
 	}
 
@@ -685,7 +686,7 @@ func (o *Operator) SetAllowNativeLogin(v bool) {
 
 // GetAllowNativeLoginSpecified returns the AllowNativeLoginSpecified field value if set, zero value otherwise.
 func (o *Operator) GetAllowNativeLoginSpecified() bool {
-	if o == nil || o.AllowNativeLoginSpecified == nil {
+	if o == nil || isNil(o.AllowNativeLoginSpecified) {
 		var ret bool
 		return ret
 	}
@@ -695,15 +696,15 @@ func (o *Operator) GetAllowNativeLoginSpecified() bool {
 // GetAllowNativeLoginSpecifiedOk returns a tuple with the AllowNativeLoginSpecified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetAllowNativeLoginSpecifiedOk() (*bool, bool) {
-	if o == nil || o.AllowNativeLoginSpecified == nil {
-		return nil, false
+	if o == nil || isNil(o.AllowNativeLoginSpecified) {
+    return nil, false
 	}
 	return o.AllowNativeLoginSpecified, true
 }
 
 // HasAllowNativeLoginSpecified returns a boolean if a field has been set.
 func (o *Operator) HasAllowNativeLoginSpecified() bool {
-	if o != nil && o.AllowNativeLoginSpecified != nil {
+	if o != nil && !isNil(o.AllowNativeLoginSpecified) {
 		return true
 	}
 
@@ -717,7 +718,7 @@ func (o *Operator) SetAllowNativeLoginSpecified(v bool) {
 
 // GetAllowSingleSignon returns the AllowSingleSignon field value if set, zero value otherwise.
 func (o *Operator) GetAllowSingleSignon() bool {
-	if o == nil || o.AllowSingleSignon == nil {
+	if o == nil || isNil(o.AllowSingleSignon) {
 		var ret bool
 		return ret
 	}
@@ -727,15 +728,15 @@ func (o *Operator) GetAllowSingleSignon() bool {
 // GetAllowSingleSignonOk returns a tuple with the AllowSingleSignon field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetAllowSingleSignonOk() (*bool, bool) {
-	if o == nil || o.AllowSingleSignon == nil {
-		return nil, false
+	if o == nil || isNil(o.AllowSingleSignon) {
+    return nil, false
 	}
 	return o.AllowSingleSignon, true
 }
 
 // HasAllowSingleSignon returns a boolean if a field has been set.
 func (o *Operator) HasAllowSingleSignon() bool {
-	if o != nil && o.AllowSingleSignon != nil {
+	if o != nil && !isNil(o.AllowSingleSignon) {
 		return true
 	}
 
@@ -749,7 +750,7 @@ func (o *Operator) SetAllowSingleSignon(v bool) {
 
 // GetAllowSingleSignonSpecified returns the AllowSingleSignonSpecified field value if set, zero value otherwise.
 func (o *Operator) GetAllowSingleSignonSpecified() bool {
-	if o == nil || o.AllowSingleSignonSpecified == nil {
+	if o == nil || isNil(o.AllowSingleSignonSpecified) {
 		var ret bool
 		return ret
 	}
@@ -759,15 +760,15 @@ func (o *Operator) GetAllowSingleSignonSpecified() bool {
 // GetAllowSingleSignonSpecifiedOk returns a tuple with the AllowSingleSignonSpecified field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetAllowSingleSignonSpecifiedOk() (*bool, bool) {
-	if o == nil || o.AllowSingleSignonSpecified == nil {
-		return nil, false
+	if o == nil || isNil(o.AllowSingleSignonSpecified) {
+    return nil, false
 	}
 	return o.AllowSingleSignonSpecified, true
 }
 
 // HasAllowSingleSignonSpecified returns a boolean if a field has been set.
 func (o *Operator) HasAllowSingleSignonSpecified() bool {
-	if o != nil && o.AllowSingleSignonSpecified != nil {
+	if o != nil && !isNil(o.AllowSingleSignonSpecified) {
 		return true
 	}
 
@@ -781,7 +782,7 @@ func (o *Operator) SetAllowSingleSignonSpecified(v bool) {
 
 // GetDefaultDashboard returns the DefaultDashboard field value if set, zero value otherwise.
 func (o *Operator) GetDefaultDashboard() string {
-	if o == nil || o.DefaultDashboard == nil {
+	if o == nil || isNil(o.DefaultDashboard) {
 		var ret string
 		return ret
 	}
@@ -791,15 +792,15 @@ func (o *Operator) GetDefaultDashboard() string {
 // GetDefaultDashboardOk returns a tuple with the DefaultDashboard field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetDefaultDashboardOk() (*string, bool) {
-	if o == nil || o.DefaultDashboard == nil {
-		return nil, false
+	if o == nil || isNil(o.DefaultDashboard) {
+    return nil, false
 	}
 	return o.DefaultDashboard, true
 }
 
 // HasDefaultDashboard returns a boolean if a field has been set.
 func (o *Operator) HasDefaultDashboard() bool {
-	if o != nil && o.DefaultDashboard != nil {
+	if o != nil && !isNil(o.DefaultDashboard) {
 		return true
 	}
 
@@ -813,7 +814,7 @@ func (o *Operator) SetDefaultDashboard(v string) {
 
 // GetSetupMode returns the SetupMode field value if set, zero value otherwise.
 func (o *Operator) GetSetupMode() OperatorSetupMode {
-	if o == nil || o.SetupMode == nil {
+	if o == nil || isNil(o.SetupMode) {
 		var ret OperatorSetupMode
 		return ret
 	}
@@ -823,15 +824,15 @@ func (o *Operator) GetSetupMode() OperatorSetupMode {
 // GetSetupModeOk returns a tuple with the SetupMode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Operator) GetSetupModeOk() (*OperatorSetupMode, bool) {
-	if o == nil || o.SetupMode == nil {
-		return nil, false
+	if o == nil || isNil(o.SetupMode) {
+    return nil, false
 	}
 	return o.SetupMode, true
 }
 
 // HasSetupMode returns a boolean if a field has been set.
 func (o *Operator) HasSetupMode() bool {
-	if o != nil && o.SetupMode != nil {
+	if o != nil && !isNil(o.SetupMode) {
 		return true
 	}
 
@@ -845,76 +846,76 @@ func (o *Operator) SetSetupMode(v OperatorSetupMode) {
 
 func (o Operator) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.OperatorGuid != nil {
+	if !isNil(o.OperatorGuid) {
 		toSerialize["OperatorGuid"] = o.OperatorGuid
 	}
-	if o.Hash != nil {
+	if !isNil(o.Hash) {
 		toSerialize["Hash"] = o.Hash
 	}
-	if o.Password != nil {
+	if !isNil(o.Password) {
 		toSerialize["Password"] = o.Password
 	}
-	if o.FullName != nil {
+	if !isNil(o.FullName) {
 		toSerialize["FullName"] = o.FullName
 	}
-	if o.Email != nil {
+	if !isNil(o.Email) {
 		toSerialize["Email"] = o.Email
 	}
-	if o.MobilePhone != nil {
+	if !isNil(o.MobilePhone) {
 		toSerialize["MobilePhone"] = o.MobilePhone
 	}
-	if o.OutgoingPhoneNumberId != nil {
+	if !isNil(o.OutgoingPhoneNumberId) {
 		toSerialize["OutgoingPhoneNumberId"] = o.OutgoingPhoneNumberId
 	}
-	if o.OutgoingPhoneNumberIdSpecified != nil {
+	if !isNil(o.OutgoingPhoneNumberIdSpecified) {
 		toSerialize["OutgoingPhoneNumberIdSpecified"] = o.OutgoingPhoneNumberIdSpecified
 	}
-	if o.IsAccountAdministrator != nil {
+	if !isNil(o.IsAccountAdministrator) {
 		toSerialize["IsAccountAdministrator"] = o.IsAccountAdministrator
 	}
-	if o.BackupEmail != nil {
+	if !isNil(o.BackupEmail) {
 		toSerialize["BackupEmail"] = o.BackupEmail
 	}
-	if o.IsOnDuty != nil {
+	if !isNil(o.IsOnDuty) {
 		toSerialize["IsOnDuty"] = o.IsOnDuty
 	}
-	if o.CultureName != nil {
+	if !isNil(o.CultureName) {
 		toSerialize["CultureName"] = o.CultureName
 	}
-	if o.CultureNameSpecified != nil {
+	if !isNil(o.CultureNameSpecified) {
 		toSerialize["CultureNameSpecified"] = o.CultureNameSpecified
 	}
-	if o.TimeZoneId != nil {
+	if !isNil(o.TimeZoneId) {
 		toSerialize["TimeZoneId"] = o.TimeZoneId
 	}
-	if o.TimeZoneIdSpecified != nil {
+	if !isNil(o.TimeZoneIdSpecified) {
 		toSerialize["TimeZoneIdSpecified"] = o.TimeZoneIdSpecified
 	}
-	if o.SmsProvider != nil {
+	if !isNil(o.SmsProvider) {
 		toSerialize["SmsProvider"] = o.SmsProvider
 	}
-	if o.UseNumericSender != nil {
+	if !isNil(o.UseNumericSender) {
 		toSerialize["UseNumericSender"] = o.UseNumericSender
 	}
-	if o.UseNumericSenderSpecified != nil {
+	if !isNil(o.UseNumericSenderSpecified) {
 		toSerialize["UseNumericSenderSpecified"] = o.UseNumericSenderSpecified
 	}
-	if o.AllowNativeLogin != nil {
+	if !isNil(o.AllowNativeLogin) {
 		toSerialize["AllowNativeLogin"] = o.AllowNativeLogin
 	}
-	if o.AllowNativeLoginSpecified != nil {
+	if !isNil(o.AllowNativeLoginSpecified) {
 		toSerialize["AllowNativeLoginSpecified"] = o.AllowNativeLoginSpecified
 	}
-	if o.AllowSingleSignon != nil {
+	if !isNil(o.AllowSingleSignon) {
 		toSerialize["AllowSingleSignon"] = o.AllowSingleSignon
 	}
-	if o.AllowSingleSignonSpecified != nil {
+	if !isNil(o.AllowSingleSignonSpecified) {
 		toSerialize["AllowSingleSignonSpecified"] = o.AllowSingleSignonSpecified
 	}
-	if o.DefaultDashboard != nil {
+	if !isNil(o.DefaultDashboard) {
 		toSerialize["DefaultDashboard"] = o.DefaultDashboard
 	}
-	if o.SetupMode != nil {
+	if !isNil(o.SetupMode) {
 		toSerialize["SetupMode"] = o.SetupMode
 	}
 	return json.Marshal(toSerialize)

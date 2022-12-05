@@ -25,9 +25,9 @@ type Integration struct {
 	// Extra emailadresses for this integration (if type == email)
 	ExtraEmailAddresses *string `json:"ExtraEmailAddresses,omitempty"`
 	// All statushubs for this integration (if type == statushub)
-	StatusHubServiceList *[]IntegrationServiceMap `json:"StatusHubServiceList,omitempty"`
+	StatusHubServiceList []IntegrationServiceMap `json:"StatusHubServiceList,omitempty"`
 	// All integrations services.
-	IntegrationServices *[]string `json:"IntegrationServices,omitempty"`
+	IntegrationServices []string `json:"IntegrationServices,omitempty"`
 	Hash *string `json:"Hash,omitempty"`
 }
 
@@ -63,8 +63,8 @@ func (o *Integration) GetIntegrationGuid() string {
 // GetIntegrationGuidOk returns a tuple with the IntegrationGuid field value
 // and a boolean to check if the value has been set.
 func (o *Integration) GetIntegrationGuidOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.IntegrationGuid, true
 }
@@ -76,7 +76,7 @@ func (o *Integration) SetIntegrationGuid(v string) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *Integration) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -86,15 +86,15 @@ func (o *Integration) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Integration) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *Integration) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -119,8 +119,8 @@ func (o *Integration) GetType() IntegrationTypeEnum {
 // GetTypeOk returns a tuple with the Type field value
 // and a boolean to check if the value has been set.
 func (o *Integration) GetTypeOk() (*IntegrationTypeEnum, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Type, true
 }
@@ -132,7 +132,7 @@ func (o *Integration) SetType(v IntegrationTypeEnum) {
 
 // GetExtraEmailAddresses returns the ExtraEmailAddresses field value if set, zero value otherwise.
 func (o *Integration) GetExtraEmailAddresses() string {
-	if o == nil || o.ExtraEmailAddresses == nil {
+	if o == nil || isNil(o.ExtraEmailAddresses) {
 		var ret string
 		return ret
 	}
@@ -142,15 +142,15 @@ func (o *Integration) GetExtraEmailAddresses() string {
 // GetExtraEmailAddressesOk returns a tuple with the ExtraEmailAddresses field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Integration) GetExtraEmailAddressesOk() (*string, bool) {
-	if o == nil || o.ExtraEmailAddresses == nil {
-		return nil, false
+	if o == nil || isNil(o.ExtraEmailAddresses) {
+    return nil, false
 	}
 	return o.ExtraEmailAddresses, true
 }
 
 // HasExtraEmailAddresses returns a boolean if a field has been set.
 func (o *Integration) HasExtraEmailAddresses() bool {
-	if o != nil && o.ExtraEmailAddresses != nil {
+	if o != nil && !isNil(o.ExtraEmailAddresses) {
 		return true
 	}
 
@@ -164,25 +164,25 @@ func (o *Integration) SetExtraEmailAddresses(v string) {
 
 // GetStatusHubServiceList returns the StatusHubServiceList field value if set, zero value otherwise.
 func (o *Integration) GetStatusHubServiceList() []IntegrationServiceMap {
-	if o == nil || o.StatusHubServiceList == nil {
+	if o == nil || isNil(o.StatusHubServiceList) {
 		var ret []IntegrationServiceMap
 		return ret
 	}
-	return *o.StatusHubServiceList
+	return o.StatusHubServiceList
 }
 
 // GetStatusHubServiceListOk returns a tuple with the StatusHubServiceList field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Integration) GetStatusHubServiceListOk() (*[]IntegrationServiceMap, bool) {
-	if o == nil || o.StatusHubServiceList == nil {
-		return nil, false
+func (o *Integration) GetStatusHubServiceListOk() ([]IntegrationServiceMap, bool) {
+	if o == nil || isNil(o.StatusHubServiceList) {
+    return nil, false
 	}
 	return o.StatusHubServiceList, true
 }
 
 // HasStatusHubServiceList returns a boolean if a field has been set.
 func (o *Integration) HasStatusHubServiceList() bool {
-	if o != nil && o.StatusHubServiceList != nil {
+	if o != nil && !isNil(o.StatusHubServiceList) {
 		return true
 	}
 
@@ -191,30 +191,30 @@ func (o *Integration) HasStatusHubServiceList() bool {
 
 // SetStatusHubServiceList gets a reference to the given []IntegrationServiceMap and assigns it to the StatusHubServiceList field.
 func (o *Integration) SetStatusHubServiceList(v []IntegrationServiceMap) {
-	o.StatusHubServiceList = &v
+	o.StatusHubServiceList = v
 }
 
 // GetIntegrationServices returns the IntegrationServices field value if set, zero value otherwise.
 func (o *Integration) GetIntegrationServices() []string {
-	if o == nil || o.IntegrationServices == nil {
+	if o == nil || isNil(o.IntegrationServices) {
 		var ret []string
 		return ret
 	}
-	return *o.IntegrationServices
+	return o.IntegrationServices
 }
 
 // GetIntegrationServicesOk returns a tuple with the IntegrationServices field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Integration) GetIntegrationServicesOk() (*[]string, bool) {
-	if o == nil || o.IntegrationServices == nil {
-		return nil, false
+func (o *Integration) GetIntegrationServicesOk() ([]string, bool) {
+	if o == nil || isNil(o.IntegrationServices) {
+    return nil, false
 	}
 	return o.IntegrationServices, true
 }
 
 // HasIntegrationServices returns a boolean if a field has been set.
 func (o *Integration) HasIntegrationServices() bool {
-	if o != nil && o.IntegrationServices != nil {
+	if o != nil && !isNil(o.IntegrationServices) {
 		return true
 	}
 
@@ -223,12 +223,12 @@ func (o *Integration) HasIntegrationServices() bool {
 
 // SetIntegrationServices gets a reference to the given []string and assigns it to the IntegrationServices field.
 func (o *Integration) SetIntegrationServices(v []string) {
-	o.IntegrationServices = &v
+	o.IntegrationServices = v
 }
 
 // GetHash returns the Hash field value if set, zero value otherwise.
 func (o *Integration) GetHash() string {
-	if o == nil || o.Hash == nil {
+	if o == nil || isNil(o.Hash) {
 		var ret string
 		return ret
 	}
@@ -238,15 +238,15 @@ func (o *Integration) GetHash() string {
 // GetHashOk returns a tuple with the Hash field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Integration) GetHashOk() (*string, bool) {
-	if o == nil || o.Hash == nil {
-		return nil, false
+	if o == nil || isNil(o.Hash) {
+    return nil, false
 	}
 	return o.Hash, true
 }
 
 // HasHash returns a boolean if a field has been set.
 func (o *Integration) HasHash() bool {
-	if o != nil && o.Hash != nil {
+	if o != nil && !isNil(o.Hash) {
 		return true
 	}
 
@@ -263,22 +263,22 @@ func (o Integration) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["IntegrationGuid"] = o.IntegrationGuid
 	}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
 	if true {
 		toSerialize["Type"] = o.Type
 	}
-	if o.ExtraEmailAddresses != nil {
+	if !isNil(o.ExtraEmailAddresses) {
 		toSerialize["ExtraEmailAddresses"] = o.ExtraEmailAddresses
 	}
-	if o.StatusHubServiceList != nil {
+	if !isNil(o.StatusHubServiceList) {
 		toSerialize["StatusHubServiceList"] = o.StatusHubServiceList
 	}
-	if o.IntegrationServices != nil {
+	if !isNil(o.IntegrationServices) {
 		toSerialize["IntegrationServices"] = o.IntegrationServices
 	}
-	if o.Hash != nil {
+	if !isNil(o.Hash) {
 		toSerialize["Hash"] = o.Hash
 	}
 	return json.Marshal(toSerialize)

@@ -42,7 +42,7 @@ func NewThrottlingOptionsWithDefaults() *ThrottlingOptions {
 
 // GetThrottlingType returns the ThrottlingType field value if set, zero value otherwise.
 func (o *ThrottlingOptions) GetThrottlingType() ThrottlingType {
-	if o == nil || o.ThrottlingType == nil {
+	if o == nil || isNil(o.ThrottlingType) {
 		var ret ThrottlingType
 		return ret
 	}
@@ -52,15 +52,15 @@ func (o *ThrottlingOptions) GetThrottlingType() ThrottlingType {
 // GetThrottlingTypeOk returns a tuple with the ThrottlingType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ThrottlingOptions) GetThrottlingTypeOk() (*ThrottlingType, bool) {
-	if o == nil || o.ThrottlingType == nil {
-		return nil, false
+	if o == nil || isNil(o.ThrottlingType) {
+    return nil, false
 	}
 	return o.ThrottlingType, true
 }
 
 // HasThrottlingType returns a boolean if a field has been set.
 func (o *ThrottlingOptions) HasThrottlingType() bool {
-	if o != nil && o.ThrottlingType != nil {
+	if o != nil && !isNil(o.ThrottlingType) {
 		return true
 	}
 
@@ -74,7 +74,7 @@ func (o *ThrottlingOptions) SetThrottlingType(v ThrottlingType) {
 
 // GetThrottlingValue returns the ThrottlingValue field value if set, zero value otherwise.
 func (o *ThrottlingOptions) GetThrottlingValue() ThrottlingValue {
-	if o == nil || o.ThrottlingValue == nil {
+	if o == nil || isNil(o.ThrottlingValue) {
 		var ret ThrottlingValue
 		return ret
 	}
@@ -84,15 +84,15 @@ func (o *ThrottlingOptions) GetThrottlingValue() ThrottlingValue {
 // GetThrottlingValueOk returns a tuple with the ThrottlingValue field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ThrottlingOptions) GetThrottlingValueOk() (*ThrottlingValue, bool) {
-	if o == nil || o.ThrottlingValue == nil {
-		return nil, false
+	if o == nil || isNil(o.ThrottlingValue) {
+    return nil, false
 	}
 	return o.ThrottlingValue, true
 }
 
 // HasThrottlingValue returns a boolean if a field has been set.
 func (o *ThrottlingOptions) HasThrottlingValue() bool {
-	if o != nil && o.ThrottlingValue != nil {
+	if o != nil && !isNil(o.ThrottlingValue) {
 		return true
 	}
 
@@ -106,7 +106,7 @@ func (o *ThrottlingOptions) SetThrottlingValue(v ThrottlingValue) {
 
 // GetThrottlingSpeedUp returns the ThrottlingSpeedUp field value if set, zero value otherwise.
 func (o *ThrottlingOptions) GetThrottlingSpeedUp() int32 {
-	if o == nil || o.ThrottlingSpeedUp == nil {
+	if o == nil || isNil(o.ThrottlingSpeedUp) {
 		var ret int32
 		return ret
 	}
@@ -116,15 +116,15 @@ func (o *ThrottlingOptions) GetThrottlingSpeedUp() int32 {
 // GetThrottlingSpeedUpOk returns a tuple with the ThrottlingSpeedUp field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ThrottlingOptions) GetThrottlingSpeedUpOk() (*int32, bool) {
-	if o == nil || o.ThrottlingSpeedUp == nil {
-		return nil, false
+	if o == nil || isNil(o.ThrottlingSpeedUp) {
+    return nil, false
 	}
 	return o.ThrottlingSpeedUp, true
 }
 
 // HasThrottlingSpeedUp returns a boolean if a field has been set.
 func (o *ThrottlingOptions) HasThrottlingSpeedUp() bool {
-	if o != nil && o.ThrottlingSpeedUp != nil {
+	if o != nil && !isNil(o.ThrottlingSpeedUp) {
 		return true
 	}
 
@@ -138,7 +138,7 @@ func (o *ThrottlingOptions) SetThrottlingSpeedUp(v int32) {
 
 // GetThrottlingSpeedDown returns the ThrottlingSpeedDown field value if set, zero value otherwise.
 func (o *ThrottlingOptions) GetThrottlingSpeedDown() int32 {
-	if o == nil || o.ThrottlingSpeedDown == nil {
+	if o == nil || isNil(o.ThrottlingSpeedDown) {
 		var ret int32
 		return ret
 	}
@@ -148,15 +148,15 @@ func (o *ThrottlingOptions) GetThrottlingSpeedDown() int32 {
 // GetThrottlingSpeedDownOk returns a tuple with the ThrottlingSpeedDown field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ThrottlingOptions) GetThrottlingSpeedDownOk() (*int32, bool) {
-	if o == nil || o.ThrottlingSpeedDown == nil {
-		return nil, false
+	if o == nil || isNil(o.ThrottlingSpeedDown) {
+    return nil, false
 	}
 	return o.ThrottlingSpeedDown, true
 }
 
 // HasThrottlingSpeedDown returns a boolean if a field has been set.
 func (o *ThrottlingOptions) HasThrottlingSpeedDown() bool {
-	if o != nil && o.ThrottlingSpeedDown != nil {
+	if o != nil && !isNil(o.ThrottlingSpeedDown) {
 		return true
 	}
 
@@ -170,7 +170,7 @@ func (o *ThrottlingOptions) SetThrottlingSpeedDown(v int32) {
 
 // GetThrottlingLatency returns the ThrottlingLatency field value if set, zero value otherwise.
 func (o *ThrottlingOptions) GetThrottlingLatency() int32 {
-	if o == nil || o.ThrottlingLatency == nil {
+	if o == nil || isNil(o.ThrottlingLatency) {
 		var ret int32
 		return ret
 	}
@@ -180,15 +180,15 @@ func (o *ThrottlingOptions) GetThrottlingLatency() int32 {
 // GetThrottlingLatencyOk returns a tuple with the ThrottlingLatency field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ThrottlingOptions) GetThrottlingLatencyOk() (*int32, bool) {
-	if o == nil || o.ThrottlingLatency == nil {
-		return nil, false
+	if o == nil || isNil(o.ThrottlingLatency) {
+    return nil, false
 	}
 	return o.ThrottlingLatency, true
 }
 
 // HasThrottlingLatency returns a boolean if a field has been set.
 func (o *ThrottlingOptions) HasThrottlingLatency() bool {
-	if o != nil && o.ThrottlingLatency != nil {
+	if o != nil && !isNil(o.ThrottlingLatency) {
 		return true
 	}
 
@@ -202,19 +202,19 @@ func (o *ThrottlingOptions) SetThrottlingLatency(v int32) {
 
 func (o ThrottlingOptions) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.ThrottlingType != nil {
+	if !isNil(o.ThrottlingType) {
 		toSerialize["ThrottlingType"] = o.ThrottlingType
 	}
-	if o.ThrottlingValue != nil {
+	if !isNil(o.ThrottlingValue) {
 		toSerialize["ThrottlingValue"] = o.ThrottlingValue
 	}
-	if o.ThrottlingSpeedUp != nil {
+	if !isNil(o.ThrottlingSpeedUp) {
 		toSerialize["ThrottlingSpeedUp"] = o.ThrottlingSpeedUp
 	}
-	if o.ThrottlingSpeedDown != nil {
+	if !isNil(o.ThrottlingSpeedDown) {
 		toSerialize["ThrottlingSpeedDown"] = o.ThrottlingSpeedDown
 	}
-	if o.ThrottlingLatency != nil {
+	if !isNil(o.ThrottlingLatency) {
 		toSerialize["ThrottlingLatency"] = o.ThrottlingLatency
 	}
 	return json.Marshal(toSerialize)

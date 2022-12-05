@@ -16,9 +16,13 @@ import (
 
 // MonitorAuthorization Monitor group authorization
 type MonitorAuthorization struct {
+	// The unique ID of this authorization
 	AuthorizationId *string `json:"AuthorizationId,omitempty"`
+	// The authorization type
 	AuthorizationType MonitorAuthorizationType `json:"AuthorizationType"`
+	// The GUID of the operator (NULL if this authorization is for an operator group)
 	OperatorGuid *string `json:"OperatorGuid,omitempty"`
+	// The GUID of the operator group (NULL if this authorization is for an operator)
 	OperatorGroupGuid *string `json:"OperatorGroupGuid,omitempty"`
 }
 
@@ -42,7 +46,7 @@ func NewMonitorAuthorizationWithDefaults() *MonitorAuthorization {
 
 // GetAuthorizationId returns the AuthorizationId field value if set, zero value otherwise.
 func (o *MonitorAuthorization) GetAuthorizationId() string {
-	if o == nil || o.AuthorizationId == nil {
+	if o == nil || isNil(o.AuthorizationId) {
 		var ret string
 		return ret
 	}
@@ -52,15 +56,15 @@ func (o *MonitorAuthorization) GetAuthorizationId() string {
 // GetAuthorizationIdOk returns a tuple with the AuthorizationId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorAuthorization) GetAuthorizationIdOk() (*string, bool) {
-	if o == nil || o.AuthorizationId == nil {
-		return nil, false
+	if o == nil || isNil(o.AuthorizationId) {
+    return nil, false
 	}
 	return o.AuthorizationId, true
 }
 
 // HasAuthorizationId returns a boolean if a field has been set.
 func (o *MonitorAuthorization) HasAuthorizationId() bool {
-	if o != nil && o.AuthorizationId != nil {
+	if o != nil && !isNil(o.AuthorizationId) {
 		return true
 	}
 
@@ -85,8 +89,8 @@ func (o *MonitorAuthorization) GetAuthorizationType() MonitorAuthorizationType {
 // GetAuthorizationTypeOk returns a tuple with the AuthorizationType field value
 // and a boolean to check if the value has been set.
 func (o *MonitorAuthorization) GetAuthorizationTypeOk() (*MonitorAuthorizationType, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.AuthorizationType, true
 }
@@ -98,7 +102,7 @@ func (o *MonitorAuthorization) SetAuthorizationType(v MonitorAuthorizationType) 
 
 // GetOperatorGuid returns the OperatorGuid field value if set, zero value otherwise.
 func (o *MonitorAuthorization) GetOperatorGuid() string {
-	if o == nil || o.OperatorGuid == nil {
+	if o == nil || isNil(o.OperatorGuid) {
 		var ret string
 		return ret
 	}
@@ -108,15 +112,15 @@ func (o *MonitorAuthorization) GetOperatorGuid() string {
 // GetOperatorGuidOk returns a tuple with the OperatorGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorAuthorization) GetOperatorGuidOk() (*string, bool) {
-	if o == nil || o.OperatorGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorGuid) {
+    return nil, false
 	}
 	return o.OperatorGuid, true
 }
 
 // HasOperatorGuid returns a boolean if a field has been set.
 func (o *MonitorAuthorization) HasOperatorGuid() bool {
-	if o != nil && o.OperatorGuid != nil {
+	if o != nil && !isNil(o.OperatorGuid) {
 		return true
 	}
 
@@ -130,7 +134,7 @@ func (o *MonitorAuthorization) SetOperatorGuid(v string) {
 
 // GetOperatorGroupGuid returns the OperatorGroupGuid field value if set, zero value otherwise.
 func (o *MonitorAuthorization) GetOperatorGroupGuid() string {
-	if o == nil || o.OperatorGroupGuid == nil {
+	if o == nil || isNil(o.OperatorGroupGuid) {
 		var ret string
 		return ret
 	}
@@ -140,15 +144,15 @@ func (o *MonitorAuthorization) GetOperatorGroupGuid() string {
 // GetOperatorGroupGuidOk returns a tuple with the OperatorGroupGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorAuthorization) GetOperatorGroupGuidOk() (*string, bool) {
-	if o == nil || o.OperatorGroupGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorGroupGuid) {
+    return nil, false
 	}
 	return o.OperatorGroupGuid, true
 }
 
 // HasOperatorGroupGuid returns a boolean if a field has been set.
 func (o *MonitorAuthorization) HasOperatorGroupGuid() bool {
-	if o != nil && o.OperatorGroupGuid != nil {
+	if o != nil && !isNil(o.OperatorGroupGuid) {
 		return true
 	}
 
@@ -162,16 +166,16 @@ func (o *MonitorAuthorization) SetOperatorGroupGuid(v string) {
 
 func (o MonitorAuthorization) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.AuthorizationId != nil {
+	if !isNil(o.AuthorizationId) {
 		toSerialize["AuthorizationId"] = o.AuthorizationId
 	}
 	if true {
 		toSerialize["AuthorizationType"] = o.AuthorizationType
 	}
-	if o.OperatorGuid != nil {
+	if !isNil(o.OperatorGuid) {
 		toSerialize["OperatorGuid"] = o.OperatorGuid
 	}
-	if o.OperatorGroupGuid != nil {
+	if !isNil(o.OperatorGroupGuid) {
 		toSerialize["OperatorGroupGuid"] = o.OperatorGroupGuid
 	}
 	return json.Marshal(toSerialize)

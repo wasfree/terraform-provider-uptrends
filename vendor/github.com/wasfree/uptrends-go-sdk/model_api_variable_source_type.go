@@ -45,7 +45,8 @@ const (
 	APIVARIABLESOURCETYPE_EXECUTE_FUNCTION ApiVariableSourceType = "ExecuteFunction"
 )
 
-var allowedApiVariableSourceTypeEnumValues = []ApiVariableSourceType{
+// All allowed values of ApiVariableSourceType enum
+var AllowedApiVariableSourceTypeEnumValues = []ApiVariableSourceType{
 	"None",
 	"Constant",
 	"Variable",
@@ -78,7 +79,7 @@ func (v *ApiVariableSourceType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ApiVariableSourceType(value)
-	for _, existing := range allowedApiVariableSourceTypeEnumValues {
+	for _, existing := range AllowedApiVariableSourceTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -95,13 +96,13 @@ func NewApiVariableSourceTypeFromValue(v string) (*ApiVariableSourceType, error)
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for ApiVariableSourceType: valid values are %v", v, allowedApiVariableSourceTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for ApiVariableSourceType: valid values are %v", v, AllowedApiVariableSourceTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v ApiVariableSourceType) IsValid() bool {
-	for _, existing := range allowedApiVariableSourceTypeEnumValues {
+	for _, existing := range AllowedApiVariableSourceTypeEnumValues {
 		if existing == v {
 			return true
 		}

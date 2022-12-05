@@ -26,7 +26,8 @@ const (
 	APIHTTPAUTHENTICATIONTYPE_DIGEST ApiHttpAuthenticationType = "Digest"
 )
 
-var allowedApiHttpAuthenticationTypeEnumValues = []ApiHttpAuthenticationType{
+// All allowed values of ApiHttpAuthenticationType enum
+var AllowedApiHttpAuthenticationTypeEnumValues = []ApiHttpAuthenticationType{
 	"None",
 	"Basic",
 	"NTLM",
@@ -40,7 +41,7 @@ func (v *ApiHttpAuthenticationType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ApiHttpAuthenticationType(value)
-	for _, existing := range allowedApiHttpAuthenticationTypeEnumValues {
+	for _, existing := range AllowedApiHttpAuthenticationTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -57,13 +58,13 @@ func NewApiHttpAuthenticationTypeFromValue(v string) (*ApiHttpAuthenticationType
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for ApiHttpAuthenticationType: valid values are %v", v, allowedApiHttpAuthenticationTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for ApiHttpAuthenticationType: valid values are %v", v, AllowedApiHttpAuthenticationTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v ApiHttpAuthenticationType) IsValid() bool {
-	for _, existing := range allowedApiHttpAuthenticationTypeEnumValues {
+	for _, existing := range AllowedApiHttpAuthenticationTypeEnumValues {
 		if existing == v {
 			return true
 		}

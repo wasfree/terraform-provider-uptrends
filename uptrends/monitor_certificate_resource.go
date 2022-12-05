@@ -40,12 +40,6 @@ func ResourceMonitorCertificateSchema() *schema.Resource {
 					string(uptrends.IPVERSION_IP_V6)},
 					false),
 			},
-			"native_ipv6_only": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     false,
-				Description: "True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity. Defaults to `false`.",
-			},
 			"auth_type": {
 				Type:         schema.TypeString,
 				Optional:     true,
@@ -160,7 +154,7 @@ func monitorCertificateRead(ctx context.Context, d *schema.ResourceData, meta in
 		return diag.FromErr(err)
 	}
 
-	return readMonitorCertificateStruct(&resp, d)
+	return readMonitorCertificateStruct(resp, d)
 }
 
 func monitorCertificateUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
@@ -213,7 +207,6 @@ func buildMonitorCertificateStruct(d *schema.ResourceData) (*uptrends.Monitor, e
 	m.MonitorType = &monitorCertificateType
 	m.Url = String(d.Get("url").(string))
 	m.IpVersion = (*uptrends.IpVersion)(String(d.Get("ip_version").(string)))
-	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
 	m.AuthenticationType = (*uptrends.ApiHttpAuthenticationType)(String(d.Get("auth_type").(string)))
 	m.Username = String(d.Get("username").(string))
 	m.CertificateName = String(d.Get("cert_name").(string))
@@ -249,9 +242,6 @@ func readMonitorCertificateStruct(m *uptrends.Monitor, d *schema.ResourceData) d
 		return diag.FromErr(err)
 	}
 	if err := d.Set("auth_type", m.AuthenticationType); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("native_ipv6_only", m.NativeIPv6Only); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("username", m.Username); err != nil {

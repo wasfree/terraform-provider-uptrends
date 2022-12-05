@@ -12,15 +12,14 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
-// MonitorCheckAttributes Monitor check attributes 
+// MonitorCheckAttributes Object attributes 
 type MonitorCheckAttributes struct {
 	// Monitor identifier
 	MonitorGuid string `json:"MonitorGuid"`
 	// Date/time stamp of the check
-	Timestamp time.Time `json:"Timestamp"`
+	Timestamp map[string]interface{} `json:"Timestamp"`
 	// The numeric Uptrends error code in case of an error result, or 0 in case of an OK result.
 	ErrorCode int32 `json:"ErrorCode"`
 	// The number of milliseconds needed to complete the monitor check.
@@ -57,7 +56,7 @@ type MonitorCheckAttributes struct {
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewMonitorCheckAttributes(monitorGuid string, timestamp time.Time, errorCode int32, totalTime float64, resolveTime float64, connectionTime float64, downloadTime float64, errorLevel ErrorLevel, stagingMode bool, isPartialCheck bool) *MonitorCheckAttributes {
+func NewMonitorCheckAttributes(monitorGuid string, timestamp map[string]interface{}, errorCode int32, totalTime float64, resolveTime float64, connectionTime float64, downloadTime float64, errorLevel ErrorLevel, stagingMode bool, isPartialCheck bool) *MonitorCheckAttributes {
 	this := MonitorCheckAttributes{}
 	this.MonitorGuid = monitorGuid
 	this.Timestamp = timestamp
@@ -93,8 +92,8 @@ func (o *MonitorCheckAttributes) GetMonitorGuid() string {
 // GetMonitorGuidOk returns a tuple with the MonitorGuid field value
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetMonitorGuidOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.MonitorGuid, true
 }
@@ -105,9 +104,9 @@ func (o *MonitorCheckAttributes) SetMonitorGuid(v string) {
 }
 
 // GetTimestamp returns the Timestamp field value
-func (o *MonitorCheckAttributes) GetTimestamp() time.Time {
+func (o *MonitorCheckAttributes) GetTimestamp() map[string]interface{} {
 	if o == nil {
-		var ret time.Time
+		var ret map[string]interface{}
 		return ret
 	}
 
@@ -116,15 +115,15 @@ func (o *MonitorCheckAttributes) GetTimestamp() time.Time {
 
 // GetTimestampOk returns a tuple with the Timestamp field value
 // and a boolean to check if the value has been set.
-func (o *MonitorCheckAttributes) GetTimestampOk() (*time.Time, bool) {
-	if o == nil  {
-		return nil, false
+func (o *MonitorCheckAttributes) GetTimestampOk() (map[string]interface{}, bool) {
+	if o == nil {
+    return map[string]interface{}{}, false
 	}
-	return &o.Timestamp, true
+	return o.Timestamp, true
 }
 
 // SetTimestamp sets field value
-func (o *MonitorCheckAttributes) SetTimestamp(v time.Time) {
+func (o *MonitorCheckAttributes) SetTimestamp(v map[string]interface{}) {
 	o.Timestamp = v
 }
 
@@ -141,8 +140,8 @@ func (o *MonitorCheckAttributes) GetErrorCode() int32 {
 // GetErrorCodeOk returns a tuple with the ErrorCode field value
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetErrorCodeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ErrorCode, true
 }
@@ -165,8 +164,8 @@ func (o *MonitorCheckAttributes) GetTotalTime() float64 {
 // GetTotalTimeOk returns a tuple with the TotalTime field value
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetTotalTimeOk() (*float64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.TotalTime, true
 }
@@ -189,8 +188,8 @@ func (o *MonitorCheckAttributes) GetResolveTime() float64 {
 // GetResolveTimeOk returns a tuple with the ResolveTime field value
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetResolveTimeOk() (*float64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ResolveTime, true
 }
@@ -213,8 +212,8 @@ func (o *MonitorCheckAttributes) GetConnectionTime() float64 {
 // GetConnectionTimeOk returns a tuple with the ConnectionTime field value
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetConnectionTimeOk() (*float64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ConnectionTime, true
 }
@@ -237,8 +236,8 @@ func (o *MonitorCheckAttributes) GetDownloadTime() float64 {
 // GetDownloadTimeOk returns a tuple with the DownloadTime field value
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetDownloadTimeOk() (*float64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.DownloadTime, true
 }
@@ -250,7 +249,7 @@ func (o *MonitorCheckAttributes) SetDownloadTime(v float64) {
 
 // GetTotalBytes returns the TotalBytes field value if set, zero value otherwise.
 func (o *MonitorCheckAttributes) GetTotalBytes() int32 {
-	if o == nil || o.TotalBytes == nil {
+	if o == nil || isNil(o.TotalBytes) {
 		var ret int32
 		return ret
 	}
@@ -260,15 +259,15 @@ func (o *MonitorCheckAttributes) GetTotalBytes() int32 {
 // GetTotalBytesOk returns a tuple with the TotalBytes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetTotalBytesOk() (*int32, bool) {
-	if o == nil || o.TotalBytes == nil {
-		return nil, false
+	if o == nil || isNil(o.TotalBytes) {
+    return nil, false
 	}
 	return o.TotalBytes, true
 }
 
 // HasTotalBytes returns a boolean if a field has been set.
 func (o *MonitorCheckAttributes) HasTotalBytes() bool {
-	if o != nil && o.TotalBytes != nil {
+	if o != nil && !isNil(o.TotalBytes) {
 		return true
 	}
 
@@ -282,7 +281,7 @@ func (o *MonitorCheckAttributes) SetTotalBytes(v int32) {
 
 // GetResolvedIpAddress returns the ResolvedIpAddress field value if set, zero value otherwise.
 func (o *MonitorCheckAttributes) GetResolvedIpAddress() string {
-	if o == nil || o.ResolvedIpAddress == nil {
+	if o == nil || isNil(o.ResolvedIpAddress) {
 		var ret string
 		return ret
 	}
@@ -292,15 +291,15 @@ func (o *MonitorCheckAttributes) GetResolvedIpAddress() string {
 // GetResolvedIpAddressOk returns a tuple with the ResolvedIpAddress field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetResolvedIpAddressOk() (*string, bool) {
-	if o == nil || o.ResolvedIpAddress == nil {
-		return nil, false
+	if o == nil || isNil(o.ResolvedIpAddress) {
+    return nil, false
 	}
 	return o.ResolvedIpAddress, true
 }
 
 // HasResolvedIpAddress returns a boolean if a field has been set.
 func (o *MonitorCheckAttributes) HasResolvedIpAddress() bool {
-	if o != nil && o.ResolvedIpAddress != nil {
+	if o != nil && !isNil(o.ResolvedIpAddress) {
 		return true
 	}
 
@@ -325,8 +324,8 @@ func (o *MonitorCheckAttributes) GetErrorLevel() ErrorLevel {
 // GetErrorLevelOk returns a tuple with the ErrorLevel field value
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetErrorLevelOk() (*ErrorLevel, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ErrorLevel, true
 }
@@ -338,7 +337,7 @@ func (o *MonitorCheckAttributes) SetErrorLevel(v ErrorLevel) {
 
 // GetErrorDescription returns the ErrorDescription field value if set, zero value otherwise.
 func (o *MonitorCheckAttributes) GetErrorDescription() string {
-	if o == nil || o.ErrorDescription == nil {
+	if o == nil || isNil(o.ErrorDescription) {
 		var ret string
 		return ret
 	}
@@ -348,15 +347,15 @@ func (o *MonitorCheckAttributes) GetErrorDescription() string {
 // GetErrorDescriptionOk returns a tuple with the ErrorDescription field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetErrorDescriptionOk() (*string, bool) {
-	if o == nil || o.ErrorDescription == nil {
-		return nil, false
+	if o == nil || isNil(o.ErrorDescription) {
+    return nil, false
 	}
 	return o.ErrorDescription, true
 }
 
 // HasErrorDescription returns a boolean if a field has been set.
 func (o *MonitorCheckAttributes) HasErrorDescription() bool {
-	if o != nil && o.ErrorDescription != nil {
+	if o != nil && !isNil(o.ErrorDescription) {
 		return true
 	}
 
@@ -370,7 +369,7 @@ func (o *MonitorCheckAttributes) SetErrorDescription(v string) {
 
 // GetErrorMessage returns the ErrorMessage field value if set, zero value otherwise.
 func (o *MonitorCheckAttributes) GetErrorMessage() string {
-	if o == nil || o.ErrorMessage == nil {
+	if o == nil || isNil(o.ErrorMessage) {
 		var ret string
 		return ret
 	}
@@ -380,15 +379,15 @@ func (o *MonitorCheckAttributes) GetErrorMessage() string {
 // GetErrorMessageOk returns a tuple with the ErrorMessage field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetErrorMessageOk() (*string, bool) {
-	if o == nil || o.ErrorMessage == nil {
-		return nil, false
+	if o == nil || isNil(o.ErrorMessage) {
+    return nil, false
 	}
 	return o.ErrorMessage, true
 }
 
 // HasErrorMessage returns a boolean if a field has been set.
 func (o *MonitorCheckAttributes) HasErrorMessage() bool {
-	if o != nil && o.ErrorMessage != nil {
+	if o != nil && !isNil(o.ErrorMessage) {
 		return true
 	}
 
@@ -413,8 +412,8 @@ func (o *MonitorCheckAttributes) GetStagingMode() bool {
 // GetStagingModeOk returns a tuple with the StagingMode field value
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetStagingModeOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.StagingMode, true
 }
@@ -426,7 +425,7 @@ func (o *MonitorCheckAttributes) SetStagingMode(v bool) {
 
 // GetServerId returns the ServerId field value if set, zero value otherwise.
 func (o *MonitorCheckAttributes) GetServerId() int32 {
-	if o == nil || o.ServerId == nil {
+	if o == nil || isNil(o.ServerId) {
 		var ret int32
 		return ret
 	}
@@ -436,15 +435,15 @@ func (o *MonitorCheckAttributes) GetServerId() int32 {
 // GetServerIdOk returns a tuple with the ServerId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetServerIdOk() (*int32, bool) {
-	if o == nil || o.ServerId == nil {
-		return nil, false
+	if o == nil || isNil(o.ServerId) {
+    return nil, false
 	}
 	return o.ServerId, true
 }
 
 // HasServerId returns a boolean if a field has been set.
 func (o *MonitorCheckAttributes) HasServerId() bool {
-	if o != nil && o.ServerId != nil {
+	if o != nil && !isNil(o.ServerId) {
 		return true
 	}
 
@@ -458,7 +457,7 @@ func (o *MonitorCheckAttributes) SetServerId(v int32) {
 
 // GetHttpStatusCode returns the HttpStatusCode field value if set, zero value otherwise.
 func (o *MonitorCheckAttributes) GetHttpStatusCode() int32 {
-	if o == nil || o.HttpStatusCode == nil {
+	if o == nil || isNil(o.HttpStatusCode) {
 		var ret int32
 		return ret
 	}
@@ -468,15 +467,15 @@ func (o *MonitorCheckAttributes) GetHttpStatusCode() int32 {
 // GetHttpStatusCodeOk returns a tuple with the HttpStatusCode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetHttpStatusCodeOk() (*int32, bool) {
-	if o == nil || o.HttpStatusCode == nil {
-		return nil, false
+	if o == nil || isNil(o.HttpStatusCode) {
+    return nil, false
 	}
 	return o.HttpStatusCode, true
 }
 
 // HasHttpStatusCode returns a boolean if a field has been set.
 func (o *MonitorCheckAttributes) HasHttpStatusCode() bool {
-	if o != nil && o.HttpStatusCode != nil {
+	if o != nil && !isNil(o.HttpStatusCode) {
 		return true
 	}
 
@@ -501,8 +500,8 @@ func (o *MonitorCheckAttributes) GetIsPartialCheck() bool {
 // GetIsPartialCheckOk returns a tuple with the IsPartialCheck field value
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetIsPartialCheckOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.IsPartialCheck, true
 }
@@ -514,7 +513,7 @@ func (o *MonitorCheckAttributes) SetIsPartialCheck(v bool) {
 
 // GetIsConcurrentCheck returns the IsConcurrentCheck field value if set, zero value otherwise.
 func (o *MonitorCheckAttributes) GetIsConcurrentCheck() bool {
-	if o == nil || o.IsConcurrentCheck == nil {
+	if o == nil || isNil(o.IsConcurrentCheck) {
 		var ret bool
 		return ret
 	}
@@ -524,15 +523,15 @@ func (o *MonitorCheckAttributes) GetIsConcurrentCheck() bool {
 // GetIsConcurrentCheckOk returns a tuple with the IsConcurrentCheck field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorCheckAttributes) GetIsConcurrentCheckOk() (*bool, bool) {
-	if o == nil || o.IsConcurrentCheck == nil {
-		return nil, false
+	if o == nil || isNil(o.IsConcurrentCheck) {
+    return nil, false
 	}
 	return o.IsConcurrentCheck, true
 }
 
 // HasIsConcurrentCheck returns a boolean if a field has been set.
 func (o *MonitorCheckAttributes) HasIsConcurrentCheck() bool {
-	if o != nil && o.IsConcurrentCheck != nil {
+	if o != nil && !isNil(o.IsConcurrentCheck) {
 		return true
 	}
 
@@ -567,34 +566,34 @@ func (o MonitorCheckAttributes) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["DownloadTime"] = o.DownloadTime
 	}
-	if o.TotalBytes != nil {
+	if !isNil(o.TotalBytes) {
 		toSerialize["TotalBytes"] = o.TotalBytes
 	}
-	if o.ResolvedIpAddress != nil {
+	if !isNil(o.ResolvedIpAddress) {
 		toSerialize["ResolvedIpAddress"] = o.ResolvedIpAddress
 	}
 	if true {
 		toSerialize["ErrorLevel"] = o.ErrorLevel
 	}
-	if o.ErrorDescription != nil {
+	if !isNil(o.ErrorDescription) {
 		toSerialize["ErrorDescription"] = o.ErrorDescription
 	}
-	if o.ErrorMessage != nil {
+	if !isNil(o.ErrorMessage) {
 		toSerialize["ErrorMessage"] = o.ErrorMessage
 	}
 	if true {
 		toSerialize["StagingMode"] = o.StagingMode
 	}
-	if o.ServerId != nil {
+	if !isNil(o.ServerId) {
 		toSerialize["ServerId"] = o.ServerId
 	}
-	if o.HttpStatusCode != nil {
+	if !isNil(o.HttpStatusCode) {
 		toSerialize["HttpStatusCode"] = o.HttpStatusCode
 	}
 	if true {
 		toSerialize["IsPartialCheck"] = o.IsPartialCheck
 	}
-	if o.IsConcurrentCheck != nil {
+	if !isNil(o.IsConcurrentCheck) {
 		toSerialize["IsConcurrentCheck"] = o.IsConcurrentCheck
 	}
 	return json.Marshal(toSerialize)

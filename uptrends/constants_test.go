@@ -20,5 +20,5 @@ func TestCheckpointID(t *testing.T) {
 func TestDeduplicateCheckpointIDs(t *testing.T) {
 	ckpts := []interface{}{"New York", "New York", "8", "Vancouver", "Gloucester", "10", "10"}
 	ids := DeduplicateCheckpointIDs(ckpts)
-	assert.Equal(t, []int32{8, 14, 17, 10}, *ids, "expect to return list without duplicate ids")
+	assert.Equal(t, []int32{8, 14, 17, 10}, ids, "expect to return list without duplicate ids")
 }

@@ -200,7 +200,7 @@ func monitorWebRead(ctx context.Context, d *schema.ResourceData, meta interface{
 		return diag.FromErr(err)
 	}
 
-	return readMonitorWebStruct(&resp, d)
+	return readMonitorWebStruct(resp, d)
 }
 
 func monitorWebUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
@@ -252,7 +252,6 @@ func buildMonitorWebStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 
 	m.MonitorType = (*uptrends.MonitorType)(String(d.Get("type").(string)))
 	m.IpVersion = (*uptrends.IpVersion)(String(d.Get("ip_version").(string)))
-	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
 	m.Url = String(d.Get("url").(string))
 	m.HttpMethod = (*uptrends.HttpMethod)(String(d.Get("http_method").(string)))
 	m.RequestBody = String(d.Get("request_body").(string))
@@ -303,9 +302,6 @@ func readMonitorWebStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.Diag
 	if err := d.Set("username", m.Username); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("native_ipv6_only", m.NativeIPv6Only); err != nil {
-		return diag.FromErr(err)
-	}
 	if err := d.Set("url", m.Url); err != nil {
 		return diag.FromErr(err)
 	}
@@ -321,10 +317,10 @@ func readMonitorWebStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.Diag
 	if err := d.Set("min_bytes", m.MinimumBytes); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("request_headers", flattenRequestHeader(m.RequestHeaders)); err != nil {
+	if err := d.Set("request_headers", flattenRequestHeader(&m.RequestHeaders)); err != nil {
 		return diag.FromErr(err)
 	}
-	if err := d.Set("match_pattern", flattenPatternMatch(m.MatchPatterns)); err != nil {
+	if err := d.Set("match_pattern", flattenPatternMatch(&m.MatchPatterns)); err != nil {
 		return diag.FromErr(err)
 	}
 	if *m.MonitorType == uptrends.MONITORTYPE_HTTPS {

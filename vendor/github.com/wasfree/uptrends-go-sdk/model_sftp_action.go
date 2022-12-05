@@ -26,7 +26,8 @@ const (
 	SFTPACTION_DOWN_LOAD_FILE SftpAction = "DownLoadFile"
 )
 
-var allowedSftpActionEnumValues = []SftpAction{
+// All allowed values of SftpAction enum
+var AllowedSftpActionEnumValues = []SftpAction{
 	"ConnectOnly",
 	"TestFileExists",
 	"TestFileDoesNotExist",
@@ -40,7 +41,7 @@ func (v *SftpAction) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := SftpAction(value)
-	for _, existing := range allowedSftpActionEnumValues {
+	for _, existing := range AllowedSftpActionEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -57,13 +58,13 @@ func NewSftpActionFromValue(v string) (*SftpAction, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for SftpAction: valid values are %v", v, allowedSftpActionEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for SftpAction: valid values are %v", v, AllowedSftpActionEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v SftpAction) IsValid() bool {
-	for _, existing := range allowedSftpActionEnumValues {
+	for _, existing := range AllowedSftpActionEnumValues {
 		if existing == v {
 			return true
 		}

@@ -21,16 +21,19 @@ type CapabilityFilterEnum string
 // List of CapabilityFilterEnum
 const (
 	CAPABILITYFILTERENUM_IPV6 CapabilityFilterEnum = "IPv6"
-	CAPABILITYFILTERENUM_NATIVE_IPV6 CapabilityFilterEnum = "NativeIPv6"
 	CAPABILITYFILTERENUM_PRIMARY_SERVER CapabilityFilterEnum = "PrimaryServer"
 	CAPABILITYFILTERENUM_HIGH_AVAILABILITY CapabilityFilterEnum = "HighAvailability"
+	CAPABILITYFILTERENUM_FIDDLER_PROXY CapabilityFilterEnum = "FiddlerProxy"
+	CAPABILITYFILTERENUM_FIREFOX CapabilityFilterEnum = "Firefox"
 )
 
-var allowedCapabilityFilterEnumEnumValues = []CapabilityFilterEnum{
+// All allowed values of CapabilityFilterEnum enum
+var AllowedCapabilityFilterEnumEnumValues = []CapabilityFilterEnum{
 	"IPv6",
-	"NativeIPv6",
 	"PrimaryServer",
 	"HighAvailability",
+	"FiddlerProxy",
+	"Firefox",
 }
 
 func (v *CapabilityFilterEnum) UnmarshalJSON(src []byte) error {
@@ -40,7 +43,7 @@ func (v *CapabilityFilterEnum) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := CapabilityFilterEnum(value)
-	for _, existing := range allowedCapabilityFilterEnumEnumValues {
+	for _, existing := range AllowedCapabilityFilterEnumEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -57,13 +60,13 @@ func NewCapabilityFilterEnumFromValue(v string) (*CapabilityFilterEnum, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for CapabilityFilterEnum: valid values are %v", v, allowedCapabilityFilterEnumEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for CapabilityFilterEnum: valid values are %v", v, AllowedCapabilityFilterEnumEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v CapabilityFilterEnum) IsValid() bool {
-	for _, existing := range allowedCapabilityFilterEnumEnumValues {
+	for _, existing := range AllowedCapabilityFilterEnumEnumValues {
 		if existing == v {
 			return true
 		}

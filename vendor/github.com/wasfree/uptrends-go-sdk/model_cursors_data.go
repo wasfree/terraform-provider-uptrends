@@ -41,7 +41,7 @@ func NewCursorsDataWithDefaults() *CursorsData {
 
 // GetNext returns the Next field value if set, zero value otherwise.
 func (o *CursorsData) GetNext() string {
-	if o == nil || o.Next == nil {
+	if o == nil || isNil(o.Next) {
 		var ret string
 		return ret
 	}
@@ -51,15 +51,15 @@ func (o *CursorsData) GetNext() string {
 // GetNextOk returns a tuple with the Next field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CursorsData) GetNextOk() (*string, bool) {
-	if o == nil || o.Next == nil {
-		return nil, false
+	if o == nil || isNil(o.Next) {
+    return nil, false
 	}
 	return o.Next, true
 }
 
 // HasNext returns a boolean if a field has been set.
 func (o *CursorsData) HasNext() bool {
-	if o != nil && o.Next != nil {
+	if o != nil && !isNil(o.Next) {
 		return true
 	}
 
@@ -73,7 +73,7 @@ func (o *CursorsData) SetNext(v string) {
 
 // GetSelf returns the Self field value if set, zero value otherwise.
 func (o *CursorsData) GetSelf() string {
-	if o == nil || o.Self == nil {
+	if o == nil || isNil(o.Self) {
 		var ret string
 		return ret
 	}
@@ -83,15 +83,15 @@ func (o *CursorsData) GetSelf() string {
 // GetSelfOk returns a tuple with the Self field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *CursorsData) GetSelfOk() (*string, bool) {
-	if o == nil || o.Self == nil {
-		return nil, false
+	if o == nil || isNil(o.Self) {
+    return nil, false
 	}
 	return o.Self, true
 }
 
 // HasSelf returns a boolean if a field has been set.
 func (o *CursorsData) HasSelf() bool {
-	if o != nil && o.Self != nil {
+	if o != nil && !isNil(o.Self) {
 		return true
 	}
 
@@ -105,10 +105,10 @@ func (o *CursorsData) SetSelf(v string) {
 
 func (o CursorsData) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Next != nil {
+	if !isNil(o.Next) {
 		toSerialize["Next"] = o.Next
 	}
-	if o.Self != nil {
+	if !isNil(o.Self) {
 		toSerialize["Self"] = o.Self
 	}
 	return json.Marshal(toSerialize)

@@ -16,9 +16,9 @@ import (
 
 // Recipients struct for Recipients
 type Recipients struct {
-	Operators *[]string `json:"Operators,omitempty"`
-	OperatorGroups *[]string `json:"OperatorGroups,omitempty"`
-	ExtraEmailAddresses *[]string `json:"ExtraEmailAddresses,omitempty"`
+	Operators []string `json:"Operators,omitempty"`
+	OperatorGroups []string `json:"OperatorGroups,omitempty"`
+	ExtraEmailAddresses []string `json:"ExtraEmailAddresses,omitempty"`
 }
 
 // NewRecipients instantiates a new Recipients object
@@ -40,25 +40,25 @@ func NewRecipientsWithDefaults() *Recipients {
 
 // GetOperators returns the Operators field value if set, zero value otherwise.
 func (o *Recipients) GetOperators() []string {
-	if o == nil || o.Operators == nil {
+	if o == nil || isNil(o.Operators) {
 		var ret []string
 		return ret
 	}
-	return *o.Operators
+	return o.Operators
 }
 
 // GetOperatorsOk returns a tuple with the Operators field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Recipients) GetOperatorsOk() (*[]string, bool) {
-	if o == nil || o.Operators == nil {
-		return nil, false
+func (o *Recipients) GetOperatorsOk() ([]string, bool) {
+	if o == nil || isNil(o.Operators) {
+    return nil, false
 	}
 	return o.Operators, true
 }
 
 // HasOperators returns a boolean if a field has been set.
 func (o *Recipients) HasOperators() bool {
-	if o != nil && o.Operators != nil {
+	if o != nil && !isNil(o.Operators) {
 		return true
 	}
 
@@ -67,30 +67,30 @@ func (o *Recipients) HasOperators() bool {
 
 // SetOperators gets a reference to the given []string and assigns it to the Operators field.
 func (o *Recipients) SetOperators(v []string) {
-	o.Operators = &v
+	o.Operators = v
 }
 
 // GetOperatorGroups returns the OperatorGroups field value if set, zero value otherwise.
 func (o *Recipients) GetOperatorGroups() []string {
-	if o == nil || o.OperatorGroups == nil {
+	if o == nil || isNil(o.OperatorGroups) {
 		var ret []string
 		return ret
 	}
-	return *o.OperatorGroups
+	return o.OperatorGroups
 }
 
 // GetOperatorGroupsOk returns a tuple with the OperatorGroups field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Recipients) GetOperatorGroupsOk() (*[]string, bool) {
-	if o == nil || o.OperatorGroups == nil {
-		return nil, false
+func (o *Recipients) GetOperatorGroupsOk() ([]string, bool) {
+	if o == nil || isNil(o.OperatorGroups) {
+    return nil, false
 	}
 	return o.OperatorGroups, true
 }
 
 // HasOperatorGroups returns a boolean if a field has been set.
 func (o *Recipients) HasOperatorGroups() bool {
-	if o != nil && o.OperatorGroups != nil {
+	if o != nil && !isNil(o.OperatorGroups) {
 		return true
 	}
 
@@ -99,30 +99,30 @@ func (o *Recipients) HasOperatorGroups() bool {
 
 // SetOperatorGroups gets a reference to the given []string and assigns it to the OperatorGroups field.
 func (o *Recipients) SetOperatorGroups(v []string) {
-	o.OperatorGroups = &v
+	o.OperatorGroups = v
 }
 
 // GetExtraEmailAddresses returns the ExtraEmailAddresses field value if set, zero value otherwise.
 func (o *Recipients) GetExtraEmailAddresses() []string {
-	if o == nil || o.ExtraEmailAddresses == nil {
+	if o == nil || isNil(o.ExtraEmailAddresses) {
 		var ret []string
 		return ret
 	}
-	return *o.ExtraEmailAddresses
+	return o.ExtraEmailAddresses
 }
 
 // GetExtraEmailAddressesOk returns a tuple with the ExtraEmailAddresses field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *Recipients) GetExtraEmailAddressesOk() (*[]string, bool) {
-	if o == nil || o.ExtraEmailAddresses == nil {
-		return nil, false
+func (o *Recipients) GetExtraEmailAddressesOk() ([]string, bool) {
+	if o == nil || isNil(o.ExtraEmailAddresses) {
+    return nil, false
 	}
 	return o.ExtraEmailAddresses, true
 }
 
 // HasExtraEmailAddresses returns a boolean if a field has been set.
 func (o *Recipients) HasExtraEmailAddresses() bool {
-	if o != nil && o.ExtraEmailAddresses != nil {
+	if o != nil && !isNil(o.ExtraEmailAddresses) {
 		return true
 	}
 
@@ -131,18 +131,18 @@ func (o *Recipients) HasExtraEmailAddresses() bool {
 
 // SetExtraEmailAddresses gets a reference to the given []string and assigns it to the ExtraEmailAddresses field.
 func (o *Recipients) SetExtraEmailAddresses(v []string) {
-	o.ExtraEmailAddresses = &v
+	o.ExtraEmailAddresses = v
 }
 
 func (o Recipients) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Operators != nil {
+	if !isNil(o.Operators) {
 		toSerialize["Operators"] = o.Operators
 	}
-	if o.OperatorGroups != nil {
+	if !isNil(o.OperatorGroups) {
 		toSerialize["OperatorGroups"] = o.OperatorGroups
 	}
-	if o.ExtraEmailAddresses != nil {
+	if !isNil(o.ExtraEmailAddresses) {
 		toSerialize["ExtraEmailAddresses"] = o.ExtraEmailAddresses
 	}
 	return json.Marshal(toSerialize)

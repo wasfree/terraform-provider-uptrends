@@ -2,6 +2,7 @@ package uptrends
 
 import (
 	"errors"
+	"reflect"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/validation"
@@ -138,15 +139,15 @@ func flattenSelectedCheckpoints(input *uptrends.SelectedCheckpoints) []interface
 
 	selectedCheckpoints := make(map[string]interface{})
 	if v := input.Checkpoints; v != nil {
-		selectedCheckpoints["checkpoints"] = SliceInt32ToSliceString(*v)
+		selectedCheckpoints["checkpoints"] = SliceInt32ToSliceString(v)
 	}
 
 	if v := input.Regions; v != nil {
-		selectedCheckpoints["regions"] = SliceInt32ToSliceString(*v)
+		selectedCheckpoints["regions"] = SliceInt32ToSliceString(v)
 	}
 
 	if v := input.ExcludeLocations; v != nil {
-		selectedCheckpoints["exclude_locations"] = SliceInt32ToSliceString(*v)
+		selectedCheckpoints["exclude_locations"] = SliceInt32ToSliceString(v)
 	}
 
 	return []interface{}{selectedCheckpoints}
@@ -203,7 +204,7 @@ func readMonitorGenericStruct(m *uptrends.Monitor, d *schema.ResourceData) error
 	if err := d.Set("name_for_phone_alerts", m.NameForPhoneAlerts); err != nil {
 		return err
 	}
-	if sc := m.SelectedCheckpoints; *sc != (uptrends.SelectedCheckpoints{}) {
+	if reflect.DeepEqual(m.SelectedCheckpoints, uptrends.SelectedCheckpoints{}) {
 		if err := d.Set("selected_checkpoints", flattenSelectedCheckpoints(m.SelectedCheckpoints)); err != nil {
 			return err
 		}

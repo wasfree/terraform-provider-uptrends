@@ -61,8 +61,6 @@ type APIClient struct {
 
 	IntegrationApi *IntegrationApiService
 
-	MiscellaneousApi *MiscellaneousApiService
-
 	MonitorApi *MonitorApiService
 
 	MonitorCheckApi *MonitorCheckApiService
@@ -73,7 +71,11 @@ type APIClient struct {
 
 	OperatorGroupApi *OperatorGroupApiService
 
+	OutgoingPhoneNumberApi *OutgoingPhoneNumberApiService
+
 	PublicStatusPageApi *PublicStatusPageApiService
+
+	RUMApi *RUMApiService
 
 	RegisterApi *RegisterApiService
 
@@ -84,6 +86,8 @@ type APIClient struct {
 	StatisticsApi *StatisticsApiService
 
 	StatusApi *StatusApiService
+
+	TimezoneApi *TimezoneApiService
 
 	VaultApi *VaultApiService
 }
@@ -110,18 +114,20 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.CheckpointApi = (*CheckpointApiService)(&c.common)
 	c.DashboardApi = (*DashboardApiService)(&c.common)
 	c.IntegrationApi = (*IntegrationApiService)(&c.common)
-	c.MiscellaneousApi = (*MiscellaneousApiService)(&c.common)
 	c.MonitorApi = (*MonitorApiService)(&c.common)
 	c.MonitorCheckApi = (*MonitorCheckApiService)(&c.common)
 	c.MonitorGroupApi = (*MonitorGroupApiService)(&c.common)
 	c.OperatorApi = (*OperatorApiService)(&c.common)
 	c.OperatorGroupApi = (*OperatorGroupApiService)(&c.common)
+	c.OutgoingPhoneNumberApi = (*OutgoingPhoneNumberApiService)(&c.common)
 	c.PublicStatusPageApi = (*PublicStatusPageApiService)(&c.common)
+	c.RUMApi = (*RUMApiService)(&c.common)
 	c.RegisterApi = (*RegisterApiService)(&c.common)
 	c.SLAApi = (*SLAApiService)(&c.common)
 	c.ScheduledReportApi = (*ScheduledReportApiService)(&c.common)
 	c.StatisticsApi = (*StatisticsApiService)(&c.common)
 	c.StatusApi = (*StatusApiService)(&c.common)
+	c.TimezoneApi = (*TimezoneApiService)(&c.common)
 	c.VaultApi = (*VaultApiService)(&c.common)
 
 	return c
@@ -158,7 +164,7 @@ func selectHeaderAccept(accepts []string) string {
 // contains is a case insensitive match, finding needle in a haystack
 func contains(haystack []string, needle string) bool {
 	for _, a := range haystack {
-		if strings.ToLower(a) == strings.ToLower(needle) {
+		if strings.EqualFold(a, needle) {
 			return true
 		}
 	}
@@ -174,7 +180,7 @@ func typeCheckParameter(obj interface{}, expected string, name string) error {
 
 	// Check the type is as expected.
 	if reflect.TypeOf(obj).String() != expected {
-		return fmt.Errorf("Expected %s to be of type %s but received %s.", name, expected, reflect.TypeOf(obj).String())
+		return fmt.Errorf("expected %s to be of type %s but received %s", name, expected, reflect.TypeOf(obj).String())
 	}
 	return nil
 }
@@ -243,6 +249,12 @@ func (c *APIClient) GetConfig() *Configuration {
 	return c.cfg
 }
 
+type formFile struct {
+		fileBytes []byte
+		fileName string
+		formFileName string
+}
+
 // prepareRequest build the request
 func (c *APIClient) prepareRequest(
 	ctx context.Context,
@@ -251,9 +263,7 @@ func (c *APIClient) prepareRequest(
 	headerParams map[string]string,
 	queryParams url.Values,
 	formParams url.Values,
-	formFileName string,
-	fileName string,
-	fileBytes []byte) (localVarRequest *http.Request, err error) {
+	formFiles []formFile) (localVarRequest *http.Request, err error) {
 
 	var body *bytes.Buffer
 
@@ -272,7 +282,7 @@ func (c *APIClient) prepareRequest(
 	}
 
 	// add form parameters and file if available.
-	if strings.HasPrefix(headerParams["Content-Type"], "multipart/form-data") && len(formParams) > 0 || (len(fileBytes) > 0 && fileName != "") {
+	if strings.HasPrefix(headerParams["Content-Type"], "multipart/form-data") && len(formParams) > 0 || (len(formFiles) > 0) {
 		if body != nil {
 			return nil, errors.New("Cannot specify postBody and multipart form at the same time.")
 		}
@@ -291,16 +301,17 @@ func (c *APIClient) prepareRequest(
 				}
 			}
 		}
-		if len(fileBytes) > 0 && fileName != "" {
-			w.Boundary()
-			//_, fileNm := filepath.Split(fileName)
-			part, err := w.CreateFormFile(formFileName, filepath.Base(fileName))
-			if err != nil {
-				return nil, err
-			}
-			_, err = part.Write(fileBytes)
-			if err != nil {
-				return nil, err
+		for _, formFile := range formFiles {
+			if len(formFile.fileBytes) > 0 && formFile.fileName != "" {
+				w.Boundary()
+				part, err := w.CreateFormFile(formFile.formFileName, filepath.Base(formFile.fileName))
+				if err != nil {
+						return nil, err
+				}
+				_, err = part.Write(formFile.fileBytes)
+				if err != nil {
+						return nil, err
+				}
 			}
 		}
 
@@ -363,7 +374,7 @@ func (c *APIClient) prepareRequest(
 	if len(headerParams) > 0 {
 		headers := http.Header{}
 		for h, v := range headerParams {
-			headers.Set(h, v)
+			headers[h] = []string{v}
 		}
 		localVarRequest.Header = headers
 	}
@@ -420,6 +431,9 @@ func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err err
 			return
 		}
 		_, err = (*f).Write(b)
+		if err != nil {
+			return
+		}
 		_, err = (*f).Seek(0, io.SeekStart)
 		return
 	}
@@ -448,11 +462,14 @@ func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err err
 
 // Add a file to the multipart request
 func addFile(w *multipart.Writer, fieldName, path string) error {
-	file, err := os.Open(path)
+	file, err := os.Open(filepath.Clean(path))
 	if err != nil {
 		return err
 	}
-	defer file.Close()
+	err = file.Close()
+	if err != nil {
+		return err
+	}
 
 	part, err := w.CreateFormFile(fieldName, filepath.Base(path))
 	if err != nil {
@@ -466,6 +483,13 @@ func addFile(w *multipart.Writer, fieldName, path string) error {
 // Prevent trying to import "fmt"
 func reportError(format string, a ...interface{}) error {
 	return fmt.Errorf(format, a...)
+}
+
+// A wrapper for strict JSON decoding
+func newStrictDecoder(data []byte) *json.Decoder {
+	dec := json.NewDecoder(bytes.NewBuffer(data))
+	dec.DisallowUnknownFields()
+	return dec
 }
 
 // Set request body from an interface{}
@@ -495,7 +519,7 @@ func setBody(body interface{}, contentType string) (bodyBuf *bytes.Buffer, err e
 	}
 
 	if bodyBuf.Len() == 0 {
-		err = fmt.Errorf("Invalid body type %s\n", contentType)
+		err = fmt.Errorf("invalid body type %s\n", contentType)
 		return nil, err
 	}
 	return bodyBuf, nil
@@ -596,4 +620,24 @@ func (e GenericOpenAPIError) Body() []byte {
 // Model returns the unpacked model of the error
 func (e GenericOpenAPIError) Model() interface{} {
 	return e.model
+}
+
+// format error message using title and detail when model implements rfc7807
+func formatErrorMessage(status string, v interface{}) string {
+
+    str := ""
+    metaValue := reflect.ValueOf(v).Elem()
+
+    field := metaValue.FieldByName("Title")
+    if field != (reflect.Value{}) {
+        str = fmt.Sprintf("%s", field.Interface())
+    }
+
+    field = metaValue.FieldByName("Detail")
+    if field != (reflect.Value{}) {
+        str = fmt.Sprintf("%s (%s)", str, field.Interface())
+    }
+
+    // status title (detail)
+    return fmt.Sprintf("%s %s", status, str)
 }

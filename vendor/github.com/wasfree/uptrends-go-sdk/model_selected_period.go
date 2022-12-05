@@ -12,7 +12,6 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // SelectedPeriod struct for SelectedPeriod
@@ -20,9 +19,9 @@ type SelectedPeriod struct {
 	// The type of period
 	SelectedPeriodType *SelectedPeriodType `json:"SelectedPeriodType,omitempty"`
 	// The start of a custom period (can't be used together with the SelectedPeriodType parameter)
-	Start *time.Time `json:"Start,omitempty"`
+	Start map[string]interface{} `json:"Start,omitempty"`
 	// The end of a custom period
-	End *time.Time `json:"End,omitempty"`
+	End map[string]interface{} `json:"End,omitempty"`
 	// The requested time period.
 	PresetPeriod *PresetPeriodType `json:"PresetPeriod,omitempty"`
 }
@@ -46,7 +45,7 @@ func NewSelectedPeriodWithDefaults() *SelectedPeriod {
 
 // GetSelectedPeriodType returns the SelectedPeriodType field value if set, zero value otherwise.
 func (o *SelectedPeriod) GetSelectedPeriodType() SelectedPeriodType {
-	if o == nil || o.SelectedPeriodType == nil {
+	if o == nil || isNil(o.SelectedPeriodType) {
 		var ret SelectedPeriodType
 		return ret
 	}
@@ -56,15 +55,15 @@ func (o *SelectedPeriod) GetSelectedPeriodType() SelectedPeriodType {
 // GetSelectedPeriodTypeOk returns a tuple with the SelectedPeriodType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SelectedPeriod) GetSelectedPeriodTypeOk() (*SelectedPeriodType, bool) {
-	if o == nil || o.SelectedPeriodType == nil {
-		return nil, false
+	if o == nil || isNil(o.SelectedPeriodType) {
+    return nil, false
 	}
 	return o.SelectedPeriodType, true
 }
 
 // HasSelectedPeriodType returns a boolean if a field has been set.
 func (o *SelectedPeriod) HasSelectedPeriodType() bool {
-	if o != nil && o.SelectedPeriodType != nil {
+	if o != nil && !isNil(o.SelectedPeriodType) {
 		return true
 	}
 
@@ -77,72 +76,72 @@ func (o *SelectedPeriod) SetSelectedPeriodType(v SelectedPeriodType) {
 }
 
 // GetStart returns the Start field value if set, zero value otherwise.
-func (o *SelectedPeriod) GetStart() time.Time {
-	if o == nil || o.Start == nil {
-		var ret time.Time
+func (o *SelectedPeriod) GetStart() map[string]interface{} {
+	if o == nil || isNil(o.Start) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.Start
+	return o.Start
 }
 
 // GetStartOk returns a tuple with the Start field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SelectedPeriod) GetStartOk() (*time.Time, bool) {
-	if o == nil || o.Start == nil {
-		return nil, false
+func (o *SelectedPeriod) GetStartOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.Start) {
+    return map[string]interface{}{}, false
 	}
 	return o.Start, true
 }
 
 // HasStart returns a boolean if a field has been set.
 func (o *SelectedPeriod) HasStart() bool {
-	if o != nil && o.Start != nil {
+	if o != nil && !isNil(o.Start) {
 		return true
 	}
 
 	return false
 }
 
-// SetStart gets a reference to the given time.Time and assigns it to the Start field.
-func (o *SelectedPeriod) SetStart(v time.Time) {
-	o.Start = &v
+// SetStart gets a reference to the given map[string]interface{} and assigns it to the Start field.
+func (o *SelectedPeriod) SetStart(v map[string]interface{}) {
+	o.Start = v
 }
 
 // GetEnd returns the End field value if set, zero value otherwise.
-func (o *SelectedPeriod) GetEnd() time.Time {
-	if o == nil || o.End == nil {
-		var ret time.Time
+func (o *SelectedPeriod) GetEnd() map[string]interface{} {
+	if o == nil || isNil(o.End) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.End
+	return o.End
 }
 
 // GetEndOk returns a tuple with the End field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *SelectedPeriod) GetEndOk() (*time.Time, bool) {
-	if o == nil || o.End == nil {
-		return nil, false
+func (o *SelectedPeriod) GetEndOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.End) {
+    return map[string]interface{}{}, false
 	}
 	return o.End, true
 }
 
 // HasEnd returns a boolean if a field has been set.
 func (o *SelectedPeriod) HasEnd() bool {
-	if o != nil && o.End != nil {
+	if o != nil && !isNil(o.End) {
 		return true
 	}
 
 	return false
 }
 
-// SetEnd gets a reference to the given time.Time and assigns it to the End field.
-func (o *SelectedPeriod) SetEnd(v time.Time) {
-	o.End = &v
+// SetEnd gets a reference to the given map[string]interface{} and assigns it to the End field.
+func (o *SelectedPeriod) SetEnd(v map[string]interface{}) {
+	o.End = v
 }
 
 // GetPresetPeriod returns the PresetPeriod field value if set, zero value otherwise.
 func (o *SelectedPeriod) GetPresetPeriod() PresetPeriodType {
-	if o == nil || o.PresetPeriod == nil {
+	if o == nil || isNil(o.PresetPeriod) {
 		var ret PresetPeriodType
 		return ret
 	}
@@ -152,15 +151,15 @@ func (o *SelectedPeriod) GetPresetPeriod() PresetPeriodType {
 // GetPresetPeriodOk returns a tuple with the PresetPeriod field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *SelectedPeriod) GetPresetPeriodOk() (*PresetPeriodType, bool) {
-	if o == nil || o.PresetPeriod == nil {
-		return nil, false
+	if o == nil || isNil(o.PresetPeriod) {
+    return nil, false
 	}
 	return o.PresetPeriod, true
 }
 
 // HasPresetPeriod returns a boolean if a field has been set.
 func (o *SelectedPeriod) HasPresetPeriod() bool {
-	if o != nil && o.PresetPeriod != nil {
+	if o != nil && !isNil(o.PresetPeriod) {
 		return true
 	}
 
@@ -174,16 +173,16 @@ func (o *SelectedPeriod) SetPresetPeriod(v PresetPeriodType) {
 
 func (o SelectedPeriod) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.SelectedPeriodType != nil {
+	if !isNil(o.SelectedPeriodType) {
 		toSerialize["SelectedPeriodType"] = o.SelectedPeriodType
 	}
-	if o.Start != nil {
+	if !isNil(o.Start) {
 		toSerialize["Start"] = o.Start
 	}
-	if o.End != nil {
+	if !isNil(o.End) {
 		toSerialize["End"] = o.End
 	}
-	if o.PresetPeriod != nil {
+	if !isNil(o.PresetPeriod) {
 		toSerialize["PresetPeriod"] = o.PresetPeriod
 	}
 	return json.Marshal(toSerialize)

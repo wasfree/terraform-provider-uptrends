@@ -52,8 +52,8 @@ func (o *OutgoingPhoneNumberDetails) GetId() int32 {
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
 func (o *OutgoingPhoneNumberDetails) GetIdOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Id, true
 }
@@ -65,7 +65,7 @@ func (o *OutgoingPhoneNumberDetails) SetId(v int32) {
 
 // GetPhoneNumber returns the PhoneNumber field value if set, zero value otherwise.
 func (o *OutgoingPhoneNumberDetails) GetPhoneNumber() string {
-	if o == nil || o.PhoneNumber == nil {
+	if o == nil || isNil(o.PhoneNumber) {
 		var ret string
 		return ret
 	}
@@ -75,15 +75,15 @@ func (o *OutgoingPhoneNumberDetails) GetPhoneNumber() string {
 // GetPhoneNumberOk returns a tuple with the PhoneNumber field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OutgoingPhoneNumberDetails) GetPhoneNumberOk() (*string, bool) {
-	if o == nil || o.PhoneNumber == nil {
-		return nil, false
+	if o == nil || isNil(o.PhoneNumber) {
+    return nil, false
 	}
 	return o.PhoneNumber, true
 }
 
 // HasPhoneNumber returns a boolean if a field has been set.
 func (o *OutgoingPhoneNumberDetails) HasPhoneNumber() bool {
-	if o != nil && o.PhoneNumber != nil {
+	if o != nil && !isNil(o.PhoneNumber) {
 		return true
 	}
 
@@ -97,7 +97,7 @@ func (o *OutgoingPhoneNumberDetails) SetPhoneNumber(v string) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *OutgoingPhoneNumberDetails) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -107,15 +107,15 @@ func (o *OutgoingPhoneNumberDetails) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OutgoingPhoneNumberDetails) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *OutgoingPhoneNumberDetails) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -132,10 +132,10 @@ func (o OutgoingPhoneNumberDetails) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["Id"] = o.Id
 	}
-	if o.PhoneNumber != nil {
+	if !isNil(o.PhoneNumber) {
 		toSerialize["PhoneNumber"] = o.PhoneNumber
 	}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["Description"] = o.Description
 	}
 	return json.Marshal(toSerialize)

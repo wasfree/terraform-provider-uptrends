@@ -29,7 +29,8 @@ const (
 	TLSVERSION_TLS12_TLS11_TLS10_WITH_FALLBACK TlsVersion = "Tls12_Tls11_Tls10_WithFallback"
 )
 
-var allowedTlsVersionEnumValues = []TlsVersion{
+// All allowed values of TlsVersion enum
+var AllowedTlsVersionEnumValues = []TlsVersion{
 	"Tls12",
 	"Tls11",
 	"Tls10",
@@ -46,7 +47,7 @@ func (v *TlsVersion) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := TlsVersion(value)
-	for _, existing := range allowedTlsVersionEnumValues {
+	for _, existing := range AllowedTlsVersionEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -63,13 +64,13 @@ func NewTlsVersionFromValue(v string) (*TlsVersion, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for TlsVersion: valid values are %v", v, allowedTlsVersionEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for TlsVersion: valid values are %v", v, AllowedTlsVersionEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v TlsVersion) IsValid() bool {
-	for _, existing := range allowedTlsVersionEnumValues {
+	for _, existing := range AllowedTlsVersionEnumValues {
 		if existing == v {
 			return true
 		}

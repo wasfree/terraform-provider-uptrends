@@ -24,7 +24,8 @@ const (
 	SORTDIRECTION_DESCENDING SortDirection = "Descending"
 )
 
-var allowedSortDirectionEnumValues = []SortDirection{
+// All allowed values of SortDirection enum
+var AllowedSortDirectionEnumValues = []SortDirection{
 	"Ascending",
 	"Descending",
 }
@@ -36,7 +37,7 @@ func (v *SortDirection) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := SortDirection(value)
-	for _, existing := range allowedSortDirectionEnumValues {
+	for _, existing := range AllowedSortDirectionEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewSortDirectionFromValue(v string) (*SortDirection, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for SortDirection: valid values are %v", v, allowedSortDirectionEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for SortDirection: valid values are %v", v, AllowedSortDirectionEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v SortDirection) IsValid() bool {
-	for _, existing := range allowedSortDirectionEnumValues {
+	for _, existing := range AllowedSortDirectionEnumValues {
 		if existing == v {
 			return true
 		}
