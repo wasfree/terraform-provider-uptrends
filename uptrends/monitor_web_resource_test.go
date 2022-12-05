@@ -19,20 +19,20 @@ func TestAccUptrendsMonitorWeb_Basic(t *testing.T) {
 		ProviderFactories: testAccProviderFactories,
 		CheckDestroy:      testAccUptrendsMonitorWebDestroyCheck,
 		Steps: []resource.TestStep{
-			// {
-			// 	Config: r.basic(randInt),
-			// 	Check: resource.ComposeTestCheckFunc(
-			// 		testAccCheckUptrendsMonitorWebDestroyExists("uptrends_monitor_web.http"),
-			// 		resource.TestCheckResourceAttr("uptrends_monitor_web.http", "name", fmt.Sprintf("acctest-uptrends-monitor-web-http-%d", randInt)),
-			// 		resource.TestCheckResourceAttr("uptrends_monitor_web.http", "url", "http://example.com/"),
-			// 		resource.TestCheckResourceAttr("uptrends_monitor_web.http", "mode", "Production"),
-			// 		resource.TestCheckResourceAttr("uptrends_monitor_web.http", "user_agent", UserAgent("chrome83")),
-			// 		resource.TestCheckResourceAttr("uptrends_monitor_web.http", "auth_type", "None"),
-			// 		testAccCheckUptrendsMonitorWebDestroyExists("uptrends_monitor_web.https"),
-			// 		resource.TestCheckResourceAttr("uptrends_monitor_web.https", "name", fmt.Sprintf("acctest-uptrends-monitor-web-https-%d", randInt)),
-			// 		resource.TestCheckResourceAttr("uptrends_monitor_web.https", "url", "https://example.com/"),
-			// 	),
-			// },
+			{
+				Config: r.basic(randInt),
+				Check: resource.ComposeTestCheckFunc(
+					testAccCheckUptrendsMonitorWebDestroyExists("uptrends_monitor_web.http"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.http", "name", fmt.Sprintf("acctest-uptrends-monitor-web-http-%d", randInt)),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.http", "url", "http://example.com/"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.http", "mode", "Production"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.http", "user_agent", UserAgent("chrome83")),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.http", "auth_type", "None"),
+					testAccCheckUptrendsMonitorWebDestroyExists("uptrends_monitor_web.https"),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.https", "name", fmt.Sprintf("acctest-uptrends-monitor-web-https-%d", randInt)),
+					resource.TestCheckResourceAttr("uptrends_monitor_web.https", "url", "https://example.com/"),
+				),
+			},
 			{
 				Config: r.update(randInt),
 				Check: resource.ComposeTestCheckFunc(
