@@ -52,8 +52,8 @@ func (o *AlertDefinitionMonitorGroup) GetAlertDefinition() string {
 // GetAlertDefinitionOk returns a tuple with the AlertDefinition field value
 // and a boolean to check if the value has been set.
 func (o *AlertDefinitionMonitorGroup) GetAlertDefinitionOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.AlertDefinition, true
 }
@@ -76,8 +76,8 @@ func (o *AlertDefinitionMonitorGroup) GetMonitorGroup() string {
 // GetMonitorGroupOk returns a tuple with the MonitorGroup field value
 // and a boolean to check if the value has been set.
 func (o *AlertDefinitionMonitorGroup) GetMonitorGroupOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.MonitorGroup, true
 }

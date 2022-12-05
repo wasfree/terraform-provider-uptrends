@@ -41,7 +41,7 @@ func NewAlertDefinitionMemberWithDefaults() *AlertDefinitionMember {
 
 // GetMonitorGuid returns the MonitorGuid field value if set, zero value otherwise.
 func (o *AlertDefinitionMember) GetMonitorGuid() string {
-	if o == nil || o.MonitorGuid == nil {
+	if o == nil || isNil(o.MonitorGuid) {
 		var ret string
 		return ret
 	}
@@ -51,15 +51,15 @@ func (o *AlertDefinitionMember) GetMonitorGuid() string {
 // GetMonitorGuidOk returns a tuple with the MonitorGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertDefinitionMember) GetMonitorGuidOk() (*string, bool) {
-	if o == nil || o.MonitorGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.MonitorGuid) {
+    return nil, false
 	}
 	return o.MonitorGuid, true
 }
 
 // HasMonitorGuid returns a boolean if a field has been set.
 func (o *AlertDefinitionMember) HasMonitorGuid() bool {
-	if o != nil && o.MonitorGuid != nil {
+	if o != nil && !isNil(o.MonitorGuid) {
 		return true
 	}
 
@@ -73,7 +73,7 @@ func (o *AlertDefinitionMember) SetMonitorGuid(v string) {
 
 // GetMonitorGroupGuid returns the MonitorGroupGuid field value if set, zero value otherwise.
 func (o *AlertDefinitionMember) GetMonitorGroupGuid() string {
-	if o == nil || o.MonitorGroupGuid == nil {
+	if o == nil || isNil(o.MonitorGroupGuid) {
 		var ret string
 		return ret
 	}
@@ -83,15 +83,15 @@ func (o *AlertDefinitionMember) GetMonitorGroupGuid() string {
 // GetMonitorGroupGuidOk returns a tuple with the MonitorGroupGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AlertDefinitionMember) GetMonitorGroupGuidOk() (*string, bool) {
-	if o == nil || o.MonitorGroupGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.MonitorGroupGuid) {
+    return nil, false
 	}
 	return o.MonitorGroupGuid, true
 }
 
 // HasMonitorGroupGuid returns a boolean if a field has been set.
 func (o *AlertDefinitionMember) HasMonitorGroupGuid() bool {
-	if o != nil && o.MonitorGroupGuid != nil {
+	if o != nil && !isNil(o.MonitorGroupGuid) {
 		return true
 	}
 
@@ -105,10 +105,10 @@ func (o *AlertDefinitionMember) SetMonitorGroupGuid(v string) {
 
 func (o AlertDefinitionMember) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.MonitorGuid != nil {
+	if !isNil(o.MonitorGuid) {
 		toSerialize["MonitorGuid"] = o.MonitorGuid
 	}
-	if o.MonitorGroupGuid != nil {
+	if !isNil(o.MonitorGroupGuid) {
 		toSerialize["MonitorGroupGuid"] = o.MonitorGroupGuid
 	}
 	return json.Marshal(toSerialize)

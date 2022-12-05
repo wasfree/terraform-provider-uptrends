@@ -47,7 +47,7 @@ func NewSlaWithDefaults() *Sla {
 
 // GetSlaGuid returns the SlaGuid field value if set, zero value otherwise.
 func (o *Sla) GetSlaGuid() string {
-	if o == nil || o.SlaGuid == nil {
+	if o == nil || isNil(o.SlaGuid) {
 		var ret string
 		return ret
 	}
@@ -57,15 +57,15 @@ func (o *Sla) GetSlaGuid() string {
 // GetSlaGuidOk returns a tuple with the SlaGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Sla) GetSlaGuidOk() (*string, bool) {
-	if o == nil || o.SlaGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.SlaGuid) {
+    return nil, false
 	}
 	return o.SlaGuid, true
 }
 
 // HasSlaGuid returns a boolean if a field has been set.
 func (o *Sla) HasSlaGuid() bool {
-	if o != nil && o.SlaGuid != nil {
+	if o != nil && !isNil(o.SlaGuid) {
 		return true
 	}
 
@@ -79,7 +79,7 @@ func (o *Sla) SetSlaGuid(v string) {
 
 // GetHash returns the Hash field value if set, zero value otherwise.
 func (o *Sla) GetHash() string {
-	if o == nil || o.Hash == nil {
+	if o == nil || isNil(o.Hash) {
 		var ret string
 		return ret
 	}
@@ -89,15 +89,15 @@ func (o *Sla) GetHash() string {
 // GetHashOk returns a tuple with the Hash field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Sla) GetHashOk() (*string, bool) {
-	if o == nil || o.Hash == nil {
-		return nil, false
+	if o == nil || isNil(o.Hash) {
+    return nil, false
 	}
 	return o.Hash, true
 }
 
 // HasHash returns a boolean if a field has been set.
 func (o *Sla) HasHash() bool {
-	if o != nil && o.Hash != nil {
+	if o != nil && !isNil(o.Hash) {
 		return true
 	}
 
@@ -111,7 +111,7 @@ func (o *Sla) SetHash(v string) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *Sla) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -121,15 +121,15 @@ func (o *Sla) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Sla) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *Sla) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -143,7 +143,7 @@ func (o *Sla) SetDescription(v string) {
 
 // GetUptimeErrorThreshold returns the UptimeErrorThreshold field value if set, zero value otherwise.
 func (o *Sla) GetUptimeErrorThreshold() float64 {
-	if o == nil || o.UptimeErrorThreshold == nil {
+	if o == nil || isNil(o.UptimeErrorThreshold) {
 		var ret float64
 		return ret
 	}
@@ -153,15 +153,15 @@ func (o *Sla) GetUptimeErrorThreshold() float64 {
 // GetUptimeErrorThresholdOk returns a tuple with the UptimeErrorThreshold field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Sla) GetUptimeErrorThresholdOk() (*float64, bool) {
-	if o == nil || o.UptimeErrorThreshold == nil {
-		return nil, false
+	if o == nil || isNil(o.UptimeErrorThreshold) {
+    return nil, false
 	}
 	return o.UptimeErrorThreshold, true
 }
 
 // HasUptimeErrorThreshold returns a boolean if a field has been set.
 func (o *Sla) HasUptimeErrorThreshold() bool {
-	if o != nil && o.UptimeErrorThreshold != nil {
+	if o != nil && !isNil(o.UptimeErrorThreshold) {
 		return true
 	}
 
@@ -175,7 +175,7 @@ func (o *Sla) SetUptimeErrorThreshold(v float64) {
 
 // GetUptimeWarningThreshold returns the UptimeWarningThreshold field value if set, zero value otherwise.
 func (o *Sla) GetUptimeWarningThreshold() float64 {
-	if o == nil || o.UptimeWarningThreshold == nil {
+	if o == nil || isNil(o.UptimeWarningThreshold) {
 		var ret float64
 		return ret
 	}
@@ -185,15 +185,15 @@ func (o *Sla) GetUptimeWarningThreshold() float64 {
 // GetUptimeWarningThresholdOk returns a tuple with the UptimeWarningThreshold field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Sla) GetUptimeWarningThresholdOk() (*float64, bool) {
-	if o == nil || o.UptimeWarningThreshold == nil {
-		return nil, false
+	if o == nil || isNil(o.UptimeWarningThreshold) {
+    return nil, false
 	}
 	return o.UptimeWarningThreshold, true
 }
 
 // HasUptimeWarningThreshold returns a boolean if a field has been set.
 func (o *Sla) HasUptimeWarningThreshold() bool {
-	if o != nil && o.UptimeWarningThreshold != nil {
+	if o != nil && !isNil(o.UptimeWarningThreshold) {
 		return true
 	}
 
@@ -207,7 +207,7 @@ func (o *Sla) SetUptimeWarningThreshold(v float64) {
 
 // GetLoadTimeErrorThreshold returns the LoadTimeErrorThreshold field value if set, zero value otherwise.
 func (o *Sla) GetLoadTimeErrorThreshold() float64 {
-	if o == nil || o.LoadTimeErrorThreshold == nil {
+	if o == nil || isNil(o.LoadTimeErrorThreshold) {
 		var ret float64
 		return ret
 	}
@@ -217,15 +217,15 @@ func (o *Sla) GetLoadTimeErrorThreshold() float64 {
 // GetLoadTimeErrorThresholdOk returns a tuple with the LoadTimeErrorThreshold field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Sla) GetLoadTimeErrorThresholdOk() (*float64, bool) {
-	if o == nil || o.LoadTimeErrorThreshold == nil {
-		return nil, false
+	if o == nil || isNil(o.LoadTimeErrorThreshold) {
+    return nil, false
 	}
 	return o.LoadTimeErrorThreshold, true
 }
 
 // HasLoadTimeErrorThreshold returns a boolean if a field has been set.
 func (o *Sla) HasLoadTimeErrorThreshold() bool {
-	if o != nil && o.LoadTimeErrorThreshold != nil {
+	if o != nil && !isNil(o.LoadTimeErrorThreshold) {
 		return true
 	}
 
@@ -239,7 +239,7 @@ func (o *Sla) SetLoadTimeErrorThreshold(v float64) {
 
 // GetOperatorReponseTimeThreshold returns the OperatorReponseTimeThreshold field value if set, zero value otherwise.
 func (o *Sla) GetOperatorReponseTimeThreshold() int32 {
-	if o == nil || o.OperatorReponseTimeThreshold == nil {
+	if o == nil || isNil(o.OperatorReponseTimeThreshold) {
 		var ret int32
 		return ret
 	}
@@ -249,15 +249,15 @@ func (o *Sla) GetOperatorReponseTimeThreshold() int32 {
 // GetOperatorReponseTimeThresholdOk returns a tuple with the OperatorReponseTimeThreshold field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Sla) GetOperatorReponseTimeThresholdOk() (*int32, bool) {
-	if o == nil || o.OperatorReponseTimeThreshold == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorReponseTimeThreshold) {
+    return nil, false
 	}
 	return o.OperatorReponseTimeThreshold, true
 }
 
 // HasOperatorReponseTimeThreshold returns a boolean if a field has been set.
 func (o *Sla) HasOperatorReponseTimeThreshold() bool {
-	if o != nil && o.OperatorReponseTimeThreshold != nil {
+	if o != nil && !isNil(o.OperatorReponseTimeThreshold) {
 		return true
 	}
 
@@ -271,25 +271,25 @@ func (o *Sla) SetOperatorReponseTimeThreshold(v int32) {
 
 func (o Sla) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.SlaGuid != nil {
+	if !isNil(o.SlaGuid) {
 		toSerialize["SlaGuid"] = o.SlaGuid
 	}
-	if o.Hash != nil {
+	if !isNil(o.Hash) {
 		toSerialize["Hash"] = o.Hash
 	}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["Description"] = o.Description
 	}
-	if o.UptimeErrorThreshold != nil {
+	if !isNil(o.UptimeErrorThreshold) {
 		toSerialize["UptimeErrorThreshold"] = o.UptimeErrorThreshold
 	}
-	if o.UptimeWarningThreshold != nil {
+	if !isNil(o.UptimeWarningThreshold) {
 		toSerialize["UptimeWarningThreshold"] = o.UptimeWarningThreshold
 	}
-	if o.LoadTimeErrorThreshold != nil {
+	if !isNil(o.LoadTimeErrorThreshold) {
 		toSerialize["LoadTimeErrorThreshold"] = o.LoadTimeErrorThreshold
 	}
-	if o.OperatorReponseTimeThreshold != nil {
+	if !isNil(o.OperatorReponseTimeThreshold) {
 		toSerialize["OperatorReponseTimeThreshold"] = o.OperatorReponseTimeThreshold
 	}
 	return json.Marshal(toSerialize)

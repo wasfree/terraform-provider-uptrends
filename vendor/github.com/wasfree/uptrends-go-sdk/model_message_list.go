@@ -16,7 +16,7 @@ import (
 
 // MessageList struct for MessageList
 type MessageList struct {
-	Messages *[]MessageInfo `json:"Messages,omitempty"`
+	Messages []MessageInfo `json:"Messages,omitempty"`
 }
 
 // NewMessageList instantiates a new MessageList object
@@ -38,25 +38,25 @@ func NewMessageListWithDefaults() *MessageList {
 
 // GetMessages returns the Messages field value if set, zero value otherwise.
 func (o *MessageList) GetMessages() []MessageInfo {
-	if o == nil || o.Messages == nil {
+	if o == nil || isNil(o.Messages) {
 		var ret []MessageInfo
 		return ret
 	}
-	return *o.Messages
+	return o.Messages
 }
 
 // GetMessagesOk returns a tuple with the Messages field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MessageList) GetMessagesOk() (*[]MessageInfo, bool) {
-	if o == nil || o.Messages == nil {
-		return nil, false
+func (o *MessageList) GetMessagesOk() ([]MessageInfo, bool) {
+	if o == nil || isNil(o.Messages) {
+    return nil, false
 	}
 	return o.Messages, true
 }
 
 // HasMessages returns a boolean if a field has been set.
 func (o *MessageList) HasMessages() bool {
-	if o != nil && o.Messages != nil {
+	if o != nil && !isNil(o.Messages) {
 		return true
 	}
 
@@ -65,12 +65,12 @@ func (o *MessageList) HasMessages() bool {
 
 // SetMessages gets a reference to the given []MessageInfo and assigns it to the Messages field.
 func (o *MessageList) SetMessages(v []MessageInfo) {
-	o.Messages = &v
+	o.Messages = v
 }
 
 func (o MessageList) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Messages != nil {
+	if !isNil(o.Messages) {
 		toSerialize["Messages"] = o.Messages
 	}
 	return json.Marshal(toSerialize)

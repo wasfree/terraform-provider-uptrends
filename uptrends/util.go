@@ -48,15 +48,15 @@ func SliceInterfaceToSliceInt32(input []interface{}) *[]int32 {
 	return &ret
 }
 
-// SliceInterfaceToSliceString convert []interface{} to *[]string
-func SliceInterfaceToSliceString(input []interface{}) *[]string {
+// SliceInterfaceToSliceString convert []interface{} to []string
+func SliceInterfaceToSliceString(input []interface{}) []string {
 	ret := make([]string, len(input))
 
 	for i, x := range input {
 		ret[i] = string(x.(string))
 	}
 
-	return &ret
+	return ret
 }
 
 // SliceStringToSliceInterface convert *[]string to []interface{}
@@ -110,8 +110,8 @@ func MergeSchema(input ...map[string]*schema.Schema) map[string]*schema.Schema {
 
 // structure.go
 
-// expandRequestHeader converts values from []interface{} to *[]uptrends.RequestHeader
-func expandRequestHeader(input []interface{}) *[]uptrends.RequestHeader {
+// expandRequestHeader converts values from []interface{} to []uptrends.RequestHeader
+func expandRequestHeader(input []interface{}) []uptrends.RequestHeader {
 	headers := []uptrends.RequestHeader{}
 	for _, v := range input {
 		newHeader := uptrends.NewRequestHeader()
@@ -120,7 +120,7 @@ func expandRequestHeader(input []interface{}) *[]uptrends.RequestHeader {
 		newHeader.SetValue(header["value"].(string))
 		headers = append(headers, *newHeader)
 	}
-	return &headers
+	return headers
 }
 
 // flattenRequestHeader converts values from []uptrends.RequestHeader to []interface{}
@@ -135,8 +135,8 @@ func flattenRequestHeader(input *[]uptrends.RequestHeader) []interface{} {
 	return headers
 }
 
-// expandPatternMatch converts values from []interface{} to *[]uptrends.PatternMatch
-func expandPatternMatch(input []interface{}) *[]uptrends.PatternMatch {
+// expandPatternMatch converts values from []interface{} to []uptrends.PatternMatch
+func expandPatternMatch(input []interface{}) []uptrends.PatternMatch {
 	patterns := []uptrends.PatternMatch{}
 	for _, v := range input {
 		pattern := v.(map[string]interface{})
@@ -144,7 +144,7 @@ func expandPatternMatch(input []interface{}) *[]uptrends.PatternMatch {
 		newPattern.SetPattern(pattern["pattern"].(string))
 		patterns = append(patterns, *newPattern)
 	}
-	return &patterns
+	return patterns
 }
 
 // flattenPatternMatch converts values from []uptrends.PatternMatch to []interface{}

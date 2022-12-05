@@ -12,7 +12,6 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // OperatorDutySchedule struct for OperatorDutySchedule
@@ -22,9 +21,9 @@ type OperatorDutySchedule struct {
 	// The schedule mode (one time, daily, weekly, monthly)
 	ScheduleMode OperatorScheduleMode `json:"ScheduleMode"`
 	// The start date/time for this schedule (for one-time schedules only)
-	StartDateTime *time.Time `json:"StartDateTime,omitempty"`
+	StartDateTime map[string]interface{} `json:"StartDateTime,omitempty"`
 	// The end date/time for this maintenance period (for one-time maintenance periods only)
-	EndDateTime *time.Time `json:"EndDateTime,omitempty"`
+	EndDateTime map[string]interface{} `json:"EndDateTime,omitempty"`
 	// The weekday for this maintenance period (for weekly maintenance periods only)
 	WeekDay *DayOfWeek `json:"WeekDay,omitempty"`
 	// the month day for this maintenance period (for montly maintenance periods only)
@@ -67,8 +66,8 @@ func (o *OperatorDutySchedule) GetId() int32 {
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
 func (o *OperatorDutySchedule) GetIdOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Id, true
 }
@@ -91,8 +90,8 @@ func (o *OperatorDutySchedule) GetScheduleMode() OperatorScheduleMode {
 // GetScheduleModeOk returns a tuple with the ScheduleMode field value
 // and a boolean to check if the value has been set.
 func (o *OperatorDutySchedule) GetScheduleModeOk() (*OperatorScheduleMode, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ScheduleMode, true
 }
@@ -103,72 +102,72 @@ func (o *OperatorDutySchedule) SetScheduleMode(v OperatorScheduleMode) {
 }
 
 // GetStartDateTime returns the StartDateTime field value if set, zero value otherwise.
-func (o *OperatorDutySchedule) GetStartDateTime() time.Time {
-	if o == nil || o.StartDateTime == nil {
-		var ret time.Time
+func (o *OperatorDutySchedule) GetStartDateTime() map[string]interface{} {
+	if o == nil || isNil(o.StartDateTime) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.StartDateTime
+	return o.StartDateTime
 }
 
 // GetStartDateTimeOk returns a tuple with the StartDateTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *OperatorDutySchedule) GetStartDateTimeOk() (*time.Time, bool) {
-	if o == nil || o.StartDateTime == nil {
-		return nil, false
+func (o *OperatorDutySchedule) GetStartDateTimeOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.StartDateTime) {
+    return map[string]interface{}{}, false
 	}
 	return o.StartDateTime, true
 }
 
 // HasStartDateTime returns a boolean if a field has been set.
 func (o *OperatorDutySchedule) HasStartDateTime() bool {
-	if o != nil && o.StartDateTime != nil {
+	if o != nil && !isNil(o.StartDateTime) {
 		return true
 	}
 
 	return false
 }
 
-// SetStartDateTime gets a reference to the given time.Time and assigns it to the StartDateTime field.
-func (o *OperatorDutySchedule) SetStartDateTime(v time.Time) {
-	o.StartDateTime = &v
+// SetStartDateTime gets a reference to the given map[string]interface{} and assigns it to the StartDateTime field.
+func (o *OperatorDutySchedule) SetStartDateTime(v map[string]interface{}) {
+	o.StartDateTime = v
 }
 
 // GetEndDateTime returns the EndDateTime field value if set, zero value otherwise.
-func (o *OperatorDutySchedule) GetEndDateTime() time.Time {
-	if o == nil || o.EndDateTime == nil {
-		var ret time.Time
+func (o *OperatorDutySchedule) GetEndDateTime() map[string]interface{} {
+	if o == nil || isNil(o.EndDateTime) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.EndDateTime
+	return o.EndDateTime
 }
 
 // GetEndDateTimeOk returns a tuple with the EndDateTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *OperatorDutySchedule) GetEndDateTimeOk() (*time.Time, bool) {
-	if o == nil || o.EndDateTime == nil {
-		return nil, false
+func (o *OperatorDutySchedule) GetEndDateTimeOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.EndDateTime) {
+    return map[string]interface{}{}, false
 	}
 	return o.EndDateTime, true
 }
 
 // HasEndDateTime returns a boolean if a field has been set.
 func (o *OperatorDutySchedule) HasEndDateTime() bool {
-	if o != nil && o.EndDateTime != nil {
+	if o != nil && !isNil(o.EndDateTime) {
 		return true
 	}
 
 	return false
 }
 
-// SetEndDateTime gets a reference to the given time.Time and assigns it to the EndDateTime field.
-func (o *OperatorDutySchedule) SetEndDateTime(v time.Time) {
-	o.EndDateTime = &v
+// SetEndDateTime gets a reference to the given map[string]interface{} and assigns it to the EndDateTime field.
+func (o *OperatorDutySchedule) SetEndDateTime(v map[string]interface{}) {
+	o.EndDateTime = v
 }
 
 // GetWeekDay returns the WeekDay field value if set, zero value otherwise.
 func (o *OperatorDutySchedule) GetWeekDay() DayOfWeek {
-	if o == nil || o.WeekDay == nil {
+	if o == nil || isNil(o.WeekDay) {
 		var ret DayOfWeek
 		return ret
 	}
@@ -178,15 +177,15 @@ func (o *OperatorDutySchedule) GetWeekDay() DayOfWeek {
 // GetWeekDayOk returns a tuple with the WeekDay field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OperatorDutySchedule) GetWeekDayOk() (*DayOfWeek, bool) {
-	if o == nil || o.WeekDay == nil {
-		return nil, false
+	if o == nil || isNil(o.WeekDay) {
+    return nil, false
 	}
 	return o.WeekDay, true
 }
 
 // HasWeekDay returns a boolean if a field has been set.
 func (o *OperatorDutySchedule) HasWeekDay() bool {
-	if o != nil && o.WeekDay != nil {
+	if o != nil && !isNil(o.WeekDay) {
 		return true
 	}
 
@@ -200,7 +199,7 @@ func (o *OperatorDutySchedule) SetWeekDay(v DayOfWeek) {
 
 // GetMonthDay returns the MonthDay field value if set, zero value otherwise.
 func (o *OperatorDutySchedule) GetMonthDay() int32 {
-	if o == nil || o.MonthDay == nil {
+	if o == nil || isNil(o.MonthDay) {
 		var ret int32
 		return ret
 	}
@@ -210,15 +209,15 @@ func (o *OperatorDutySchedule) GetMonthDay() int32 {
 // GetMonthDayOk returns a tuple with the MonthDay field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OperatorDutySchedule) GetMonthDayOk() (*int32, bool) {
-	if o == nil || o.MonthDay == nil {
-		return nil, false
+	if o == nil || isNil(o.MonthDay) {
+    return nil, false
 	}
 	return o.MonthDay, true
 }
 
 // HasMonthDay returns a boolean if a field has been set.
 func (o *OperatorDutySchedule) HasMonthDay() bool {
-	if o != nil && o.MonthDay != nil {
+	if o != nil && !isNil(o.MonthDay) {
 		return true
 	}
 
@@ -232,7 +231,7 @@ func (o *OperatorDutySchedule) SetMonthDay(v int32) {
 
 // GetStartTime returns the StartTime field value if set, zero value otherwise.
 func (o *OperatorDutySchedule) GetStartTime() string {
-	if o == nil || o.StartTime == nil {
+	if o == nil || isNil(o.StartTime) {
 		var ret string
 		return ret
 	}
@@ -242,15 +241,15 @@ func (o *OperatorDutySchedule) GetStartTime() string {
 // GetStartTimeOk returns a tuple with the StartTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OperatorDutySchedule) GetStartTimeOk() (*string, bool) {
-	if o == nil || o.StartTime == nil {
-		return nil, false
+	if o == nil || isNil(o.StartTime) {
+    return nil, false
 	}
 	return o.StartTime, true
 }
 
 // HasStartTime returns a boolean if a field has been set.
 func (o *OperatorDutySchedule) HasStartTime() bool {
-	if o != nil && o.StartTime != nil {
+	if o != nil && !isNil(o.StartTime) {
 		return true
 	}
 
@@ -264,7 +263,7 @@ func (o *OperatorDutySchedule) SetStartTime(v string) {
 
 // GetEndTime returns the EndTime field value if set, zero value otherwise.
 func (o *OperatorDutySchedule) GetEndTime() string {
-	if o == nil || o.EndTime == nil {
+	if o == nil || isNil(o.EndTime) {
 		var ret string
 		return ret
 	}
@@ -274,15 +273,15 @@ func (o *OperatorDutySchedule) GetEndTime() string {
 // GetEndTimeOk returns a tuple with the EndTime field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OperatorDutySchedule) GetEndTimeOk() (*string, bool) {
-	if o == nil || o.EndTime == nil {
-		return nil, false
+	if o == nil || isNil(o.EndTime) {
+    return nil, false
 	}
 	return o.EndTime, true
 }
 
 // HasEndTime returns a boolean if a field has been set.
 func (o *OperatorDutySchedule) HasEndTime() bool {
-	if o != nil && o.EndTime != nil {
+	if o != nil && !isNil(o.EndTime) {
 		return true
 	}
 
@@ -302,22 +301,22 @@ func (o OperatorDutySchedule) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["ScheduleMode"] = o.ScheduleMode
 	}
-	if o.StartDateTime != nil {
+	if !isNil(o.StartDateTime) {
 		toSerialize["StartDateTime"] = o.StartDateTime
 	}
-	if o.EndDateTime != nil {
+	if !isNil(o.EndDateTime) {
 		toSerialize["EndDateTime"] = o.EndDateTime
 	}
-	if o.WeekDay != nil {
+	if !isNil(o.WeekDay) {
 		toSerialize["WeekDay"] = o.WeekDay
 	}
-	if o.MonthDay != nil {
+	if !isNil(o.MonthDay) {
 		toSerialize["MonthDay"] = o.MonthDay
 	}
-	if o.StartTime != nil {
+	if !isNil(o.StartTime) {
 		toSerialize["StartTime"] = o.StartTime
 	}
-	if o.EndTime != nil {
+	if !isNil(o.EndTime) {
 		toSerialize["EndTime"] = o.EndTime
 	}
 	return json.Marshal(toSerialize)

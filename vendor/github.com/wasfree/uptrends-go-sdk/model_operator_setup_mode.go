@@ -24,7 +24,8 @@ const (
 	OPERATORSETUPMODE_INVITATION OperatorSetupMode = "Invitation"
 )
 
-var allowedOperatorSetupModeEnumValues = []OperatorSetupMode{
+// All allowed values of OperatorSetupMode enum
+var AllowedOperatorSetupModeEnumValues = []OperatorSetupMode{
 	"Manual",
 	"Invitation",
 }
@@ -36,7 +37,7 @@ func (v *OperatorSetupMode) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := OperatorSetupMode(value)
-	for _, existing := range allowedOperatorSetupModeEnumValues {
+	for _, existing := range AllowedOperatorSetupModeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewOperatorSetupModeFromValue(v string) (*OperatorSetupMode, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for OperatorSetupMode: valid values are %v", v, allowedOperatorSetupModeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for OperatorSetupMode: valid values are %v", v, AllowedOperatorSetupModeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v OperatorSetupMode) IsValid() bool {
-	for _, existing := range allowedOperatorSetupModeEnumValues {
+	for _, existing := range AllowedOperatorSetupModeEnumValues {
 		if existing == v {
 			return true
 		}

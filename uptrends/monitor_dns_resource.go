@@ -104,7 +104,7 @@ func monitorDnsRead(ctx context.Context, d *schema.ResourceData, meta interface{
 		return diag.FromErr(err)
 	}
 
-	return readMonitorDnsStruct(&resp, d)
+	return readMonitorDnsStruct(resp, d)
 }
 
 func monitorDnsUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
@@ -153,7 +153,6 @@ func buildMonitorDnsStruct(d *schema.ResourceData) (*uptrends.Monitor, error) {
 	m.MonitorType = &monitorDnsType
 	m.Port = Int32(int32(d.Get("port").(int)))
 	m.IpVersion = (*uptrends.IpVersion)(String(d.Get("ip_version").(string)))
-	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
 	m.DnsServer = String(d.Get("dns_server").(string))
 	m.DnsQuery = (*uptrends.DnsQuery)(String(d.Get("dns_query").(string)))
 	m.DnsTestValue = String(d.Get("dns_test_value").(string))
@@ -173,9 +172,6 @@ func readMonitorDnsStruct(m *uptrends.Monitor, d *schema.ResourceData) diag.Diag
 		return diag.FromErr(err)
 	}
 	if err := d.Set("ip_version", m.IpVersion); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("native_ipv6_only", m.NativeIPv6Only); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("dns_server", m.DnsServer); err != nil {

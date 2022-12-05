@@ -26,15 +26,20 @@ const (
 	OPERATORGROUPAUTHORIZATIONTYPE_TECHNICAL_CONTACT OperatorGroupAuthorizationType = "TechnicalContact"
 	OPERATORGROUPAUTHORIZATIONTYPE_FINANCIAL_OPERATOR OperatorGroupAuthorizationType = "FinancialOperator"
 	OPERATORGROUPAUTHORIZATIONTYPE_BASIC_OPERATOR OperatorGroupAuthorizationType = "BasicOperator"
+	OPERATORGROUPAUTHORIZATIONTYPE_CREATE_ALERT_DEFINITION OperatorGroupAuthorizationType = "CreateAlertDefinition"
+	OPERATORGROUPAUTHORIZATIONTYPE_CREATE_INTEGRATION OperatorGroupAuthorizationType = "CreateIntegration"
 )
 
-var allowedOperatorGroupAuthorizationTypeEnumValues = []OperatorGroupAuthorizationType{
+// All allowed values of OperatorGroupAuthorizationType enum
+var AllowedOperatorGroupAuthorizationTypeEnumValues = []OperatorGroupAuthorizationType{
 	"ShareDashboards",
 	"AllowInfra",
 	"Administrator",
 	"TechnicalContact",
 	"FinancialOperator",
 	"BasicOperator",
+	"CreateAlertDefinition",
+	"CreateIntegration",
 }
 
 func (v *OperatorGroupAuthorizationType) UnmarshalJSON(src []byte) error {
@@ -44,7 +49,7 @@ func (v *OperatorGroupAuthorizationType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := OperatorGroupAuthorizationType(value)
-	for _, existing := range allowedOperatorGroupAuthorizationTypeEnumValues {
+	for _, existing := range AllowedOperatorGroupAuthorizationTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -61,13 +66,13 @@ func NewOperatorGroupAuthorizationTypeFromValue(v string) (*OperatorGroupAuthori
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for OperatorGroupAuthorizationType: valid values are %v", v, allowedOperatorGroupAuthorizationTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for OperatorGroupAuthorizationType: valid values are %v", v, AllowedOperatorGroupAuthorizationTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v OperatorGroupAuthorizationType) IsValid() bool {
-	for _, existing := range allowedOperatorGroupAuthorizationTypeEnumValues {
+	for _, existing := range AllowedOperatorGroupAuthorizationTypeEnumValues {
 		if existing == v {
 			return true
 		}

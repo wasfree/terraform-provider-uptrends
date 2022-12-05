@@ -25,7 +25,8 @@ const (
 	MONITORMODE_PRODUCTION MonitorMode = "Production"
 )
 
-var allowedMonitorModeEnumValues = []MonitorMode{
+// All allowed values of MonitorMode enum
+var AllowedMonitorModeEnumValues = []MonitorMode{
 	"Development",
 	"Staging",
 	"Production",
@@ -38,7 +39,7 @@ func (v *MonitorMode) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := MonitorMode(value)
-	for _, existing := range allowedMonitorModeEnumValues {
+	for _, existing := range AllowedMonitorModeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -55,13 +56,13 @@ func NewMonitorModeFromValue(v string) (*MonitorMode, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for MonitorMode: valid values are %v", v, allowedMonitorModeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for MonitorMode: valid values are %v", v, AllowedMonitorModeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v MonitorMode) IsValid() bool {
-	for _, existing := range allowedMonitorModeEnumValues {
+	for _, existing := range AllowedMonitorModeEnumValues {
 		if existing == v {
 			return true
 		}

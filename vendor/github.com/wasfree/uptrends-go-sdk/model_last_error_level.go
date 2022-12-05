@@ -27,7 +27,8 @@ const (
 	LASTERRORLEVEL_INCONCLUSIVE LastErrorLevel = "Inconclusive"
 )
 
-var allowedLastErrorLevelEnumValues = []LastErrorLevel{
+// All allowed values of LastErrorLevel enum
+var AllowedLastErrorLevelEnumValues = []LastErrorLevel{
 	"NoError",
 	"Unconfirmed",
 	"Confirmed",
@@ -42,7 +43,7 @@ func (v *LastErrorLevel) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := LastErrorLevel(value)
-	for _, existing := range allowedLastErrorLevelEnumValues {
+	for _, existing := range AllowedLastErrorLevelEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -59,13 +60,13 @@ func NewLastErrorLevelFromValue(v string) (*LastErrorLevel, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for LastErrorLevel: valid values are %v", v, allowedLastErrorLevelEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for LastErrorLevel: valid values are %v", v, AllowedLastErrorLevelEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v LastErrorLevel) IsValid() bool {
-	for _, existing := range allowedLastErrorLevelEnumValues {
+	for _, existing := range AllowedLastErrorLevelEnumValues {
 		if existing == v {
 			return true
 		}

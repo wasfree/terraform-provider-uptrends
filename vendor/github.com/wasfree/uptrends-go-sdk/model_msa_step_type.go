@@ -24,7 +24,8 @@ const (
 	MSASTEPTYPE_DELAY MsaStepType = "Delay"
 )
 
-var allowedMsaStepTypeEnumValues = []MsaStepType{
+// All allowed values of MsaStepType enum
+var AllowedMsaStepTypeEnumValues = []MsaStepType{
 	"HttpRequest",
 	"Delay",
 }
@@ -36,7 +37,7 @@ func (v *MsaStepType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := MsaStepType(value)
-	for _, existing := range allowedMsaStepTypeEnumValues {
+	for _, existing := range AllowedMsaStepTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewMsaStepTypeFromValue(v string) (*MsaStepType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for MsaStepType: valid values are %v", v, allowedMsaStepTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for MsaStepType: valid values are %v", v, AllowedMsaStepTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v MsaStepType) IsValid() bool {
-	for _, existing := range allowedMsaStepTypeEnumValues {
+	for _, existing := range AllowedMsaStepTypeEnumValues {
 		if existing == v {
 			return true
 		}

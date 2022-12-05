@@ -54,8 +54,8 @@ func (o *ApiAssertion) GetSource() ApiAssertionSourceType {
 // GetSourceOk returns a tuple with the Source field value
 // and a boolean to check if the value has been set.
 func (o *ApiAssertion) GetSourceOk() (*ApiAssertionSourceType, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Source, true
 }
@@ -67,7 +67,7 @@ func (o *ApiAssertion) SetSource(v ApiAssertionSourceType) {
 
 // GetProperty returns the Property field value if set, zero value otherwise.
 func (o *ApiAssertion) GetProperty() string {
-	if o == nil || o.Property == nil {
+	if o == nil || isNil(o.Property) {
 		var ret string
 		return ret
 	}
@@ -77,15 +77,15 @@ func (o *ApiAssertion) GetProperty() string {
 // GetPropertyOk returns a tuple with the Property field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiAssertion) GetPropertyOk() (*string, bool) {
-	if o == nil || o.Property == nil {
-		return nil, false
+	if o == nil || isNil(o.Property) {
+    return nil, false
 	}
 	return o.Property, true
 }
 
 // HasProperty returns a boolean if a field has been set.
 func (o *ApiAssertion) HasProperty() bool {
-	if o != nil && o.Property != nil {
+	if o != nil && !isNil(o.Property) {
 		return true
 	}
 
@@ -110,8 +110,8 @@ func (o *ApiAssertion) GetComparison() ApiComparisonType {
 // GetComparisonOk returns a tuple with the Comparison field value
 // and a boolean to check if the value has been set.
 func (o *ApiAssertion) GetComparisonOk() (*ApiComparisonType, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Comparison, true
 }
@@ -123,7 +123,7 @@ func (o *ApiAssertion) SetComparison(v ApiComparisonType) {
 
 // GetTargetValue returns the TargetValue field value if set, zero value otherwise.
 func (o *ApiAssertion) GetTargetValue() string {
-	if o == nil || o.TargetValue == nil {
+	if o == nil || isNil(o.TargetValue) {
 		var ret string
 		return ret
 	}
@@ -133,15 +133,15 @@ func (o *ApiAssertion) GetTargetValue() string {
 // GetTargetValueOk returns a tuple with the TargetValue field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiAssertion) GetTargetValueOk() (*string, bool) {
-	if o == nil || o.TargetValue == nil {
-		return nil, false
+	if o == nil || isNil(o.TargetValue) {
+    return nil, false
 	}
 	return o.TargetValue, true
 }
 
 // HasTargetValue returns a boolean if a field has been set.
 func (o *ApiAssertion) HasTargetValue() bool {
-	if o != nil && o.TargetValue != nil {
+	if o != nil && !isNil(o.TargetValue) {
 		return true
 	}
 
@@ -158,13 +158,13 @@ func (o ApiAssertion) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["Source"] = o.Source
 	}
-	if o.Property != nil {
+	if !isNil(o.Property) {
 		toSerialize["Property"] = o.Property
 	}
 	if true {
 		toSerialize["Comparison"] = o.Comparison
 	}
-	if o.TargetValue != nil {
+	if !isNil(o.TargetValue) {
 		toSerialize["TargetValue"] = o.TargetValue
 	}
 	return json.Marshal(toSerialize)

@@ -47,7 +47,7 @@ func NewMonitorQuotaWithDefaults() *MonitorQuota {
 
 // GetBasicMonitors returns the BasicMonitors field value if set, zero value otherwise.
 func (o *MonitorQuota) GetBasicMonitors() int32 {
-	if o == nil || o.BasicMonitors == nil {
+	if o == nil || isNil(o.BasicMonitors) {
 		var ret int32
 		return ret
 	}
@@ -57,15 +57,15 @@ func (o *MonitorQuota) GetBasicMonitors() int32 {
 // GetBasicMonitorsOk returns a tuple with the BasicMonitors field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorQuota) GetBasicMonitorsOk() (*int32, bool) {
-	if o == nil || o.BasicMonitors == nil {
-		return nil, false
+	if o == nil || isNil(o.BasicMonitors) {
+    return nil, false
 	}
 	return o.BasicMonitors, true
 }
 
 // HasBasicMonitors returns a boolean if a field has been set.
 func (o *MonitorQuota) HasBasicMonitors() bool {
-	if o != nil && o.BasicMonitors != nil {
+	if o != nil && !isNil(o.BasicMonitors) {
 		return true
 	}
 
@@ -79,7 +79,7 @@ func (o *MonitorQuota) SetBasicMonitors(v int32) {
 
 // GetBasicMonitorsInUse returns the BasicMonitorsInUse field value if set, zero value otherwise.
 func (o *MonitorQuota) GetBasicMonitorsInUse() int32 {
-	if o == nil || o.BasicMonitorsInUse == nil {
+	if o == nil || isNil(o.BasicMonitorsInUse) {
 		var ret int32
 		return ret
 	}
@@ -89,15 +89,15 @@ func (o *MonitorQuota) GetBasicMonitorsInUse() int32 {
 // GetBasicMonitorsInUseOk returns a tuple with the BasicMonitorsInUse field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorQuota) GetBasicMonitorsInUseOk() (*int32, bool) {
-	if o == nil || o.BasicMonitorsInUse == nil {
-		return nil, false
+	if o == nil || isNil(o.BasicMonitorsInUse) {
+    return nil, false
 	}
 	return o.BasicMonitorsInUse, true
 }
 
 // HasBasicMonitorsInUse returns a boolean if a field has been set.
 func (o *MonitorQuota) HasBasicMonitorsInUse() bool {
-	if o != nil && o.BasicMonitorsInUse != nil {
+	if o != nil && !isNil(o.BasicMonitorsInUse) {
 		return true
 	}
 
@@ -111,7 +111,7 @@ func (o *MonitorQuota) SetBasicMonitorsInUse(v int32) {
 
 // GetBrowserMonitors returns the BrowserMonitors field value if set, zero value otherwise.
 func (o *MonitorQuota) GetBrowserMonitors() int32 {
-	if o == nil || o.BrowserMonitors == nil {
+	if o == nil || isNil(o.BrowserMonitors) {
 		var ret int32
 		return ret
 	}
@@ -121,15 +121,15 @@ func (o *MonitorQuota) GetBrowserMonitors() int32 {
 // GetBrowserMonitorsOk returns a tuple with the BrowserMonitors field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorQuota) GetBrowserMonitorsOk() (*int32, bool) {
-	if o == nil || o.BrowserMonitors == nil {
-		return nil, false
+	if o == nil || isNil(o.BrowserMonitors) {
+    return nil, false
 	}
 	return o.BrowserMonitors, true
 }
 
 // HasBrowserMonitors returns a boolean if a field has been set.
 func (o *MonitorQuota) HasBrowserMonitors() bool {
-	if o != nil && o.BrowserMonitors != nil {
+	if o != nil && !isNil(o.BrowserMonitors) {
 		return true
 	}
 
@@ -143,7 +143,7 @@ func (o *MonitorQuota) SetBrowserMonitors(v int32) {
 
 // GetBrowserMonitorsInUse returns the BrowserMonitorsInUse field value if set, zero value otherwise.
 func (o *MonitorQuota) GetBrowserMonitorsInUse() int32 {
-	if o == nil || o.BrowserMonitorsInUse == nil {
+	if o == nil || isNil(o.BrowserMonitorsInUse) {
 		var ret int32
 		return ret
 	}
@@ -153,15 +153,15 @@ func (o *MonitorQuota) GetBrowserMonitorsInUse() int32 {
 // GetBrowserMonitorsInUseOk returns a tuple with the BrowserMonitorsInUse field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorQuota) GetBrowserMonitorsInUseOk() (*int32, bool) {
-	if o == nil || o.BrowserMonitorsInUse == nil {
-		return nil, false
+	if o == nil || isNil(o.BrowserMonitorsInUse) {
+    return nil, false
 	}
 	return o.BrowserMonitorsInUse, true
 }
 
 // HasBrowserMonitorsInUse returns a boolean if a field has been set.
 func (o *MonitorQuota) HasBrowserMonitorsInUse() bool {
-	if o != nil && o.BrowserMonitorsInUse != nil {
+	if o != nil && !isNil(o.BrowserMonitorsInUse) {
 		return true
 	}
 
@@ -175,7 +175,7 @@ func (o *MonitorQuota) SetBrowserMonitorsInUse(v int32) {
 
 // GetApiMonitoringCredits returns the ApiMonitoringCredits field value if set, zero value otherwise.
 func (o *MonitorQuota) GetApiMonitoringCredits() int32 {
-	if o == nil || o.ApiMonitoringCredits == nil {
+	if o == nil || isNil(o.ApiMonitoringCredits) {
 		var ret int32
 		return ret
 	}
@@ -185,15 +185,15 @@ func (o *MonitorQuota) GetApiMonitoringCredits() int32 {
 // GetApiMonitoringCreditsOk returns a tuple with the ApiMonitoringCredits field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorQuota) GetApiMonitoringCreditsOk() (*int32, bool) {
-	if o == nil || o.ApiMonitoringCredits == nil {
-		return nil, false
+	if o == nil || isNil(o.ApiMonitoringCredits) {
+    return nil, false
 	}
 	return o.ApiMonitoringCredits, true
 }
 
 // HasApiMonitoringCredits returns a boolean if a field has been set.
 func (o *MonitorQuota) HasApiMonitoringCredits() bool {
-	if o != nil && o.ApiMonitoringCredits != nil {
+	if o != nil && !isNil(o.ApiMonitoringCredits) {
 		return true
 	}
 
@@ -207,7 +207,7 @@ func (o *MonitorQuota) SetApiMonitoringCredits(v int32) {
 
 // GetApiMonitoringCreditsInUse returns the ApiMonitoringCreditsInUse field value if set, zero value otherwise.
 func (o *MonitorQuota) GetApiMonitoringCreditsInUse() int32 {
-	if o == nil || o.ApiMonitoringCreditsInUse == nil {
+	if o == nil || isNil(o.ApiMonitoringCreditsInUse) {
 		var ret int32
 		return ret
 	}
@@ -217,15 +217,15 @@ func (o *MonitorQuota) GetApiMonitoringCreditsInUse() int32 {
 // GetApiMonitoringCreditsInUseOk returns a tuple with the ApiMonitoringCreditsInUse field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorQuota) GetApiMonitoringCreditsInUseOk() (*int32, bool) {
-	if o == nil || o.ApiMonitoringCreditsInUse == nil {
-		return nil, false
+	if o == nil || isNil(o.ApiMonitoringCreditsInUse) {
+    return nil, false
 	}
 	return o.ApiMonitoringCreditsInUse, true
 }
 
 // HasApiMonitoringCreditsInUse returns a boolean if a field has been set.
 func (o *MonitorQuota) HasApiMonitoringCreditsInUse() bool {
-	if o != nil && o.ApiMonitoringCreditsInUse != nil {
+	if o != nil && !isNil(o.ApiMonitoringCreditsInUse) {
 		return true
 	}
 
@@ -239,7 +239,7 @@ func (o *MonitorQuota) SetApiMonitoringCreditsInUse(v int32) {
 
 // GetTransactionCredits returns the TransactionCredits field value if set, zero value otherwise.
 func (o *MonitorQuota) GetTransactionCredits() int32 {
-	if o == nil || o.TransactionCredits == nil {
+	if o == nil || isNil(o.TransactionCredits) {
 		var ret int32
 		return ret
 	}
@@ -249,15 +249,15 @@ func (o *MonitorQuota) GetTransactionCredits() int32 {
 // GetTransactionCreditsOk returns a tuple with the TransactionCredits field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorQuota) GetTransactionCreditsOk() (*int32, bool) {
-	if o == nil || o.TransactionCredits == nil {
-		return nil, false
+	if o == nil || isNil(o.TransactionCredits) {
+    return nil, false
 	}
 	return o.TransactionCredits, true
 }
 
 // HasTransactionCredits returns a boolean if a field has been set.
 func (o *MonitorQuota) HasTransactionCredits() bool {
-	if o != nil && o.TransactionCredits != nil {
+	if o != nil && !isNil(o.TransactionCredits) {
 		return true
 	}
 
@@ -271,7 +271,7 @@ func (o *MonitorQuota) SetTransactionCredits(v int32) {
 
 // GetTransactionCreditsInUse returns the TransactionCreditsInUse field value if set, zero value otherwise.
 func (o *MonitorQuota) GetTransactionCreditsInUse() int32 {
-	if o == nil || o.TransactionCreditsInUse == nil {
+	if o == nil || isNil(o.TransactionCreditsInUse) {
 		var ret int32
 		return ret
 	}
@@ -281,15 +281,15 @@ func (o *MonitorQuota) GetTransactionCreditsInUse() int32 {
 // GetTransactionCreditsInUseOk returns a tuple with the TransactionCreditsInUse field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorQuota) GetTransactionCreditsInUseOk() (*int32, bool) {
-	if o == nil || o.TransactionCreditsInUse == nil {
-		return nil, false
+	if o == nil || isNil(o.TransactionCreditsInUse) {
+    return nil, false
 	}
 	return o.TransactionCreditsInUse, true
 }
 
 // HasTransactionCreditsInUse returns a boolean if a field has been set.
 func (o *MonitorQuota) HasTransactionCreditsInUse() bool {
-	if o != nil && o.TransactionCreditsInUse != nil {
+	if o != nil && !isNil(o.TransactionCreditsInUse) {
 		return true
 	}
 
@@ -303,7 +303,7 @@ func (o *MonitorQuota) SetTransactionCreditsInUse(v int32) {
 
 // GetMonitors returns the Monitors field value if set, zero value otherwise.
 func (o *MonitorQuota) GetMonitors() int32 {
-	if o == nil || o.Monitors == nil {
+	if o == nil || isNil(o.Monitors) {
 		var ret int32
 		return ret
 	}
@@ -313,15 +313,15 @@ func (o *MonitorQuota) GetMonitors() int32 {
 // GetMonitorsOk returns a tuple with the Monitors field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorQuota) GetMonitorsOk() (*int32, bool) {
-	if o == nil || o.Monitors == nil {
-		return nil, false
+	if o == nil || isNil(o.Monitors) {
+    return nil, false
 	}
 	return o.Monitors, true
 }
 
 // HasMonitors returns a boolean if a field has been set.
 func (o *MonitorQuota) HasMonitors() bool {
-	if o != nil && o.Monitors != nil {
+	if o != nil && !isNil(o.Monitors) {
 		return true
 	}
 
@@ -335,7 +335,7 @@ func (o *MonitorQuota) SetMonitors(v int32) {
 
 // GetMonitorsInUse returns the MonitorsInUse field value if set, zero value otherwise.
 func (o *MonitorQuota) GetMonitorsInUse() int32 {
-	if o == nil || o.MonitorsInUse == nil {
+	if o == nil || isNil(o.MonitorsInUse) {
 		var ret int32
 		return ret
 	}
@@ -345,15 +345,15 @@ func (o *MonitorQuota) GetMonitorsInUse() int32 {
 // GetMonitorsInUseOk returns a tuple with the MonitorsInUse field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorQuota) GetMonitorsInUseOk() (*int32, bool) {
-	if o == nil || o.MonitorsInUse == nil {
-		return nil, false
+	if o == nil || isNil(o.MonitorsInUse) {
+    return nil, false
 	}
 	return o.MonitorsInUse, true
 }
 
 // HasMonitorsInUse returns a boolean if a field has been set.
 func (o *MonitorQuota) HasMonitorsInUse() bool {
-	if o != nil && o.MonitorsInUse != nil {
+	if o != nil && !isNil(o.MonitorsInUse) {
 		return true
 	}
 
@@ -367,34 +367,34 @@ func (o *MonitorQuota) SetMonitorsInUse(v int32) {
 
 func (o MonitorQuota) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.BasicMonitors != nil {
+	if !isNil(o.BasicMonitors) {
 		toSerialize["BasicMonitors"] = o.BasicMonitors
 	}
-	if o.BasicMonitorsInUse != nil {
+	if !isNil(o.BasicMonitorsInUse) {
 		toSerialize["BasicMonitorsInUse"] = o.BasicMonitorsInUse
 	}
-	if o.BrowserMonitors != nil {
+	if !isNil(o.BrowserMonitors) {
 		toSerialize["BrowserMonitors"] = o.BrowserMonitors
 	}
-	if o.BrowserMonitorsInUse != nil {
+	if !isNil(o.BrowserMonitorsInUse) {
 		toSerialize["BrowserMonitorsInUse"] = o.BrowserMonitorsInUse
 	}
-	if o.ApiMonitoringCredits != nil {
+	if !isNil(o.ApiMonitoringCredits) {
 		toSerialize["ApiMonitoringCredits"] = o.ApiMonitoringCredits
 	}
-	if o.ApiMonitoringCreditsInUse != nil {
+	if !isNil(o.ApiMonitoringCreditsInUse) {
 		toSerialize["ApiMonitoringCreditsInUse"] = o.ApiMonitoringCreditsInUse
 	}
-	if o.TransactionCredits != nil {
+	if !isNil(o.TransactionCredits) {
 		toSerialize["TransactionCredits"] = o.TransactionCredits
 	}
-	if o.TransactionCreditsInUse != nil {
+	if !isNil(o.TransactionCreditsInUse) {
 		toSerialize["TransactionCreditsInUse"] = o.TransactionCreditsInUse
 	}
-	if o.Monitors != nil {
+	if !isNil(o.Monitors) {
 		toSerialize["Monitors"] = o.Monitors
 	}
-	if o.MonitorsInUse != nil {
+	if !isNil(o.MonitorsInUse) {
 		toSerialize["MonitorsInUse"] = o.MonitorsInUse
 	}
 	return json.Marshal(toSerialize)

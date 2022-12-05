@@ -131,7 +131,7 @@ resource "uptrends_monitor_web" "webservice_http" {
 resource "uptrends_monitor_web" "webservice_https" {
   name = "acctest-uptrends-monitor-webservice-https-%d"
   type = "WebserviceHttps"
-  url  = "http://api.uptrends.com/v4/Checkpoint/Server/Ipv4"
+  url  = "https://api.uptrends.com/v4/Checkpoint/Server/Ipv4"
 
   request_headers {
     name  = "accept"

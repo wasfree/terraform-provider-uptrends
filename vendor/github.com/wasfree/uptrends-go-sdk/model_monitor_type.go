@@ -41,7 +41,8 @@ const (
 	MONITORTYPE_IMAP MonitorType = "IMAP"
 )
 
-var allowedMonitorTypeEnumValues = []MonitorType{
+// All allowed values of MonitorType enum
+var AllowedMonitorTypeEnumValues = []MonitorType{
 	"Http",
 	"Https",
 	"Connect",
@@ -70,7 +71,7 @@ func (v *MonitorType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := MonitorType(value)
-	for _, existing := range allowedMonitorTypeEnumValues {
+	for _, existing := range AllowedMonitorTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -87,13 +88,13 @@ func NewMonitorTypeFromValue(v string) (*MonitorType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for MonitorType: valid values are %v", v, allowedMonitorTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for MonitorType: valid values are %v", v, AllowedMonitorTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v MonitorType) IsValid() bool {
-	for _, existing := range allowedMonitorTypeEnumValues {
+	for _, existing := range AllowedMonitorTypeEnumValues {
 		if existing == v {
 			return true
 		}

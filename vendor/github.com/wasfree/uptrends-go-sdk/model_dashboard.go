@@ -41,7 +41,7 @@ func NewDashboardWithDefaults() *Dashboard {
 
 // GetDashboardGuid returns the DashboardGuid field value if set, zero value otherwise.
 func (o *Dashboard) GetDashboardGuid() string {
-	if o == nil || o.DashboardGuid == nil {
+	if o == nil || isNil(o.DashboardGuid) {
 		var ret string
 		return ret
 	}
@@ -51,15 +51,15 @@ func (o *Dashboard) GetDashboardGuid() string {
 // GetDashboardGuidOk returns a tuple with the DashboardGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Dashboard) GetDashboardGuidOk() (*string, bool) {
-	if o == nil || o.DashboardGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.DashboardGuid) {
+    return nil, false
 	}
 	return o.DashboardGuid, true
 }
 
 // HasDashboardGuid returns a boolean if a field has been set.
 func (o *Dashboard) HasDashboardGuid() bool {
-	if o != nil && o.DashboardGuid != nil {
+	if o != nil && !isNil(o.DashboardGuid) {
 		return true
 	}
 
@@ -73,7 +73,7 @@ func (o *Dashboard) SetDashboardGuid(v string) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *Dashboard) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -83,15 +83,15 @@ func (o *Dashboard) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Dashboard) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *Dashboard) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -105,7 +105,7 @@ func (o *Dashboard) SetName(v string) {
 
 // GetDashboardFilter returns the DashboardFilter field value if set, zero value otherwise.
 func (o *Dashboard) GetDashboardFilter() DashboardFilter {
-	if o == nil || o.DashboardFilter == nil {
+	if o == nil || isNil(o.DashboardFilter) {
 		var ret DashboardFilter
 		return ret
 	}
@@ -115,15 +115,15 @@ func (o *Dashboard) GetDashboardFilter() DashboardFilter {
 // GetDashboardFilterOk returns a tuple with the DashboardFilter field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Dashboard) GetDashboardFilterOk() (*DashboardFilter, bool) {
-	if o == nil || o.DashboardFilter == nil {
-		return nil, false
+	if o == nil || isNil(o.DashboardFilter) {
+    return nil, false
 	}
 	return o.DashboardFilter, true
 }
 
 // HasDashboardFilter returns a boolean if a field has been set.
 func (o *Dashboard) HasDashboardFilter() bool {
-	if o != nil && o.DashboardFilter != nil {
+	if o != nil && !isNil(o.DashboardFilter) {
 		return true
 	}
 
@@ -137,7 +137,7 @@ func (o *Dashboard) SetDashboardFilter(v DashboardFilter) {
 
 // GetAutoRefresh returns the AutoRefresh field value if set, zero value otherwise.
 func (o *Dashboard) GetAutoRefresh() bool {
-	if o == nil || o.AutoRefresh == nil {
+	if o == nil || isNil(o.AutoRefresh) {
 		var ret bool
 		return ret
 	}
@@ -147,15 +147,15 @@ func (o *Dashboard) GetAutoRefresh() bool {
 // GetAutoRefreshOk returns a tuple with the AutoRefresh field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Dashboard) GetAutoRefreshOk() (*bool, bool) {
-	if o == nil || o.AutoRefresh == nil {
-		return nil, false
+	if o == nil || isNil(o.AutoRefresh) {
+    return nil, false
 	}
 	return o.AutoRefresh, true
 }
 
 // HasAutoRefresh returns a boolean if a field has been set.
 func (o *Dashboard) HasAutoRefresh() bool {
-	if o != nil && o.AutoRefresh != nil {
+	if o != nil && !isNil(o.AutoRefresh) {
 		return true
 	}
 
@@ -169,16 +169,16 @@ func (o *Dashboard) SetAutoRefresh(v bool) {
 
 func (o Dashboard) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.DashboardGuid != nil {
+	if !isNil(o.DashboardGuid) {
 		toSerialize["DashboardGuid"] = o.DashboardGuid
 	}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
-	if o.DashboardFilter != nil {
+	if !isNil(o.DashboardFilter) {
 		toSerialize["DashboardFilter"] = o.DashboardFilter
 	}
-	if o.AutoRefresh != nil {
+	if !isNil(o.AutoRefresh) {
 		toSerialize["AutoRefresh"] = o.AutoRefresh
 	}
 	return json.Marshal(toSerialize)

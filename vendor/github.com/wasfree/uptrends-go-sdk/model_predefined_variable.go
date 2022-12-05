@@ -39,7 +39,7 @@ func NewPredefinedVariableWithDefaults() *PredefinedVariable {
 
 // GetKey returns the Key field value if set, zero value otherwise.
 func (o *PredefinedVariable) GetKey() string {
-	if o == nil || o.Key == nil {
+	if o == nil || isNil(o.Key) {
 		var ret string
 		return ret
 	}
@@ -49,15 +49,15 @@ func (o *PredefinedVariable) GetKey() string {
 // GetKeyOk returns a tuple with the Key field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PredefinedVariable) GetKeyOk() (*string, bool) {
-	if o == nil || o.Key == nil {
-		return nil, false
+	if o == nil || isNil(o.Key) {
+    return nil, false
 	}
 	return o.Key, true
 }
 
 // HasKey returns a boolean if a field has been set.
 func (o *PredefinedVariable) HasKey() bool {
-	if o != nil && o.Key != nil {
+	if o != nil && !isNil(o.Key) {
 		return true
 	}
 
@@ -71,7 +71,7 @@ func (o *PredefinedVariable) SetKey(v string) {
 
 // GetValue returns the Value field value if set, zero value otherwise.
 func (o *PredefinedVariable) GetValue() string {
-	if o == nil || o.Value == nil {
+	if o == nil || isNil(o.Value) {
 		var ret string
 		return ret
 	}
@@ -81,15 +81,15 @@ func (o *PredefinedVariable) GetValue() string {
 // GetValueOk returns a tuple with the Value field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PredefinedVariable) GetValueOk() (*string, bool) {
-	if o == nil || o.Value == nil {
-		return nil, false
+	if o == nil || isNil(o.Value) {
+    return nil, false
 	}
 	return o.Value, true
 }
 
 // HasValue returns a boolean if a field has been set.
 func (o *PredefinedVariable) HasValue() bool {
-	if o != nil && o.Value != nil {
+	if o != nil && !isNil(o.Value) {
 		return true
 	}
 
@@ -103,10 +103,10 @@ func (o *PredefinedVariable) SetValue(v string) {
 
 func (o PredefinedVariable) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Key != nil {
+	if !isNil(o.Key) {
 		toSerialize["Key"] = o.Key
 	}
-	if o.Value != nil {
+	if !isNil(o.Value) {
 		toSerialize["Value"] = o.Value
 	}
 	return json.Marshal(toSerialize)

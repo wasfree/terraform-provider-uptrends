@@ -25,7 +25,8 @@ const (
 	ERRORLEVELFILTER_CONFIRMED ErrorLevelFilter = "Confirmed"
 )
 
-var allowedErrorLevelFilterEnumValues = []ErrorLevelFilter{
+// All allowed values of ErrorLevelFilter enum
+var AllowedErrorLevelFilterEnumValues = []ErrorLevelFilter{
 	"NoError",
 	"Unconfirmed",
 	"Confirmed",
@@ -38,7 +39,7 @@ func (v *ErrorLevelFilter) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ErrorLevelFilter(value)
-	for _, existing := range allowedErrorLevelFilterEnumValues {
+	for _, existing := range AllowedErrorLevelFilterEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -55,13 +56,13 @@ func NewErrorLevelFilterFromValue(v string) (*ErrorLevelFilter, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for ErrorLevelFilter: valid values are %v", v, allowedErrorLevelFilterEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for ErrorLevelFilter: valid values are %v", v, AllowedErrorLevelFilterEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v ErrorLevelFilter) IsValid() bool {
-	for _, existing := range allowedErrorLevelFilterEnumValues {
+	for _, existing := range AllowedErrorLevelFilterEnumValues {
 		if existing == v {
 			return true
 		}

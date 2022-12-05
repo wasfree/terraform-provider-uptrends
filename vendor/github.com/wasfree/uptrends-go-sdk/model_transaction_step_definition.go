@@ -16,7 +16,7 @@ import (
 
 // TransactionStepDefinition struct for TransactionStepDefinition
 type TransactionStepDefinition struct {
-	Steps *[]TransactionStep2 `json:"Steps,omitempty"`
+	Steps []TransactionStep2 `json:"Steps,omitempty"`
 }
 
 // NewTransactionStepDefinition instantiates a new TransactionStepDefinition object
@@ -38,25 +38,25 @@ func NewTransactionStepDefinitionWithDefaults() *TransactionStepDefinition {
 
 // GetSteps returns the Steps field value if set, zero value otherwise.
 func (o *TransactionStepDefinition) GetSteps() []TransactionStep2 {
-	if o == nil || o.Steps == nil {
+	if o == nil || isNil(o.Steps) {
 		var ret []TransactionStep2
 		return ret
 	}
-	return *o.Steps
+	return o.Steps
 }
 
 // GetStepsOk returns a tuple with the Steps field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *TransactionStepDefinition) GetStepsOk() (*[]TransactionStep2, bool) {
-	if o == nil || o.Steps == nil {
-		return nil, false
+func (o *TransactionStepDefinition) GetStepsOk() ([]TransactionStep2, bool) {
+	if o == nil || isNil(o.Steps) {
+    return nil, false
 	}
 	return o.Steps, true
 }
 
 // HasSteps returns a boolean if a field has been set.
 func (o *TransactionStepDefinition) HasSteps() bool {
-	if o != nil && o.Steps != nil {
+	if o != nil && !isNil(o.Steps) {
 		return true
 	}
 
@@ -65,12 +65,12 @@ func (o *TransactionStepDefinition) HasSteps() bool {
 
 // SetSteps gets a reference to the given []TransactionStep2 and assigns it to the Steps field.
 func (o *TransactionStepDefinition) SetSteps(v []TransactionStep2) {
-	o.Steps = &v
+	o.Steps = v
 }
 
 func (o TransactionStepDefinition) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Steps != nil {
+	if !isNil(o.Steps) {
 		toSerialize["Steps"] = o.Steps
 	}
 	return json.Marshal(toSerialize)

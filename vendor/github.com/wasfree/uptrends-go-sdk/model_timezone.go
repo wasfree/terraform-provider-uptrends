@@ -26,6 +26,10 @@ type Timezone struct {
 	HasDaylightSaving bool `json:"HasDaylightSaving"`
 	// The time offset for Daylight Saving Time in minutes
 	DaylightSavingOffset *int32 `json:"DaylightSavingOffset,omitempty"`
+	// The Daylight Saving start date/time
+	DaylightSavingStart map[string]interface{} `json:"DaylightSavingStart,omitempty"`
+	// The Daylight Saving end date/time
+	DaylightSavingEnd map[string]interface{} `json:"DaylightSavingEnd,omitempty"`
 }
 
 // NewTimezone instantiates a new Timezone object
@@ -61,8 +65,8 @@ func (o *Timezone) GetTimezoneId() int32 {
 // GetTimezoneIdOk returns a tuple with the TimezoneId field value
 // and a boolean to check if the value has been set.
 func (o *Timezone) GetTimezoneIdOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.TimezoneId, true
 }
@@ -74,7 +78,7 @@ func (o *Timezone) SetTimezoneId(v int32) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *Timezone) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -84,15 +88,15 @@ func (o *Timezone) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Timezone) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *Timezone) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -117,8 +121,8 @@ func (o *Timezone) GetOffsetFromUtc() int32 {
 // GetOffsetFromUtcOk returns a tuple with the OffsetFromUtc field value
 // and a boolean to check if the value has been set.
 func (o *Timezone) GetOffsetFromUtcOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.OffsetFromUtc, true
 }
@@ -141,8 +145,8 @@ func (o *Timezone) GetHasDaylightSaving() bool {
 // GetHasDaylightSavingOk returns a tuple with the HasDaylightSaving field value
 // and a boolean to check if the value has been set.
 func (o *Timezone) GetHasDaylightSavingOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.HasDaylightSaving, true
 }
@@ -154,7 +158,7 @@ func (o *Timezone) SetHasDaylightSaving(v bool) {
 
 // GetDaylightSavingOffset returns the DaylightSavingOffset field value if set, zero value otherwise.
 func (o *Timezone) GetDaylightSavingOffset() int32 {
-	if o == nil || o.DaylightSavingOffset == nil {
+	if o == nil || isNil(o.DaylightSavingOffset) {
 		var ret int32
 		return ret
 	}
@@ -164,15 +168,15 @@ func (o *Timezone) GetDaylightSavingOffset() int32 {
 // GetDaylightSavingOffsetOk returns a tuple with the DaylightSavingOffset field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Timezone) GetDaylightSavingOffsetOk() (*int32, bool) {
-	if o == nil || o.DaylightSavingOffset == nil {
-		return nil, false
+	if o == nil || isNil(o.DaylightSavingOffset) {
+    return nil, false
 	}
 	return o.DaylightSavingOffset, true
 }
 
 // HasDaylightSavingOffset returns a boolean if a field has been set.
 func (o *Timezone) HasDaylightSavingOffset() bool {
-	if o != nil && o.DaylightSavingOffset != nil {
+	if o != nil && !isNil(o.DaylightSavingOffset) {
 		return true
 	}
 
@@ -184,12 +188,76 @@ func (o *Timezone) SetDaylightSavingOffset(v int32) {
 	o.DaylightSavingOffset = &v
 }
 
+// GetDaylightSavingStart returns the DaylightSavingStart field value if set, zero value otherwise.
+func (o *Timezone) GetDaylightSavingStart() map[string]interface{} {
+	if o == nil || isNil(o.DaylightSavingStart) {
+		var ret map[string]interface{}
+		return ret
+	}
+	return o.DaylightSavingStart
+}
+
+// GetDaylightSavingStartOk returns a tuple with the DaylightSavingStart field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Timezone) GetDaylightSavingStartOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.DaylightSavingStart) {
+    return map[string]interface{}{}, false
+	}
+	return o.DaylightSavingStart, true
+}
+
+// HasDaylightSavingStart returns a boolean if a field has been set.
+func (o *Timezone) HasDaylightSavingStart() bool {
+	if o != nil && !isNil(o.DaylightSavingStart) {
+		return true
+	}
+
+	return false
+}
+
+// SetDaylightSavingStart gets a reference to the given map[string]interface{} and assigns it to the DaylightSavingStart field.
+func (o *Timezone) SetDaylightSavingStart(v map[string]interface{}) {
+	o.DaylightSavingStart = v
+}
+
+// GetDaylightSavingEnd returns the DaylightSavingEnd field value if set, zero value otherwise.
+func (o *Timezone) GetDaylightSavingEnd() map[string]interface{} {
+	if o == nil || isNil(o.DaylightSavingEnd) {
+		var ret map[string]interface{}
+		return ret
+	}
+	return o.DaylightSavingEnd
+}
+
+// GetDaylightSavingEndOk returns a tuple with the DaylightSavingEnd field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *Timezone) GetDaylightSavingEndOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.DaylightSavingEnd) {
+    return map[string]interface{}{}, false
+	}
+	return o.DaylightSavingEnd, true
+}
+
+// HasDaylightSavingEnd returns a boolean if a field has been set.
+func (o *Timezone) HasDaylightSavingEnd() bool {
+	if o != nil && !isNil(o.DaylightSavingEnd) {
+		return true
+	}
+
+	return false
+}
+
+// SetDaylightSavingEnd gets a reference to the given map[string]interface{} and assigns it to the DaylightSavingEnd field.
+func (o *Timezone) SetDaylightSavingEnd(v map[string]interface{}) {
+	o.DaylightSavingEnd = v
+}
+
 func (o Timezone) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
 		toSerialize["TimezoneId"] = o.TimezoneId
 	}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["Description"] = o.Description
 	}
 	if true {
@@ -198,8 +266,14 @@ func (o Timezone) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["HasDaylightSaving"] = o.HasDaylightSaving
 	}
-	if o.DaylightSavingOffset != nil {
+	if !isNil(o.DaylightSavingOffset) {
 		toSerialize["DaylightSavingOffset"] = o.DaylightSavingOffset
+	}
+	if !isNil(o.DaylightSavingStart) {
+		toSerialize["DaylightSavingStart"] = o.DaylightSavingStart
+	}
+	if !isNil(o.DaylightSavingEnd) {
+		toSerialize["DaylightSavingEnd"] = o.DaylightSavingEnd
 	}
 	return json.Marshal(toSerialize)
 }

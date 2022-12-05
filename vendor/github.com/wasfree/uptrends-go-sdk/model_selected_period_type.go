@@ -24,7 +24,8 @@ const (
 	SELECTEDPERIODTYPE_SPECIFIC_DATES SelectedPeriodType = "SpecificDates"
 )
 
-var allowedSelectedPeriodTypeEnumValues = []SelectedPeriodType{
+// All allowed values of SelectedPeriodType enum
+var AllowedSelectedPeriodTypeEnumValues = []SelectedPeriodType{
 	"PresetPeriod",
 	"SpecificDates",
 }
@@ -36,7 +37,7 @@ func (v *SelectedPeriodType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := SelectedPeriodType(value)
-	for _, existing := range allowedSelectedPeriodTypeEnumValues {
+	for _, existing := range AllowedSelectedPeriodTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewSelectedPeriodTypeFromValue(v string) (*SelectedPeriodType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for SelectedPeriodType: valid values are %v", v, allowedSelectedPeriodTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for SelectedPeriodType: valid values are %v", v, AllowedSelectedPeriodTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v SelectedPeriodType) IsValid() bool {
-	for _, existing := range allowedSelectedPeriodTypeEnumValues {
+	for _, existing := range AllowedSelectedPeriodTypeEnumValues {
 		if existing == v {
 			return true
 		}

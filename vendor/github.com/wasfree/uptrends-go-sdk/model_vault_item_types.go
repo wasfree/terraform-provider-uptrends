@@ -24,13 +24,16 @@ const (
 	VAULTITEMTYPES_CERTIFICATE VaultItemTypes = "Certificate"
 	VAULTITEMTYPES_CERTIFICATE_ARCHIVE VaultItemTypes = "CertificateArchive"
 	VAULTITEMTYPES_FILE VaultItemTypes = "File"
+	VAULTITEMTYPES_ONE_TIME_PASSWORD VaultItemTypes = "OneTimePassword"
 )
 
-var allowedVaultItemTypesEnumValues = []VaultItemTypes{
+// All allowed values of VaultItemTypes enum
+var AllowedVaultItemTypesEnumValues = []VaultItemTypes{
 	"CredentialSet",
 	"Certificate",
 	"CertificateArchive",
 	"File",
+	"OneTimePassword",
 }
 
 func (v *VaultItemTypes) UnmarshalJSON(src []byte) error {
@@ -40,7 +43,7 @@ func (v *VaultItemTypes) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := VaultItemTypes(value)
-	for _, existing := range allowedVaultItemTypesEnumValues {
+	for _, existing := range AllowedVaultItemTypesEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -57,13 +60,13 @@ func NewVaultItemTypesFromValue(v string) (*VaultItemTypes, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for VaultItemTypes: valid values are %v", v, allowedVaultItemTypesEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for VaultItemTypes: valid values are %v", v, AllowedVaultItemTypesEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v VaultItemTypes) IsValid() bool {
-	for _, existing := range allowedVaultItemTypesEnumValues {
+	for _, existing := range AllowedVaultItemTypesEnumValues {
 		if existing == v {
 			return true
 		}

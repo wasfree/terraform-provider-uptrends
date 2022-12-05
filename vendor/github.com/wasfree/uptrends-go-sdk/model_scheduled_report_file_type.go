@@ -15,19 +15,24 @@ import (
 	"fmt"
 )
 
-// ScheduledReportFileType 
+// ScheduledReportFileType Scheduled report file type
 type ScheduledReportFileType string
 
 // List of ScheduledReportFileType
 const (
-	SCHEDULEDREPORTFILETYPE_PDF ScheduledReportFileType = "PDF"
-	SCHEDULEDREPORTFILETYPE_EXCEL ScheduledReportFileType = "Excel"
+	SCHEDULEDREPORTFILETYPE_PDF_ATTACHMENT ScheduledReportFileType = "PDFAttachment"
+	SCHEDULEDREPORTFILETYPE_PDF_LINK ScheduledReportFileType = "PDFLink"
+	SCHEDULEDREPORTFILETYPE_EXCEL_ATTACHMENT ScheduledReportFileType = "ExcelAttachment"
+	SCHEDULEDREPORTFILETYPE_EXCEL_LINK ScheduledReportFileType = "ExcelLink"
 	SCHEDULEDREPORTFILETYPE_HTML ScheduledReportFileType = "Html"
 )
 
-var allowedScheduledReportFileTypeEnumValues = []ScheduledReportFileType{
-	"PDF",
-	"Excel",
+// All allowed values of ScheduledReportFileType enum
+var AllowedScheduledReportFileTypeEnumValues = []ScheduledReportFileType{
+	"PDFAttachment",
+	"PDFLink",
+	"ExcelAttachment",
+	"ExcelLink",
 	"Html",
 }
 
@@ -38,7 +43,7 @@ func (v *ScheduledReportFileType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ScheduledReportFileType(value)
-	for _, existing := range allowedScheduledReportFileTypeEnumValues {
+	for _, existing := range AllowedScheduledReportFileTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -55,13 +60,13 @@ func NewScheduledReportFileTypeFromValue(v string) (*ScheduledReportFileType, er
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for ScheduledReportFileType: valid values are %v", v, allowedScheduledReportFileTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for ScheduledReportFileType: valid values are %v", v, AllowedScheduledReportFileTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v ScheduledReportFileType) IsValid() bool {
-	for _, existing := range allowedScheduledReportFileTypeEnumValues {
+	for _, existing := range AllowedScheduledReportFileTypeEnumValues {
 		if existing == v {
 			return true
 		}

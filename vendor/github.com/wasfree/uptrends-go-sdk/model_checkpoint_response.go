@@ -16,10 +16,11 @@ import (
 
 // CheckpointResponse struct for CheckpointResponse
 type CheckpointResponse struct {
-	Data *Checkpoint2 `json:"Data,omitempty"`
-	Links *LinksData `json:"Links,omitempty"`
-	Relationships *[]RelationObject `json:"Relationships,omitempty"`
-	Meta *MetaData `json:"Meta,omitempty"`
+	Data *CheckpointResponseData `json:"Data,omitempty"`
+	Links *StatisticsResponseLinks `json:"Links,omitempty"`
+	// Relationships of the object
+	Relationships []RelationObject `json:"Relationships,omitempty"`
+	Meta *StatisticsResponseMeta `json:"Meta,omitempty"`
 }
 
 // NewCheckpointResponse instantiates a new CheckpointResponse object
@@ -40,9 +41,9 @@ func NewCheckpointResponseWithDefaults() *CheckpointResponse {
 }
 
 // GetData returns the Data field value if set, zero value otherwise.
-func (o *CheckpointResponse) GetData() Checkpoint2 {
-	if o == nil || o.Data == nil {
-		var ret Checkpoint2
+func (o *CheckpointResponse) GetData() CheckpointResponseData {
+	if o == nil || isNil(o.Data) {
+		var ret CheckpointResponseData
 		return ret
 	}
 	return *o.Data
@@ -50,31 +51,31 @@ func (o *CheckpointResponse) GetData() Checkpoint2 {
 
 // GetDataOk returns a tuple with the Data field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckpointResponse) GetDataOk() (*Checkpoint2, bool) {
-	if o == nil || o.Data == nil {
-		return nil, false
+func (o *CheckpointResponse) GetDataOk() (*CheckpointResponseData, bool) {
+	if o == nil || isNil(o.Data) {
+    return nil, false
 	}
 	return o.Data, true
 }
 
 // HasData returns a boolean if a field has been set.
 func (o *CheckpointResponse) HasData() bool {
-	if o != nil && o.Data != nil {
+	if o != nil && !isNil(o.Data) {
 		return true
 	}
 
 	return false
 }
 
-// SetData gets a reference to the given Checkpoint2 and assigns it to the Data field.
-func (o *CheckpointResponse) SetData(v Checkpoint2) {
+// SetData gets a reference to the given CheckpointResponseData and assigns it to the Data field.
+func (o *CheckpointResponse) SetData(v CheckpointResponseData) {
 	o.Data = &v
 }
 
 // GetLinks returns the Links field value if set, zero value otherwise.
-func (o *CheckpointResponse) GetLinks() LinksData {
-	if o == nil || o.Links == nil {
-		var ret LinksData
+func (o *CheckpointResponse) GetLinks() StatisticsResponseLinks {
+	if o == nil || isNil(o.Links) {
+		var ret StatisticsResponseLinks
 		return ret
 	}
 	return *o.Links
@@ -82,48 +83,48 @@ func (o *CheckpointResponse) GetLinks() LinksData {
 
 // GetLinksOk returns a tuple with the Links field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckpointResponse) GetLinksOk() (*LinksData, bool) {
-	if o == nil || o.Links == nil {
-		return nil, false
+func (o *CheckpointResponse) GetLinksOk() (*StatisticsResponseLinks, bool) {
+	if o == nil || isNil(o.Links) {
+    return nil, false
 	}
 	return o.Links, true
 }
 
 // HasLinks returns a boolean if a field has been set.
 func (o *CheckpointResponse) HasLinks() bool {
-	if o != nil && o.Links != nil {
+	if o != nil && !isNil(o.Links) {
 		return true
 	}
 
 	return false
 }
 
-// SetLinks gets a reference to the given LinksData and assigns it to the Links field.
-func (o *CheckpointResponse) SetLinks(v LinksData) {
+// SetLinks gets a reference to the given StatisticsResponseLinks and assigns it to the Links field.
+func (o *CheckpointResponse) SetLinks(v StatisticsResponseLinks) {
 	o.Links = &v
 }
 
 // GetRelationships returns the Relationships field value if set, zero value otherwise.
 func (o *CheckpointResponse) GetRelationships() []RelationObject {
-	if o == nil || o.Relationships == nil {
+	if o == nil || isNil(o.Relationships) {
 		var ret []RelationObject
 		return ret
 	}
-	return *o.Relationships
+	return o.Relationships
 }
 
 // GetRelationshipsOk returns a tuple with the Relationships field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckpointResponse) GetRelationshipsOk() (*[]RelationObject, bool) {
-	if o == nil || o.Relationships == nil {
-		return nil, false
+func (o *CheckpointResponse) GetRelationshipsOk() ([]RelationObject, bool) {
+	if o == nil || isNil(o.Relationships) {
+    return nil, false
 	}
 	return o.Relationships, true
 }
 
 // HasRelationships returns a boolean if a field has been set.
 func (o *CheckpointResponse) HasRelationships() bool {
-	if o != nil && o.Relationships != nil {
+	if o != nil && !isNil(o.Relationships) {
 		return true
 	}
 
@@ -132,13 +133,13 @@ func (o *CheckpointResponse) HasRelationships() bool {
 
 // SetRelationships gets a reference to the given []RelationObject and assigns it to the Relationships field.
 func (o *CheckpointResponse) SetRelationships(v []RelationObject) {
-	o.Relationships = &v
+	o.Relationships = v
 }
 
 // GetMeta returns the Meta field value if set, zero value otherwise.
-func (o *CheckpointResponse) GetMeta() MetaData {
-	if o == nil || o.Meta == nil {
-		var ret MetaData
+func (o *CheckpointResponse) GetMeta() StatisticsResponseMeta {
+	if o == nil || isNil(o.Meta) {
+		var ret StatisticsResponseMeta
 		return ret
 	}
 	return *o.Meta
@@ -146,39 +147,39 @@ func (o *CheckpointResponse) GetMeta() MetaData {
 
 // GetMetaOk returns a tuple with the Meta field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *CheckpointResponse) GetMetaOk() (*MetaData, bool) {
-	if o == nil || o.Meta == nil {
-		return nil, false
+func (o *CheckpointResponse) GetMetaOk() (*StatisticsResponseMeta, bool) {
+	if o == nil || isNil(o.Meta) {
+    return nil, false
 	}
 	return o.Meta, true
 }
 
 // HasMeta returns a boolean if a field has been set.
 func (o *CheckpointResponse) HasMeta() bool {
-	if o != nil && o.Meta != nil {
+	if o != nil && !isNil(o.Meta) {
 		return true
 	}
 
 	return false
 }
 
-// SetMeta gets a reference to the given MetaData and assigns it to the Meta field.
-func (o *CheckpointResponse) SetMeta(v MetaData) {
+// SetMeta gets a reference to the given StatisticsResponseMeta and assigns it to the Meta field.
+func (o *CheckpointResponse) SetMeta(v StatisticsResponseMeta) {
 	o.Meta = &v
 }
 
 func (o CheckpointResponse) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Data != nil {
+	if !isNil(o.Data) {
 		toSerialize["Data"] = o.Data
 	}
-	if o.Links != nil {
+	if !isNil(o.Links) {
 		toSerialize["Links"] = o.Links
 	}
-	if o.Relationships != nil {
+	if !isNil(o.Relationships) {
 		toSerialize["Relationships"] = o.Relationships
 	}
-	if o.Meta != nil {
+	if !isNil(o.Meta) {
 		toSerialize["Meta"] = o.Meta
 	}
 	return json.Marshal(toSerialize)

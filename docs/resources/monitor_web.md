@@ -47,53 +47,53 @@ resource "uptrends_monitor_web" "test" {
 
 ### Required
 
-- **name** (String) Display name for the Ping Monitor resource.
-- **url** (String) The full URL of the appropriate website, page or service that you want to monitor. The URL should include “http://” or “https://”. If relevant, please also include a port number if you are using a non-default port number, e.g. https://your-domain.com:8080/your-page. You can also use a fixed IP address as part of the URL instead of a host name, if your server listens to incoming requests without a host name.
+- `name` (String) Display name for the Ping Monitor resource.
+- `url` (String) The full URL of the appropriate website, page or service that you want to monitor. The URL should include “http://” or “https://”. If relevant, please also include a port number if you are using a non-default port number, e.g. https://your-domain.com:8080/your-page. You can also use a fixed IP address as part of the URL instead of a host name, if your server listens to incoming requests without a host name.
 
 ### Optional
 
-- **alert_on_load_time_limit_1** (Boolean) Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_1 threshold. Shows a yellow status in performance monitor. Defaults to `false`.
-- **alert_on_load_time_limit_2** (Boolean) Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_2. Shows a red status in performance monitor. Defaults to `false`.
-- **alert_on_min_bytes** (Boolean) Enable this option if you want to check that the response of the Server contains at least `min_bytes` of bytes. Defaults to `false`
-- **auth_type** (String) Specify the username of the appropriate credentials here. Defaults to `None`.
-- **check_cert_errors** (Boolean) An HTTPS check will only pass our checks if the SSL certificate does not cause any errors. Only set this option to `false` if you really want to ignore SSL certificate issues. This parameter takes only effect if `type` has been set to `Https`.
-- **check_interval** (Number) Numeric value for the time interval between individual checks, in minutes. The maximum value is 240 (4 hours). The minimum value depends on the type of monitor. Defaults to `5`.
-- **expected_http_status_code** (Number) Check for specific HTTP status code, any other than the specified status code, will generate an error.
-- **generate_alert** (Boolean) When set to false, no alerts will be generated for this monitor in case of an error. Defaults to `true`.
-- **http_method** (String) Specifies the HTTP methode for your monitor. Defaults to `GET`.
-- **id** (String) The ID of this resource.
-- **ip_version** (String) IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6. Defaults to `IpV4`.
-- **is_active** (Boolean) Indicates whether the monitor is actively running in the account. Defaults to `true`.
-- **load_time_limit_1** (Number) Set threshold time in ms for requires `alert_on_load_time_limit_1` to be enabled. Defaults to `2500`.
-- **load_time_limit_2** (Number) Set threshold time in ms for requires `alert_on_load_time_limit_2` to be enabled. Defaults to `5000`.
-- **match_pattern** (Block List) (see [below for nested schema](#nestedblock--match_pattern))
-- **min_bytes** (Number) Set threshold bytes that the response of the Server must at least contains. Required `alert_on_min_bytes` to be enabled.
-- **mode** (String) The monitor mode, either Development, Staging or Production. Defaults to `Production`. If monitoring mode is Development `is_active` has to be `false`
-- **name_for_phone_alerts** (String) The value for the speech-friendly monitor name, if applicable. This is the monitor name we’ll use in text-to-speech phone alerting, provided that the ‘Use alternate monitor names’ option has been enabled in the phone alert integration.
-- **native_ipv6_only** (Boolean) True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity. Defaults to `false`.
-- **notes** (String) Your notes for this monitor.
-- **password** (String, Sensitive) See the Username field. Specify the corresponding password value here.
-- **primary_checkpoints_only** (Boolean) Only set this to False when you’re sure you want to execute your monitor on non-primary checkpoints. Defaults to `true`.
-- **request_body** (String) When posting a form, fill in the form variables, every form variable has to be on separated line e.g. `foo=bar
+- `alert_on_load_time_limit_1` (Boolean) Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_1 threshold. Shows a yellow status in performance monitor. Defaults to `false`.
+- `alert_on_load_time_limit_2` (Boolean) Set this value to true, if you want to receive alerts if your server response is slower than load_time_limit_2. Shows a red status in performance monitor. Defaults to `false`.
+- `alert_on_min_bytes` (Boolean) Enable this option if you want to check that the response of the Server contains at least `min_bytes` of bytes. Defaults to `false`
+- `auth_type` (String) Specify the username of the appropriate credentials here. Defaults to `None`.
+- `check_cert_errors` (Boolean) An HTTPS check will only pass our checks if the SSL certificate does not cause any errors. Only set this option to `false` if you really want to ignore SSL certificate issues. This parameter takes only effect if `type` has been set to `Https`.
+- `check_interval` (Number) Numeric value for the time interval between individual checks, in minutes. The maximum value is 240 (4 hours). The minimum value depends on the type of monitor. Defaults to `5`.
+- `expected_http_status_code` (Number) Check for specific HTTP status code, any other than the specified status code, will generate an error.
+- `generate_alert` (Boolean) When set to false, no alerts will be generated for this monitor in case of an error. Defaults to `true`.
+- `http_method` (String) Specifies the HTTP methode for your monitor. Defaults to `GET`.
+- `ip_version` (String) IpV4 or IpV6. Indicates which IP version should be used to connect to the server or network address you specify. If you choose IPv6, the monitor will only be executed on checkpoint locations that support IPv6. Defaults to `IpV4`.
+- `is_active` (Boolean) Indicates whether the monitor is actively running in the account. Defaults to `true`.
+- `load_time_limit_1` (Number) Set threshold time in ms for requires `alert_on_load_time_limit_1` to be enabled. Defaults to `2500`.
+- `load_time_limit_2` (Number) Set threshold time in ms for requires `alert_on_load_time_limit_2` to be enabled. Defaults to `5000`.
+- `match_pattern` (Block List) (see [below for nested schema](#nestedblock--match_pattern))
+- `min_bytes` (Number) Set threshold bytes that the response of the Server must at least contains. Required `alert_on_min_bytes` to be enabled.
+- `mode` (String) The monitor mode, either Development, Staging or Production. Defaults to `Production`. If monitoring mode is Development `is_active` has to be `false`
+- `name_for_phone_alerts` (String) The value for the speech-friendly monitor name, if applicable. This is the monitor name we’ll use in text-to-speech phone alerting, provided that the ‘Use alternate monitor names’ option has been enabled in the phone alert integration.
+- `native_ipv6_only` (Boolean) True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity. Defaults to `false`.
+- `notes` (String) Your notes for this monitor.
+- `password` (String, Sensitive) See the Username field. Specify the corresponding password value here.
+- `primary_checkpoints_only` (Boolean) Only set this to False when you’re sure you want to execute your monitor on non-primary checkpoints. Defaults to `true`.
+- `request_body` (String) When posting a form, fill in the form variables, every form variable has to be on separated line e.g. `foo=bar
 bar=foo
 `. Requires `http_method` to be set to `Post`.
-- **request_headers** (Block List) (see [below for nested schema](#nestedblock--request_headers))
-- **selected_checkpoints** (Block List, Max: 1) (see [below for nested schema](#nestedblock--selected_checkpoints))
-- **type** (String) Select between `Http`, `Https`, `WebserviceHttp` and `WebserviceHttps` monitor type. Defaults to `Http`
-- **user_agent** (String) A string value that identifies which HTTP client is making the HTTP request. A browser typically sends a value that identifies the browser type and version.
-- **username** (String) Specify the username of the appropriate credentials here.
+- `request_headers` (Block List) (see [below for nested schema](#nestedblock--request_headers))
+- `selected_checkpoints` (Block List, Max: 1) (see [below for nested schema](#nestedblock--selected_checkpoints))
+- `type` (String) Select between `Http`, `Https`, `WebserviceHttp` and `WebserviceHttps` monitor type. Defaults to `Http`
+- `user_agent` (String) A string value that identifies which HTTP client is making the HTTP request. A browser typically sends a value that identifies the browser type and version.
+- `username` (String) Specify the username of the appropriate credentials here.
 
 ### Read-Only
 
-- **is_locked** (Boolean) It specifies whether the monitor is currently locked for editing. This happens if the Support team is reviewing your monitor.
+- `id` (String) The ID of this resource.
+- `is_locked` (Boolean) It specifies whether the monitor is currently locked for editing. This happens if the Support team is reviewing your monitor.
 
 <a id="nestedblock--match_pattern"></a>
 ### Nested Schema for `match_pattern`
 
 Required:
 
-- **is_positive** (Boolean) Set this value to `true` if you want to verify that your web page contains `pattern`. Set to false if you want to verify that your web page does not contain that text.
-- **pattern** (String) Insert a word or phrase if you want to verify that your web page contains that text.
+- `is_positive` (Boolean) Set this value to `true` if you want to verify that your web page contains `pattern`. Set to false if you want to verify that your web page does not contain that text.
+- `pattern` (String) Insert a word or phrase if you want to verify that your web page contains that text.
 
 
 <a id="nestedblock--request_headers"></a>
@@ -101,8 +101,8 @@ Required:
 
 Required:
 
-- **name** (String) Specify an HTTP header name used by your requests.
-- **value** (String) Specify an HTTP header value used by your requests.
+- `name` (String) Specify an HTTP header name used by your requests.
+- `value` (String) Specify an HTTP header value used by your requests.
 
 
 <a id="nestedblock--selected_checkpoints"></a>
@@ -110,8 +110,8 @@ Required:
 
 Optional:
 
-- **checkpoints** (Set of String) A checkpoint is a geographic location from which you can have your service uptime and performance checked periodically. Provide checkpoint ids or names.
-- **exclude_locations** (Set of String) It is possible to keep an entire region of checkpoints (e.g. Canada) selected (with the benefit of automatically getting new checkpoints as they are added to that region) but have additional control over individual checkpoint locations that you want to skip. Provide checkpoint ids or names.
-- **regions** (Set of String) A Region contains one or more checkpoints, just define a region if all checkpoints in a region should be used. Provide region id or name.
+- `checkpoints` (Set of String) A checkpoint is a geographic location from which you can have your service uptime and performance checked periodically. Provide checkpoint ids or names.
+- `exclude_locations` (Set of String) It is possible to keep an entire region of checkpoints (e.g. Canada) selected (with the benefit of automatically getting new checkpoints as they are added to that region) but have additional control over individual checkpoint locations that you want to skip. Provide checkpoint ids or names.
+- `regions` (Set of String) A Region contains one or more checkpoints, just define a region if all checkpoints in a region should be used. Provide region id or name.
 
 

@@ -23,7 +23,8 @@ const (
 	PSPAUTHORIZATIONTYPE_VIEW_PUBLIC_DASHBOARD PSPAuthorizationType = "ViewPublicDashboard"
 )
 
-var allowedPSPAuthorizationTypeEnumValues = []PSPAuthorizationType{
+// All allowed values of PSPAuthorizationType enum
+var AllowedPSPAuthorizationTypeEnumValues = []PSPAuthorizationType{
 	"ViewPublicDashboard",
 }
 
@@ -34,7 +35,7 @@ func (v *PSPAuthorizationType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := PSPAuthorizationType(value)
-	for _, existing := range allowedPSPAuthorizationTypeEnumValues {
+	for _, existing := range AllowedPSPAuthorizationTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -51,13 +52,13 @@ func NewPSPAuthorizationTypeFromValue(v string) (*PSPAuthorizationType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for PSPAuthorizationType: valid values are %v", v, allowedPSPAuthorizationTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for PSPAuthorizationType: valid values are %v", v, AllowedPSPAuthorizationTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v PSPAuthorizationType) IsValid() bool {
-	for _, existing := range allowedPSPAuthorizationTypeEnumValues {
+	for _, existing := range AllowedPSPAuthorizationTypeEnumValues {
 		if existing == v {
 			return true
 		}

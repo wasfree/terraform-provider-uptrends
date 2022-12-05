@@ -57,8 +57,8 @@ func (o *BrowserWindowDimensions) GetIsMobile() bool {
 // GetIsMobileOk returns a tuple with the IsMobile field value
 // and a boolean to check if the value has been set.
 func (o *BrowserWindowDimensions) GetIsMobileOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.IsMobile, true
 }
@@ -81,8 +81,8 @@ func (o *BrowserWindowDimensions) GetWidth() int32 {
 // GetWidthOk returns a tuple with the Width field value
 // and a boolean to check if the value has been set.
 func (o *BrowserWindowDimensions) GetWidthOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Width, true
 }
@@ -105,8 +105,8 @@ func (o *BrowserWindowDimensions) GetHeight() int32 {
 // GetHeightOk returns a tuple with the Height field value
 // and a boolean to check if the value has been set.
 func (o *BrowserWindowDimensions) GetHeightOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Height, true
 }
@@ -129,8 +129,8 @@ func (o *BrowserWindowDimensions) GetPixelRatio() int32 {
 // GetPixelRatioOk returns a tuple with the PixelRatio field value
 // and a boolean to check if the value has been set.
 func (o *BrowserWindowDimensions) GetPixelRatioOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.PixelRatio, true
 }
@@ -142,7 +142,7 @@ func (o *BrowserWindowDimensions) SetPixelRatio(v int32) {
 
 // GetMobileDevice returns the MobileDevice field value if set, zero value otherwise.
 func (o *BrowserWindowDimensions) GetMobileDevice() string {
-	if o == nil || o.MobileDevice == nil {
+	if o == nil || isNil(o.MobileDevice) {
 		var ret string
 		return ret
 	}
@@ -152,15 +152,15 @@ func (o *BrowserWindowDimensions) GetMobileDevice() string {
 // GetMobileDeviceOk returns a tuple with the MobileDevice field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *BrowserWindowDimensions) GetMobileDeviceOk() (*string, bool) {
-	if o == nil || o.MobileDevice == nil {
-		return nil, false
+	if o == nil || isNil(o.MobileDevice) {
+    return nil, false
 	}
 	return o.MobileDevice, true
 }
 
 // HasMobileDevice returns a boolean if a field has been set.
 func (o *BrowserWindowDimensions) HasMobileDevice() bool {
-	if o != nil && o.MobileDevice != nil {
+	if o != nil && !isNil(o.MobileDevice) {
 		return true
 	}
 
@@ -186,7 +186,7 @@ func (o BrowserWindowDimensions) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["PixelRatio"] = o.PixelRatio
 	}
-	if o.MobileDevice != nil {
+	if !isNil(o.MobileDevice) {
 		toSerialize["MobileDevice"] = o.MobileDevice
 	}
 	return json.Marshal(toSerialize)

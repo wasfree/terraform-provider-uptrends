@@ -56,8 +56,8 @@ func (o *ApiAuthenticationInfo) GetId() string {
 // GetIdOk returns a tuple with the Id field value
 // and a boolean to check if the value has been set.
 func (o *ApiAuthenticationInfo) GetIdOk() (*string, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.Id, true
 }
@@ -80,8 +80,8 @@ func (o *ApiAuthenticationInfo) GetAuthenticationType() ApiHttpAuthenticationTyp
 // GetAuthenticationTypeOk returns a tuple with the AuthenticationType field value
 // and a boolean to check if the value has been set.
 func (o *ApiAuthenticationInfo) GetAuthenticationTypeOk() (*ApiHttpAuthenticationType, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.AuthenticationType, true
 }
@@ -93,7 +93,7 @@ func (o *ApiAuthenticationInfo) SetAuthenticationType(v ApiHttpAuthenticationTyp
 
 // GetUserName returns the UserName field value if set, zero value otherwise.
 func (o *ApiAuthenticationInfo) GetUserName() string {
-	if o == nil || o.UserName == nil {
+	if o == nil || isNil(o.UserName) {
 		var ret string
 		return ret
 	}
@@ -103,15 +103,15 @@ func (o *ApiAuthenticationInfo) GetUserName() string {
 // GetUserNameOk returns a tuple with the UserName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiAuthenticationInfo) GetUserNameOk() (*string, bool) {
-	if o == nil || o.UserName == nil {
-		return nil, false
+	if o == nil || isNil(o.UserName) {
+    return nil, false
 	}
 	return o.UserName, true
 }
 
 // HasUserName returns a boolean if a field has been set.
 func (o *ApiAuthenticationInfo) HasUserName() bool {
-	if o != nil && o.UserName != nil {
+	if o != nil && !isNil(o.UserName) {
 		return true
 	}
 
@@ -125,7 +125,7 @@ func (o *ApiAuthenticationInfo) SetUserName(v string) {
 
 // GetPassword returns the Password field value if set, zero value otherwise.
 func (o *ApiAuthenticationInfo) GetPassword() string {
-	if o == nil || o.Password == nil {
+	if o == nil || isNil(o.Password) {
 		var ret string
 		return ret
 	}
@@ -135,15 +135,15 @@ func (o *ApiAuthenticationInfo) GetPassword() string {
 // GetPasswordOk returns a tuple with the Password field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ApiAuthenticationInfo) GetPasswordOk() (*string, bool) {
-	if o == nil || o.Password == nil {
-		return nil, false
+	if o == nil || isNil(o.Password) {
+    return nil, false
 	}
 	return o.Password, true
 }
 
 // HasPassword returns a boolean if a field has been set.
 func (o *ApiAuthenticationInfo) HasPassword() bool {
-	if o != nil && o.Password != nil {
+	if o != nil && !isNil(o.Password) {
 		return true
 	}
 
@@ -168,8 +168,8 @@ func (o *ApiAuthenticationInfo) GetPasswordSpecified() bool {
 // GetPasswordSpecifiedOk returns a tuple with the PasswordSpecified field value
 // and a boolean to check if the value has been set.
 func (o *ApiAuthenticationInfo) GetPasswordSpecifiedOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.PasswordSpecified, true
 }
@@ -187,10 +187,10 @@ func (o ApiAuthenticationInfo) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["AuthenticationType"] = o.AuthenticationType
 	}
-	if o.UserName != nil {
+	if !isNil(o.UserName) {
 		toSerialize["UserName"] = o.UserName
 	}
-	if o.Password != nil {
+	if !isNil(o.Password) {
 		toSerialize["Password"] = o.Password
 	}
 	if true {

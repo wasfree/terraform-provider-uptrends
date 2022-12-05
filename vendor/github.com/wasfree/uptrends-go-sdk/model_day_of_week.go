@@ -29,7 +29,8 @@ const (
 	DAYOFWEEK_SATURDAY DayOfWeek = "Saturday"
 )
 
-var allowedDayOfWeekEnumValues = []DayOfWeek{
+// All allowed values of DayOfWeek enum
+var AllowedDayOfWeekEnumValues = []DayOfWeek{
 	"Sunday",
 	"Monday",
 	"Tuesday",
@@ -46,7 +47,7 @@ func (v *DayOfWeek) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := DayOfWeek(value)
-	for _, existing := range allowedDayOfWeekEnumValues {
+	for _, existing := range AllowedDayOfWeekEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -63,13 +64,13 @@ func NewDayOfWeekFromValue(v string) (*DayOfWeek, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for DayOfWeek: valid values are %v", v, allowedDayOfWeekEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for DayOfWeek: valid values are %v", v, AllowedDayOfWeekEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v DayOfWeek) IsValid() bool {
-	for _, existing := range allowedDayOfWeekEnumValues {
+	for _, existing := range AllowedDayOfWeekEnumValues {
 		if existing == v {
 			return true
 		}

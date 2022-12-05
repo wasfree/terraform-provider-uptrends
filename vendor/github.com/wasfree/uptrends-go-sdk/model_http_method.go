@@ -24,7 +24,8 @@ const (
 	HTTPMETHOD_POST HttpMethod = "Post"
 )
 
-var allowedHttpMethodEnumValues = []HttpMethod{
+// All allowed values of HttpMethod enum
+var AllowedHttpMethodEnumValues = []HttpMethod{
 	"Get",
 	"Post",
 }
@@ -36,7 +37,7 @@ func (v *HttpMethod) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := HttpMethod(value)
-	for _, existing := range allowedHttpMethodEnumValues {
+	for _, existing := range AllowedHttpMethodEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewHttpMethodFromValue(v string) (*HttpMethod, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for HttpMethod: valid values are %v", v, allowedHttpMethodEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for HttpMethod: valid values are %v", v, AllowedHttpMethodEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v HttpMethod) IsValid() bool {
-	for _, existing := range allowedHttpMethodEnumValues {
+	for _, existing := range AllowedHttpMethodEnumValues {
 		if existing == v {
 			return true
 		}

@@ -147,7 +147,7 @@ func monitorOperatorAccountRead(ctx context.Context, d *schema.ResourceData, met
 		return diag.FromErr(err)
 	}
 
-	return readMonitorOperatorAccountStruct(&resp, d)
+	return readMonitorOperatorAccountStruct(resp, d)
 }
 
 func monitorOperatorAccountUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {

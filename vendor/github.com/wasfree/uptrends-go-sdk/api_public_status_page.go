@@ -12,23 +12,19 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // PublicStatusPageApiService PublicStatusPageApi service
 type PublicStatusPageApiService service
 
 type ApiPublicStatusPageAddAuthorizationToPublicStatusPageRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *PublicStatusPageApiService
 	publicStatusPageGuid string
 	authorization *PSPAuthorization
@@ -40,7 +36,7 @@ func (r ApiPublicStatusPageAddAuthorizationToPublicStatusPageRequest) Authorizat
 	return r
 }
 
-func (r ApiPublicStatusPageAddAuthorizationToPublicStatusPageRequest) Execute() (PSPAuthorization, *_nethttp.Response, error) {
+func (r ApiPublicStatusPageAddAuthorizationToPublicStatusPageRequest) Execute() (*PSPAuthorization, *http.Response, error) {
 	return r.ApiService.PublicStatusPageAddAuthorizationToPublicStatusPageExecute(r)
 }
 
@@ -49,11 +45,11 @@ PublicStatusPageAddAuthorizationToPublicStatusPage Creates a new authorization f
 
 The AuthorizationId attribute should be omitted in the request body. The newly created authorization will be returned in the response. An authorization should be granted to either an individual operator, or an operator group. Therefore, either specify the OperatorGuid attribute or the OperatorGroupGuid attribute.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param publicStatusPageGuid The Guid of the public status page.
  @return ApiPublicStatusPageAddAuthorizationToPublicStatusPageRequest
 */
-func (a *PublicStatusPageApiService) PublicStatusPageAddAuthorizationToPublicStatusPage(ctx _context.Context, publicStatusPageGuid string) ApiPublicStatusPageAddAuthorizationToPublicStatusPageRequest {
+func (a *PublicStatusPageApiService) PublicStatusPageAddAuthorizationToPublicStatusPage(ctx context.Context, publicStatusPageGuid string) ApiPublicStatusPageAddAuthorizationToPublicStatusPageRequest {
 	return ApiPublicStatusPageAddAuthorizationToPublicStatusPageRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -63,30 +59,25 @@ func (a *PublicStatusPageApiService) PublicStatusPageAddAuthorizationToPublicSta
 
 // Execute executes the request
 //  @return PSPAuthorization
-func (a *PublicStatusPageApiService) PublicStatusPageAddAuthorizationToPublicStatusPageExecute(r ApiPublicStatusPageAddAuthorizationToPublicStatusPageRequest) (PSPAuthorization, *_nethttp.Response, error) {
+func (a *PublicStatusPageApiService) PublicStatusPageAddAuthorizationToPublicStatusPageExecute(r ApiPublicStatusPageAddAuthorizationToPublicStatusPageRequest) (*PSPAuthorization, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  PSPAuthorization
+		formFiles            []formFile
+		localVarReturnValue  *PSPAuthorization
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicStatusPageApiService.PublicStatusPageAddAuthorizationToPublicStatusPage")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/PublicStatusPage/{publicStatusPageGuid}/Authorization"
-	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", _neturl.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", url.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.authorization == nil {
-		return localVarReturnValue, nil, reportError("authorization is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -107,7 +98,7 @@ func (a *PublicStatusPageApiService) PublicStatusPageAddAuthorizationToPublicSta
 	}
 	// body params
 	localVarPostBody = r.authorization
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -117,15 +108,15 @@ func (a *PublicStatusPageApiService) PublicStatusPageAddAuthorizationToPublicSta
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -136,7 +127,8 @@ func (a *PublicStatusPageApiService) PublicStatusPageAddAuthorizationToPublicSta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -146,14 +138,15 @@ func (a *PublicStatusPageApiService) PublicStatusPageAddAuthorizationToPublicSta
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -164,24 +157,23 @@ func (a *PublicStatusPageApiService) PublicStatusPageAddAuthorizationToPublicSta
 }
 
 type ApiPublicStatusPageDeletePublicStatusPageRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *PublicStatusPageApiService
 	publicStatusPageGuid string
 }
 
-
-func (r ApiPublicStatusPageDeletePublicStatusPageRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiPublicStatusPageDeletePublicStatusPageRequest) Execute() (*http.Response, error) {
 	return r.ApiService.PublicStatusPageDeletePublicStatusPageExecute(r)
 }
 
 /*
 PublicStatusPageDeletePublicStatusPage Deletes the definition of the specified public status page.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param publicStatusPageGuid The Guid of the public status page that should be updated.
  @return ApiPublicStatusPageDeletePublicStatusPageRequest
 */
-func (a *PublicStatusPageApiService) PublicStatusPageDeletePublicStatusPage(ctx _context.Context, publicStatusPageGuid string) ApiPublicStatusPageDeletePublicStatusPageRequest {
+func (a *PublicStatusPageApiService) PublicStatusPageDeletePublicStatusPage(ctx context.Context, publicStatusPageGuid string) ApiPublicStatusPageDeletePublicStatusPageRequest {
 	return ApiPublicStatusPageDeletePublicStatusPageRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -190,26 +182,24 @@ func (a *PublicStatusPageApiService) PublicStatusPageDeletePublicStatusPage(ctx 
 }
 
 // Execute executes the request
-func (a *PublicStatusPageApiService) PublicStatusPageDeletePublicStatusPageExecute(r ApiPublicStatusPageDeletePublicStatusPageRequest) (*_nethttp.Response, error) {
+func (a *PublicStatusPageApiService) PublicStatusPageDeletePublicStatusPageExecute(r ApiPublicStatusPageDeletePublicStatusPageRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicStatusPageApiService.PublicStatusPageDeletePublicStatusPage")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/PublicStatusPage/{publicStatusPageGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", _neturl.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", url.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -228,7 +218,7 @@ func (a *PublicStatusPageApiService) PublicStatusPageDeletePublicStatusPageExecu
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -238,15 +228,15 @@ func (a *PublicStatusPageApiService) PublicStatusPageDeletePublicStatusPageExecu
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -257,7 +247,8 @@ func (a *PublicStatusPageApiService) PublicStatusPageDeletePublicStatusPageExecu
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -267,7 +258,8 @@ func (a *PublicStatusPageApiService) PublicStatusPageDeletePublicStatusPageExecu
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -276,24 +268,23 @@ func (a *PublicStatusPageApiService) PublicStatusPageDeletePublicStatusPageExecu
 }
 
 type ApiPublicStatusPageGetAuthorizationsForPublicStatusPageRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *PublicStatusPageApiService
 	publicStatusPageGuid string
 }
 
-
-func (r ApiPublicStatusPageGetAuthorizationsForPublicStatusPageRequest) Execute() ([]PSPAuthorization, *_nethttp.Response, error) {
+func (r ApiPublicStatusPageGetAuthorizationsForPublicStatusPageRequest) Execute() ([]PSPAuthorization, *http.Response, error) {
 	return r.ApiService.PublicStatusPageGetAuthorizationsForPublicStatusPageExecute(r)
 }
 
 /*
 PublicStatusPageGetAuthorizationsForPublicStatusPage Returns all authorizations for the specified public status page.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param publicStatusPageGuid The Guid of the public status page.
  @return ApiPublicStatusPageGetAuthorizationsForPublicStatusPageRequest
 */
-func (a *PublicStatusPageApiService) PublicStatusPageGetAuthorizationsForPublicStatusPage(ctx _context.Context, publicStatusPageGuid string) ApiPublicStatusPageGetAuthorizationsForPublicStatusPageRequest {
+func (a *PublicStatusPageApiService) PublicStatusPageGetAuthorizationsForPublicStatusPage(ctx context.Context, publicStatusPageGuid string) ApiPublicStatusPageGetAuthorizationsForPublicStatusPageRequest {
 	return ApiPublicStatusPageGetAuthorizationsForPublicStatusPageRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -303,27 +294,25 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetAuthorizationsForPublicS
 
 // Execute executes the request
 //  @return []PSPAuthorization
-func (a *PublicStatusPageApiService) PublicStatusPageGetAuthorizationsForPublicStatusPageExecute(r ApiPublicStatusPageGetAuthorizationsForPublicStatusPageRequest) ([]PSPAuthorization, *_nethttp.Response, error) {
+func (a *PublicStatusPageApiService) PublicStatusPageGetAuthorizationsForPublicStatusPageExecute(r ApiPublicStatusPageGetAuthorizationsForPublicStatusPageRequest) ([]PSPAuthorization, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []PSPAuthorization
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicStatusPageApiService.PublicStatusPageGetAuthorizationsForPublicStatusPage")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/PublicStatusPage/{publicStatusPageGuid}/Authorization"
-	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", _neturl.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", url.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -342,7 +331,7 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetAuthorizationsForPublicS
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -352,15 +341,15 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetAuthorizationsForPublicS
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -371,7 +360,8 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetAuthorizationsForPublicS
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -381,14 +371,15 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetAuthorizationsForPublicS
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -399,24 +390,23 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetAuthorizationsForPublicS
 }
 
 type ApiPublicStatusPageGetPublicStatusPageRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *PublicStatusPageApiService
 	publicStatusPageGuid string
 }
 
-
-func (r ApiPublicStatusPageGetPublicStatusPageRequest) Execute() (PublicStatusPage, *_nethttp.Response, error) {
+func (r ApiPublicStatusPageGetPublicStatusPageRequest) Execute() (*PublicStatusPage, *http.Response, error) {
 	return r.ApiService.PublicStatusPageGetPublicStatusPageExecute(r)
 }
 
 /*
 PublicStatusPageGetPublicStatusPage Returns the definition of the specified public status page.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param publicStatusPageGuid The Guid of the requested public status page.
  @return ApiPublicStatusPageGetPublicStatusPageRequest
 */
-func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPage(ctx _context.Context, publicStatusPageGuid string) ApiPublicStatusPageGetPublicStatusPageRequest {
+func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPage(ctx context.Context, publicStatusPageGuid string) ApiPublicStatusPageGetPublicStatusPageRequest {
 	return ApiPublicStatusPageGetPublicStatusPageRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -426,27 +416,25 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPage(ctx _co
 
 // Execute executes the request
 //  @return PublicStatusPage
-func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPageExecute(r ApiPublicStatusPageGetPublicStatusPageRequest) (PublicStatusPage, *_nethttp.Response, error) {
+func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPageExecute(r ApiPublicStatusPageGetPublicStatusPageRequest) (*PublicStatusPage, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  PublicStatusPage
+		formFiles            []formFile
+		localVarReturnValue  *PublicStatusPage
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicStatusPageApiService.PublicStatusPageGetPublicStatusPage")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/PublicStatusPage/{publicStatusPageGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", _neturl.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", url.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -465,7 +453,7 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPageExecute(
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -475,15 +463,15 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPageExecute(
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -494,7 +482,8 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPageExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -504,14 +493,15 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPageExecute(
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -522,22 +512,21 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPageExecute(
 }
 
 type ApiPublicStatusPageGetPublicStatusPagesRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *PublicStatusPageApiService
 }
 
-
-func (r ApiPublicStatusPageGetPublicStatusPagesRequest) Execute() ([]PublicStatusPage, *_nethttp.Response, error) {
+func (r ApiPublicStatusPageGetPublicStatusPagesRequest) Execute() ([]PublicStatusPage, *http.Response, error) {
 	return r.ApiService.PublicStatusPageGetPublicStatusPagesExecute(r)
 }
 
 /*
 PublicStatusPageGetPublicStatusPages Returns the definition of all public status pages available in the account.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiPublicStatusPageGetPublicStatusPagesRequest
 */
-func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPages(ctx _context.Context) ApiPublicStatusPageGetPublicStatusPagesRequest {
+func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPages(ctx context.Context) ApiPublicStatusPageGetPublicStatusPagesRequest {
 	return ApiPublicStatusPageGetPublicStatusPagesRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -546,26 +535,24 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPages(ctx _c
 
 // Execute executes the request
 //  @return []PublicStatusPage
-func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPagesExecute(r ApiPublicStatusPageGetPublicStatusPagesRequest) ([]PublicStatusPage, *_nethttp.Response, error) {
+func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPagesExecute(r ApiPublicStatusPageGetPublicStatusPagesRequest) ([]PublicStatusPage, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []PublicStatusPage
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicStatusPageApiService.PublicStatusPageGetPublicStatusPages")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/PublicStatusPage"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -584,7 +571,7 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPagesExecute
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -594,15 +581,15 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPagesExecute
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -613,14 +600,15 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPagesExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -631,7 +619,7 @@ func (a *PublicStatusPageApiService) PublicStatusPageGetPublicStatusPagesExecute
 }
 
 type ApiPublicStatusPagePatchPublicStatusPageRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *PublicStatusPageApiService
 	publicStatusPageGuid string
 	publicStatusPage *PublicStatusPage
@@ -643,7 +631,7 @@ func (r ApiPublicStatusPagePatchPublicStatusPageRequest) PublicStatusPage(public
 	return r
 }
 
-func (r ApiPublicStatusPagePatchPublicStatusPageRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiPublicStatusPagePatchPublicStatusPageRequest) Execute() (*http.Response, error) {
 	return r.ApiService.PublicStatusPagePatchPublicStatusPageExecute(r)
 }
 
@@ -652,11 +640,11 @@ PublicStatusPagePatchPublicStatusPage Partially updates the definition of the sp
 
 This methods accepts parts of a public status page definition. We recommend retrieving the existing definition first (using the GET method). You can then process the changes you want to make and send back these changes only using this PATCH method.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param publicStatusPageGuid The Guid of the public status page that should be updated.
  @return ApiPublicStatusPagePatchPublicStatusPageRequest
 */
-func (a *PublicStatusPageApiService) PublicStatusPagePatchPublicStatusPage(ctx _context.Context, publicStatusPageGuid string) ApiPublicStatusPagePatchPublicStatusPageRequest {
+func (a *PublicStatusPageApiService) PublicStatusPagePatchPublicStatusPage(ctx context.Context, publicStatusPageGuid string) ApiPublicStatusPagePatchPublicStatusPageRequest {
 	return ApiPublicStatusPagePatchPublicStatusPageRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -665,29 +653,24 @@ func (a *PublicStatusPageApiService) PublicStatusPagePatchPublicStatusPage(ctx _
 }
 
 // Execute executes the request
-func (a *PublicStatusPageApiService) PublicStatusPagePatchPublicStatusPageExecute(r ApiPublicStatusPagePatchPublicStatusPageRequest) (*_nethttp.Response, error) {
+func (a *PublicStatusPageApiService) PublicStatusPagePatchPublicStatusPageExecute(r ApiPublicStatusPagePatchPublicStatusPageRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
+		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicStatusPageApiService.PublicStatusPagePatchPublicStatusPage")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/PublicStatusPage/{publicStatusPageGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", _neturl.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", url.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.publicStatusPage == nil {
-		return nil, reportError("publicStatusPage is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -708,7 +691,7 @@ func (a *PublicStatusPageApiService) PublicStatusPagePatchPublicStatusPageExecut
 	}
 	// body params
 	localVarPostBody = r.publicStatusPage
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -718,15 +701,15 @@ func (a *PublicStatusPageApiService) PublicStatusPagePatchPublicStatusPageExecut
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -737,7 +720,8 @@ func (a *PublicStatusPageApiService) PublicStatusPagePatchPublicStatusPageExecut
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -747,7 +731,8 @@ func (a *PublicStatusPageApiService) PublicStatusPagePatchPublicStatusPageExecut
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -756,7 +741,7 @@ func (a *PublicStatusPageApiService) PublicStatusPagePatchPublicStatusPageExecut
 }
 
 type ApiPublicStatusPagePostPublicStatusPageRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *PublicStatusPageApiService
 	publicStatusPage *PublicStatusPage
 }
@@ -767,17 +752,17 @@ func (r ApiPublicStatusPagePostPublicStatusPageRequest) PublicStatusPage(publicS
 	return r
 }
 
-func (r ApiPublicStatusPagePostPublicStatusPageRequest) Execute() (PublicStatusPage, *_nethttp.Response, error) {
+func (r ApiPublicStatusPagePostPublicStatusPageRequest) Execute() (*PublicStatusPage, *http.Response, error) {
 	return r.ApiService.PublicStatusPagePostPublicStatusPageExecute(r)
 }
 
 /*
 PublicStatusPagePostPublicStatusPage Creates a new public status page.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiPublicStatusPagePostPublicStatusPageRequest
 */
-func (a *PublicStatusPageApiService) PublicStatusPagePostPublicStatusPage(ctx _context.Context) ApiPublicStatusPagePostPublicStatusPageRequest {
+func (a *PublicStatusPageApiService) PublicStatusPagePostPublicStatusPage(ctx context.Context) ApiPublicStatusPagePostPublicStatusPageRequest {
 	return ApiPublicStatusPagePostPublicStatusPageRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -786,29 +771,24 @@ func (a *PublicStatusPageApiService) PublicStatusPagePostPublicStatusPage(ctx _c
 
 // Execute executes the request
 //  @return PublicStatusPage
-func (a *PublicStatusPageApiService) PublicStatusPagePostPublicStatusPageExecute(r ApiPublicStatusPagePostPublicStatusPageRequest) (PublicStatusPage, *_nethttp.Response, error) {
+func (a *PublicStatusPageApiService) PublicStatusPagePostPublicStatusPageExecute(r ApiPublicStatusPagePostPublicStatusPageRequest) (*PublicStatusPage, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  PublicStatusPage
+		formFiles            []formFile
+		localVarReturnValue  *PublicStatusPage
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicStatusPageApiService.PublicStatusPagePostPublicStatusPage")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/PublicStatusPage"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.publicStatusPage == nil {
-		return localVarReturnValue, nil, reportError("publicStatusPage is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -829,7 +809,7 @@ func (a *PublicStatusPageApiService) PublicStatusPagePostPublicStatusPageExecute
 	}
 	// body params
 	localVarPostBody = r.publicStatusPage
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -839,15 +819,15 @@ func (a *PublicStatusPageApiService) PublicStatusPagePostPublicStatusPageExecute
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -858,7 +838,8 @@ func (a *PublicStatusPageApiService) PublicStatusPagePostPublicStatusPageExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -868,14 +849,15 @@ func (a *PublicStatusPageApiService) PublicStatusPagePostPublicStatusPageExecute
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -886,7 +868,7 @@ func (a *PublicStatusPageApiService) PublicStatusPagePostPublicStatusPageExecute
 }
 
 type ApiPublicStatusPagePutPublicStatusPageRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *PublicStatusPageApiService
 	publicStatusPageGuid string
 	publicStatusPage *PublicStatusPage
@@ -898,7 +880,7 @@ func (r ApiPublicStatusPagePutPublicStatusPageRequest) PublicStatusPage(publicSt
 	return r
 }
 
-func (r ApiPublicStatusPagePutPublicStatusPageRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiPublicStatusPagePutPublicStatusPageRequest) Execute() (*http.Response, error) {
 	return r.ApiService.PublicStatusPagePutPublicStatusPageExecute(r)
 }
 
@@ -907,11 +889,11 @@ PublicStatusPagePutPublicStatusPage Updates the definition of the specified publ
 
 This methods only accepts a complete public status page definition. We recommend retrieving the existing definition first (using the GET method). You can then process the changes you want to make and send back the updated definition using this PUT method.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param publicStatusPageGuid The Guid of the public status page that should be updated.
  @return ApiPublicStatusPagePutPublicStatusPageRequest
 */
-func (a *PublicStatusPageApiService) PublicStatusPagePutPublicStatusPage(ctx _context.Context, publicStatusPageGuid string) ApiPublicStatusPagePutPublicStatusPageRequest {
+func (a *PublicStatusPageApiService) PublicStatusPagePutPublicStatusPage(ctx context.Context, publicStatusPageGuid string) ApiPublicStatusPagePutPublicStatusPageRequest {
 	return ApiPublicStatusPagePutPublicStatusPageRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -920,29 +902,24 @@ func (a *PublicStatusPageApiService) PublicStatusPagePutPublicStatusPage(ctx _co
 }
 
 // Execute executes the request
-func (a *PublicStatusPageApiService) PublicStatusPagePutPublicStatusPageExecute(r ApiPublicStatusPagePutPublicStatusPageRequest) (*_nethttp.Response, error) {
+func (a *PublicStatusPageApiService) PublicStatusPagePutPublicStatusPageExecute(r ApiPublicStatusPagePutPublicStatusPageRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicStatusPageApiService.PublicStatusPagePutPublicStatusPage")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/PublicStatusPage/{publicStatusPageGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", _neturl.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", url.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.publicStatusPage == nil {
-		return nil, reportError("publicStatusPage is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -963,7 +940,7 @@ func (a *PublicStatusPageApiService) PublicStatusPagePutPublicStatusPageExecute(
 	}
 	// body params
 	localVarPostBody = r.publicStatusPage
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -973,15 +950,15 @@ func (a *PublicStatusPageApiService) PublicStatusPagePutPublicStatusPageExecute(
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -992,7 +969,8 @@ func (a *PublicStatusPageApiService) PublicStatusPagePutPublicStatusPageExecute(
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1002,7 +980,8 @@ func (a *PublicStatusPageApiService) PublicStatusPagePutPublicStatusPageExecute(
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1011,26 +990,25 @@ func (a *PublicStatusPageApiService) PublicStatusPagePutPublicStatusPageExecute(
 }
 
 type ApiPublicStatusPageRemoveAuthorizationFromPublicStatusPageRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *PublicStatusPageApiService
 	publicStatusPageGuid string
 	authorizationGuid string
 }
 
-
-func (r ApiPublicStatusPageRemoveAuthorizationFromPublicStatusPageRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiPublicStatusPageRemoveAuthorizationFromPublicStatusPageRequest) Execute() (*http.Response, error) {
 	return r.ApiService.PublicStatusPageRemoveAuthorizationFromPublicStatusPageExecute(r)
 }
 
 /*
 PublicStatusPageRemoveAuthorizationFromPublicStatusPage Removes an authorization from a public status page.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param publicStatusPageGuid The Guid of the public status page.
  @param authorizationGuid The Guid of the authorization.
  @return ApiPublicStatusPageRemoveAuthorizationFromPublicStatusPageRequest
 */
-func (a *PublicStatusPageApiService) PublicStatusPageRemoveAuthorizationFromPublicStatusPage(ctx _context.Context, publicStatusPageGuid string, authorizationGuid string) ApiPublicStatusPageRemoveAuthorizationFromPublicStatusPageRequest {
+func (a *PublicStatusPageApiService) PublicStatusPageRemoveAuthorizationFromPublicStatusPage(ctx context.Context, publicStatusPageGuid string, authorizationGuid string) ApiPublicStatusPageRemoveAuthorizationFromPublicStatusPageRequest {
 	return ApiPublicStatusPageRemoveAuthorizationFromPublicStatusPageRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1040,27 +1018,25 @@ func (a *PublicStatusPageApiService) PublicStatusPageRemoveAuthorizationFromPubl
 }
 
 // Execute executes the request
-func (a *PublicStatusPageApiService) PublicStatusPageRemoveAuthorizationFromPublicStatusPageExecute(r ApiPublicStatusPageRemoveAuthorizationFromPublicStatusPageRequest) (*_nethttp.Response, error) {
+func (a *PublicStatusPageApiService) PublicStatusPageRemoveAuthorizationFromPublicStatusPageExecute(r ApiPublicStatusPageRemoveAuthorizationFromPublicStatusPageRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "PublicStatusPageApiService.PublicStatusPageRemoveAuthorizationFromPublicStatusPage")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/PublicStatusPage/{publicStatusPageGuid}/Authorization/{authorizationGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", _neturl.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"authorizationGuid"+"}", _neturl.PathEscape(parameterToString(r.authorizationGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"publicStatusPageGuid"+"}", url.PathEscape(parameterToString(r.publicStatusPageGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"authorizationGuid"+"}", url.PathEscape(parameterToString(r.authorizationGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1079,7 +1055,7 @@ func (a *PublicStatusPageApiService) PublicStatusPageRemoveAuthorizationFromPubl
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1089,15 +1065,15 @@ func (a *PublicStatusPageApiService) PublicStatusPageRemoveAuthorizationFromPubl
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1108,7 +1084,8 @@ func (a *PublicStatusPageApiService) PublicStatusPageRemoveAuthorizationFromPubl
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1118,7 +1095,8 @@ func (a *PublicStatusPageApiService) PublicStatusPageRemoveAuthorizationFromPubl
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

@@ -43,7 +43,7 @@ func NewScheduleWithDefaults() *Schedule {
 
 // GetScheduleType returns the ScheduleType field value if set, zero value otherwise.
 func (o *Schedule) GetScheduleType() ScheduleType {
-	if o == nil || o.ScheduleType == nil {
+	if o == nil || isNil(o.ScheduleType) {
 		var ret ScheduleType
 		return ret
 	}
@@ -53,15 +53,15 @@ func (o *Schedule) GetScheduleType() ScheduleType {
 // GetScheduleTypeOk returns a tuple with the ScheduleType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Schedule) GetScheduleTypeOk() (*ScheduleType, bool) {
-	if o == nil || o.ScheduleType == nil {
-		return nil, false
+	if o == nil || isNil(o.ScheduleType) {
+    return nil, false
 	}
 	return o.ScheduleType, true
 }
 
 // HasScheduleType returns a boolean if a field has been set.
 func (o *Schedule) HasScheduleType() bool {
-	if o != nil && o.ScheduleType != nil {
+	if o != nil && !isNil(o.ScheduleType) {
 		return true
 	}
 
@@ -75,7 +75,7 @@ func (o *Schedule) SetScheduleType(v ScheduleType) {
 
 // GetTime returns the Time field value if set, zero value otherwise.
 func (o *Schedule) GetTime() string {
-	if o == nil || o.Time == nil {
+	if o == nil || isNil(o.Time) {
 		var ret string
 		return ret
 	}
@@ -85,15 +85,15 @@ func (o *Schedule) GetTime() string {
 // GetTimeOk returns a tuple with the Time field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Schedule) GetTimeOk() (*string, bool) {
-	if o == nil || o.Time == nil {
-		return nil, false
+	if o == nil || isNil(o.Time) {
+    return nil, false
 	}
 	return o.Time, true
 }
 
 // HasTime returns a boolean if a field has been set.
 func (o *Schedule) HasTime() bool {
-	if o != nil && o.Time != nil {
+	if o != nil && !isNil(o.Time) {
 		return true
 	}
 
@@ -107,7 +107,7 @@ func (o *Schedule) SetTime(v string) {
 
 // GetWeekDay returns the WeekDay field value if set, zero value otherwise.
 func (o *Schedule) GetWeekDay() DayOfWeek {
-	if o == nil || o.WeekDay == nil {
+	if o == nil || isNil(o.WeekDay) {
 		var ret DayOfWeek
 		return ret
 	}
@@ -117,15 +117,15 @@ func (o *Schedule) GetWeekDay() DayOfWeek {
 // GetWeekDayOk returns a tuple with the WeekDay field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Schedule) GetWeekDayOk() (*DayOfWeek, bool) {
-	if o == nil || o.WeekDay == nil {
-		return nil, false
+	if o == nil || isNil(o.WeekDay) {
+    return nil, false
 	}
 	return o.WeekDay, true
 }
 
 // HasWeekDay returns a boolean if a field has been set.
 func (o *Schedule) HasWeekDay() bool {
-	if o != nil && o.WeekDay != nil {
+	if o != nil && !isNil(o.WeekDay) {
 		return true
 	}
 
@@ -139,7 +139,7 @@ func (o *Schedule) SetWeekDay(v DayOfWeek) {
 
 // GetMonth returns the Month field value if set, zero value otherwise.
 func (o *Schedule) GetMonth() int32 {
-	if o == nil || o.Month == nil {
+	if o == nil || isNil(o.Month) {
 		var ret int32
 		return ret
 	}
@@ -149,15 +149,15 @@ func (o *Schedule) GetMonth() int32 {
 // GetMonthOk returns a tuple with the Month field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Schedule) GetMonthOk() (*int32, bool) {
-	if o == nil || o.Month == nil {
-		return nil, false
+	if o == nil || isNil(o.Month) {
+    return nil, false
 	}
 	return o.Month, true
 }
 
 // HasMonth returns a boolean if a field has been set.
 func (o *Schedule) HasMonth() bool {
-	if o != nil && o.Month != nil {
+	if o != nil && !isNil(o.Month) {
 		return true
 	}
 
@@ -171,7 +171,7 @@ func (o *Schedule) SetMonth(v int32) {
 
 // GetMonthDay returns the MonthDay field value if set, zero value otherwise.
 func (o *Schedule) GetMonthDay() int32 {
-	if o == nil || o.MonthDay == nil {
+	if o == nil || isNil(o.MonthDay) {
 		var ret int32
 		return ret
 	}
@@ -181,15 +181,15 @@ func (o *Schedule) GetMonthDay() int32 {
 // GetMonthDayOk returns a tuple with the MonthDay field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Schedule) GetMonthDayOk() (*int32, bool) {
-	if o == nil || o.MonthDay == nil {
-		return nil, false
+	if o == nil || isNil(o.MonthDay) {
+    return nil, false
 	}
 	return o.MonthDay, true
 }
 
 // HasMonthDay returns a boolean if a field has been set.
 func (o *Schedule) HasMonthDay() bool {
-	if o != nil && o.MonthDay != nil {
+	if o != nil && !isNil(o.MonthDay) {
 		return true
 	}
 
@@ -203,7 +203,7 @@ func (o *Schedule) SetMonthDay(v int32) {
 
 // GetQuarterStartMonth returns the QuarterStartMonth field value if set, zero value otherwise.
 func (o *Schedule) GetQuarterStartMonth() int32 {
-	if o == nil || o.QuarterStartMonth == nil {
+	if o == nil || isNil(o.QuarterStartMonth) {
 		var ret int32
 		return ret
 	}
@@ -213,15 +213,15 @@ func (o *Schedule) GetQuarterStartMonth() int32 {
 // GetQuarterStartMonthOk returns a tuple with the QuarterStartMonth field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *Schedule) GetQuarterStartMonthOk() (*int32, bool) {
-	if o == nil || o.QuarterStartMonth == nil {
-		return nil, false
+	if o == nil || isNil(o.QuarterStartMonth) {
+    return nil, false
 	}
 	return o.QuarterStartMonth, true
 }
 
 // HasQuarterStartMonth returns a boolean if a field has been set.
 func (o *Schedule) HasQuarterStartMonth() bool {
-	if o != nil && o.QuarterStartMonth != nil {
+	if o != nil && !isNil(o.QuarterStartMonth) {
 		return true
 	}
 
@@ -235,22 +235,22 @@ func (o *Schedule) SetQuarterStartMonth(v int32) {
 
 func (o Schedule) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.ScheduleType != nil {
+	if !isNil(o.ScheduleType) {
 		toSerialize["ScheduleType"] = o.ScheduleType
 	}
-	if o.Time != nil {
+	if !isNil(o.Time) {
 		toSerialize["Time"] = o.Time
 	}
-	if o.WeekDay != nil {
+	if !isNil(o.WeekDay) {
 		toSerialize["WeekDay"] = o.WeekDay
 	}
-	if o.Month != nil {
+	if !isNil(o.Month) {
 		toSerialize["Month"] = o.Month
 	}
-	if o.MonthDay != nil {
+	if !isNil(o.MonthDay) {
 		toSerialize["MonthDay"] = o.MonthDay
 	}
-	if o.QuarterStartMonth != nil {
+	if !isNil(o.QuarterStartMonth) {
 		toSerialize["QuarterStartMonth"] = o.QuarterStartMonth
 	}
 	return json.Marshal(toSerialize)

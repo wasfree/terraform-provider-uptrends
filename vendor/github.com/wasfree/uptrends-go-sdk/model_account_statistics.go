@@ -12,13 +12,12 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // AccountStatistics struct for AccountStatistics
 type AccountStatistics struct {
 	AccountId *string `json:"AccountId,omitempty"`
-	ExpirationDate *time.Time `json:"ExpirationDate,omitempty"`
+	ExpirationDate map[string]interface{} `json:"ExpirationDate,omitempty"`
 	MonitorQuota *MonitorQuota `json:"MonitorQuota,omitempty"`
 	OperatorQuota *OperatorQuota `json:"OperatorQuota,omitempty"`
 	RemainingMessageCredits *int32 `json:"RemainingMessageCredits,omitempty"`
@@ -43,7 +42,7 @@ func NewAccountStatisticsWithDefaults() *AccountStatistics {
 
 // GetAccountId returns the AccountId field value if set, zero value otherwise.
 func (o *AccountStatistics) GetAccountId() string {
-	if o == nil || o.AccountId == nil {
+	if o == nil || isNil(o.AccountId) {
 		var ret string
 		return ret
 	}
@@ -53,15 +52,15 @@ func (o *AccountStatistics) GetAccountId() string {
 // GetAccountIdOk returns a tuple with the AccountId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountStatistics) GetAccountIdOk() (*string, bool) {
-	if o == nil || o.AccountId == nil {
-		return nil, false
+	if o == nil || isNil(o.AccountId) {
+    return nil, false
 	}
 	return o.AccountId, true
 }
 
 // HasAccountId returns a boolean if a field has been set.
 func (o *AccountStatistics) HasAccountId() bool {
-	if o != nil && o.AccountId != nil {
+	if o != nil && !isNil(o.AccountId) {
 		return true
 	}
 
@@ -74,40 +73,40 @@ func (o *AccountStatistics) SetAccountId(v string) {
 }
 
 // GetExpirationDate returns the ExpirationDate field value if set, zero value otherwise.
-func (o *AccountStatistics) GetExpirationDate() time.Time {
-	if o == nil || o.ExpirationDate == nil {
-		var ret time.Time
+func (o *AccountStatistics) GetExpirationDate() map[string]interface{} {
+	if o == nil || isNil(o.ExpirationDate) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.ExpirationDate
+	return o.ExpirationDate
 }
 
 // GetExpirationDateOk returns a tuple with the ExpirationDate field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *AccountStatistics) GetExpirationDateOk() (*time.Time, bool) {
-	if o == nil || o.ExpirationDate == nil {
-		return nil, false
+func (o *AccountStatistics) GetExpirationDateOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.ExpirationDate) {
+    return map[string]interface{}{}, false
 	}
 	return o.ExpirationDate, true
 }
 
 // HasExpirationDate returns a boolean if a field has been set.
 func (o *AccountStatistics) HasExpirationDate() bool {
-	if o != nil && o.ExpirationDate != nil {
+	if o != nil && !isNil(o.ExpirationDate) {
 		return true
 	}
 
 	return false
 }
 
-// SetExpirationDate gets a reference to the given time.Time and assigns it to the ExpirationDate field.
-func (o *AccountStatistics) SetExpirationDate(v time.Time) {
-	o.ExpirationDate = &v
+// SetExpirationDate gets a reference to the given map[string]interface{} and assigns it to the ExpirationDate field.
+func (o *AccountStatistics) SetExpirationDate(v map[string]interface{}) {
+	o.ExpirationDate = v
 }
 
 // GetMonitorQuota returns the MonitorQuota field value if set, zero value otherwise.
 func (o *AccountStatistics) GetMonitorQuota() MonitorQuota {
-	if o == nil || o.MonitorQuota == nil {
+	if o == nil || isNil(o.MonitorQuota) {
 		var ret MonitorQuota
 		return ret
 	}
@@ -117,15 +116,15 @@ func (o *AccountStatistics) GetMonitorQuota() MonitorQuota {
 // GetMonitorQuotaOk returns a tuple with the MonitorQuota field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountStatistics) GetMonitorQuotaOk() (*MonitorQuota, bool) {
-	if o == nil || o.MonitorQuota == nil {
-		return nil, false
+	if o == nil || isNil(o.MonitorQuota) {
+    return nil, false
 	}
 	return o.MonitorQuota, true
 }
 
 // HasMonitorQuota returns a boolean if a field has been set.
 func (o *AccountStatistics) HasMonitorQuota() bool {
-	if o != nil && o.MonitorQuota != nil {
+	if o != nil && !isNil(o.MonitorQuota) {
 		return true
 	}
 
@@ -139,7 +138,7 @@ func (o *AccountStatistics) SetMonitorQuota(v MonitorQuota) {
 
 // GetOperatorQuota returns the OperatorQuota field value if set, zero value otherwise.
 func (o *AccountStatistics) GetOperatorQuota() OperatorQuota {
-	if o == nil || o.OperatorQuota == nil {
+	if o == nil || isNil(o.OperatorQuota) {
 		var ret OperatorQuota
 		return ret
 	}
@@ -149,15 +148,15 @@ func (o *AccountStatistics) GetOperatorQuota() OperatorQuota {
 // GetOperatorQuotaOk returns a tuple with the OperatorQuota field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountStatistics) GetOperatorQuotaOk() (*OperatorQuota, bool) {
-	if o == nil || o.OperatorQuota == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorQuota) {
+    return nil, false
 	}
 	return o.OperatorQuota, true
 }
 
 // HasOperatorQuota returns a boolean if a field has been set.
 func (o *AccountStatistics) HasOperatorQuota() bool {
-	if o != nil && o.OperatorQuota != nil {
+	if o != nil && !isNil(o.OperatorQuota) {
 		return true
 	}
 
@@ -171,7 +170,7 @@ func (o *AccountStatistics) SetOperatorQuota(v OperatorQuota) {
 
 // GetRemainingMessageCredits returns the RemainingMessageCredits field value if set, zero value otherwise.
 func (o *AccountStatistics) GetRemainingMessageCredits() int32 {
-	if o == nil || o.RemainingMessageCredits == nil {
+	if o == nil || isNil(o.RemainingMessageCredits) {
 		var ret int32
 		return ret
 	}
@@ -181,15 +180,15 @@ func (o *AccountStatistics) GetRemainingMessageCredits() int32 {
 // GetRemainingMessageCreditsOk returns a tuple with the RemainingMessageCredits field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *AccountStatistics) GetRemainingMessageCreditsOk() (*int32, bool) {
-	if o == nil || o.RemainingMessageCredits == nil {
-		return nil, false
+	if o == nil || isNil(o.RemainingMessageCredits) {
+    return nil, false
 	}
 	return o.RemainingMessageCredits, true
 }
 
 // HasRemainingMessageCredits returns a boolean if a field has been set.
 func (o *AccountStatistics) HasRemainingMessageCredits() bool {
-	if o != nil && o.RemainingMessageCredits != nil {
+	if o != nil && !isNil(o.RemainingMessageCredits) {
 		return true
 	}
 
@@ -203,19 +202,19 @@ func (o *AccountStatistics) SetRemainingMessageCredits(v int32) {
 
 func (o AccountStatistics) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.AccountId != nil {
+	if !isNil(o.AccountId) {
 		toSerialize["AccountId"] = o.AccountId
 	}
-	if o.ExpirationDate != nil {
+	if !isNil(o.ExpirationDate) {
 		toSerialize["ExpirationDate"] = o.ExpirationDate
 	}
-	if o.MonitorQuota != nil {
+	if !isNil(o.MonitorQuota) {
 		toSerialize["MonitorQuota"] = o.MonitorQuota
 	}
-	if o.OperatorQuota != nil {
+	if !isNil(o.OperatorQuota) {
 		toSerialize["OperatorQuota"] = o.OperatorQuota
 	}
-	if o.RemainingMessageCredits != nil {
+	if !isNil(o.RemainingMessageCredits) {
 		toSerialize["RemainingMessageCredits"] = o.RemainingMessageCredits
 	}
 	return json.Marshal(toSerialize)

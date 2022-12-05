@@ -12,23 +12,19 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // VaultApiService VaultApi service
 type VaultApiService service
 
 type ApiVaultCreateAuthorizationForVaultSectionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	vaultSectionGuid string
 	authorization *VaultSectionAuthorization
@@ -39,20 +35,20 @@ func (r ApiVaultCreateAuthorizationForVaultSectionRequest) Authorization(authori
 	return r
 }
 
-func (r ApiVaultCreateAuthorizationForVaultSectionRequest) Execute() (VaultSectionAuthorization, *_nethttp.Response, error) {
+func (r ApiVaultCreateAuthorizationForVaultSectionRequest) Execute() (*VaultSectionAuthorization, *http.Response, error) {
 	return r.ApiService.VaultCreateAuthorizationForVaultSectionExecute(r)
 }
 
 /*
-VaultCreateAuthorizationForVaultSection Creates a new authorization for the specified vault section. 
+VaultCreateAuthorizationForVaultSection Creates a new authorization for the specified vault section.
 
 The AuthorizationId attribute should be omitted in the request body. The newly created authorization will be returned in the response. An authorization should be granted to either an individual operator, or an operator group. Therefore, either specify the OperatorGuid attribute or the OperatorGroupGuid attribute.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param vaultSectionGuid The Guid of the vault section for which to create the new authorization.
  @return ApiVaultCreateAuthorizationForVaultSectionRequest
 */
-func (a *VaultApiService) VaultCreateAuthorizationForVaultSection(ctx _context.Context, vaultSectionGuid string) ApiVaultCreateAuthorizationForVaultSectionRequest {
+func (a *VaultApiService) VaultCreateAuthorizationForVaultSection(ctx context.Context, vaultSectionGuid string) ApiVaultCreateAuthorizationForVaultSectionRequest {
 	return ApiVaultCreateAuthorizationForVaultSectionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -62,30 +58,25 @@ func (a *VaultApiService) VaultCreateAuthorizationForVaultSection(ctx _context.C
 
 // Execute executes the request
 //  @return VaultSectionAuthorization
-func (a *VaultApiService) VaultCreateAuthorizationForVaultSectionExecute(r ApiVaultCreateAuthorizationForVaultSectionRequest) (VaultSectionAuthorization, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultCreateAuthorizationForVaultSectionExecute(r ApiVaultCreateAuthorizationForVaultSectionRequest) (*VaultSectionAuthorization, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  VaultSectionAuthorization
+		formFiles            []formFile
+		localVarReturnValue  *VaultSectionAuthorization
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultCreateAuthorizationForVaultSection")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultSection/{vaultSectionGuid}/Authorization"
-	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", _neturl.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", url.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.authorization == nil {
-		return localVarReturnValue, nil, reportError("authorization is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -106,7 +97,7 @@ func (a *VaultApiService) VaultCreateAuthorizationForVaultSectionExecute(r ApiVa
 	}
 	// body params
 	localVarPostBody = r.authorization
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -116,15 +107,15 @@ func (a *VaultApiService) VaultCreateAuthorizationForVaultSectionExecute(r ApiVa
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -135,7 +126,8 @@ func (a *VaultApiService) VaultCreateAuthorizationForVaultSectionExecute(r ApiVa
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -145,14 +137,15 @@ func (a *VaultApiService) VaultCreateAuthorizationForVaultSectionExecute(r ApiVa
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -163,7 +156,7 @@ func (a *VaultApiService) VaultCreateAuthorizationForVaultSectionExecute(r ApiVa
 }
 
 type ApiVaultCreateNewVaultItemRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	item *VaultItem
 }
@@ -174,7 +167,7 @@ func (r ApiVaultCreateNewVaultItemRequest) Item(item VaultItem) ApiVaultCreateNe
 	return r
 }
 
-func (r ApiVaultCreateNewVaultItemRequest) Execute() (VaultItem, *_nethttp.Response, error) {
+func (r ApiVaultCreateNewVaultItemRequest) Execute() (*VaultItem, *http.Response, error) {
 	return r.ApiService.VaultCreateNewVaultItemExecute(r)
 }
 
@@ -183,10 +176,10 @@ VaultCreateNewVaultItem Creates a new vault item.
 
 The VaultItemGuid field should be omitted
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiVaultCreateNewVaultItemRequest
 */
-func (a *VaultApiService) VaultCreateNewVaultItem(ctx _context.Context) ApiVaultCreateNewVaultItemRequest {
+func (a *VaultApiService) VaultCreateNewVaultItem(ctx context.Context) ApiVaultCreateNewVaultItemRequest {
 	return ApiVaultCreateNewVaultItemRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -195,29 +188,24 @@ func (a *VaultApiService) VaultCreateNewVaultItem(ctx _context.Context) ApiVault
 
 // Execute executes the request
 //  @return VaultItem
-func (a *VaultApiService) VaultCreateNewVaultItemExecute(r ApiVaultCreateNewVaultItemRequest) (VaultItem, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultCreateNewVaultItemExecute(r ApiVaultCreateNewVaultItemRequest) (*VaultItem, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  VaultItem
+		formFiles            []formFile
+		localVarReturnValue  *VaultItem
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultCreateNewVaultItem")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultItem"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.item == nil {
-		return localVarReturnValue, nil, reportError("item is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -238,7 +226,7 @@ func (a *VaultApiService) VaultCreateNewVaultItemExecute(r ApiVaultCreateNewVaul
 	}
 	// body params
 	localVarPostBody = r.item
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -248,15 +236,15 @@ func (a *VaultApiService) VaultCreateNewVaultItemExecute(r ApiVaultCreateNewVaul
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -267,14 +255,15 @@ func (a *VaultApiService) VaultCreateNewVaultItemExecute(r ApiVaultCreateNewVaul
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -285,7 +274,7 @@ func (a *VaultApiService) VaultCreateNewVaultItemExecute(r ApiVaultCreateNewVaul
 }
 
 type ApiVaultCreateNewVaultSectionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	section *VaultSection
 }
@@ -296,7 +285,7 @@ func (r ApiVaultCreateNewVaultSectionRequest) Section(section VaultSection) ApiV
 	return r
 }
 
-func (r ApiVaultCreateNewVaultSectionRequest) Execute() (VaultSection, *_nethttp.Response, error) {
+func (r ApiVaultCreateNewVaultSectionRequest) Execute() (*VaultSection, *http.Response, error) {
 	return r.ApiService.VaultCreateNewVaultSectionExecute(r)
 }
 
@@ -305,10 +294,10 @@ VaultCreateNewVaultSection Creates a new vault section.
 
 When a new vault section is created, the user that created the section is granted View and Edit authorizations to that section. The VaultSectionGuid attribute should be omitted in the request body. The Guid of the newly created section will be returned in the response.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiVaultCreateNewVaultSectionRequest
 */
-func (a *VaultApiService) VaultCreateNewVaultSection(ctx _context.Context) ApiVaultCreateNewVaultSectionRequest {
+func (a *VaultApiService) VaultCreateNewVaultSection(ctx context.Context) ApiVaultCreateNewVaultSectionRequest {
 	return ApiVaultCreateNewVaultSectionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -317,29 +306,24 @@ func (a *VaultApiService) VaultCreateNewVaultSection(ctx _context.Context) ApiVa
 
 // Execute executes the request
 //  @return VaultSection
-func (a *VaultApiService) VaultCreateNewVaultSectionExecute(r ApiVaultCreateNewVaultSectionRequest) (VaultSection, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultCreateNewVaultSectionExecute(r ApiVaultCreateNewVaultSectionRequest) (*VaultSection, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  VaultSection
+		formFiles            []formFile
+		localVarReturnValue  *VaultSection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultCreateNewVaultSection")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultSection"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.section == nil {
-		return localVarReturnValue, nil, reportError("section is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -360,7 +344,7 @@ func (a *VaultApiService) VaultCreateNewVaultSectionExecute(r ApiVaultCreateNewV
 	}
 	// body params
 	localVarPostBody = r.section
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -370,15 +354,15 @@ func (a *VaultApiService) VaultCreateNewVaultSectionExecute(r ApiVaultCreateNewV
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -389,14 +373,15 @@ func (a *VaultApiService) VaultCreateNewVaultSectionExecute(r ApiVaultCreateNewV
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -407,26 +392,25 @@ func (a *VaultApiService) VaultCreateNewVaultSectionExecute(r ApiVaultCreateNewV
 }
 
 type ApiVaultDeleteAuthorizationForVaultSectionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	vaultSectionGuid string
 	authorizationGuid string
 }
 
-
-func (r ApiVaultDeleteAuthorizationForVaultSectionRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiVaultDeleteAuthorizationForVaultSectionRequest) Execute() (*http.Response, error) {
 	return r.ApiService.VaultDeleteAuthorizationForVaultSectionExecute(r)
 }
 
 /*
-VaultDeleteAuthorizationForVaultSection Deletes the specified authorization for the specified vault section. 
+VaultDeleteAuthorizationForVaultSection Deletes the specified authorization for the specified vault section.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param vaultSectionGuid The Guid of the vault section for which the authorization should be deleted.
  @param authorizationGuid The Guid of the authorization that should be deleted.
  @return ApiVaultDeleteAuthorizationForVaultSectionRequest
 */
-func (a *VaultApiService) VaultDeleteAuthorizationForVaultSection(ctx _context.Context, vaultSectionGuid string, authorizationGuid string) ApiVaultDeleteAuthorizationForVaultSectionRequest {
+func (a *VaultApiService) VaultDeleteAuthorizationForVaultSection(ctx context.Context, vaultSectionGuid string, authorizationGuid string) ApiVaultDeleteAuthorizationForVaultSectionRequest {
 	return ApiVaultDeleteAuthorizationForVaultSectionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -436,27 +420,25 @@ func (a *VaultApiService) VaultDeleteAuthorizationForVaultSection(ctx _context.C
 }
 
 // Execute executes the request
-func (a *VaultApiService) VaultDeleteAuthorizationForVaultSectionExecute(r ApiVaultDeleteAuthorizationForVaultSectionRequest) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultDeleteAuthorizationForVaultSectionExecute(r ApiVaultDeleteAuthorizationForVaultSectionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultDeleteAuthorizationForVaultSection")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultSection/{vaultSectionGuid}/Authorization/{authorizationGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", _neturl.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
-	localVarPath = strings.Replace(localVarPath, "{"+"authorizationGuid"+"}", _neturl.PathEscape(parameterToString(r.authorizationGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", url.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"authorizationGuid"+"}", url.PathEscape(parameterToString(r.authorizationGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -475,7 +457,7 @@ func (a *VaultApiService) VaultDeleteAuthorizationForVaultSectionExecute(r ApiVa
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -485,15 +467,15 @@ func (a *VaultApiService) VaultDeleteAuthorizationForVaultSectionExecute(r ApiVa
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -504,7 +486,8 @@ func (a *VaultApiService) VaultDeleteAuthorizationForVaultSectionExecute(r ApiVa
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -514,7 +497,8 @@ func (a *VaultApiService) VaultDeleteAuthorizationForVaultSectionExecute(r ApiVa
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -523,24 +507,23 @@ func (a *VaultApiService) VaultDeleteAuthorizationForVaultSectionExecute(r ApiVa
 }
 
 type ApiVaultDeleteVaultItemRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	vaultItemGuid string
 }
 
-
-func (r ApiVaultDeleteVaultItemRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiVaultDeleteVaultItemRequest) Execute() (*http.Response, error) {
 	return r.ApiService.VaultDeleteVaultItemExecute(r)
 }
 
 /*
 VaultDeleteVaultItem Deletes the specified vault item.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param vaultItemGuid The Guid of the vault item that should be deleted.
  @return ApiVaultDeleteVaultItemRequest
 */
-func (a *VaultApiService) VaultDeleteVaultItem(ctx _context.Context, vaultItemGuid string) ApiVaultDeleteVaultItemRequest {
+func (a *VaultApiService) VaultDeleteVaultItem(ctx context.Context, vaultItemGuid string) ApiVaultDeleteVaultItemRequest {
 	return ApiVaultDeleteVaultItemRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -549,26 +532,24 @@ func (a *VaultApiService) VaultDeleteVaultItem(ctx _context.Context, vaultItemGu
 }
 
 // Execute executes the request
-func (a *VaultApiService) VaultDeleteVaultItemExecute(r ApiVaultDeleteVaultItemRequest) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultDeleteVaultItemExecute(r ApiVaultDeleteVaultItemRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultDeleteVaultItem")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultItem/{vaultItemGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"vaultItemGuid"+"}", _neturl.PathEscape(parameterToString(r.vaultItemGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultItemGuid"+"}", url.PathEscape(parameterToString(r.vaultItemGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -587,7 +568,7 @@ func (a *VaultApiService) VaultDeleteVaultItemExecute(r ApiVaultDeleteVaultItemR
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -597,15 +578,15 @@ func (a *VaultApiService) VaultDeleteVaultItemExecute(r ApiVaultDeleteVaultItemR
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -616,7 +597,8 @@ func (a *VaultApiService) VaultDeleteVaultItemExecute(r ApiVaultDeleteVaultItemR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -626,7 +608,8 @@ func (a *VaultApiService) VaultDeleteVaultItemExecute(r ApiVaultDeleteVaultItemR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -635,24 +618,23 @@ func (a *VaultApiService) VaultDeleteVaultItemExecute(r ApiVaultDeleteVaultItemR
 }
 
 type ApiVaultDeleteVaultSectionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	vaultSectionGuid string
 }
 
-
-func (r ApiVaultDeleteVaultSectionRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiVaultDeleteVaultSectionRequest) Execute() (*http.Response, error) {
 	return r.ApiService.VaultDeleteVaultSectionExecute(r)
 }
 
 /*
 VaultDeleteVaultSection Deletes the specified vault section.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param vaultSectionGuid The Guid of the vault section that should be deleted.
  @return ApiVaultDeleteVaultSectionRequest
 */
-func (a *VaultApiService) VaultDeleteVaultSection(ctx _context.Context, vaultSectionGuid string) ApiVaultDeleteVaultSectionRequest {
+func (a *VaultApiService) VaultDeleteVaultSection(ctx context.Context, vaultSectionGuid string) ApiVaultDeleteVaultSectionRequest {
 	return ApiVaultDeleteVaultSectionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -661,26 +643,24 @@ func (a *VaultApiService) VaultDeleteVaultSection(ctx _context.Context, vaultSec
 }
 
 // Execute executes the request
-func (a *VaultApiService) VaultDeleteVaultSectionExecute(r ApiVaultDeleteVaultSectionRequest) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultDeleteVaultSectionExecute(r ApiVaultDeleteVaultSectionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultDeleteVaultSection")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultSection/{vaultSectionGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", _neturl.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", url.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -699,7 +679,7 @@ func (a *VaultApiService) VaultDeleteVaultSectionExecute(r ApiVaultDeleteVaultSe
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -709,15 +689,15 @@ func (a *VaultApiService) VaultDeleteVaultSectionExecute(r ApiVaultDeleteVaultSe
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -728,7 +708,8 @@ func (a *VaultApiService) VaultDeleteVaultSectionExecute(r ApiVaultDeleteVaultSe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -738,7 +719,8 @@ func (a *VaultApiService) VaultDeleteVaultSectionExecute(r ApiVaultDeleteVaultSe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -747,22 +729,21 @@ func (a *VaultApiService) VaultDeleteVaultSectionExecute(r ApiVaultDeleteVaultSe
 }
 
 type ApiVaultGetAllVaultItemsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 }
 
-
-func (r ApiVaultGetAllVaultItemsRequest) Execute() ([]VaultItem, *_nethttp.Response, error) {
+func (r ApiVaultGetAllVaultItemsRequest) Execute() ([]VaultItem, *http.Response, error) {
 	return r.ApiService.VaultGetAllVaultItemsExecute(r)
 }
 
 /*
 VaultGetAllVaultItems Returns all vault items.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiVaultGetAllVaultItemsRequest
 */
-func (a *VaultApiService) VaultGetAllVaultItems(ctx _context.Context) ApiVaultGetAllVaultItemsRequest {
+func (a *VaultApiService) VaultGetAllVaultItems(ctx context.Context) ApiVaultGetAllVaultItemsRequest {
 	return ApiVaultGetAllVaultItemsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -771,26 +752,24 @@ func (a *VaultApiService) VaultGetAllVaultItems(ctx _context.Context) ApiVaultGe
 
 // Execute executes the request
 //  @return []VaultItem
-func (a *VaultApiService) VaultGetAllVaultItemsExecute(r ApiVaultGetAllVaultItemsRequest) ([]VaultItem, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultGetAllVaultItemsExecute(r ApiVaultGetAllVaultItemsRequest) ([]VaultItem, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []VaultItem
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultGetAllVaultItems")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultItem"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -809,7 +788,7 @@ func (a *VaultApiService) VaultGetAllVaultItemsExecute(r ApiVaultGetAllVaultItem
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -819,15 +798,15 @@ func (a *VaultApiService) VaultGetAllVaultItemsExecute(r ApiVaultGetAllVaultItem
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -838,14 +817,15 @@ func (a *VaultApiService) VaultGetAllVaultItemsExecute(r ApiVaultGetAllVaultItem
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -856,22 +836,21 @@ func (a *VaultApiService) VaultGetAllVaultItemsExecute(r ApiVaultGetAllVaultItem
 }
 
 type ApiVaultGetAllVaultSectionsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 }
 
-
-func (r ApiVaultGetAllVaultSectionsRequest) Execute() ([]VaultSection, *_nethttp.Response, error) {
+func (r ApiVaultGetAllVaultSectionsRequest) Execute() ([]VaultSection, *http.Response, error) {
 	return r.ApiService.VaultGetAllVaultSectionsExecute(r)
 }
 
 /*
 VaultGetAllVaultSections Returns all vault sections.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiVaultGetAllVaultSectionsRequest
 */
-func (a *VaultApiService) VaultGetAllVaultSections(ctx _context.Context) ApiVaultGetAllVaultSectionsRequest {
+func (a *VaultApiService) VaultGetAllVaultSections(ctx context.Context) ApiVaultGetAllVaultSectionsRequest {
 	return ApiVaultGetAllVaultSectionsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -880,26 +859,24 @@ func (a *VaultApiService) VaultGetAllVaultSections(ctx _context.Context) ApiVaul
 
 // Execute executes the request
 //  @return []VaultSection
-func (a *VaultApiService) VaultGetAllVaultSectionsExecute(r ApiVaultGetAllVaultSectionsRequest) ([]VaultSection, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultGetAllVaultSectionsExecute(r ApiVaultGetAllVaultSectionsRequest) ([]VaultSection, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []VaultSection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultGetAllVaultSections")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultSection"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -918,7 +895,7 @@ func (a *VaultApiService) VaultGetAllVaultSectionsExecute(r ApiVaultGetAllVaultS
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -928,15 +905,15 @@ func (a *VaultApiService) VaultGetAllVaultSectionsExecute(r ApiVaultGetAllVaultS
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -947,14 +924,15 @@ func (a *VaultApiService) VaultGetAllVaultSectionsExecute(r ApiVaultGetAllVaultS
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -965,24 +943,23 @@ func (a *VaultApiService) VaultGetAllVaultSectionsExecute(r ApiVaultGetAllVaultS
 }
 
 type ApiVaultGetAuthorizationsForVaultSectionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	vaultSectionGuid string
 }
 
-
-func (r ApiVaultGetAuthorizationsForVaultSectionRequest) Execute() (VaultSectionAuthorization, *_nethttp.Response, error) {
+func (r ApiVaultGetAuthorizationsForVaultSectionRequest) Execute() (*VaultSectionAuthorization, *http.Response, error) {
 	return r.ApiService.VaultGetAuthorizationsForVaultSectionExecute(r)
 }
 
 /*
 VaultGetAuthorizationsForVaultSection Returns all authorizations for the specified vault section.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param vaultSectionGuid The Guid of the vault section for which to return authorizations.
  @return ApiVaultGetAuthorizationsForVaultSectionRequest
 */
-func (a *VaultApiService) VaultGetAuthorizationsForVaultSection(ctx _context.Context, vaultSectionGuid string) ApiVaultGetAuthorizationsForVaultSectionRequest {
+func (a *VaultApiService) VaultGetAuthorizationsForVaultSection(ctx context.Context, vaultSectionGuid string) ApiVaultGetAuthorizationsForVaultSectionRequest {
 	return ApiVaultGetAuthorizationsForVaultSectionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -992,27 +969,25 @@ func (a *VaultApiService) VaultGetAuthorizationsForVaultSection(ctx _context.Con
 
 // Execute executes the request
 //  @return VaultSectionAuthorization
-func (a *VaultApiService) VaultGetAuthorizationsForVaultSectionExecute(r ApiVaultGetAuthorizationsForVaultSectionRequest) (VaultSectionAuthorization, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultGetAuthorizationsForVaultSectionExecute(r ApiVaultGetAuthorizationsForVaultSectionRequest) (*VaultSectionAuthorization, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  VaultSectionAuthorization
+		formFiles            []formFile
+		localVarReturnValue  *VaultSectionAuthorization
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultGetAuthorizationsForVaultSection")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultSection/{vaultSectionGuid}/Authorization"
-	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", _neturl.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", url.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1031,7 +1006,7 @@ func (a *VaultApiService) VaultGetAuthorizationsForVaultSectionExecute(r ApiVaul
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1041,15 +1016,15 @@ func (a *VaultApiService) VaultGetAuthorizationsForVaultSectionExecute(r ApiVaul
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1060,7 +1035,8 @@ func (a *VaultApiService) VaultGetAuthorizationsForVaultSectionExecute(r ApiVaul
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1070,14 +1046,15 @@ func (a *VaultApiService) VaultGetAuthorizationsForVaultSectionExecute(r ApiVaul
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1088,24 +1065,23 @@ func (a *VaultApiService) VaultGetAuthorizationsForVaultSectionExecute(r ApiVaul
 }
 
 type ApiVaultGetVaultItemRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	vaultItemGuid string
 }
 
-
-func (r ApiVaultGetVaultItemRequest) Execute() (VaultItem, *_nethttp.Response, error) {
+func (r ApiVaultGetVaultItemRequest) Execute() (*VaultItem, *http.Response, error) {
 	return r.ApiService.VaultGetVaultItemExecute(r)
 }
 
 /*
 VaultGetVaultItem Returns the specified vault item.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param vaultItemGuid The Guid of the requested vault item.
  @return ApiVaultGetVaultItemRequest
 */
-func (a *VaultApiService) VaultGetVaultItem(ctx _context.Context, vaultItemGuid string) ApiVaultGetVaultItemRequest {
+func (a *VaultApiService) VaultGetVaultItem(ctx context.Context, vaultItemGuid string) ApiVaultGetVaultItemRequest {
 	return ApiVaultGetVaultItemRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1115,27 +1091,25 @@ func (a *VaultApiService) VaultGetVaultItem(ctx _context.Context, vaultItemGuid 
 
 // Execute executes the request
 //  @return VaultItem
-func (a *VaultApiService) VaultGetVaultItemExecute(r ApiVaultGetVaultItemRequest) (VaultItem, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultGetVaultItemExecute(r ApiVaultGetVaultItemRequest) (*VaultItem, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  VaultItem
+		formFiles            []formFile
+		localVarReturnValue  *VaultItem
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultGetVaultItem")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultItem/{vaultItemGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"vaultItemGuid"+"}", _neturl.PathEscape(parameterToString(r.vaultItemGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultItemGuid"+"}", url.PathEscape(parameterToString(r.vaultItemGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1154,7 +1128,7 @@ func (a *VaultApiService) VaultGetVaultItemExecute(r ApiVaultGetVaultItemRequest
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1164,15 +1138,15 @@ func (a *VaultApiService) VaultGetVaultItemExecute(r ApiVaultGetVaultItemRequest
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1183,7 +1157,8 @@ func (a *VaultApiService) VaultGetVaultItemExecute(r ApiVaultGetVaultItemRequest
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1193,14 +1168,15 @@ func (a *VaultApiService) VaultGetVaultItemExecute(r ApiVaultGetVaultItemRequest
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1211,24 +1187,23 @@ func (a *VaultApiService) VaultGetVaultItemExecute(r ApiVaultGetVaultItemRequest
 }
 
 type ApiVaultGetVaultSectionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	vaultSectionGuid string
 }
 
-
-func (r ApiVaultGetVaultSectionRequest) Execute() (VaultSection, *_nethttp.Response, error) {
+func (r ApiVaultGetVaultSectionRequest) Execute() (*VaultSection, *http.Response, error) {
 	return r.ApiService.VaultGetVaultSectionExecute(r)
 }
 
 /*
 VaultGetVaultSection Returns the specified vault section.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param vaultSectionGuid The Guid of the requested vault section.
  @return ApiVaultGetVaultSectionRequest
 */
-func (a *VaultApiService) VaultGetVaultSection(ctx _context.Context, vaultSectionGuid string) ApiVaultGetVaultSectionRequest {
+func (a *VaultApiService) VaultGetVaultSection(ctx context.Context, vaultSectionGuid string) ApiVaultGetVaultSectionRequest {
 	return ApiVaultGetVaultSectionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1238,27 +1213,25 @@ func (a *VaultApiService) VaultGetVaultSection(ctx _context.Context, vaultSectio
 
 // Execute executes the request
 //  @return VaultSection
-func (a *VaultApiService) VaultGetVaultSectionExecute(r ApiVaultGetVaultSectionRequest) (VaultSection, *_nethttp.Response, error) {
+func (a *VaultApiService) VaultGetVaultSectionExecute(r ApiVaultGetVaultSectionRequest) (*VaultSection, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  VaultSection
+		formFiles            []formFile
+		localVarReturnValue  *VaultSection
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultGetVaultSection")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultSection/{vaultSectionGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", _neturl.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", url.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -1277,7 +1250,7 @@ func (a *VaultApiService) VaultGetVaultSectionExecute(r ApiVaultGetVaultSectionR
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -1287,15 +1260,15 @@ func (a *VaultApiService) VaultGetVaultSectionExecute(r ApiVaultGetVaultSectionR
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1306,7 +1279,8 @@ func (a *VaultApiService) VaultGetVaultSectionExecute(r ApiVaultGetVaultSectionR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1316,14 +1290,15 @@ func (a *VaultApiService) VaultGetVaultSectionExecute(r ApiVaultGetVaultSectionR
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -1334,7 +1309,7 @@ func (a *VaultApiService) VaultGetVaultSectionExecute(r ApiVaultGetVaultSectionR
 }
 
 type ApiVaultPartiallyUpdateVaultItemRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	vaultItemGuid string
 	item *VaultItem
@@ -1346,7 +1321,7 @@ func (r ApiVaultPartiallyUpdateVaultItemRequest) Item(item VaultItem) ApiVaultPa
 	return r
 }
 
-func (r ApiVaultPartiallyUpdateVaultItemRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiVaultPartiallyUpdateVaultItemRequest) Execute() (*http.Response, error) {
 	return r.ApiService.VaultPartiallyUpdateVaultItemExecute(r)
 }
 
@@ -1355,11 +1330,11 @@ VaultPartiallyUpdateVaultItem Partially updates the specified vault item.
 
 The vault item type cannot be changed with this operation.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param vaultItemGuid The Guid of the vault item that should be updated.
  @return ApiVaultPartiallyUpdateVaultItemRequest
 */
-func (a *VaultApiService) VaultPartiallyUpdateVaultItem(ctx _context.Context, vaultItemGuid string) ApiVaultPartiallyUpdateVaultItemRequest {
+func (a *VaultApiService) VaultPartiallyUpdateVaultItem(ctx context.Context, vaultItemGuid string) ApiVaultPartiallyUpdateVaultItemRequest {
 	return ApiVaultPartiallyUpdateVaultItemRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1368,29 +1343,24 @@ func (a *VaultApiService) VaultPartiallyUpdateVaultItem(ctx _context.Context, va
 }
 
 // Execute executes the request
-func (a *VaultApiService) VaultPartiallyUpdateVaultItemExecute(r ApiVaultPartiallyUpdateVaultItemRequest) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultPartiallyUpdateVaultItemExecute(r ApiVaultPartiallyUpdateVaultItemRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
+		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultPartiallyUpdateVaultItem")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultItem/{vaultItemGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"vaultItemGuid"+"}", _neturl.PathEscape(parameterToString(r.vaultItemGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultItemGuid"+"}", url.PathEscape(parameterToString(r.vaultItemGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.item == nil {
-		return nil, reportError("item is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -1411,7 +1381,7 @@ func (a *VaultApiService) VaultPartiallyUpdateVaultItemExecute(r ApiVaultPartial
 	}
 	// body params
 	localVarPostBody = r.item
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1421,15 +1391,15 @@ func (a *VaultApiService) VaultPartiallyUpdateVaultItemExecute(r ApiVaultPartial
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1440,7 +1410,8 @@ func (a *VaultApiService) VaultPartiallyUpdateVaultItemExecute(r ApiVaultPartial
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1450,7 +1421,8 @@ func (a *VaultApiService) VaultPartiallyUpdateVaultItemExecute(r ApiVaultPartial
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1459,7 +1431,7 @@ func (a *VaultApiService) VaultPartiallyUpdateVaultItemExecute(r ApiVaultPartial
 }
 
 type ApiVaultUpdateVaultItemRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	vaultItemGuid string
 	item *VaultItem
@@ -1471,7 +1443,7 @@ func (r ApiVaultUpdateVaultItemRequest) Item(item VaultItem) ApiVaultUpdateVault
 	return r
 }
 
-func (r ApiVaultUpdateVaultItemRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiVaultUpdateVaultItemRequest) Execute() (*http.Response, error) {
 	return r.ApiService.VaultUpdateVaultItemExecute(r)
 }
 
@@ -1480,11 +1452,11 @@ VaultUpdateVaultItem Updates the specified vault item.
 
 Only complete definitions are accepted. Fields not specified will be NULLed.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param vaultItemGuid The Guid of the vault item that should be updated.
  @return ApiVaultUpdateVaultItemRequest
 */
-func (a *VaultApiService) VaultUpdateVaultItem(ctx _context.Context, vaultItemGuid string) ApiVaultUpdateVaultItemRequest {
+func (a *VaultApiService) VaultUpdateVaultItem(ctx context.Context, vaultItemGuid string) ApiVaultUpdateVaultItemRequest {
 	return ApiVaultUpdateVaultItemRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1493,29 +1465,24 @@ func (a *VaultApiService) VaultUpdateVaultItem(ctx _context.Context, vaultItemGu
 }
 
 // Execute executes the request
-func (a *VaultApiService) VaultUpdateVaultItemExecute(r ApiVaultUpdateVaultItemRequest) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultUpdateVaultItemExecute(r ApiVaultUpdateVaultItemRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultUpdateVaultItem")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultItem/{vaultItemGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"vaultItemGuid"+"}", _neturl.PathEscape(parameterToString(r.vaultItemGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultItemGuid"+"}", url.PathEscape(parameterToString(r.vaultItemGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.item == nil {
-		return nil, reportError("item is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -1536,7 +1503,7 @@ func (a *VaultApiService) VaultUpdateVaultItemExecute(r ApiVaultUpdateVaultItemR
 	}
 	// body params
 	localVarPostBody = r.item
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1546,15 +1513,15 @@ func (a *VaultApiService) VaultUpdateVaultItemExecute(r ApiVaultUpdateVaultItemR
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1565,7 +1532,8 @@ func (a *VaultApiService) VaultUpdateVaultItemExecute(r ApiVaultUpdateVaultItemR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1575,7 +1543,8 @@ func (a *VaultApiService) VaultUpdateVaultItemExecute(r ApiVaultUpdateVaultItemR
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -1584,7 +1553,7 @@ func (a *VaultApiService) VaultUpdateVaultItemExecute(r ApiVaultUpdateVaultItemR
 }
 
 type ApiVaultUpdateVaultSectionRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *VaultApiService
 	vaultSectionGuid string
 	item *VaultSection
@@ -1595,18 +1564,18 @@ func (r ApiVaultUpdateVaultSectionRequest) Item(item VaultSection) ApiVaultUpdat
 	return r
 }
 
-func (r ApiVaultUpdateVaultSectionRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiVaultUpdateVaultSectionRequest) Execute() (*http.Response, error) {
 	return r.ApiService.VaultUpdateVaultSectionExecute(r)
 }
 
 /*
 VaultUpdateVaultSection Updates the specified vault section.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param vaultSectionGuid The Guid of the vault section that should be updated.
  @return ApiVaultUpdateVaultSectionRequest
 */
-func (a *VaultApiService) VaultUpdateVaultSection(ctx _context.Context, vaultSectionGuid string) ApiVaultUpdateVaultSectionRequest {
+func (a *VaultApiService) VaultUpdateVaultSection(ctx context.Context, vaultSectionGuid string) ApiVaultUpdateVaultSectionRequest {
 	return ApiVaultUpdateVaultSectionRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -1615,29 +1584,24 @@ func (a *VaultApiService) VaultUpdateVaultSection(ctx _context.Context, vaultSec
 }
 
 // Execute executes the request
-func (a *VaultApiService) VaultUpdateVaultSectionExecute(r ApiVaultUpdateVaultSectionRequest) (*_nethttp.Response, error) {
+func (a *VaultApiService) VaultUpdateVaultSectionExecute(r ApiVaultUpdateVaultSectionRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "VaultApiService.VaultUpdateVaultSection")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/VaultSection/{vaultSectionGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", _neturl.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"vaultSectionGuid"+"}", url.PathEscape(parameterToString(r.vaultSectionGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.item == nil {
-		return nil, reportError("item is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -1658,7 +1622,7 @@ func (a *VaultApiService) VaultUpdateVaultSectionExecute(r ApiVaultUpdateVaultSe
 	}
 	// body params
 	localVarPostBody = r.item
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -1668,15 +1632,15 @@ func (a *VaultApiService) VaultUpdateVaultSectionExecute(r ApiVaultUpdateVaultSe
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -1687,7 +1651,8 @@ func (a *VaultApiService) VaultUpdateVaultSectionExecute(r ApiVaultUpdateVaultSe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -1697,7 +1662,8 @@ func (a *VaultApiService) VaultUpdateVaultSectionExecute(r ApiVaultUpdateVaultSe
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

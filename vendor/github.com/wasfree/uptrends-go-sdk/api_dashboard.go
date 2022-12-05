@@ -12,40 +12,35 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"strings"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // DashboardApiService DashboardApi service
 type DashboardApiService service
 
 type ApiDashboardCloneDashboardRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *DashboardApiService
 	dashboardGuid string
 }
 
-
-func (r ApiDashboardCloneDashboardRequest) Execute() (Dashboard, *_nethttp.Response, error) {
+func (r ApiDashboardCloneDashboardRequest) Execute() (*Dashboard, *http.Response, error) {
 	return r.ApiService.DashboardCloneDashboardExecute(r)
 }
 
 /*
 DashboardCloneDashboard Clone the specified dashboard.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param dashboardGuid The guid of the specified dashboard.
  @return ApiDashboardCloneDashboardRequest
 */
-func (a *DashboardApiService) DashboardCloneDashboard(ctx _context.Context, dashboardGuid string) ApiDashboardCloneDashboardRequest {
+func (a *DashboardApiService) DashboardCloneDashboard(ctx context.Context, dashboardGuid string) ApiDashboardCloneDashboardRequest {
 	return ApiDashboardCloneDashboardRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -55,27 +50,25 @@ func (a *DashboardApiService) DashboardCloneDashboard(ctx _context.Context, dash
 
 // Execute executes the request
 //  @return Dashboard
-func (a *DashboardApiService) DashboardCloneDashboardExecute(r ApiDashboardCloneDashboardRequest) (Dashboard, *_nethttp.Response, error) {
+func (a *DashboardApiService) DashboardCloneDashboardExecute(r ApiDashboardCloneDashboardRequest) (*Dashboard, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  Dashboard
+		formFiles            []formFile
+		localVarReturnValue  *Dashboard
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DashboardApiService.DashboardCloneDashboard")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Dashboard/{dashboardGuid}/Clone"
-	localVarPath = strings.Replace(localVarPath, "{"+"dashboardGuid"+"}", _neturl.PathEscape(parameterToString(r.dashboardGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"dashboardGuid"+"}", url.PathEscape(parameterToString(r.dashboardGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -94,7 +87,7 @@ func (a *DashboardApiService) DashboardCloneDashboardExecute(r ApiDashboardClone
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -104,15 +97,15 @@ func (a *DashboardApiService) DashboardCloneDashboardExecute(r ApiDashboardClone
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -123,7 +116,8 @@ func (a *DashboardApiService) DashboardCloneDashboardExecute(r ApiDashboardClone
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -133,14 +127,15 @@ func (a *DashboardApiService) DashboardCloneDashboardExecute(r ApiDashboardClone
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -151,24 +146,23 @@ func (a *DashboardApiService) DashboardCloneDashboardExecute(r ApiDashboardClone
 }
 
 type ApiDashboardDeleteDashboardRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *DashboardApiService
 	dashboardGuid string
 }
 
-
-func (r ApiDashboardDeleteDashboardRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiDashboardDeleteDashboardRequest) Execute() (*http.Response, error) {
 	return r.ApiService.DashboardDeleteDashboardExecute(r)
 }
 
 /*
 DashboardDeleteDashboard Delete the specified dashboard.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param dashboardGuid The guid of the specified dashboard.
  @return ApiDashboardDeleteDashboardRequest
 */
-func (a *DashboardApiService) DashboardDeleteDashboard(ctx _context.Context, dashboardGuid string) ApiDashboardDeleteDashboardRequest {
+func (a *DashboardApiService) DashboardDeleteDashboard(ctx context.Context, dashboardGuid string) ApiDashboardDeleteDashboardRequest {
 	return ApiDashboardDeleteDashboardRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -177,26 +171,24 @@ func (a *DashboardApiService) DashboardDeleteDashboard(ctx _context.Context, das
 }
 
 // Execute executes the request
-func (a *DashboardApiService) DashboardDeleteDashboardExecute(r ApiDashboardDeleteDashboardRequest) (*_nethttp.Response, error) {
+func (a *DashboardApiService) DashboardDeleteDashboardExecute(r ApiDashboardDeleteDashboardRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodDelete
+		localVarHTTPMethod   = http.MethodDelete
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DashboardApiService.DashboardDeleteDashboard")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Dashboard/{dashboardGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"dashboardGuid"+"}", _neturl.PathEscape(parameterToString(r.dashboardGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"dashboardGuid"+"}", url.PathEscape(parameterToString(r.dashboardGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -215,7 +207,7 @@ func (a *DashboardApiService) DashboardDeleteDashboardExecute(r ApiDashboardDele
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -225,15 +217,15 @@ func (a *DashboardApiService) DashboardDeleteDashboardExecute(r ApiDashboardDele
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -244,7 +236,8 @@ func (a *DashboardApiService) DashboardDeleteDashboardExecute(r ApiDashboardDele
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -254,7 +247,8 @@ func (a *DashboardApiService) DashboardDeleteDashboardExecute(r ApiDashboardDele
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -263,22 +257,21 @@ func (a *DashboardApiService) DashboardDeleteDashboardExecute(r ApiDashboardDele
 }
 
 type ApiDashboardGetAllDashboardsRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *DashboardApiService
 }
 
-
-func (r ApiDashboardGetAllDashboardsRequest) Execute() ([]Dashboard, *_nethttp.Response, error) {
+func (r ApiDashboardGetAllDashboardsRequest) Execute() ([]Dashboard, *http.Response, error) {
 	return r.ApiService.DashboardGetAllDashboardsExecute(r)
 }
 
 /*
 DashboardGetAllDashboards Returns data for all dashboards.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @return ApiDashboardGetAllDashboardsRequest
 */
-func (a *DashboardApiService) DashboardGetAllDashboards(ctx _context.Context) ApiDashboardGetAllDashboardsRequest {
+func (a *DashboardApiService) DashboardGetAllDashboards(ctx context.Context) ApiDashboardGetAllDashboardsRequest {
 	return ApiDashboardGetAllDashboardsRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -287,26 +280,24 @@ func (a *DashboardApiService) DashboardGetAllDashboards(ctx _context.Context) Ap
 
 // Execute executes the request
 //  @return []Dashboard
-func (a *DashboardApiService) DashboardGetAllDashboardsExecute(r ApiDashboardGetAllDashboardsRequest) ([]Dashboard, *_nethttp.Response, error) {
+func (a *DashboardApiService) DashboardGetAllDashboardsExecute(r ApiDashboardGetAllDashboardsRequest) ([]Dashboard, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 		localVarReturnValue  []Dashboard
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DashboardApiService.DashboardGetAllDashboards")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Dashboard"
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -325,7 +316,7 @@ func (a *DashboardApiService) DashboardGetAllDashboardsExecute(r ApiDashboardGet
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -335,15 +326,15 @@ func (a *DashboardApiService) DashboardGetAllDashboardsExecute(r ApiDashboardGet
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -354,14 +345,15 @@ func (a *DashboardApiService) DashboardGetAllDashboardsExecute(r ApiDashboardGet
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -372,24 +364,23 @@ func (a *DashboardApiService) DashboardGetAllDashboardsExecute(r ApiDashboardGet
 }
 
 type ApiDashboardGetOneDashboardRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *DashboardApiService
 	dashboardGuid string
 }
 
-
-func (r ApiDashboardGetOneDashboardRequest) Execute() (Dashboard, *_nethttp.Response, error) {
+func (r ApiDashboardGetOneDashboardRequest) Execute() (*Dashboard, *http.Response, error) {
 	return r.ApiService.DashboardGetOneDashboardExecute(r)
 }
 
 /*
 DashboardGetOneDashboard Returns data for the specified dashboard.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param dashboardGuid The guid of the specified dashboard.
  @return ApiDashboardGetOneDashboardRequest
 */
-func (a *DashboardApiService) DashboardGetOneDashboard(ctx _context.Context, dashboardGuid string) ApiDashboardGetOneDashboardRequest {
+func (a *DashboardApiService) DashboardGetOneDashboard(ctx context.Context, dashboardGuid string) ApiDashboardGetOneDashboardRequest {
 	return ApiDashboardGetOneDashboardRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -399,27 +390,25 @@ func (a *DashboardApiService) DashboardGetOneDashboard(ctx _context.Context, das
 
 // Execute executes the request
 //  @return Dashboard
-func (a *DashboardApiService) DashboardGetOneDashboardExecute(r ApiDashboardGetOneDashboardRequest) (Dashboard, *_nethttp.Response, error) {
+func (a *DashboardApiService) DashboardGetOneDashboardExecute(r ApiDashboardGetOneDashboardRequest) (*Dashboard, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodGet
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  Dashboard
+		formFiles            []formFile
+		localVarReturnValue  *Dashboard
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DashboardApiService.DashboardGetOneDashboard")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Dashboard/{dashboardGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"dashboardGuid"+"}", _neturl.PathEscape(parameterToString(r.dashboardGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"dashboardGuid"+"}", url.PathEscape(parameterToString(r.dashboardGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -438,7 +427,7 @@ func (a *DashboardApiService) DashboardGetOneDashboardExecute(r ApiDashboardGetO
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -448,15 +437,15 @@ func (a *DashboardApiService) DashboardGetOneDashboardExecute(r ApiDashboardGetO
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -467,7 +456,8 @@ func (a *DashboardApiService) DashboardGetOneDashboardExecute(r ApiDashboardGetO
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarReturnValue, localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -477,14 +467,15 @@ func (a *DashboardApiService) DashboardGetOneDashboardExecute(r ApiDashboardGetO
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
@@ -495,7 +486,7 @@ func (a *DashboardApiService) DashboardGetOneDashboardExecute(r ApiDashboardGetO
 }
 
 type ApiDashboardPartiallyUpdateDashboardRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *DashboardApiService
 	dashboardGuid string
 	dashboard *Dashboard
@@ -507,18 +498,18 @@ func (r ApiDashboardPartiallyUpdateDashboardRequest) Dashboard(dashboard Dashboa
 	return r
 }
 
-func (r ApiDashboardPartiallyUpdateDashboardRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiDashboardPartiallyUpdateDashboardRequest) Execute() (*http.Response, error) {
 	return r.ApiService.DashboardPartiallyUpdateDashboardExecute(r)
 }
 
 /*
 DashboardPartiallyUpdateDashboard Partially update the specified dashboard.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param dashboardGuid The guid of the specified dashboard.
  @return ApiDashboardPartiallyUpdateDashboardRequest
 */
-func (a *DashboardApiService) DashboardPartiallyUpdateDashboard(ctx _context.Context, dashboardGuid string) ApiDashboardPartiallyUpdateDashboardRequest {
+func (a *DashboardApiService) DashboardPartiallyUpdateDashboard(ctx context.Context, dashboardGuid string) ApiDashboardPartiallyUpdateDashboardRequest {
 	return ApiDashboardPartiallyUpdateDashboardRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -527,29 +518,24 @@ func (a *DashboardApiService) DashboardPartiallyUpdateDashboard(ctx _context.Con
 }
 
 // Execute executes the request
-func (a *DashboardApiService) DashboardPartiallyUpdateDashboardExecute(r ApiDashboardPartiallyUpdateDashboardRequest) (*_nethttp.Response, error) {
+func (a *DashboardApiService) DashboardPartiallyUpdateDashboardExecute(r ApiDashboardPartiallyUpdateDashboardRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPatch
+		localVarHTTPMethod   = http.MethodPatch
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DashboardApiService.DashboardPartiallyUpdateDashboard")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Dashboard/{dashboardGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"dashboardGuid"+"}", _neturl.PathEscape(parameterToString(r.dashboardGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"dashboardGuid"+"}", url.PathEscape(parameterToString(r.dashboardGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.dashboard == nil {
-		return nil, reportError("dashboard is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -570,7 +556,7 @@ func (a *DashboardApiService) DashboardPartiallyUpdateDashboardExecute(r ApiDash
 	}
 	// body params
 	localVarPostBody = r.dashboard
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -580,15 +566,15 @@ func (a *DashboardApiService) DashboardPartiallyUpdateDashboardExecute(r ApiDash
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -599,7 +585,8 @@ func (a *DashboardApiService) DashboardPartiallyUpdateDashboardExecute(r ApiDash
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -609,7 +596,8 @@ func (a *DashboardApiService) DashboardPartiallyUpdateDashboardExecute(r ApiDash
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}
@@ -618,7 +606,7 @@ func (a *DashboardApiService) DashboardPartiallyUpdateDashboardExecute(r ApiDash
 }
 
 type ApiDashboardUpdateDashboardRequest struct {
-	ctx _context.Context
+	ctx context.Context
 	ApiService *DashboardApiService
 	dashboardGuid string
 	dashboard *Dashboard
@@ -630,18 +618,18 @@ func (r ApiDashboardUpdateDashboardRequest) Dashboard(dashboard Dashboard) ApiDa
 	return r
 }
 
-func (r ApiDashboardUpdateDashboardRequest) Execute() (*_nethttp.Response, error) {
+func (r ApiDashboardUpdateDashboardRequest) Execute() (*http.Response, error) {
 	return r.ApiService.DashboardUpdateDashboardExecute(r)
 }
 
 /*
 DashboardUpdateDashboard Update the specified dashboard.
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
  @param dashboardGuid The guid of the specified dashboard.
  @return ApiDashboardUpdateDashboardRequest
 */
-func (a *DashboardApiService) DashboardUpdateDashboard(ctx _context.Context, dashboardGuid string) ApiDashboardUpdateDashboardRequest {
+func (a *DashboardApiService) DashboardUpdateDashboard(ctx context.Context, dashboardGuid string) ApiDashboardUpdateDashboardRequest {
 	return ApiDashboardUpdateDashboardRequest{
 		ApiService: a,
 		ctx: ctx,
@@ -650,29 +638,24 @@ func (a *DashboardApiService) DashboardUpdateDashboard(ctx _context.Context, das
 }
 
 // Execute executes the request
-func (a *DashboardApiService) DashboardUpdateDashboardExecute(r ApiDashboardUpdateDashboardRequest) (*_nethttp.Response, error) {
+func (a *DashboardApiService) DashboardUpdateDashboardExecute(r ApiDashboardUpdateDashboardRequest) (*http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodPut
+		localVarHTTPMethod   = http.MethodPut
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
+		formFiles            []formFile
 	)
 
 	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "DashboardApiService.DashboardUpdateDashboard")
 	if err != nil {
-		return nil, GenericOpenAPIError{error: err.Error()}
+		return nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
 	localVarPath := localBasePath + "/Dashboard/{dashboardGuid}"
-	localVarPath = strings.Replace(localVarPath, "{"+"dashboardGuid"+"}", _neturl.PathEscape(parameterToString(r.dashboardGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"dashboardGuid"+"}", url.PathEscape(parameterToString(r.dashboardGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
-	if r.dashboard == nil {
-		return nil, reportError("dashboard is required and must be specified")
-	}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
@@ -693,7 +676,7 @@ func (a *DashboardApiService) DashboardUpdateDashboardExecute(r ApiDashboardUpda
 	}
 	// body params
 	localVarPostBody = r.dashboard
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return nil, err
 	}
@@ -703,15 +686,15 @@ func (a *DashboardApiService) DashboardUpdateDashboardExecute(r ApiDashboardUpda
 		return localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -722,7 +705,8 @@ func (a *DashboardApiService) DashboardUpdateDashboardExecute(r ApiDashboardUpda
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 			return localVarHTTPResponse, newErr
 		}
 		if localVarHTTPResponse.StatusCode == 404 {
@@ -732,7 +716,8 @@ func (a *DashboardApiService) DashboardUpdateDashboardExecute(r ApiDashboardUpda
 				newErr.error = err.Error()
 				return localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarHTTPResponse, newErr
 	}

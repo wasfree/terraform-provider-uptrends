@@ -44,7 +44,8 @@ const (
 	APIASSERTIONSOURCETYPE_RESPONSE_HAS_EXCEPTION ApiAssertionSourceType = "ResponseHasException"
 )
 
-var allowedApiAssertionSourceTypeEnumValues = []ApiAssertionSourceType{
+// All allowed values of ApiAssertionSourceType enum
+var AllowedApiAssertionSourceTypeEnumValues = []ApiAssertionSourceType{
 	"None",
 	"Constant",
 	"Variable",
@@ -76,7 +77,7 @@ func (v *ApiAssertionSourceType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ApiAssertionSourceType(value)
-	for _, existing := range allowedApiAssertionSourceTypeEnumValues {
+	for _, existing := range AllowedApiAssertionSourceTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -93,13 +94,13 @@ func NewApiAssertionSourceTypeFromValue(v string) (*ApiAssertionSourceType, erro
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for ApiAssertionSourceType: valid values are %v", v, allowedApiAssertionSourceTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for ApiAssertionSourceType: valid values are %v", v, AllowedApiAssertionSourceTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v ApiAssertionSourceType) IsValid() bool {
-	for _, existing := range allowedApiAssertionSourceTypeEnumValues {
+	for _, existing := range AllowedApiAssertionSourceTypeEnumValues {
 		if existing == v {
 			return true
 		}

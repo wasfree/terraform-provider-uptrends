@@ -14,7 +14,7 @@ import (
 	"encoding/json"
 )
 
-// HttpEngineStep HttpEngineStep descriobes the results of a step in a Multi-step Api monitor
+// HttpEngineStep HttpEngineStep describes the results of a step in a Multi-step Api monitor
 type HttpEngineStep struct {
 	// The name of the step
 	StepName *string `json:"StepName,omitempty"`
@@ -30,8 +30,7 @@ type HttpEngineStep struct {
 	ResponseCompleted bool `json:"ResponseCompleted"`
 	// Was this step executed?
 	StepExecuted bool `json:"StepExecuted"`
-	// Results of the assertions in this step
-	AssertionResultsInfo *AssertionResultsInfo `json:"AssertionResultsInfo,omitempty"`
+	AssertionResultsInfo *HttpEngineStepAssertionResultsInfo `json:"AssertionResultsInfo,omitempty"`
 	// Number of milliseconds it took for this step to succeed
 	TotalTime int64 `json:"TotalTime"`
 	// Response headers
@@ -42,6 +41,8 @@ type HttpEngineStep struct {
 	RequestHeaders *string `json:"RequestHeaders,omitempty"`
 	// Request body send
 	RequestBody *string `json:"RequestBody,omitempty"`
+	// Resolved IP address
+	ResolvedIpAddress *string `json:"ResolvedIpAddress,omitempty"`
 }
 
 // NewHttpEngineStep instantiates a new HttpEngineStep object
@@ -66,7 +67,7 @@ func NewHttpEngineStepWithDefaults() *HttpEngineStep {
 
 // GetStepName returns the StepName field value if set, zero value otherwise.
 func (o *HttpEngineStep) GetStepName() string {
-	if o == nil || o.StepName == nil {
+	if o == nil || isNil(o.StepName) {
 		var ret string
 		return ret
 	}
@@ -76,15 +77,15 @@ func (o *HttpEngineStep) GetStepName() string {
 // GetStepNameOk returns a tuple with the StepName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetStepNameOk() (*string, bool) {
-	if o == nil || o.StepName == nil {
-		return nil, false
+	if o == nil || isNil(o.StepName) {
+    return nil, false
 	}
 	return o.StepName, true
 }
 
 // HasStepName returns a boolean if a field has been set.
 func (o *HttpEngineStep) HasStepName() bool {
-	if o != nil && o.StepName != nil {
+	if o != nil && !isNil(o.StepName) {
 		return true
 	}
 
@@ -98,7 +99,7 @@ func (o *HttpEngineStep) SetStepName(v string) {
 
 // GetUrl returns the Url field value if set, zero value otherwise.
 func (o *HttpEngineStep) GetUrl() string {
-	if o == nil || o.Url == nil {
+	if o == nil || isNil(o.Url) {
 		var ret string
 		return ret
 	}
@@ -108,15 +109,15 @@ func (o *HttpEngineStep) GetUrl() string {
 // GetUrlOk returns a tuple with the Url field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetUrlOk() (*string, bool) {
-	if o == nil || o.Url == nil {
-		return nil, false
+	if o == nil || isNil(o.Url) {
+    return nil, false
 	}
 	return o.Url, true
 }
 
 // HasUrl returns a boolean if a field has been set.
 func (o *HttpEngineStep) HasUrl() bool {
-	if o != nil && o.Url != nil {
+	if o != nil && !isNil(o.Url) {
 		return true
 	}
 
@@ -130,7 +131,7 @@ func (o *HttpEngineStep) SetUrl(v string) {
 
 // GetHttpStatusCode returns the HttpStatusCode field value if set, zero value otherwise.
 func (o *HttpEngineStep) GetHttpStatusCode() string {
-	if o == nil || o.HttpStatusCode == nil {
+	if o == nil || isNil(o.HttpStatusCode) {
 		var ret string
 		return ret
 	}
@@ -140,15 +141,15 @@ func (o *HttpEngineStep) GetHttpStatusCode() string {
 // GetHttpStatusCodeOk returns a tuple with the HttpStatusCode field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetHttpStatusCodeOk() (*string, bool) {
-	if o == nil || o.HttpStatusCode == nil {
-		return nil, false
+	if o == nil || isNil(o.HttpStatusCode) {
+    return nil, false
 	}
 	return o.HttpStatusCode, true
 }
 
 // HasHttpStatusCode returns a boolean if a field has been set.
 func (o *HttpEngineStep) HasHttpStatusCode() bool {
-	if o != nil && o.HttpStatusCode != nil {
+	if o != nil && !isNil(o.HttpStatusCode) {
 		return true
 	}
 
@@ -162,7 +163,7 @@ func (o *HttpEngineStep) SetHttpStatusCode(v string) {
 
 // GetHttpMethod returns the HttpMethod field value if set, zero value otherwise.
 func (o *HttpEngineStep) GetHttpMethod() string {
-	if o == nil || o.HttpMethod == nil {
+	if o == nil || isNil(o.HttpMethod) {
 		var ret string
 		return ret
 	}
@@ -172,15 +173,15 @@ func (o *HttpEngineStep) GetHttpMethod() string {
 // GetHttpMethodOk returns a tuple with the HttpMethod field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetHttpMethodOk() (*string, bool) {
-	if o == nil || o.HttpMethod == nil {
-		return nil, false
+	if o == nil || isNil(o.HttpMethod) {
+    return nil, false
 	}
 	return o.HttpMethod, true
 }
 
 // HasHttpMethod returns a boolean if a field has been set.
 func (o *HttpEngineStep) HasHttpMethod() bool {
-	if o != nil && o.HttpMethod != nil {
+	if o != nil && !isNil(o.HttpMethod) {
 		return true
 	}
 
@@ -194,7 +195,7 @@ func (o *HttpEngineStep) SetHttpMethod(v string) {
 
 // GetHttpStatusDescription returns the HttpStatusDescription field value if set, zero value otherwise.
 func (o *HttpEngineStep) GetHttpStatusDescription() string {
-	if o == nil || o.HttpStatusDescription == nil {
+	if o == nil || isNil(o.HttpStatusDescription) {
 		var ret string
 		return ret
 	}
@@ -204,15 +205,15 @@ func (o *HttpEngineStep) GetHttpStatusDescription() string {
 // GetHttpStatusDescriptionOk returns a tuple with the HttpStatusDescription field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetHttpStatusDescriptionOk() (*string, bool) {
-	if o == nil || o.HttpStatusDescription == nil {
-		return nil, false
+	if o == nil || isNil(o.HttpStatusDescription) {
+    return nil, false
 	}
 	return o.HttpStatusDescription, true
 }
 
 // HasHttpStatusDescription returns a boolean if a field has been set.
 func (o *HttpEngineStep) HasHttpStatusDescription() bool {
-	if o != nil && o.HttpStatusDescription != nil {
+	if o != nil && !isNil(o.HttpStatusDescription) {
 		return true
 	}
 
@@ -237,8 +238,8 @@ func (o *HttpEngineStep) GetResponseCompleted() bool {
 // GetResponseCompletedOk returns a tuple with the ResponseCompleted field value
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetResponseCompletedOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ResponseCompleted, true
 }
@@ -261,8 +262,8 @@ func (o *HttpEngineStep) GetStepExecuted() bool {
 // GetStepExecutedOk returns a tuple with the StepExecuted field value
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetStepExecutedOk() (*bool, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.StepExecuted, true
 }
@@ -273,9 +274,9 @@ func (o *HttpEngineStep) SetStepExecuted(v bool) {
 }
 
 // GetAssertionResultsInfo returns the AssertionResultsInfo field value if set, zero value otherwise.
-func (o *HttpEngineStep) GetAssertionResultsInfo() AssertionResultsInfo {
-	if o == nil || o.AssertionResultsInfo == nil {
-		var ret AssertionResultsInfo
+func (o *HttpEngineStep) GetAssertionResultsInfo() HttpEngineStepAssertionResultsInfo {
+	if o == nil || isNil(o.AssertionResultsInfo) {
+		var ret HttpEngineStepAssertionResultsInfo
 		return ret
 	}
 	return *o.AssertionResultsInfo
@@ -283,24 +284,24 @@ func (o *HttpEngineStep) GetAssertionResultsInfo() AssertionResultsInfo {
 
 // GetAssertionResultsInfoOk returns a tuple with the AssertionResultsInfo field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *HttpEngineStep) GetAssertionResultsInfoOk() (*AssertionResultsInfo, bool) {
-	if o == nil || o.AssertionResultsInfo == nil {
-		return nil, false
+func (o *HttpEngineStep) GetAssertionResultsInfoOk() (*HttpEngineStepAssertionResultsInfo, bool) {
+	if o == nil || isNil(o.AssertionResultsInfo) {
+    return nil, false
 	}
 	return o.AssertionResultsInfo, true
 }
 
 // HasAssertionResultsInfo returns a boolean if a field has been set.
 func (o *HttpEngineStep) HasAssertionResultsInfo() bool {
-	if o != nil && o.AssertionResultsInfo != nil {
+	if o != nil && !isNil(o.AssertionResultsInfo) {
 		return true
 	}
 
 	return false
 }
 
-// SetAssertionResultsInfo gets a reference to the given AssertionResultsInfo and assigns it to the AssertionResultsInfo field.
-func (o *HttpEngineStep) SetAssertionResultsInfo(v AssertionResultsInfo) {
+// SetAssertionResultsInfo gets a reference to the given HttpEngineStepAssertionResultsInfo and assigns it to the AssertionResultsInfo field.
+func (o *HttpEngineStep) SetAssertionResultsInfo(v HttpEngineStepAssertionResultsInfo) {
 	o.AssertionResultsInfo = &v
 }
 
@@ -317,8 +318,8 @@ func (o *HttpEngineStep) GetTotalTime() int64 {
 // GetTotalTimeOk returns a tuple with the TotalTime field value
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetTotalTimeOk() (*int64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.TotalTime, true
 }
@@ -330,7 +331,7 @@ func (o *HttpEngineStep) SetTotalTime(v int64) {
 
 // GetResponseHeaders returns the ResponseHeaders field value if set, zero value otherwise.
 func (o *HttpEngineStep) GetResponseHeaders() string {
-	if o == nil || o.ResponseHeaders == nil {
+	if o == nil || isNil(o.ResponseHeaders) {
 		var ret string
 		return ret
 	}
@@ -340,15 +341,15 @@ func (o *HttpEngineStep) GetResponseHeaders() string {
 // GetResponseHeadersOk returns a tuple with the ResponseHeaders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetResponseHeadersOk() (*string, bool) {
-	if o == nil || o.ResponseHeaders == nil {
-		return nil, false
+	if o == nil || isNil(o.ResponseHeaders) {
+    return nil, false
 	}
 	return o.ResponseHeaders, true
 }
 
 // HasResponseHeaders returns a boolean if a field has been set.
 func (o *HttpEngineStep) HasResponseHeaders() bool {
-	if o != nil && o.ResponseHeaders != nil {
+	if o != nil && !isNil(o.ResponseHeaders) {
 		return true
 	}
 
@@ -362,7 +363,7 @@ func (o *HttpEngineStep) SetResponseHeaders(v string) {
 
 // GetResponseBody returns the ResponseBody field value if set, zero value otherwise.
 func (o *HttpEngineStep) GetResponseBody() string {
-	if o == nil || o.ResponseBody == nil {
+	if o == nil || isNil(o.ResponseBody) {
 		var ret string
 		return ret
 	}
@@ -372,15 +373,15 @@ func (o *HttpEngineStep) GetResponseBody() string {
 // GetResponseBodyOk returns a tuple with the ResponseBody field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetResponseBodyOk() (*string, bool) {
-	if o == nil || o.ResponseBody == nil {
-		return nil, false
+	if o == nil || isNil(o.ResponseBody) {
+    return nil, false
 	}
 	return o.ResponseBody, true
 }
 
 // HasResponseBody returns a boolean if a field has been set.
 func (o *HttpEngineStep) HasResponseBody() bool {
-	if o != nil && o.ResponseBody != nil {
+	if o != nil && !isNil(o.ResponseBody) {
 		return true
 	}
 
@@ -394,7 +395,7 @@ func (o *HttpEngineStep) SetResponseBody(v string) {
 
 // GetRequestHeaders returns the RequestHeaders field value if set, zero value otherwise.
 func (o *HttpEngineStep) GetRequestHeaders() string {
-	if o == nil || o.RequestHeaders == nil {
+	if o == nil || isNil(o.RequestHeaders) {
 		var ret string
 		return ret
 	}
@@ -404,15 +405,15 @@ func (o *HttpEngineStep) GetRequestHeaders() string {
 // GetRequestHeadersOk returns a tuple with the RequestHeaders field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetRequestHeadersOk() (*string, bool) {
-	if o == nil || o.RequestHeaders == nil {
-		return nil, false
+	if o == nil || isNil(o.RequestHeaders) {
+    return nil, false
 	}
 	return o.RequestHeaders, true
 }
 
 // HasRequestHeaders returns a boolean if a field has been set.
 func (o *HttpEngineStep) HasRequestHeaders() bool {
-	if o != nil && o.RequestHeaders != nil {
+	if o != nil && !isNil(o.RequestHeaders) {
 		return true
 	}
 
@@ -426,7 +427,7 @@ func (o *HttpEngineStep) SetRequestHeaders(v string) {
 
 // GetRequestBody returns the RequestBody field value if set, zero value otherwise.
 func (o *HttpEngineStep) GetRequestBody() string {
-	if o == nil || o.RequestBody == nil {
+	if o == nil || isNil(o.RequestBody) {
 		var ret string
 		return ret
 	}
@@ -436,15 +437,15 @@ func (o *HttpEngineStep) GetRequestBody() string {
 // GetRequestBodyOk returns a tuple with the RequestBody field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *HttpEngineStep) GetRequestBodyOk() (*string, bool) {
-	if o == nil || o.RequestBody == nil {
-		return nil, false
+	if o == nil || isNil(o.RequestBody) {
+    return nil, false
 	}
 	return o.RequestBody, true
 }
 
 // HasRequestBody returns a boolean if a field has been set.
 func (o *HttpEngineStep) HasRequestBody() bool {
-	if o != nil && o.RequestBody != nil {
+	if o != nil && !isNil(o.RequestBody) {
 		return true
 	}
 
@@ -456,21 +457,53 @@ func (o *HttpEngineStep) SetRequestBody(v string) {
 	o.RequestBody = &v
 }
 
+// GetResolvedIpAddress returns the ResolvedIpAddress field value if set, zero value otherwise.
+func (o *HttpEngineStep) GetResolvedIpAddress() string {
+	if o == nil || isNil(o.ResolvedIpAddress) {
+		var ret string
+		return ret
+	}
+	return *o.ResolvedIpAddress
+}
+
+// GetResolvedIpAddressOk returns a tuple with the ResolvedIpAddress field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *HttpEngineStep) GetResolvedIpAddressOk() (*string, bool) {
+	if o == nil || isNil(o.ResolvedIpAddress) {
+    return nil, false
+	}
+	return o.ResolvedIpAddress, true
+}
+
+// HasResolvedIpAddress returns a boolean if a field has been set.
+func (o *HttpEngineStep) HasResolvedIpAddress() bool {
+	if o != nil && !isNil(o.ResolvedIpAddress) {
+		return true
+	}
+
+	return false
+}
+
+// SetResolvedIpAddress gets a reference to the given string and assigns it to the ResolvedIpAddress field.
+func (o *HttpEngineStep) SetResolvedIpAddress(v string) {
+	o.ResolvedIpAddress = &v
+}
+
 func (o HttpEngineStep) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.StepName != nil {
+	if !isNil(o.StepName) {
 		toSerialize["StepName"] = o.StepName
 	}
-	if o.Url != nil {
+	if !isNil(o.Url) {
 		toSerialize["Url"] = o.Url
 	}
-	if o.HttpStatusCode != nil {
+	if !isNil(o.HttpStatusCode) {
 		toSerialize["HttpStatusCode"] = o.HttpStatusCode
 	}
-	if o.HttpMethod != nil {
+	if !isNil(o.HttpMethod) {
 		toSerialize["HttpMethod"] = o.HttpMethod
 	}
-	if o.HttpStatusDescription != nil {
+	if !isNil(o.HttpStatusDescription) {
 		toSerialize["HttpStatusDescription"] = o.HttpStatusDescription
 	}
 	if true {
@@ -479,23 +512,26 @@ func (o HttpEngineStep) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["StepExecuted"] = o.StepExecuted
 	}
-	if o.AssertionResultsInfo != nil {
+	if !isNil(o.AssertionResultsInfo) {
 		toSerialize["AssertionResultsInfo"] = o.AssertionResultsInfo
 	}
 	if true {
 		toSerialize["TotalTime"] = o.TotalTime
 	}
-	if o.ResponseHeaders != nil {
+	if !isNil(o.ResponseHeaders) {
 		toSerialize["ResponseHeaders"] = o.ResponseHeaders
 	}
-	if o.ResponseBody != nil {
+	if !isNil(o.ResponseBody) {
 		toSerialize["ResponseBody"] = o.ResponseBody
 	}
-	if o.RequestHeaders != nil {
+	if !isNil(o.RequestHeaders) {
 		toSerialize["RequestHeaders"] = o.RequestHeaders
 	}
-	if o.RequestBody != nil {
+	if !isNil(o.RequestBody) {
 		toSerialize["RequestBody"] = o.RequestBody
+	}
+	if !isNil(o.ResolvedIpAddress) {
+		toSerialize["ResolvedIpAddress"] = o.ResolvedIpAddress
 	}
 	return json.Marshal(toSerialize)
 }

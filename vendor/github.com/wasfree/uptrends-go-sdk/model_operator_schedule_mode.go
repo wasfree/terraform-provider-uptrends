@@ -26,7 +26,8 @@ const (
 	OPERATORSCHEDULEMODE_MONTHLY OperatorScheduleMode = "Monthly"
 )
 
-var allowedOperatorScheduleModeEnumValues = []OperatorScheduleMode{
+// All allowed values of OperatorScheduleMode enum
+var AllowedOperatorScheduleModeEnumValues = []OperatorScheduleMode{
 	"OneTime",
 	"Daily",
 	"Weekly",
@@ -40,7 +41,7 @@ func (v *OperatorScheduleMode) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := OperatorScheduleMode(value)
-	for _, existing := range allowedOperatorScheduleModeEnumValues {
+	for _, existing := range AllowedOperatorScheduleModeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -57,13 +58,13 @@ func NewOperatorScheduleModeFromValue(v string) (*OperatorScheduleMode, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for OperatorScheduleMode: valid values are %v", v, allowedOperatorScheduleModeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for OperatorScheduleMode: valid values are %v", v, AllowedOperatorScheduleModeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v OperatorScheduleMode) IsValid() bool {
-	for _, existing := range allowedOperatorScheduleModeEnumValues {
+	for _, existing := range AllowedOperatorScheduleModeEnumValues {
 		if existing == v {
 			return true
 		}

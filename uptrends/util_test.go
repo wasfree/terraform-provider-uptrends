@@ -63,7 +63,7 @@ func TestRequestHeaderHelpers(t *testing.T) {
 
 	t.Run("Test expandRequestHeader", func(t *testing.T) {
 		headers := expandRequestHeader(requestHeaderInterfaceTestData)
-		assert.Equal(t, &requestHeaderTestData, headers)
+		assert.Equal(t, requestHeaderTestData, headers)
 	})
 	t.Run("Test flattenRequestHeader", func(t *testing.T) {
 		headers := flattenRequestHeader(&requestHeaderTestData)
@@ -87,7 +87,7 @@ func TestPatternMatchHelper(t *testing.T) {
 
 	t.Run("Test expandPatternMatch", func(t *testing.T) {
 		patterns := expandPatternMatch(patternMatchInterfaceTestData)
-		assert.Equal(t, &patternMatchTestData, patterns)
+		assert.Equal(t, patternMatchTestData, patterns)
 	})
 	t.Run("Test flattenPatternMatch", func(t *testing.T) {
 		patterns := flattenPatternMatch(&patternMatchTestData)

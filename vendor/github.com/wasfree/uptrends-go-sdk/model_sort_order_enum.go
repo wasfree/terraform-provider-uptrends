@@ -24,7 +24,8 @@ const (
 	SORTORDERENUM_BY_STATUS SortOrderEnum = "ByStatus"
 )
 
-var allowedSortOrderEnumEnumValues = []SortOrderEnum{
+// All allowed values of SortOrderEnum enum
+var AllowedSortOrderEnumEnumValues = []SortOrderEnum{
 	"Alphabetical",
 	"ByStatus",
 }
@@ -36,7 +37,7 @@ func (v *SortOrderEnum) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := SortOrderEnum(value)
-	for _, existing := range allowedSortOrderEnumEnumValues {
+	for _, existing := range AllowedSortOrderEnumEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewSortOrderEnumFromValue(v string) (*SortOrderEnum, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for SortOrderEnum: valid values are %v", v, allowedSortOrderEnumEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for SortOrderEnum: valid values are %v", v, AllowedSortOrderEnumEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v SortOrderEnum) IsValid() bool {
-	for _, existing := range allowedSortOrderEnumEnumValues {
+	for _, existing := range AllowedSortOrderEnumEnumValues {
 		if existing == v {
 			return true
 		}

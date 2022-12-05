@@ -32,7 +32,8 @@ const (
 	APICOMPARISONTYPE_IS_NOT_EMPTY ApiComparisonType = "IsNotEmpty"
 )
 
-var allowedApiComparisonTypeEnumValues = []ApiComparisonType{
+// All allowed values of ApiComparisonType enum
+var AllowedApiComparisonTypeEnumValues = []ApiComparisonType{
 	"Equal",
 	"DoesNotEqual",
 	"ContainsText",
@@ -52,7 +53,7 @@ func (v *ApiComparisonType) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ApiComparisonType(value)
-	for _, existing := range allowedApiComparisonTypeEnumValues {
+	for _, existing := range AllowedApiComparisonTypeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -69,13 +70,13 @@ func NewApiComparisonTypeFromValue(v string) (*ApiComparisonType, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for ApiComparisonType: valid values are %v", v, allowedApiComparisonTypeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for ApiComparisonType: valid values are %v", v, AllowedApiComparisonTypeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v ApiComparisonType) IsValid() bool {
-	for _, existing := range allowedApiComparisonTypeEnumValues {
+	for _, existing := range AllowedApiComparisonTypeEnumValues {
 		if existing == v {
 			return true
 		}

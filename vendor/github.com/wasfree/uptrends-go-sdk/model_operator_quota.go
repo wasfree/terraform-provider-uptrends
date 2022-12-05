@@ -39,7 +39,7 @@ func NewOperatorQuotaWithDefaults() *OperatorQuota {
 
 // GetOperators returns the Operators field value if set, zero value otherwise.
 func (o *OperatorQuota) GetOperators() int32 {
-	if o == nil || o.Operators == nil {
+	if o == nil || isNil(o.Operators) {
 		var ret int32
 		return ret
 	}
@@ -49,15 +49,15 @@ func (o *OperatorQuota) GetOperators() int32 {
 // GetOperatorsOk returns a tuple with the Operators field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OperatorQuota) GetOperatorsOk() (*int32, bool) {
-	if o == nil || o.Operators == nil {
-		return nil, false
+	if o == nil || isNil(o.Operators) {
+    return nil, false
 	}
 	return o.Operators, true
 }
 
 // HasOperators returns a boolean if a field has been set.
 func (o *OperatorQuota) HasOperators() bool {
-	if o != nil && o.Operators != nil {
+	if o != nil && !isNil(o.Operators) {
 		return true
 	}
 
@@ -71,7 +71,7 @@ func (o *OperatorQuota) SetOperators(v int32) {
 
 // GetOperatorsInUse returns the OperatorsInUse field value if set, zero value otherwise.
 func (o *OperatorQuota) GetOperatorsInUse() int32 {
-	if o == nil || o.OperatorsInUse == nil {
+	if o == nil || isNil(o.OperatorsInUse) {
 		var ret int32
 		return ret
 	}
@@ -81,15 +81,15 @@ func (o *OperatorQuota) GetOperatorsInUse() int32 {
 // GetOperatorsInUseOk returns a tuple with the OperatorsInUse field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *OperatorQuota) GetOperatorsInUseOk() (*int32, bool) {
-	if o == nil || o.OperatorsInUse == nil {
-		return nil, false
+	if o == nil || isNil(o.OperatorsInUse) {
+    return nil, false
 	}
 	return o.OperatorsInUse, true
 }
 
 // HasOperatorsInUse returns a boolean if a field has been set.
 func (o *OperatorQuota) HasOperatorsInUse() bool {
-	if o != nil && o.OperatorsInUse != nil {
+	if o != nil && !isNil(o.OperatorsInUse) {
 		return true
 	}
 
@@ -103,10 +103,10 @@ func (o *OperatorQuota) SetOperatorsInUse(v int32) {
 
 func (o OperatorQuota) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Operators != nil {
+	if !isNil(o.Operators) {
 		toSerialize["Operators"] = o.Operators
 	}
-	if o.OperatorsInUse != nil {
+	if !isNil(o.OperatorsInUse) {
 		toSerialize["OperatorsInUse"] = o.OperatorsInUse
 	}
 	return json.Marshal(toSerialize)

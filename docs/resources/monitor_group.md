@@ -23,14 +23,11 @@ resource "uptrends_monitor_group" "example" {
 
 ### Required
 
-- **description** (String) Set an descriptive name for the Monitor Group resource.
-
-### Optional
-
-- **id** (String) The ID of this resource.
+- `description` (String) Set an descriptive name for the Monitor Group resource.
 
 ### Read-Only
 
-- **is_all** (Boolean) Indicates whether this group is the `All Monitors` system group.
+- `id` (String) The ID of this resource.
+- `is_all` (Boolean) Indicates whether this group is the `All Monitors` system group.
 
 

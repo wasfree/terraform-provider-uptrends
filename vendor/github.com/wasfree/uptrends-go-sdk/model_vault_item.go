@@ -34,10 +34,9 @@ type VaultItem struct {
 	UserName *string `json:"UserName,omitempty"`
 	// The password associated with a credentialset
 	Password *string `json:"Password,omitempty"`
-	// The certificate archive that is stored in this vault item, if applicable
-	CertificateArchive *CertificateArchive `json:"CertificateArchive,omitempty"`
-	// The file info that is stored in this vault item, if applicable
-	FileInfo *FileInfo `json:"FileInfo,omitempty"`
+	CertificateArchive *VaultItemCertificateArchive `json:"CertificateArchive,omitempty"`
+	FileInfo *VaultItemFileInfo `json:"FileInfo,omitempty"`
+	OneTimePasswordInfo *VaultItemOneTimePasswordInfo `json:"OneTimePasswordInfo,omitempty"`
 }
 
 // NewVaultItem instantiates a new VaultItem object
@@ -59,7 +58,7 @@ func NewVaultItemWithDefaults() *VaultItem {
 
 // GetVaultItemGuid returns the VaultItemGuid field value if set, zero value otherwise.
 func (o *VaultItem) GetVaultItemGuid() string {
-	if o == nil || o.VaultItemGuid == nil {
+	if o == nil || isNil(o.VaultItemGuid) {
 		var ret string
 		return ret
 	}
@@ -69,15 +68,15 @@ func (o *VaultItem) GetVaultItemGuid() string {
 // GetVaultItemGuidOk returns a tuple with the VaultItemGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *VaultItem) GetVaultItemGuidOk() (*string, bool) {
-	if o == nil || o.VaultItemGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.VaultItemGuid) {
+    return nil, false
 	}
 	return o.VaultItemGuid, true
 }
 
 // HasVaultItemGuid returns a boolean if a field has been set.
 func (o *VaultItem) HasVaultItemGuid() bool {
-	if o != nil && o.VaultItemGuid != nil {
+	if o != nil && !isNil(o.VaultItemGuid) {
 		return true
 	}
 
@@ -91,7 +90,7 @@ func (o *VaultItem) SetVaultItemGuid(v string) {
 
 // GetHash returns the Hash field value if set, zero value otherwise.
 func (o *VaultItem) GetHash() string {
-	if o == nil || o.Hash == nil {
+	if o == nil || isNil(o.Hash) {
 		var ret string
 		return ret
 	}
@@ -101,15 +100,15 @@ func (o *VaultItem) GetHash() string {
 // GetHashOk returns a tuple with the Hash field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *VaultItem) GetHashOk() (*string, bool) {
-	if o == nil || o.Hash == nil {
-		return nil, false
+	if o == nil || isNil(o.Hash) {
+    return nil, false
 	}
 	return o.Hash, true
 }
 
 // HasHash returns a boolean if a field has been set.
 func (o *VaultItem) HasHash() bool {
-	if o != nil && o.Hash != nil {
+	if o != nil && !isNil(o.Hash) {
 		return true
 	}
 
@@ -123,7 +122,7 @@ func (o *VaultItem) SetHash(v string) {
 
 // GetName returns the Name field value if set, zero value otherwise.
 func (o *VaultItem) GetName() string {
-	if o == nil || o.Name == nil {
+	if o == nil || isNil(o.Name) {
 		var ret string
 		return ret
 	}
@@ -133,15 +132,15 @@ func (o *VaultItem) GetName() string {
 // GetNameOk returns a tuple with the Name field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *VaultItem) GetNameOk() (*string, bool) {
-	if o == nil || o.Name == nil {
-		return nil, false
+	if o == nil || isNil(o.Name) {
+    return nil, false
 	}
 	return o.Name, true
 }
 
 // HasName returns a boolean if a field has been set.
 func (o *VaultItem) HasName() bool {
-	if o != nil && o.Name != nil {
+	if o != nil && !isNil(o.Name) {
 		return true
 	}
 
@@ -155,7 +154,7 @@ func (o *VaultItem) SetName(v string) {
 
 // GetValue returns the Value field value if set, zero value otherwise.
 func (o *VaultItem) GetValue() string {
-	if o == nil || o.Value == nil {
+	if o == nil || isNil(o.Value) {
 		var ret string
 		return ret
 	}
@@ -165,15 +164,15 @@ func (o *VaultItem) GetValue() string {
 // GetValueOk returns a tuple with the Value field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *VaultItem) GetValueOk() (*string, bool) {
-	if o == nil || o.Value == nil {
-		return nil, false
+	if o == nil || isNil(o.Value) {
+    return nil, false
 	}
 	return o.Value, true
 }
 
 // HasValue returns a boolean if a field has been set.
 func (o *VaultItem) HasValue() bool {
-	if o != nil && o.Value != nil {
+	if o != nil && !isNil(o.Value) {
 		return true
 	}
 
@@ -187,7 +186,7 @@ func (o *VaultItem) SetValue(v string) {
 
 // GetVaultSectionGuid returns the VaultSectionGuid field value if set, zero value otherwise.
 func (o *VaultItem) GetVaultSectionGuid() string {
-	if o == nil || o.VaultSectionGuid == nil {
+	if o == nil || isNil(o.VaultSectionGuid) {
 		var ret string
 		return ret
 	}
@@ -197,15 +196,15 @@ func (o *VaultItem) GetVaultSectionGuid() string {
 // GetVaultSectionGuidOk returns a tuple with the VaultSectionGuid field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *VaultItem) GetVaultSectionGuidOk() (*string, bool) {
-	if o == nil || o.VaultSectionGuid == nil {
-		return nil, false
+	if o == nil || isNil(o.VaultSectionGuid) {
+    return nil, false
 	}
 	return o.VaultSectionGuid, true
 }
 
 // HasVaultSectionGuid returns a boolean if a field has been set.
 func (o *VaultItem) HasVaultSectionGuid() bool {
-	if o != nil && o.VaultSectionGuid != nil {
+	if o != nil && !isNil(o.VaultSectionGuid) {
 		return true
 	}
 
@@ -219,7 +218,7 @@ func (o *VaultItem) SetVaultSectionGuid(v string) {
 
 // GetVaultItemType returns the VaultItemType field value if set, zero value otherwise.
 func (o *VaultItem) GetVaultItemType() VaultItemTypes {
-	if o == nil || o.VaultItemType == nil {
+	if o == nil || isNil(o.VaultItemType) {
 		var ret VaultItemTypes
 		return ret
 	}
@@ -229,15 +228,15 @@ func (o *VaultItem) GetVaultItemType() VaultItemTypes {
 // GetVaultItemTypeOk returns a tuple with the VaultItemType field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *VaultItem) GetVaultItemTypeOk() (*VaultItemTypes, bool) {
-	if o == nil || o.VaultItemType == nil {
-		return nil, false
+	if o == nil || isNil(o.VaultItemType) {
+    return nil, false
 	}
 	return o.VaultItemType, true
 }
 
 // HasVaultItemType returns a boolean if a field has been set.
 func (o *VaultItem) HasVaultItemType() bool {
-	if o != nil && o.VaultItemType != nil {
+	if o != nil && !isNil(o.VaultItemType) {
 		return true
 	}
 
@@ -251,7 +250,7 @@ func (o *VaultItem) SetVaultItemType(v VaultItemTypes) {
 
 // GetNotes returns the Notes field value if set, zero value otherwise.
 func (o *VaultItem) GetNotes() string {
-	if o == nil || o.Notes == nil {
+	if o == nil || isNil(o.Notes) {
 		var ret string
 		return ret
 	}
@@ -261,15 +260,15 @@ func (o *VaultItem) GetNotes() string {
 // GetNotesOk returns a tuple with the Notes field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *VaultItem) GetNotesOk() (*string, bool) {
-	if o == nil || o.Notes == nil {
-		return nil, false
+	if o == nil || isNil(o.Notes) {
+    return nil, false
 	}
 	return o.Notes, true
 }
 
 // HasNotes returns a boolean if a field has been set.
 func (o *VaultItem) HasNotes() bool {
-	if o != nil && o.Notes != nil {
+	if o != nil && !isNil(o.Notes) {
 		return true
 	}
 
@@ -283,7 +282,7 @@ func (o *VaultItem) SetNotes(v string) {
 
 // GetUserName returns the UserName field value if set, zero value otherwise.
 func (o *VaultItem) GetUserName() string {
-	if o == nil || o.UserName == nil {
+	if o == nil || isNil(o.UserName) {
 		var ret string
 		return ret
 	}
@@ -293,15 +292,15 @@ func (o *VaultItem) GetUserName() string {
 // GetUserNameOk returns a tuple with the UserName field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *VaultItem) GetUserNameOk() (*string, bool) {
-	if o == nil || o.UserName == nil {
-		return nil, false
+	if o == nil || isNil(o.UserName) {
+    return nil, false
 	}
 	return o.UserName, true
 }
 
 // HasUserName returns a boolean if a field has been set.
 func (o *VaultItem) HasUserName() bool {
-	if o != nil && o.UserName != nil {
+	if o != nil && !isNil(o.UserName) {
 		return true
 	}
 
@@ -315,7 +314,7 @@ func (o *VaultItem) SetUserName(v string) {
 
 // GetPassword returns the Password field value if set, zero value otherwise.
 func (o *VaultItem) GetPassword() string {
-	if o == nil || o.Password == nil {
+	if o == nil || isNil(o.Password) {
 		var ret string
 		return ret
 	}
@@ -325,15 +324,15 @@ func (o *VaultItem) GetPassword() string {
 // GetPasswordOk returns a tuple with the Password field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *VaultItem) GetPasswordOk() (*string, bool) {
-	if o == nil || o.Password == nil {
-		return nil, false
+	if o == nil || isNil(o.Password) {
+    return nil, false
 	}
 	return o.Password, true
 }
 
 // HasPassword returns a boolean if a field has been set.
 func (o *VaultItem) HasPassword() bool {
-	if o != nil && o.Password != nil {
+	if o != nil && !isNil(o.Password) {
 		return true
 	}
 
@@ -346,9 +345,9 @@ func (o *VaultItem) SetPassword(v string) {
 }
 
 // GetCertificateArchive returns the CertificateArchive field value if set, zero value otherwise.
-func (o *VaultItem) GetCertificateArchive() CertificateArchive {
-	if o == nil || o.CertificateArchive == nil {
-		var ret CertificateArchive
+func (o *VaultItem) GetCertificateArchive() VaultItemCertificateArchive {
+	if o == nil || isNil(o.CertificateArchive) {
+		var ret VaultItemCertificateArchive
 		return ret
 	}
 	return *o.CertificateArchive
@@ -356,31 +355,31 @@ func (o *VaultItem) GetCertificateArchive() CertificateArchive {
 
 // GetCertificateArchiveOk returns a tuple with the CertificateArchive field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *VaultItem) GetCertificateArchiveOk() (*CertificateArchive, bool) {
-	if o == nil || o.CertificateArchive == nil {
-		return nil, false
+func (o *VaultItem) GetCertificateArchiveOk() (*VaultItemCertificateArchive, bool) {
+	if o == nil || isNil(o.CertificateArchive) {
+    return nil, false
 	}
 	return o.CertificateArchive, true
 }
 
 // HasCertificateArchive returns a boolean if a field has been set.
 func (o *VaultItem) HasCertificateArchive() bool {
-	if o != nil && o.CertificateArchive != nil {
+	if o != nil && !isNil(o.CertificateArchive) {
 		return true
 	}
 
 	return false
 }
 
-// SetCertificateArchive gets a reference to the given CertificateArchive and assigns it to the CertificateArchive field.
-func (o *VaultItem) SetCertificateArchive(v CertificateArchive) {
+// SetCertificateArchive gets a reference to the given VaultItemCertificateArchive and assigns it to the CertificateArchive field.
+func (o *VaultItem) SetCertificateArchive(v VaultItemCertificateArchive) {
 	o.CertificateArchive = &v
 }
 
 // GetFileInfo returns the FileInfo field value if set, zero value otherwise.
-func (o *VaultItem) GetFileInfo() FileInfo {
-	if o == nil || o.FileInfo == nil {
-		var ret FileInfo
+func (o *VaultItem) GetFileInfo() VaultItemFileInfo {
+	if o == nil || isNil(o.FileInfo) {
+		var ret VaultItemFileInfo
 		return ret
 	}
 	return *o.FileInfo
@@ -388,61 +387,96 @@ func (o *VaultItem) GetFileInfo() FileInfo {
 
 // GetFileInfoOk returns a tuple with the FileInfo field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *VaultItem) GetFileInfoOk() (*FileInfo, bool) {
-	if o == nil || o.FileInfo == nil {
-		return nil, false
+func (o *VaultItem) GetFileInfoOk() (*VaultItemFileInfo, bool) {
+	if o == nil || isNil(o.FileInfo) {
+    return nil, false
 	}
 	return o.FileInfo, true
 }
 
 // HasFileInfo returns a boolean if a field has been set.
 func (o *VaultItem) HasFileInfo() bool {
-	if o != nil && o.FileInfo != nil {
+	if o != nil && !isNil(o.FileInfo) {
 		return true
 	}
 
 	return false
 }
 
-// SetFileInfo gets a reference to the given FileInfo and assigns it to the FileInfo field.
-func (o *VaultItem) SetFileInfo(v FileInfo) {
+// SetFileInfo gets a reference to the given VaultItemFileInfo and assigns it to the FileInfo field.
+func (o *VaultItem) SetFileInfo(v VaultItemFileInfo) {
 	o.FileInfo = &v
+}
+
+// GetOneTimePasswordInfo returns the OneTimePasswordInfo field value if set, zero value otherwise.
+func (o *VaultItem) GetOneTimePasswordInfo() VaultItemOneTimePasswordInfo {
+	if o == nil || isNil(o.OneTimePasswordInfo) {
+		var ret VaultItemOneTimePasswordInfo
+		return ret
+	}
+	return *o.OneTimePasswordInfo
+}
+
+// GetOneTimePasswordInfoOk returns a tuple with the OneTimePasswordInfo field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *VaultItem) GetOneTimePasswordInfoOk() (*VaultItemOneTimePasswordInfo, bool) {
+	if o == nil || isNil(o.OneTimePasswordInfo) {
+    return nil, false
+	}
+	return o.OneTimePasswordInfo, true
+}
+
+// HasOneTimePasswordInfo returns a boolean if a field has been set.
+func (o *VaultItem) HasOneTimePasswordInfo() bool {
+	if o != nil && !isNil(o.OneTimePasswordInfo) {
+		return true
+	}
+
+	return false
+}
+
+// SetOneTimePasswordInfo gets a reference to the given VaultItemOneTimePasswordInfo and assigns it to the OneTimePasswordInfo field.
+func (o *VaultItem) SetOneTimePasswordInfo(v VaultItemOneTimePasswordInfo) {
+	o.OneTimePasswordInfo = &v
 }
 
 func (o VaultItem) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.VaultItemGuid != nil {
+	if !isNil(o.VaultItemGuid) {
 		toSerialize["VaultItemGuid"] = o.VaultItemGuid
 	}
-	if o.Hash != nil {
+	if !isNil(o.Hash) {
 		toSerialize["Hash"] = o.Hash
 	}
-	if o.Name != nil {
+	if !isNil(o.Name) {
 		toSerialize["Name"] = o.Name
 	}
-	if o.Value != nil {
+	if !isNil(o.Value) {
 		toSerialize["Value"] = o.Value
 	}
-	if o.VaultSectionGuid != nil {
+	if !isNil(o.VaultSectionGuid) {
 		toSerialize["VaultSectionGuid"] = o.VaultSectionGuid
 	}
-	if o.VaultItemType != nil {
+	if !isNil(o.VaultItemType) {
 		toSerialize["VaultItemType"] = o.VaultItemType
 	}
-	if o.Notes != nil {
+	if !isNil(o.Notes) {
 		toSerialize["Notes"] = o.Notes
 	}
-	if o.UserName != nil {
+	if !isNil(o.UserName) {
 		toSerialize["UserName"] = o.UserName
 	}
-	if o.Password != nil {
+	if !isNil(o.Password) {
 		toSerialize["Password"] = o.Password
 	}
-	if o.CertificateArchive != nil {
+	if !isNil(o.CertificateArchive) {
 		toSerialize["CertificateArchive"] = o.CertificateArchive
 	}
-	if o.FileInfo != nil {
+	if !isNil(o.FileInfo) {
 		toSerialize["FileInfo"] = o.FileInfo
+	}
+	if !isNil(o.OneTimePasswordInfo) {
+		toSerialize["OneTimePasswordInfo"] = o.OneTimePasswordInfo
 	}
 	return json.Marshal(toSerialize)
 }

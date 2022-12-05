@@ -40,7 +40,7 @@ func NewPeriodMetaDataWithDefaults() *PeriodMetaData {
 
 // GetWarning returns the Warning field value if set, zero value otherwise.
 func (o *PeriodMetaData) GetWarning() string {
-	if o == nil || o.Warning == nil {
+	if o == nil || isNil(o.Warning) {
 		var ret string
 		return ret
 	}
@@ -50,15 +50,15 @@ func (o *PeriodMetaData) GetWarning() string {
 // GetWarningOk returns a tuple with the Warning field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *PeriodMetaData) GetWarningOk() (*string, bool) {
-	if o == nil || o.Warning == nil {
-		return nil, false
+	if o == nil || isNil(o.Warning) {
+    return nil, false
 	}
 	return o.Warning, true
 }
 
 // HasWarning returns a boolean if a field has been set.
 func (o *PeriodMetaData) HasWarning() bool {
-	if o != nil && o.Warning != nil {
+	if o != nil && !isNil(o.Warning) {
 		return true
 	}
 
@@ -83,8 +83,8 @@ func (o *PeriodMetaData) GetMaximumRetentionDays() int32 {
 // GetMaximumRetentionDaysOk returns a tuple with the MaximumRetentionDays field value
 // and a boolean to check if the value has been set.
 func (o *PeriodMetaData) GetMaximumRetentionDaysOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.MaximumRetentionDays, true
 }
@@ -96,7 +96,7 @@ func (o *PeriodMetaData) SetMaximumRetentionDays(v int32) {
 
 func (o PeriodMetaData) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.Warning != nil {
+	if !isNil(o.Warning) {
 		toSerialize["Warning"] = o.Warning
 	}
 	if true {

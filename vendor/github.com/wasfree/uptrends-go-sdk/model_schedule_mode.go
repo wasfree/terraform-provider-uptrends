@@ -26,7 +26,8 @@ const (
 	SCHEDULEMODE_MONTHLY ScheduleMode = "Monthly"
 )
 
-var allowedScheduleModeEnumValues = []ScheduleMode{
+// All allowed values of ScheduleMode enum
+var AllowedScheduleModeEnumValues = []ScheduleMode{
 	"OneTime",
 	"Daily",
 	"Weekly",
@@ -40,7 +41,7 @@ func (v *ScheduleMode) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := ScheduleMode(value)
-	for _, existing := range allowedScheduleModeEnumValues {
+	for _, existing := range AllowedScheduleModeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -57,13 +58,13 @@ func NewScheduleModeFromValue(v string) (*ScheduleMode, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for ScheduleMode: valid values are %v", v, allowedScheduleModeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for ScheduleMode: valid values are %v", v, AllowedScheduleModeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v ScheduleMode) IsValid() bool {
-	for _, existing := range allowedScheduleModeEnumValues {
+	for _, existing := range AllowedScheduleModeEnumValues {
 		if existing == v {
 			return true
 		}

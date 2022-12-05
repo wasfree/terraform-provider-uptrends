@@ -12,15 +12,14 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
 // ExclusionPeriod struct for ExclusionPeriod
 type ExclusionPeriod struct {
 	ExclusionPeriodId *int32 `json:"ExclusionPeriodId,omitempty"`
 	Description *string `json:"Description,omitempty"`
-	From *time.Time `json:"From,omitempty"`
-	Until *time.Time `json:"Until,omitempty"`
+	From map[string]interface{} `json:"From,omitempty"`
+	Until map[string]interface{} `json:"Until,omitempty"`
 	Hash *string `json:"Hash,omitempty"`
 }
 
@@ -43,7 +42,7 @@ func NewExclusionPeriodWithDefaults() *ExclusionPeriod {
 
 // GetExclusionPeriodId returns the ExclusionPeriodId field value if set, zero value otherwise.
 func (o *ExclusionPeriod) GetExclusionPeriodId() int32 {
-	if o == nil || o.ExclusionPeriodId == nil {
+	if o == nil || isNil(o.ExclusionPeriodId) {
 		var ret int32
 		return ret
 	}
@@ -53,15 +52,15 @@ func (o *ExclusionPeriod) GetExclusionPeriodId() int32 {
 // GetExclusionPeriodIdOk returns a tuple with the ExclusionPeriodId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExclusionPeriod) GetExclusionPeriodIdOk() (*int32, bool) {
-	if o == nil || o.ExclusionPeriodId == nil {
-		return nil, false
+	if o == nil || isNil(o.ExclusionPeriodId) {
+    return nil, false
 	}
 	return o.ExclusionPeriodId, true
 }
 
 // HasExclusionPeriodId returns a boolean if a field has been set.
 func (o *ExclusionPeriod) HasExclusionPeriodId() bool {
-	if o != nil && o.ExclusionPeriodId != nil {
+	if o != nil && !isNil(o.ExclusionPeriodId) {
 		return true
 	}
 
@@ -75,7 +74,7 @@ func (o *ExclusionPeriod) SetExclusionPeriodId(v int32) {
 
 // GetDescription returns the Description field value if set, zero value otherwise.
 func (o *ExclusionPeriod) GetDescription() string {
-	if o == nil || o.Description == nil {
+	if o == nil || isNil(o.Description) {
 		var ret string
 		return ret
 	}
@@ -85,15 +84,15 @@ func (o *ExclusionPeriod) GetDescription() string {
 // GetDescriptionOk returns a tuple with the Description field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExclusionPeriod) GetDescriptionOk() (*string, bool) {
-	if o == nil || o.Description == nil {
-		return nil, false
+	if o == nil || isNil(o.Description) {
+    return nil, false
 	}
 	return o.Description, true
 }
 
 // HasDescription returns a boolean if a field has been set.
 func (o *ExclusionPeriod) HasDescription() bool {
-	if o != nil && o.Description != nil {
+	if o != nil && !isNil(o.Description) {
 		return true
 	}
 
@@ -106,72 +105,72 @@ func (o *ExclusionPeriod) SetDescription(v string) {
 }
 
 // GetFrom returns the From field value if set, zero value otherwise.
-func (o *ExclusionPeriod) GetFrom() time.Time {
-	if o == nil || o.From == nil {
-		var ret time.Time
+func (o *ExclusionPeriod) GetFrom() map[string]interface{} {
+	if o == nil || isNil(o.From) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.From
+	return o.From
 }
 
 // GetFromOk returns a tuple with the From field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ExclusionPeriod) GetFromOk() (*time.Time, bool) {
-	if o == nil || o.From == nil {
-		return nil, false
+func (o *ExclusionPeriod) GetFromOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.From) {
+    return map[string]interface{}{}, false
 	}
 	return o.From, true
 }
 
 // HasFrom returns a boolean if a field has been set.
 func (o *ExclusionPeriod) HasFrom() bool {
-	if o != nil && o.From != nil {
+	if o != nil && !isNil(o.From) {
 		return true
 	}
 
 	return false
 }
 
-// SetFrom gets a reference to the given time.Time and assigns it to the From field.
-func (o *ExclusionPeriod) SetFrom(v time.Time) {
-	o.From = &v
+// SetFrom gets a reference to the given map[string]interface{} and assigns it to the From field.
+func (o *ExclusionPeriod) SetFrom(v map[string]interface{}) {
+	o.From = v
 }
 
 // GetUntil returns the Until field value if set, zero value otherwise.
-func (o *ExclusionPeriod) GetUntil() time.Time {
-	if o == nil || o.Until == nil {
-		var ret time.Time
+func (o *ExclusionPeriod) GetUntil() map[string]interface{} {
+	if o == nil || isNil(o.Until) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.Until
+	return o.Until
 }
 
 // GetUntilOk returns a tuple with the Until field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *ExclusionPeriod) GetUntilOk() (*time.Time, bool) {
-	if o == nil || o.Until == nil {
-		return nil, false
+func (o *ExclusionPeriod) GetUntilOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.Until) {
+    return map[string]interface{}{}, false
 	}
 	return o.Until, true
 }
 
 // HasUntil returns a boolean if a field has been set.
 func (o *ExclusionPeriod) HasUntil() bool {
-	if o != nil && o.Until != nil {
+	if o != nil && !isNil(o.Until) {
 		return true
 	}
 
 	return false
 }
 
-// SetUntil gets a reference to the given time.Time and assigns it to the Until field.
-func (o *ExclusionPeriod) SetUntil(v time.Time) {
-	o.Until = &v
+// SetUntil gets a reference to the given map[string]interface{} and assigns it to the Until field.
+func (o *ExclusionPeriod) SetUntil(v map[string]interface{}) {
+	o.Until = v
 }
 
 // GetHash returns the Hash field value if set, zero value otherwise.
 func (o *ExclusionPeriod) GetHash() string {
-	if o == nil || o.Hash == nil {
+	if o == nil || isNil(o.Hash) {
 		var ret string
 		return ret
 	}
@@ -181,15 +180,15 @@ func (o *ExclusionPeriod) GetHash() string {
 // GetHashOk returns a tuple with the Hash field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *ExclusionPeriod) GetHashOk() (*string, bool) {
-	if o == nil || o.Hash == nil {
-		return nil, false
+	if o == nil || isNil(o.Hash) {
+    return nil, false
 	}
 	return o.Hash, true
 }
 
 // HasHash returns a boolean if a field has been set.
 func (o *ExclusionPeriod) HasHash() bool {
-	if o != nil && o.Hash != nil {
+	if o != nil && !isNil(o.Hash) {
 		return true
 	}
 
@@ -203,19 +202,19 @@ func (o *ExclusionPeriod) SetHash(v string) {
 
 func (o ExclusionPeriod) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
-	if o.ExclusionPeriodId != nil {
+	if !isNil(o.ExclusionPeriodId) {
 		toSerialize["ExclusionPeriodId"] = o.ExclusionPeriodId
 	}
-	if o.Description != nil {
+	if !isNil(o.Description) {
 		toSerialize["Description"] = o.Description
 	}
-	if o.From != nil {
+	if !isNil(o.From) {
 		toSerialize["From"] = o.From
 	}
-	if o.Until != nil {
+	if !isNil(o.Until) {
 		toSerialize["Until"] = o.Until
 	}
-	if o.Hash != nil {
+	if !isNil(o.Hash) {
 		toSerialize["Hash"] = o.Hash
 	}
 	return json.Marshal(toSerialize)

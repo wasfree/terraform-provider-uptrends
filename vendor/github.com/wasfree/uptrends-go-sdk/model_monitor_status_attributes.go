@@ -12,17 +12,18 @@ package uptrends
 
 import (
 	"encoding/json"
-	"time"
 )
 
-// MonitorStatusAttributes Monitor Status attributes
+// MonitorStatusAttributes Object attributes 
 type MonitorStatusAttributes struct {
 	// The error level for the monitor status
 	ErrorLevel LastErrorLevel `json:"ErrorLevel"`
 	// Last checked timeStamp for this monitor
-	LastCheck *time.Time `json:"LastCheck,omitempty"`
+	LastCheck map[string]interface{} `json:"LastCheck,omitempty"`
 	// Checkpoint id for the monitor status
 	CheckpointId *int32 `json:"CheckpointId,omitempty"`
+	// Checkpoint name for the monitor status
+	CheckpointName *string `json:"CheckpointName,omitempty"`
 	// Error description for the monitor status
 	ErrorDescription *string `json:"ErrorDescription,omitempty"`
 	// Uptime percentage for the monitor status
@@ -31,6 +32,8 @@ type MonitorStatusAttributes struct {
 	ErrorCode int32 `json:"ErrorCode"`
 	// Last monitor check id
 	LastMonitorCheckId *int64 `json:"LastMonitorCheckId,omitempty"`
+	// Total time for the monitor status
+	TotalTime *int32 `json:"TotalTime,omitempty"`
 }
 
 // NewMonitorStatusAttributes instantiates a new MonitorStatusAttributes object
@@ -66,8 +69,8 @@ func (o *MonitorStatusAttributes) GetErrorLevel() LastErrorLevel {
 // GetErrorLevelOk returns a tuple with the ErrorLevel field value
 // and a boolean to check if the value has been set.
 func (o *MonitorStatusAttributes) GetErrorLevelOk() (*LastErrorLevel, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ErrorLevel, true
 }
@@ -78,40 +81,40 @@ func (o *MonitorStatusAttributes) SetErrorLevel(v LastErrorLevel) {
 }
 
 // GetLastCheck returns the LastCheck field value if set, zero value otherwise.
-func (o *MonitorStatusAttributes) GetLastCheck() time.Time {
-	if o == nil || o.LastCheck == nil {
-		var ret time.Time
+func (o *MonitorStatusAttributes) GetLastCheck() map[string]interface{} {
+	if o == nil || isNil(o.LastCheck) {
+		var ret map[string]interface{}
 		return ret
 	}
-	return *o.LastCheck
+	return o.LastCheck
 }
 
 // GetLastCheckOk returns a tuple with the LastCheck field value if set, nil otherwise
 // and a boolean to check if the value has been set.
-func (o *MonitorStatusAttributes) GetLastCheckOk() (*time.Time, bool) {
-	if o == nil || o.LastCheck == nil {
-		return nil, false
+func (o *MonitorStatusAttributes) GetLastCheckOk() (map[string]interface{}, bool) {
+	if o == nil || isNil(o.LastCheck) {
+    return map[string]interface{}{}, false
 	}
 	return o.LastCheck, true
 }
 
 // HasLastCheck returns a boolean if a field has been set.
 func (o *MonitorStatusAttributes) HasLastCheck() bool {
-	if o != nil && o.LastCheck != nil {
+	if o != nil && !isNil(o.LastCheck) {
 		return true
 	}
 
 	return false
 }
 
-// SetLastCheck gets a reference to the given time.Time and assigns it to the LastCheck field.
-func (o *MonitorStatusAttributes) SetLastCheck(v time.Time) {
-	o.LastCheck = &v
+// SetLastCheck gets a reference to the given map[string]interface{} and assigns it to the LastCheck field.
+func (o *MonitorStatusAttributes) SetLastCheck(v map[string]interface{}) {
+	o.LastCheck = v
 }
 
 // GetCheckpointId returns the CheckpointId field value if set, zero value otherwise.
 func (o *MonitorStatusAttributes) GetCheckpointId() int32 {
-	if o == nil || o.CheckpointId == nil {
+	if o == nil || isNil(o.CheckpointId) {
 		var ret int32
 		return ret
 	}
@@ -121,15 +124,15 @@ func (o *MonitorStatusAttributes) GetCheckpointId() int32 {
 // GetCheckpointIdOk returns a tuple with the CheckpointId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorStatusAttributes) GetCheckpointIdOk() (*int32, bool) {
-	if o == nil || o.CheckpointId == nil {
-		return nil, false
+	if o == nil || isNil(o.CheckpointId) {
+    return nil, false
 	}
 	return o.CheckpointId, true
 }
 
 // HasCheckpointId returns a boolean if a field has been set.
 func (o *MonitorStatusAttributes) HasCheckpointId() bool {
-	if o != nil && o.CheckpointId != nil {
+	if o != nil && !isNil(o.CheckpointId) {
 		return true
 	}
 
@@ -141,9 +144,41 @@ func (o *MonitorStatusAttributes) SetCheckpointId(v int32) {
 	o.CheckpointId = &v
 }
 
+// GetCheckpointName returns the CheckpointName field value if set, zero value otherwise.
+func (o *MonitorStatusAttributes) GetCheckpointName() string {
+	if o == nil || isNil(o.CheckpointName) {
+		var ret string
+		return ret
+	}
+	return *o.CheckpointName
+}
+
+// GetCheckpointNameOk returns a tuple with the CheckpointName field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MonitorStatusAttributes) GetCheckpointNameOk() (*string, bool) {
+	if o == nil || isNil(o.CheckpointName) {
+    return nil, false
+	}
+	return o.CheckpointName, true
+}
+
+// HasCheckpointName returns a boolean if a field has been set.
+func (o *MonitorStatusAttributes) HasCheckpointName() bool {
+	if o != nil && !isNil(o.CheckpointName) {
+		return true
+	}
+
+	return false
+}
+
+// SetCheckpointName gets a reference to the given string and assigns it to the CheckpointName field.
+func (o *MonitorStatusAttributes) SetCheckpointName(v string) {
+	o.CheckpointName = &v
+}
+
 // GetErrorDescription returns the ErrorDescription field value if set, zero value otherwise.
 func (o *MonitorStatusAttributes) GetErrorDescription() string {
-	if o == nil || o.ErrorDescription == nil {
+	if o == nil || isNil(o.ErrorDescription) {
 		var ret string
 		return ret
 	}
@@ -153,15 +188,15 @@ func (o *MonitorStatusAttributes) GetErrorDescription() string {
 // GetErrorDescriptionOk returns a tuple with the ErrorDescription field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorStatusAttributes) GetErrorDescriptionOk() (*string, bool) {
-	if o == nil || o.ErrorDescription == nil {
-		return nil, false
+	if o == nil || isNil(o.ErrorDescription) {
+    return nil, false
 	}
 	return o.ErrorDescription, true
 }
 
 // HasErrorDescription returns a boolean if a field has been set.
 func (o *MonitorStatusAttributes) HasErrorDescription() bool {
-	if o != nil && o.ErrorDescription != nil {
+	if o != nil && !isNil(o.ErrorDescription) {
 		return true
 	}
 
@@ -186,8 +221,8 @@ func (o *MonitorStatusAttributes) GetUptimePercentage() float64 {
 // GetUptimePercentageOk returns a tuple with the UptimePercentage field value
 // and a boolean to check if the value has been set.
 func (o *MonitorStatusAttributes) GetUptimePercentageOk() (*float64, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.UptimePercentage, true
 }
@@ -210,8 +245,8 @@ func (o *MonitorStatusAttributes) GetErrorCode() int32 {
 // GetErrorCodeOk returns a tuple with the ErrorCode field value
 // and a boolean to check if the value has been set.
 func (o *MonitorStatusAttributes) GetErrorCodeOk() (*int32, bool) {
-	if o == nil  {
-		return nil, false
+	if o == nil {
+    return nil, false
 	}
 	return &o.ErrorCode, true
 }
@@ -223,7 +258,7 @@ func (o *MonitorStatusAttributes) SetErrorCode(v int32) {
 
 // GetLastMonitorCheckId returns the LastMonitorCheckId field value if set, zero value otherwise.
 func (o *MonitorStatusAttributes) GetLastMonitorCheckId() int64 {
-	if o == nil || o.LastMonitorCheckId == nil {
+	if o == nil || isNil(o.LastMonitorCheckId) {
 		var ret int64
 		return ret
 	}
@@ -233,15 +268,15 @@ func (o *MonitorStatusAttributes) GetLastMonitorCheckId() int64 {
 // GetLastMonitorCheckIdOk returns a tuple with the LastMonitorCheckId field value if set, nil otherwise
 // and a boolean to check if the value has been set.
 func (o *MonitorStatusAttributes) GetLastMonitorCheckIdOk() (*int64, bool) {
-	if o == nil || o.LastMonitorCheckId == nil {
-		return nil, false
+	if o == nil || isNil(o.LastMonitorCheckId) {
+    return nil, false
 	}
 	return o.LastMonitorCheckId, true
 }
 
 // HasLastMonitorCheckId returns a boolean if a field has been set.
 func (o *MonitorStatusAttributes) HasLastMonitorCheckId() bool {
-	if o != nil && o.LastMonitorCheckId != nil {
+	if o != nil && !isNil(o.LastMonitorCheckId) {
 		return true
 	}
 
@@ -253,18 +288,53 @@ func (o *MonitorStatusAttributes) SetLastMonitorCheckId(v int64) {
 	o.LastMonitorCheckId = &v
 }
 
+// GetTotalTime returns the TotalTime field value if set, zero value otherwise.
+func (o *MonitorStatusAttributes) GetTotalTime() int32 {
+	if o == nil || isNil(o.TotalTime) {
+		var ret int32
+		return ret
+	}
+	return *o.TotalTime
+}
+
+// GetTotalTimeOk returns a tuple with the TotalTime field value if set, nil otherwise
+// and a boolean to check if the value has been set.
+func (o *MonitorStatusAttributes) GetTotalTimeOk() (*int32, bool) {
+	if o == nil || isNil(o.TotalTime) {
+    return nil, false
+	}
+	return o.TotalTime, true
+}
+
+// HasTotalTime returns a boolean if a field has been set.
+func (o *MonitorStatusAttributes) HasTotalTime() bool {
+	if o != nil && !isNil(o.TotalTime) {
+		return true
+	}
+
+	return false
+}
+
+// SetTotalTime gets a reference to the given int32 and assigns it to the TotalTime field.
+func (o *MonitorStatusAttributes) SetTotalTime(v int32) {
+	o.TotalTime = &v
+}
+
 func (o MonitorStatusAttributes) MarshalJSON() ([]byte, error) {
 	toSerialize := map[string]interface{}{}
 	if true {
 		toSerialize["ErrorLevel"] = o.ErrorLevel
 	}
-	if o.LastCheck != nil {
+	if !isNil(o.LastCheck) {
 		toSerialize["LastCheck"] = o.LastCheck
 	}
-	if o.CheckpointId != nil {
+	if !isNil(o.CheckpointId) {
 		toSerialize["CheckpointId"] = o.CheckpointId
 	}
-	if o.ErrorDescription != nil {
+	if !isNil(o.CheckpointName) {
+		toSerialize["CheckpointName"] = o.CheckpointName
+	}
+	if !isNil(o.ErrorDescription) {
 		toSerialize["ErrorDescription"] = o.ErrorDescription
 	}
 	if true {
@@ -273,8 +343,11 @@ func (o MonitorStatusAttributes) MarshalJSON() ([]byte, error) {
 	if true {
 		toSerialize["ErrorCode"] = o.ErrorCode
 	}
-	if o.LastMonitorCheckId != nil {
+	if !isNil(o.LastMonitorCheckId) {
 		toSerialize["LastMonitorCheckId"] = o.LastMonitorCheckId
+	}
+	if !isNil(o.TotalTime) {
+		toSerialize["TotalTime"] = o.TotalTime
 	}
 	return json.Marshal(toSerialize)
 }

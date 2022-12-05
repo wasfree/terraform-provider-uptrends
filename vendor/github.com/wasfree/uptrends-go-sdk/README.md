@@ -9,10 +9,11 @@ For more information, please visit https://www.uptrends.com/api.
 openapi-generator generate -i ./swagger.json -g go -o . --package-name=uptrends -p enumClassPrefix=true
 
 docker run --rm \
-  -v ${PWD}:/local openapitools/openapi-generator-cli:v5.2.1 generate \
+  -v ${PWD}:/local openapitools/openapi-generator-cli:v6.2.1 generate \
   -i https://api.uptrends.com/v4/swagger/v1/swagger.json \
   -g go \
   -o /local/ \
+  --skip-validate-spec \
   --package-name=uptrends \
   -p enumClassPrefix=true
 
@@ -36,7 +37,7 @@ go get golang.org/x/net/context
 Put the package under your project folder and add the following in import:
 
 ```golang
-import sw "./uptrends"
+import uptrends "github.com/GIT_USER_ID/GIT_REPO_ID"
 ```
 
 To use a proxy, set the environment variable `HTTP_PROXY`:
@@ -54,7 +55,7 @@ Default configuration comes with `Servers` field that contains server objects as
 For using other server than the one defined on index 0 set context value `sw.ContextServerIndex` of type `int`.
 
 ```golang
-ctx := context.WithValue(context.Background(), sw.ContextServerIndex, 1)
+ctx := context.WithValue(context.Background(), uptrends.ContextServerIndex, 1)
 ```
 
 ### Templated Server URL
@@ -62,7 +63,7 @@ ctx := context.WithValue(context.Background(), sw.ContextServerIndex, 1)
 Templated server URL is formatted using default variables from configuration or from context value `sw.ContextServerVariables` of type `map[string]string`.
 
 ```golang
-ctx := context.WithValue(context.Background(), sw.ContextServerVariables, map[string]string{
+ctx := context.WithValue(context.Background(), uptrends.ContextServerVariables, map[string]string{
 	"basePath": "v2",
 })
 ```
@@ -72,14 +73,14 @@ Note, enum values are always validated and all unused variables are silently ign
 ### URLs Configuration per Operation
 
 Each operation can use different server URL defined using `OperationServers` map in the `Configuration`.
-An operation is uniquely identifield by `"{classname}Service.{nickname}"` string.
+An operation is uniquely identified by `"{classname}Service.{nickname}"` string.
 Similar rules for overriding default operation server index and variables applies by using `sw.ContextOperationServerIndices` and `sw.ContextOperationServerVariables` context maps.
 
-```
-ctx := context.WithValue(context.Background(), sw.ContextOperationServerIndices, map[string]int{
+```golang
+ctx := context.WithValue(context.Background(), uptrends.ContextOperationServerIndices, map[string]int{
 	"{classname}Service.{nickname}": 2,
 })
-ctx = context.WithValue(context.Background(), sw.ContextOperationServerVariables, map[string]map[string]string{
+ctx = context.WithValue(context.Background(), uptrends.ContextOperationServerVariables, map[string]map[string]string{
 	"{classname}Service.{nickname}": {
 		"port": "8443",
 	},
@@ -93,6 +94,7 @@ All URIs are relative to *https://api.uptrends.com/v4*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AccountApi* | [**AccountGetAccountStatistics**](docs/AccountApi.md#accountgetaccountstatistics) | **Get** /Account | Returns the account statistics.
+*AccountApi* | [**AccountGetSettings**](docs/AccountApi.md#accountgetsettings) | **Get** /Account/Settings | Returns account general settings.
 *AlertApi* | [**AlertGetMonitorAlerts**](docs/AlertApi.md#alertgetmonitoralerts) | **Get** /Alert/Monitor/{monitorGuid} | Returns alerts for a specific monitor.
 *AlertApi* | [**AlertGetMonitorGroupAlerts**](docs/AlertApi.md#alertgetmonitorgroupalerts) | **Get** /Alert/MonitorGroup/{monitorGroupGuid} | Returns alerts for a specific monitor group.
 *AlertDefinitionApi* | [**AlertDefinitionAddIntegrationToEscalationLevel**](docs/AlertDefinitionApi.md#alertdefinitionaddintegrationtoescalationlevel) | **Post** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration | Adds an integration to a specified escalation level.
@@ -101,11 +103,14 @@ Class | Method | HTTP request | Description
 *AlertDefinitionApi* | [**AlertDefinitionAddOperatorGroupToEscalationLevel**](docs/AlertDefinitionApi.md#alertdefinitionaddoperatorgrouptoescalationlevel) | **Post** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Member/OperatorGroup/{operatorGroupGuid} | Adds an operator group to the specified escalation level.
 *AlertDefinitionApi* | [**AlertDefinitionAddOperatorToEscalationLevel**](docs/AlertDefinitionApi.md#alertdefinitionaddoperatortoescalationlevel) | **Post** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Member/Operator/{operatorGuid} | Adds an operator to the specified escalation level.
 *AlertDefinitionApi* | [**AlertDefinitionCreateAlertDefinition**](docs/AlertDefinitionApi.md#alertdefinitioncreatealertdefinition) | **Post** /AlertDefinition | Creates a new alert definition.
+*AlertDefinitionApi* | [**AlertDefinitionCreateAuthorizationForAlertDefinition**](docs/AlertDefinitionApi.md#alertdefinitioncreateauthorizationforalertdefinition) | **Post** /AlertDefinition/{alertDefinitionGuid}/Authorizations | Create authorizations for alert definition If the wanted authorizations requires other authorizations, these will be added as well
 *AlertDefinitionApi* | [**AlertDefinitionDeleteAlertDefinition**](docs/AlertDefinitionApi.md#alertdefinitiondeletealertdefinition) | **Delete** /AlertDefinition/{alertDefinitionGuid} | Deletes an existing alert definition.
+*AlertDefinitionApi* | [**AlertDefinitionDeleteAuthorizationForAlertDefinition**](docs/AlertDefinitionApi.md#alertdefinitiondeleteauthorizationforalertdefinition) | **Delete** /AlertDefinition/{alertDefinitionGuid}/Authorizations/{authorizationGuid} | Delete alert definition authorization for alert definition
 *AlertDefinitionApi* | [**AlertDefinitionGetAllAlertDefinitions**](docs/AlertDefinitionApi.md#alertdefinitiongetallalertdefinitions) | **Get** /AlertDefinition | Gets a list of all alert definitions.
 *AlertDefinitionApi* | [**AlertDefinitionGetAllEscalationLevelIntegrations**](docs/AlertDefinitionApi.md#alertdefinitiongetallescalationlevelintegrations) | **Get** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration | Gets all integrations for a specified escalation level.
 *AlertDefinitionApi* | [**AlertDefinitionGetAllEscalationLevels**](docs/AlertDefinitionApi.md#alertdefinitiongetallescalationlevels) | **Get** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel | Gets all escalation level information for the specified alert definition.
 *AlertDefinitionApi* | [**AlertDefinitionGetAllMembers**](docs/AlertDefinitionApi.md#alertdefinitiongetallmembers) | **Get** /AlertDefinition/{alertDefinitionGuid}/Member | Gets a list of all monitor and monitor group guids for the specified alert definition.
+*AlertDefinitionApi* | [**AlertDefinitionGetAuthorizationsOfAlertDefinition**](docs/AlertDefinitionApi.md#alertdefinitiongetauthorizationsofalertdefinition) | **Get** /AlertDefinition/{alertDefinitionGuid}/Authorizations | Get authorizations of alert definition
 *AlertDefinitionApi* | [**AlertDefinitionGetEscalationLevel**](docs/AlertDefinitionApi.md#alertdefinitiongetescalationlevel) | **Get** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId} | Gets the escalation level information of the specified alert definition.
 *AlertDefinitionApi* | [**AlertDefinitionGetEscalationLevelIntegration**](docs/AlertDefinitionApi.md#alertdefinitiongetescalationlevelintegration) | **Get** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration/{integrationGuid} | Gets a single integration for a specified escalation level.
 *AlertDefinitionApi* | [**AlertDefinitionGetEscalationLevelOperator**](docs/AlertDefinitionApi.md#alertdefinitiongetescalationleveloperator) | **Get** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Member | Gets the operator and operator group guids for the specified escalation level.
@@ -121,32 +126,37 @@ Class | Method | HTTP request | Description
 *AlertDefinitionApi* | [**AlertDefinitionRemoveOperatorGroupFromEscalationLevel**](docs/AlertDefinitionApi.md#alertdefinitionremoveoperatorgroupfromescalationlevel) | **Delete** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Member/OperatorGroup/{operatorGroupGuid} | Removes an operator group for the specified escalation level.
 *AlertDefinitionApi* | [**AlertDefinitionUpdateIntegrationForEscalationWithPatch**](docs/AlertDefinitionApi.md#alertdefinitionupdateintegrationforescalationwithpatch) | **Patch** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration/{integrationGuid} | Partially updates an integration for a specified escalation level.
 *AlertDefinitionApi* | [**AlertDefinitionUpdateIntegrationForEscalationWithPut**](docs/AlertDefinitionApi.md#alertdefinitionupdateintegrationforescalationwithput) | **Put** /AlertDefinition/{alertDefinitionGuid}/EscalationLevel/{escalationLevelId}/Integration/{integrationGuid} | Updates an integration for a specified escalation level.
-*CheckpointApi* | [**CheckpointGetAllCheckpoints**](docs/CheckpointApi.md#checkpointgetallcheckpoints) | **Get** /Checkpoint | Returns all the checkpoints. 
-*CheckpointApi* | [**CheckpointGetCheckpoint**](docs/CheckpointApi.md#checkpointgetcheckpoint) | **Get** /Checkpoint/{checkpointId} | Returns the specified checkpoint. 
-*CheckpointApi* | [**CheckpointRegionGetAllCheckpointRegions**](docs/CheckpointApi.md#checkpointregiongetallcheckpointregions) | **Get** /CheckpointRegion | Returns all the checkpoint regions. 
-*CheckpointApi* | [**CheckpointRegionGetCheckpointRegionCheckpoints**](docs/CheckpointApi.md#checkpointregiongetcheckpointregioncheckpoints) | **Get** /CheckpointRegion/{checkpointRegionId}/Checkpoint | Returns the checkpoints for the specified checkpoint region. 
-*CheckpointApi* | [**CheckpointRegionGetSpecifiedCheckpointRegion**](docs/CheckpointApi.md#checkpointregiongetspecifiedcheckpointregion) | **Get** /CheckpointRegion/{checkpointRegionId} | Returns the specified checkpoint region. 
-*CheckpointApi* | [**CheckpointServerGetAllServerIpv4Addresses**](docs/CheckpointApi.md#checkpointservergetallserveripv4addresses) | **Get** /Checkpoint/Server/Ipv4 | Anonymous call that returns all the IPv4 addresses of all the checkpoint servers. 
-*CheckpointApi* | [**CheckpointServerGetAllServerIpv6Addresses**](docs/CheckpointApi.md#checkpointservergetallserveripv6addresses) | **Get** /Checkpoint/Server/Ipv6 | Anonymous call that returns all the IPv6 addresses of all the checkpoint servers. 
+*CheckpointApi* | [**CheckpointGetAllCheckpoints**](docs/CheckpointApi.md#checkpointgetallcheckpoints) | **Get** /Checkpoint | Returns all the checkpoints that are not deleted
+*CheckpointApi* | [**CheckpointGetCheckpoint**](docs/CheckpointApi.md#checkpointgetcheckpoint) | **Get** /Checkpoint/{checkpointId} | Returns the specified checkpoint, deleted or not
+*CheckpointApi* | [**CheckpointRegionGetAllCheckpointRegions**](docs/CheckpointApi.md#checkpointregiongetallcheckpointregions) | **Get** /CheckpointRegion | Returns all the checkpoint regions.
+*CheckpointApi* | [**CheckpointRegionGetCheckpointRegionCheckpoints**](docs/CheckpointApi.md#checkpointregiongetcheckpointregioncheckpoints) | **Get** /CheckpointRegion/{checkpointRegionId}/Checkpoint | Returns the checkpoints for the specified checkpoint region.
+*CheckpointApi* | [**CheckpointRegionGetSpecifiedCheckpointRegion**](docs/CheckpointApi.md#checkpointregiongetspecifiedcheckpointregion) | **Get** /CheckpointRegion/{checkpointRegionId} | Returns the specified checkpoint region.
+*CheckpointApi* | [**CheckpointServerGetAllServerIpv4Addresses**](docs/CheckpointApi.md#checkpointservergetallserveripv4addresses) | **Get** /Checkpoint/Server/Ipv4 | Anonymous call that returns all the IPv4 addresses of all the checkpoint servers.
+*CheckpointApi* | [**CheckpointServerGetAllServerIpv6Addresses**](docs/CheckpointApi.md#checkpointservergetallserveripv6addresses) | **Get** /Checkpoint/Server/Ipv6 | Anonymous call that returns all the IPv6 addresses of all the checkpoint servers.
 *CheckpointApi* | [**CheckpointServerGetServer**](docs/CheckpointApi.md#checkpointservergetserver) | **Get** /Checkpoint/Server/{serverId} | Returns the requested checkpoint server.
+*CheckpointApi* | [**PrivateCheckpointHealthGetPrivateCheckpointHealthForRegion**](docs/CheckpointApi.md#privatecheckpointhealthgetprivatecheckpointhealthforregion) | **Get** /PrivateCheckpointHealthForRegion | Returns the status of the private checkpoints in the given region.
+*CheckpointApi* | [**PrivateCheckpointHealthGetSpecifiedPrivateCheckpointHealth**](docs/CheckpointApi.md#privatecheckpointhealthgetspecifiedprivatecheckpointhealth) | **Get** /PrivateCheckpointHealth | Returns the status of the specified private checkpoints.
 *DashboardApi* | [**DashboardCloneDashboard**](docs/DashboardApi.md#dashboardclonedashboard) | **Post** /Dashboard/{dashboardGuid}/Clone | Clone the specified dashboard.
 *DashboardApi* | [**DashboardDeleteDashboard**](docs/DashboardApi.md#dashboarddeletedashboard) | **Delete** /Dashboard/{dashboardGuid} | Delete the specified dashboard.
 *DashboardApi* | [**DashboardGetAllDashboards**](docs/DashboardApi.md#dashboardgetalldashboards) | **Get** /Dashboard | Returns data for all dashboards.
 *DashboardApi* | [**DashboardGetOneDashboard**](docs/DashboardApi.md#dashboardgetonedashboard) | **Get** /Dashboard/{dashboardGuid} | Returns data for the specified dashboard.
 *DashboardApi* | [**DashboardPartiallyUpdateDashboard**](docs/DashboardApi.md#dashboardpartiallyupdatedashboard) | **Patch** /Dashboard/{dashboardGuid} | Partially update the specified dashboard.
 *DashboardApi* | [**DashboardUpdateDashboard**](docs/DashboardApi.md#dashboardupdatedashboard) | **Put** /Dashboard/{dashboardGuid} | Update the specified dashboard.
+*IntegrationApi* | [**IntegrationCreateAuthorizationForIntegration**](docs/IntegrationApi.md#integrationcreateauthorizationforintegration) | **Post** /Integration/{integrationGuid}/Authorizations | Create authorizations for integration If the wanted authorizations requires other authorizations, these will be added as well
+*IntegrationApi* | [**IntegrationDeleteAuthorizationForIntegration**](docs/IntegrationApi.md#integrationdeleteauthorizationforintegration) | **Delete** /Integration/{integrationGuid}/Authorizations/{authorizationGuid} | Delete integration authorization for integration
 *IntegrationApi* | [**IntegrationGetAllIntegrations**](docs/IntegrationApi.md#integrationgetallintegrations) | **Get** /Integration | Gets a list of all integrations.
-*MiscellaneousApi* | [**MiscellaneousGetAllOutgoingPhoneNumbers**](docs/MiscellaneousApi.md#miscellaneousgetalloutgoingphonenumbers) | **Get** /OutgoingPhoneNumber | Gets a list of all outgoing phone numbers available.
-*MiscellaneousApi* | [**MiscellaneousGetAllTimezones**](docs/MiscellaneousApi.md#miscellaneousgetalltimezones) | **Get** /Timezone | Gets all timezones available.
-*MiscellaneousApi* | [**MiscellaneousGetTimezoneById**](docs/MiscellaneousApi.md#miscellaneousgettimezonebyid) | **Get** /Timezone/{timezoneId} | Gets the timezone with the specified Id.
+*IntegrationApi* | [**IntegrationGetAuthorizationsOfIntegration**](docs/IntegrationApi.md#integrationgetauthorizationsofintegration) | **Get** /Integration/{integrationGuid}/Authorizations | Get authorizations of integration
 *MonitorApi* | [**MonitorCleanupMaintenancePeriods**](docs/MonitorApi.md#monitorcleanupmaintenanceperiods) | **Post** /Monitor/{monitorGuid}/MaintenancePeriod/Cleanup/{beforeDate} | Clears out all one-time maintenance periods for the specified monitor older than the specified date
 *MonitorApi* | [**MonitorCloneMonitor**](docs/MonitorApi.md#monitorclonemonitor) | **Post** /Monitor/{monitorGuid}/Clone | Creates a clone (duplicate) of the specified monitor.
+*MonitorApi* | [**MonitorCreateAuthorizationForMonitor**](docs/MonitorApi.md#monitorcreateauthorizationformonitor) | **Post** /Monitor/{monitorGuid}/Authorizations | Create monitor authorizations for monitor If the wanted authorizations requires other authorizations, these will be added as well
 *MonitorApi* | [**MonitorCreateMaintenancePeriodForMonitor**](docs/MonitorApi.md#monitorcreatemaintenanceperiodformonitor) | **Post** /Monitor/{monitorGuid}/MaintenancePeriod | Saves the new maintenance period provided for the specified monitor
+*MonitorApi* | [**MonitorDeleteAuthorizationForMonitorGroup**](docs/MonitorApi.md#monitordeleteauthorizationformonitorgroup) | **Delete** /Monitor/{monitorGuid}/Authorizations/{authorizationGuid} | Delete monitor authorization for monitor
 *MonitorApi* | [**MonitorDeleteMaintenancePeriodFromMonitor**](docs/MonitorApi.md#monitordeletemaintenanceperiodfrommonitor) | **Delete** /Monitor/{monitorGuid}/MaintenancePeriod/{maintenancePeriodId} | Deletes the specified maintenance period from the specified monitor
 *MonitorApi* | [**MonitorDeleteMonitor**](docs/MonitorApi.md#monitordeletemonitor) | **Delete** /Monitor/{monitorGuid} | Deletes the specified monitor.
 *MonitorApi* | [**MonitorGetAllMaintenancePeriodsForMonitor**](docs/MonitorApi.md#monitorgetallmaintenanceperiodsformonitor) | **Get** /Monitor/{monitorGuid}/MaintenancePeriod | Finds all maintenance periods for a monitor.
-*MonitorApi* | [**MonitorGetMonitor**](docs/MonitorApi.md#monitorgetmonitor) | **Get** /Monitor/{monitorGuid} | Returns the definition of the specified monitor. 
-*MonitorApi* | [**MonitorGetMonitorGroups**](docs/MonitorApi.md#monitorgetmonitorgroups) | **Get** /Monitor/{monitorGuid}/MonitorGroup | Returns the Guid of each monitor group where the specified monitor is a member of. 
+*MonitorApi* | [**MonitorGetAuthorizationsOfMonitor**](docs/MonitorApi.md#monitorgetauthorizationsofmonitor) | **Get** /Monitor/{monitorGuid}/Authorizations | Get monitor authorizations of monitor
+*MonitorApi* | [**MonitorGetMonitor**](docs/MonitorApi.md#monitorgetmonitor) | **Get** /Monitor/{monitorGuid} | Returns the definition of the specified monitor.
+*MonitorApi* | [**MonitorGetMonitorGroups**](docs/MonitorApi.md#monitorgetmonitorgroups) | **Get** /Monitor/{monitorGuid}/MonitorGroup | Returns the Guid of each monitor group where the specified monitor is a member of.
 *MonitorApi* | [**MonitorGetMonitors**](docs/MonitorApi.md#monitorgetmonitors) | **Get** /Monitor | Returns the definition of all monitors available in the account.
 *MonitorApi* | [**MonitorGetMonitorsByMonitorGroup**](docs/MonitorApi.md#monitorgetmonitorsbymonitorgroup) | **Get** /Monitor/MonitorGroup/{monitorGroupGuid} | Returns the definition of all monitors available in the account that are a member of the specified monitor group.
 *MonitorApi* | [**MonitorPatchMonitor**](docs/MonitorApi.md#monitorpatchmonitor) | **Patch** /Monitor/{monitorGuid} | Partially updates the definition of the specified monitor.
@@ -165,11 +175,14 @@ Class | Method | HTTP request | Description
 *MonitorCheckApi* | [**MonitorCheckGetSingleMonitorCheck**](docs/MonitorCheckApi.md#monitorcheckgetsinglemonitorcheck) | **Get** /MonitorCheck/{monitorCheckId} | Returns a single monitor check.
 *MonitorCheckApi* | [**MonitorCheckGetTransactionDetails**](docs/MonitorCheckApi.md#monitorcheckgettransactiondetails) | **Get** /MonitorCheck/{monitorCheckId}/Transaction | Returns transaction step details for a monitor check.
 *MonitorCheckApi* | [**MonitorCheckGetWaterfallInfo**](docs/MonitorCheckApi.md#monitorcheckgetwaterfallinfo) | **Get** /MonitorCheck/{monitorCheckId}/Waterfall | Returns waterfall information for a monitor check.
-*MonitorGroupApi* | [**MonitorGroupAddMaintenancePeriodToAllMembers**](docs/MonitorGroupApi.md#monitorgroupaddmaintenanceperiodtoallmembers) | **Post** /MonitorGroup/{monitorGroupGuid}/AddMaintenancePeriodToAllMembers | Adds the provided maintenance period to all monitors in the group specified 
-*MonitorGroupApi* | [**MonitorGroupAddMonitorToMonitorGroup**](docs/MonitorGroupApi.md#monitorgroupaddmonitortomonitorgroup) | **Post** /MonitorGroup/{monitorGroupGuid}/Member/{monitorGuid} | Adds the specified monitor to the monitor group 
+*MonitorGroupApi* | [**MonitorGroupAddMaintenancePeriodToAllMembers**](docs/MonitorGroupApi.md#monitorgroupaddmaintenanceperiodtoallmembers) | **Post** /MonitorGroup/{monitorGroupGuid}/AddMaintenancePeriodToAllMembers | Adds the provided maintenance period to all monitors in the group specified
+*MonitorGroupApi* | [**MonitorGroupAddMonitorToMonitorGroup**](docs/MonitorGroupApi.md#monitorgroupaddmonitortomonitorgroup) | **Post** /MonitorGroup/{monitorGroupGuid}/Member/{monitorGuid} | Adds the specified monitor to the monitor group
+*MonitorGroupApi* | [**MonitorGroupCreateAuthorizationForMonitorGroup**](docs/MonitorGroupApi.md#monitorgroupcreateauthorizationformonitorgroup) | **Post** /MonitorGroup/{monitorGroupGuid}/Authorizations | Create monitor authorizations for monitor group If the wanted authorizations requires other authorizations, these will be added as well
 *MonitorGroupApi* | [**MonitorGroupCreateMonitorGroup**](docs/MonitorGroupApi.md#monitorgroupcreatemonitorgroup) | **Post** /MonitorGroup | Creates a new monitor group
+*MonitorGroupApi* | [**MonitorGroupDeleteAuthorizationForMonitorGroup**](docs/MonitorGroupApi.md#monitorgroupdeleteauthorizationformonitorgroup) | **Delete** /MonitorGroup/{monitorGroupGuid}/Authorizations/{authorizationGuid} | Delete monitor authorization for monitor group
 *MonitorGroupApi* | [**MonitorGroupDeleteMonitorGroup**](docs/MonitorGroupApi.md#monitorgroupdeletemonitorgroup) | **Delete** /MonitorGroup/{monitorGroupGuid} | Deletes the specified monitor group
 *MonitorGroupApi* | [**MonitorGroupGetAllMonitorGroups**](docs/MonitorGroupApi.md#monitorgroupgetallmonitorgroups) | **Get** /MonitorGroup | Gets all monitor groups
+*MonitorGroupApi* | [**MonitorGroupGetAuthorizationsOfMonitorGroup**](docs/MonitorGroupApi.md#monitorgroupgetauthorizationsofmonitorgroup) | **Get** /MonitorGroup/{monitorGroupGuid}/Authorizations | Get monitor authorizations of monitor group
 *MonitorGroupApi* | [**MonitorGroupGetMonitorGroup**](docs/MonitorGroupApi.md#monitorgroupgetmonitorgroup) | **Get** /MonitorGroup/{monitorGroupGuid} | Gets the details of a monitor group
 *MonitorGroupApi* | [**MonitorGroupGetMonitorGroupMembers**](docs/MonitorGroupApi.md#monitorgroupgetmonitorgroupmembers) | **Get** /MonitorGroup/{monitorGroupGuid}/Member | Gets a list of all members of a monitor group
 *MonitorGroupApi* | [**MonitorGroupRemoveMonitorFromMonitorGroup**](docs/MonitorGroupApi.md#monitorgroupremovemonitorfrommonitorgroup) | **Delete** /MonitorGroup/{monitorGroupGuid}/Member/{monitorGuid} | Removes the specified monitor from the monitor group
@@ -192,20 +205,21 @@ Class | Method | HTTP request | Description
 *OperatorApi* | [**OperatorUpdateDutyPeriodForOperator**](docs/OperatorApi.md#operatorupdatedutyperiodforoperator) | **Put** /Operator/{operatorGuid}/DutySchedule/{dutyScheduleId} | Updates the specified duty schedule of the specified operator.
 *OperatorApi* | [**OperatorUpdateOperator**](docs/OperatorApi.md#operatorupdateoperator) | **Put** /Operator/{operatorGuid} | Updates an existing operator.
 *OperatorApi* | [**OperatorUpdateOperatorWithPatch**](docs/OperatorApi.md#operatorupdateoperatorwithpatch) | **Patch** /Operator/{operatorGuid} | Updates an existing operator.
-*OperatorGroupApi* | [**OperatorGroupAddDutyScheduleToAllMembers**](docs/OperatorGroupApi.md#operatorgroupadddutyscheduletoallmembers) | **Post** /OperatorGroup/{operatorGroupGuid}/DutySchedule/AddDutyScheduleForAllMembers | Adds the provided duty schedule to all operators in the group specified 
-*OperatorGroupApi* | [**OperatorGroupAddOperatorToOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupaddoperatortooperatorgroup) | **Post** /OperatorGroup/{operatorGroupGuid}/Member/{operatorGuid} | Adds the specified operator to the operator group 
+*OperatorGroupApi* | [**OperatorGroupAddDutyScheduleToAllMembers**](docs/OperatorGroupApi.md#operatorgroupadddutyscheduletoallmembers) | **Post** /OperatorGroup/{operatorGroupGuid}/DutySchedule/AddDutyScheduleForAllMembers | Adds the provided duty schedule to all operators in the group specified
+*OperatorGroupApi* | [**OperatorGroupAddOperatorToOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupaddoperatortooperatorgroup) | **Post** /OperatorGroup/{operatorGroupGuid}/Member/{operatorGuid} | Adds the specified operator to the operator group
 *OperatorGroupApi* | [**OperatorGroupAllOperatorsInGroupOffDuty**](docs/OperatorGroupApi.md#operatorgroupalloperatorsingroupoffduty) | **Post** /OperatorGroup/{operatorGroupGuid}/AllOperatorsOffDuty | Set the OnDuty flag to off for all operators that are a member of the operator group specified by the operator group GUID
 *OperatorGroupApi* | [**OperatorGroupAllOperatorsInGroupOnDuty**](docs/OperatorGroupApi.md#operatorgroupalloperatorsingrouponduty) | **Post** /OperatorGroup/{operatorGroupGuid}/AllOperatorsOnDuty | Set the OnDuty flag to on for all operators that are a member of the operator group specified by the operator group GUID
-*OperatorGroupApi* | [**OperatorGroupCreateAuthorizationForOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupcreateauthorizationforoperatorgroup) | **Post** /OperatorGroup/{operatorGroupGuid}/Authorization | Creates a new authorization for the specified operator group
 *OperatorGroupApi* | [**OperatorGroupCreateOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupcreateoperatorgroup) | **Post** /OperatorGroup | Creates a new operator group
-*OperatorGroupApi* | [**OperatorGroupDeleteAuthorizationForOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupdeleteauthorizationforoperatorgroup) | **Delete** /OperatorGroup/{operatorGroupGuid}/Authorization/{authorizationGuid} | Deletes the specified authorization for the specified operator group
+*OperatorGroupApi* | [**OperatorGroupDeleteAuthorizationForOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupdeleteauthorizationforoperatorgroup) | **Delete** /OperatorGroup/{operatorGroupGuid}/Authorization/{authorizationType} | Removes the specified authorization of the operator group.
 *OperatorGroupApi* | [**OperatorGroupDeleteOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupdeleteoperatorgroup) | **Delete** /OperatorGroup/{operatorGroupGuid} | Deletes the specified operator group
 *OperatorGroupApi* | [**OperatorGroupGetAllOperatorGroups**](docs/OperatorGroupApi.md#operatorgroupgetalloperatorgroups) | **Get** /OperatorGroup | Gets all operator groups
-*OperatorGroupApi* | [**OperatorGroupGetAuthorizationsForOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupgetauthorizationsforoperatorgroup) | **Get** /OperatorGroup/{operatorGroupGuid}/Authorization | Returns all authorizations for the specified operator group
+*OperatorGroupApi* | [**OperatorGroupGetAuthorizationsForOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupgetauthorizationsforoperatorgroup) | **Get** /OperatorGroup/{operatorGroupGuid}/Authorization | Gets all authorizations for the specified operator group.
 *OperatorGroupApi* | [**OperatorGroupGetOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupgetoperatorgroup) | **Get** /OperatorGroup/{operatorGroupGuid} | Gets the details of a operator group
 *OperatorGroupApi* | [**OperatorGroupGetOperatorGroupMembers**](docs/OperatorGroupApi.md#operatorgroupgetoperatorgroupmembers) | **Get** /OperatorGroup/{operatorGroupGuid}/Member | Gets a list of all members of an operator group
+*OperatorGroupApi* | [**OperatorGroupPostAuthorizationForOperatorGroup**](docs/OperatorGroupApi.md#operatorgrouppostauthorizationforoperatorgroup) | **Post** /OperatorGroup/{operatorGroupGuid}/Authorization/{authorizationType} | Assigns the specified authorization to the operator group.
 *OperatorGroupApi* | [**OperatorGroupRemoveOperatorFromOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupremoveoperatorfromoperatorgroup) | **Delete** /OperatorGroup/{operatorGroupGuid}/Member/{operatorGuid} | Removes the specified operator from the operator group
 *OperatorGroupApi* | [**OperatorGroupUpdateOperatorGroup**](docs/OperatorGroupApi.md#operatorgroupupdateoperatorgroup) | **Put** /OperatorGroup/{operatorGroupGuid} | Updates the operator group with the Guid specified
+*OutgoingPhoneNumberApi* | [**OutgoingPhoneNumberGetAllOutgoingPhoneNumbers**](docs/OutgoingPhoneNumberApi.md#outgoingphonenumbergetalloutgoingphonenumbers) | **Get** /OutgoingPhoneNumber | Gets a list of all outgoing phone numbers available.
 *PublicStatusPageApi* | [**PublicStatusPageAddAuthorizationToPublicStatusPage**](docs/PublicStatusPageApi.md#publicstatuspageaddauthorizationtopublicstatuspage) | **Post** /PublicStatusPage/{publicStatusPageGuid}/Authorization | Creates a new authorization for the specified public status page.
 *PublicStatusPageApi* | [**PublicStatusPageDeletePublicStatusPage**](docs/PublicStatusPageApi.md#publicstatuspagedeletepublicstatuspage) | **Delete** /PublicStatusPage/{publicStatusPageGuid} | Deletes the definition of the specified public status page.
 *PublicStatusPageApi* | [**PublicStatusPageGetAuthorizationsForPublicStatusPage**](docs/PublicStatusPageApi.md#publicstatuspagegetauthorizationsforpublicstatuspage) | **Get** /PublicStatusPage/{publicStatusPageGuid}/Authorization | Returns all authorizations for the specified public status page.
@@ -215,6 +229,9 @@ Class | Method | HTTP request | Description
 *PublicStatusPageApi* | [**PublicStatusPagePostPublicStatusPage**](docs/PublicStatusPageApi.md#publicstatuspagepostpublicstatuspage) | **Post** /PublicStatusPage | Creates a new public status page.
 *PublicStatusPageApi* | [**PublicStatusPagePutPublicStatusPage**](docs/PublicStatusPageApi.md#publicstatuspageputpublicstatuspage) | **Put** /PublicStatusPage/{publicStatusPageGuid} | Updates the definition of the specified public status page.
 *PublicStatusPageApi* | [**PublicStatusPageRemoveAuthorizationFromPublicStatusPage**](docs/PublicStatusPageApi.md#publicstatuspageremoveauthorizationfrompublicstatuspage) | **Delete** /PublicStatusPage/{publicStatusPageGuid}/Authorization/{authorizationGuid} | Removes an authorization from a public status page.
+*RUMApi* | [**RumGetRumMetricsForAllWebsites**](docs/RUMApi.md#rumgetrummetricsforallwebsites) | **Get** /Rum/Website/Metrics | Returns all metrics of all RUM websites.
+*RUMApi* | [**RumGetRumWebsiteMetrics**](docs/RUMApi.md#rumgetrumwebsitemetrics) | **Get** /Rum/Website/{rumWebsiteGuid}/Metrics | Returns all metrics of the specified RUM website.
+*RUMApi* | [**RumGetRumWebsites**](docs/RUMApi.md#rumgetrumwebsites) | **Get** /Rum/Website | Returns the definition of all RUM websites available in the account.
 *RegisterApi* | [**RegisterPost**](docs/RegisterApi.md#registerpost) | **Post** /Register | Creates a new API account.
 *SLAApi* | [**SlaCreateSla**](docs/SLAApi.md#slacreatesla) | **Post** /Sla | Creates a new SLA.
 *SLAApi* | [**SlaDeleteExclusionPeriod**](docs/SLAApi.md#sladeleteexclusionperiod) | **Delete** /Sla/{slaGuid}/ExclusionPeriod/{exclusionPeriodId} | Deletes the specified exclusion period for the specified SLA.
@@ -238,10 +255,12 @@ Class | Method | HTTP request | Description
 *StatisticsApi* | [**StatisticsGetMonitorStatistics**](docs/StatisticsApi.md#statisticsgetmonitorstatistics) | **Get** /Statistics/Monitor/{monitorGuid} | Gets the monitor statistics.
 *StatusApi* | [**StatusGetMonitorGroupStatus**](docs/StatusApi.md#statusgetmonitorgroupstatus) | **Get** /Status/MonitorGroup/{monitorGroupGuid} | Gets a list of all monitor group status data.
 *StatusApi* | [**StatusGetMonitorStatus**](docs/StatusApi.md#statusgetmonitorstatus) | **Get** /Status/Monitor/{monitorGuid} | Gets all monitor status data.
-*VaultApi* | [**VaultCreateAuthorizationForVaultSection**](docs/VaultApi.md#vaultcreateauthorizationforvaultsection) | **Post** /VaultSection/{vaultSectionGuid}/Authorization | Creates a new authorization for the specified vault section. 
+*TimezoneApi* | [**TimezoneGetAllTimezones**](docs/TimezoneApi.md#timezonegetalltimezones) | **Get** /Timezone | Gets all timezones available.
+*TimezoneApi* | [**TimezoneGetTimezoneById**](docs/TimezoneApi.md#timezonegettimezonebyid) | **Get** /Timezone/{timezoneId} | Gets the timezone with the specified Id.
+*VaultApi* | [**VaultCreateAuthorizationForVaultSection**](docs/VaultApi.md#vaultcreateauthorizationforvaultsection) | **Post** /VaultSection/{vaultSectionGuid}/Authorization | Creates a new authorization for the specified vault section.
 *VaultApi* | [**VaultCreateNewVaultItem**](docs/VaultApi.md#vaultcreatenewvaultitem) | **Post** /VaultItem | Creates a new vault item.
 *VaultApi* | [**VaultCreateNewVaultSection**](docs/VaultApi.md#vaultcreatenewvaultsection) | **Post** /VaultSection | Creates a new vault section.
-*VaultApi* | [**VaultDeleteAuthorizationForVaultSection**](docs/VaultApi.md#vaultdeleteauthorizationforvaultsection) | **Delete** /VaultSection/{vaultSectionGuid}/Authorization/{authorizationGuid} | Deletes the specified authorization for the specified vault section. 
+*VaultApi* | [**VaultDeleteAuthorizationForVaultSection**](docs/VaultApi.md#vaultdeleteauthorizationforvaultsection) | **Delete** /VaultSection/{vaultSectionGuid}/Authorization/{authorizationGuid} | Deletes the specified authorization for the specified vault section.
 *VaultApi* | [**VaultDeleteVaultItem**](docs/VaultApi.md#vaultdeletevaultitem) | **Delete** /VaultItem/{vaultItemGuid} | Deletes the specified vault item.
 *VaultApi* | [**VaultDeleteVaultSection**](docs/VaultApi.md#vaultdeletevaultsection) | **Delete** /VaultSection/{vaultSectionGuid} | Deletes the specified vault section.
 *VaultApi* | [**VaultGetAllVaultItems**](docs/VaultApi.md#vaultgetallvaultitems) | **Get** /VaultItem | Returns all vault items.
@@ -256,10 +275,13 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [AccountSettings](docs/AccountSettings.md)
  - [AccountStatistics](docs/AccountStatistics.md)
  - [Alert](docs/Alert.md)
  - [AlertAttributes](docs/AlertAttributes.md)
  - [AlertDefinition](docs/AlertDefinition.md)
+ - [AlertDefinitionAuthorization](docs/AlertDefinitionAuthorization.md)
+ - [AlertDefinitionAuthorizationType](docs/AlertDefinitionAuthorizationType.md)
  - [AlertDefinitionMember](docs/AlertDefinitionMember.md)
  - [AlertDefinitionMonitor](docs/AlertDefinitionMonitor.md)
  - [AlertDefinitionMonitorGroup](docs/AlertDefinitionMonitorGroup.md)
@@ -267,6 +289,7 @@ Class | Method | HTTP request | Description
  - [AlertDefinitionOperatorGroup](docs/AlertDefinitionOperatorGroup.md)
  - [AlertEscalationLevelMember](docs/AlertEscalationLevelMember.md)
  - [AlertResponse](docs/AlertResponse.md)
+ - [AlertResponseCursors](docs/AlertResponseCursors.md)
  - [AlertType](docs/AlertType.md)
  - [ApiAssertion](docs/ApiAssertion.md)
  - [ApiAssertionSourceType](docs/ApiAssertionSourceType.md)
@@ -283,14 +306,18 @@ Class | Method | HTTP request | Description
  - [CapabilityFilterEnum](docs/CapabilityFilterEnum.md)
  - [CertificateArchive](docs/CertificateArchive.md)
  - [CheckpoinServerResponse](docs/CheckpoinServerResponse.md)
+ - [CheckpoinServerResponseData](docs/CheckpoinServerResponseData.md)
  - [Checkpoint](docs/Checkpoint.md)
  - [Checkpoint2](docs/Checkpoint2.md)
+ - [Checkpoint2Attributes](docs/Checkpoint2Attributes.md)
  - [CheckpointAttributes](docs/CheckpointAttributes.md)
  - [CheckpointListResponse](docs/CheckpointListResponse.md)
  - [CheckpointRegion](docs/CheckpointRegion.md)
  - [CheckpointResponse](docs/CheckpointResponse.md)
+ - [CheckpointResponseData](docs/CheckpointResponseData.md)
  - [CheckpointServer](docs/CheckpointServer.md)
  - [CheckpointServerAttributes](docs/CheckpointServerAttributes.md)
+ - [CheckpointsHealth](docs/CheckpointsHealth.md)
  - [CursorsData](docs/CursorsData.md)
  - [CustomField](docs/CustomField.md)
  - [CustomMetric](docs/CustomMetric.md)
@@ -299,7 +326,14 @@ Class | Method | HTTP request | Description
  - [DashboardFilter](docs/DashboardFilter.md)
  - [DateTimePatternMatch](docs/DateTimePatternMatch.md)
  - [DayOfWeek](docs/DayOfWeek.md)
+ - [DnsBypass](docs/DnsBypass.md)
  - [DnsQuery](docs/DnsQuery.md)
+ - [EngineHashAlgorithm](docs/EngineHashAlgorithm.md)
+ - [ErrorCondition](docs/ErrorCondition.md)
+ - [ErrorConditionConsoleLevel](docs/ErrorConditionConsoleLevel.md)
+ - [ErrorConditionEffect](docs/ErrorConditionEffect.md)
+ - [ErrorConditionMatchType](docs/ErrorConditionMatchType.md)
+ - [ErrorConditionType](docs/ErrorConditionType.md)
  - [ErrorLevel](docs/ErrorLevel.md)
  - [ErrorLevelFilter](docs/ErrorLevelFilter.md)
  - [EscalationLevel](docs/EscalationLevel.md)
@@ -307,15 +341,23 @@ Class | Method | HTTP request | Description
  - [EscalationMode](docs/EscalationMode.md)
  - [ExclusionPeriod](docs/ExclusionPeriod.md)
  - [FileInfo](docs/FileInfo.md)
+ - [HashAlgorithm](docs/HashAlgorithm.md)
  - [HttpAttributes](docs/HttpAttributes.md)
  - [HttpCheckDetails](docs/HttpCheckDetails.md)
+ - [HttpCheckDetailsAttributes](docs/HttpCheckDetailsAttributes.md)
  - [HttpDetailsResponse](docs/HttpDetailsResponse.md)
+ - [HttpDetailsResponseData](docs/HttpDetailsResponseData.md)
  - [HttpEngineAttributes](docs/HttpEngineAttributes.md)
+ - [HttpEngineAttributesTimingInfo](docs/HttpEngineAttributesTimingInfo.md)
  - [HttpEngineCheckDetails](docs/HttpEngineCheckDetails.md)
+ - [HttpEngineCheckDetailsAttributes](docs/HttpEngineCheckDetailsAttributes.md)
  - [HttpEngineStep](docs/HttpEngineStep.md)
+ - [HttpEngineStepAssertionResultsInfo](docs/HttpEngineStepAssertionResultsInfo.md)
  - [HttpMethod](docs/HttpMethod.md)
- - [IPv6Address](docs/IPv6Address.md)
+ - [HttpMethods](docs/HttpMethods.md)
  - [Integration](docs/Integration.md)
+ - [IntegrationAuthorization](docs/IntegrationAuthorization.md)
+ - [IntegrationAuthorizationType](docs/IntegrationAuthorizationType.md)
  - [IntegrationServiceMap](docs/IntegrationServiceMap.md)
  - [IntegrationTypeEnum](docs/IntegrationTypeEnum.md)
  - [IpVersion](docs/IpVersion.md)
@@ -330,10 +372,14 @@ Class | Method | HTTP request | Description
  - [MessageList](docs/MessageList.md)
  - [MetaData](docs/MetaData.md)
  - [Monitor](docs/Monitor.md)
+ - [MonitorAuthorization](docs/MonitorAuthorization.md)
+ - [MonitorAuthorizationType](docs/MonitorAuthorizationType.md)
  - [MonitorCheck](docs/MonitorCheck.md)
  - [MonitorCheckAttributes](docs/MonitorCheckAttributes.md)
  - [MonitorCheckResponse](docs/MonitorCheckResponse.md)
  - [MonitorGroup](docs/MonitorGroup.md)
+ - [MonitorGroupAuthorization](docs/MonitorGroupAuthorization.md)
+ - [MonitorGroupAuthorizationType](docs/MonitorGroupAuthorizationType.md)
  - [MonitorGroupMember](docs/MonitorGroupMember.md)
  - [MonitorMode](docs/MonitorMode.md)
  - [MonitorQuota](docs/MonitorQuota.md)
@@ -341,25 +387,30 @@ Class | Method | HTTP request | Description
  - [MonitorStatusAttributes](docs/MonitorStatusAttributes.md)
  - [MonitorStatusListResponse](docs/MonitorStatusListResponse.md)
  - [MonitorStatusResponse](docs/MonitorStatusResponse.md)
+ - [MonitorStatusResponseData](docs/MonitorStatusResponseData.md)
+ - [MonitorTransactionStepDefinition](docs/MonitorTransactionStepDefinition.md)
  - [MonitorType](docs/MonitorType.md)
  - [MsaBodyType](docs/MsaBodyType.md)
  - [MsaDetailsResponse](docs/MsaDetailsResponse.md)
+ - [MsaDetailsResponseData](docs/MsaDetailsResponseData.md)
  - [MsaStep](docs/MsaStep.md)
  - [MsaStepType](docs/MsaStepType.md)
+ - [OneTimePasswordInfo](docs/OneTimePasswordInfo.md)
  - [Operator](docs/Operator.md)
  - [OperatorAuthorizationType](docs/OperatorAuthorizationType.md)
  - [OperatorDutySchedule](docs/OperatorDutySchedule.md)
  - [OperatorGroup](docs/OperatorGroup.md)
- - [OperatorGroupAuthorization](docs/OperatorGroupAuthorization.md)
  - [OperatorGroupAuthorizationType](docs/OperatorGroupAuthorizationType.md)
  - [OperatorGroupMember](docs/OperatorGroupMember.md)
  - [OperatorMember](docs/OperatorMember.md)
  - [OperatorQuota](docs/OperatorQuota.md)
  - [OperatorScheduleMode](docs/OperatorScheduleMode.md)
+ - [OperatorSetupMode](docs/OperatorSetupMode.md)
  - [OutgoingPhoneNumberDetails](docs/OutgoingPhoneNumberDetails.md)
  - [PSPAuthorization](docs/PSPAuthorization.md)
  - [PSPAuthorizationType](docs/PSPAuthorizationType.md)
  - [PageElement](docs/PageElement.md)
+ - [PageLoadMetrics](docs/PageLoadMetrics.md)
  - [PatternMatch](docs/PatternMatch.md)
  - [PeriodMetaData](docs/PeriodMetaData.md)
  - [PredefinedVariable](docs/PredefinedVariable.md)
@@ -371,6 +422,10 @@ Class | Method | HTTP request | Description
  - [RegistrationResponse](docs/RegistrationResponse.md)
  - [RelationObject](docs/RelationObject.md)
  - [RequestHeader](docs/RequestHeader.md)
+ - [RumMetric](docs/RumMetric.md)
+ - [RumMetricValues](docs/RumMetricValues.md)
+ - [RumWebsite](docs/RumWebsite.md)
+ - [RumWebsiteWithMetricValues](docs/RumWebsiteWithMetricValues.md)
  - [Schedule](docs/Schedule.md)
  - [ScheduleMode](docs/ScheduleMode.md)
  - [ScheduleType](docs/ScheduleType.md)
@@ -380,8 +435,12 @@ Class | Method | HTTP request | Description
  - [SelectedCheckpoints](docs/SelectedCheckpoints.md)
  - [SelectedPeriod](docs/SelectedPeriod.md)
  - [SelectedPeriodType](docs/SelectedPeriodType.md)
+ - [ServerHealth](docs/ServerHealth.md)
+ - [ServerHealthStatusDetails](docs/ServerHealthStatusDetails.md)
+ - [ServerStatusDetails](docs/ServerStatusDetails.md)
  - [SftpAction](docs/SftpAction.md)
  - [SingleMonitorCheckResponse](docs/SingleMonitorCheckResponse.md)
+ - [SingleMonitorCheckResponseData](docs/SingleMonitorCheckResponseData.md)
  - [Sla](docs/Sla.md)
  - [SmsProvider](docs/SmsProvider.md)
  - [SortDirection](docs/SortDirection.md)
@@ -389,6 +448,8 @@ Class | Method | HTTP request | Description
  - [Statistics](docs/Statistics.md)
  - [StatisticsAttributes](docs/StatisticsAttributes.md)
  - [StatisticsResponse](docs/StatisticsResponse.md)
+ - [StatisticsResponseLinks](docs/StatisticsResponseLinks.md)
+ - [StatisticsResponseMeta](docs/StatisticsResponseMeta.md)
  - [StepTimingInfo](docs/StepTimingInfo.md)
  - [SubStepType](docs/SubStepType.md)
  - [ThrottlingOptions](docs/ThrottlingOptions.md)
@@ -398,22 +459,32 @@ Class | Method | HTTP request | Description
  - [TlsVersion](docs/TlsVersion.md)
  - [TransactionAttributes](docs/TransactionAttributes.md)
  - [TransactionCheckDetails](docs/TransactionCheckDetails.md)
+ - [TransactionCheckDetailsAttributes](docs/TransactionCheckDetailsAttributes.md)
  - [TransactionDetailsResponse](docs/TransactionDetailsResponse.md)
+ - [TransactionDetailsResponseData](docs/TransactionDetailsResponseData.md)
  - [TransactionStep](docs/TransactionStep.md)
  - [TransactionStep2](docs/TransactionStep2.md)
  - [TransactionStepDefinition](docs/TransactionStepDefinition.md)
  - [TransactionStepOResourceObject](docs/TransactionStepOResourceObject.md)
+ - [TransactionStepOResourceObjectAttributes](docs/TransactionStepOResourceObjectAttributes.md)
  - [TransactionSubStep](docs/TransactionSubStep.md)
  - [UserDefinedFunction](docs/UserDefinedFunction.md)
  - [UserDefinedFunctionMapping](docs/UserDefinedFunctionMapping.md)
  - [UserDefinedFunctionType](docs/UserDefinedFunctionType.md)
  - [VaultItem](docs/VaultItem.md)
+ - [VaultItemCertificateArchive](docs/VaultItemCertificateArchive.md)
+ - [VaultItemFileInfo](docs/VaultItemFileInfo.md)
+ - [VaultItemOneTimePasswordInfo](docs/VaultItemOneTimePasswordInfo.md)
  - [VaultItemTypes](docs/VaultItemTypes.md)
  - [VaultSection](docs/VaultSection.md)
  - [VaultSectionAuthorization](docs/VaultSectionAuthorization.md)
  - [VaultSectionAuthorizationType](docs/VaultSectionAuthorizationType.md)
+ - [W3CNavigationTiming](docs/W3CNavigationTiming.md)
  - [WaterfallInfo](docs/WaterfallInfo.md)
+ - [WaterfallInfoPageLoadMetrics](docs/WaterfallInfoPageLoadMetrics.md)
+ - [WaterfallInfoW3CNavigationTiming](docs/WaterfallInfoW3CNavigationTiming.md)
  - [WaterfallResponse](docs/WaterfallResponse.md)
+ - [WaterfallResponseAttributes](docs/WaterfallResponseAttributes.md)
 
 
 ## Documentation For Authorization

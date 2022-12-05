@@ -41,12 +41,6 @@ func ResourceMonitorDatabaseServerSchema() *schema.Resource {
 					string(uptrends.IPVERSION_IP_V6)},
 					false),
 			},
-			"native_ipv6_only": {
-				Type:        schema.TypeBool,
-				Optional:    true,
-				Default:     false,
-				Description: "True or False. This setting only applies when you select IpV6 for the IpVersion field. Set this value to true to only execute your monitor on checkpoint servers that support native IPv6 connectivity. Defaults to `false`.",
-			},
 			"network_address": {
 				Type:         schema.TypeString,
 				Required:     true,
@@ -113,7 +107,7 @@ func monitorDatabaseServerRead(ctx context.Context, d *schema.ResourceData, meta
 		return diag.FromErr(err)
 	}
 
-	return readMonitorDatabaseServerStruct(&resp, d)
+	return readMonitorDatabaseServerStruct(resp, d)
 }
 
 func monitorDatabaseServerUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
@@ -166,7 +160,6 @@ func buildMonitorDatabaseServerStruct(d *schema.ResourceData) (*uptrends.Monitor
 	m.MonitorType = (*uptrends.MonitorType)(String(d.Get("type").(string)))
 	m.Port = Int32(int32(d.Get("port").(int)))
 	m.IpVersion = (*uptrends.IpVersion)(String(d.Get("ip_version").(string)))
-	m.NativeIPv6Only = Bool(d.Get("native_ipv6_only").(bool))
 	m.NetworkAddress = String(d.Get("network_address").(string))
 	m.DatabaseName = String(d.Get("db_name").(string))
 
@@ -188,9 +181,6 @@ func readMonitorDatabaseServerStruct(m *uptrends.Monitor, d *schema.ResourceData
 		return diag.FromErr(err)
 	}
 	if err := d.Set("ip_version", m.IpVersion); err != nil {
-		return diag.FromErr(err)
-	}
-	if err := d.Set("native_ipv6_only", m.NativeIPv6Only); err != nil {
 		return diag.FromErr(err)
 	}
 	if err := d.Set("network_address", m.NetworkAddress); err != nil {

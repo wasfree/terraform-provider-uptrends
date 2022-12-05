@@ -24,7 +24,8 @@ const (
 	ESCALATIONMODE_ALERT_ON_ERROR_DURATION EscalationMode = "AlertOnErrorDuration"
 )
 
-var allowedEscalationModeEnumValues = []EscalationMode{
+// All allowed values of EscalationMode enum
+var AllowedEscalationModeEnumValues = []EscalationMode{
 	"AlertOnErrorCount",
 	"AlertOnErrorDuration",
 }
@@ -36,7 +37,7 @@ func (v *EscalationMode) UnmarshalJSON(src []byte) error {
 		return err
 	}
 	enumTypeValue := EscalationMode(value)
-	for _, existing := range allowedEscalationModeEnumValues {
+	for _, existing := range AllowedEscalationModeEnumValues {
 		if existing == enumTypeValue {
 			*v = enumTypeValue
 			return nil
@@ -53,13 +54,13 @@ func NewEscalationModeFromValue(v string) (*EscalationMode, error) {
 	if ev.IsValid() {
 		return &ev, nil
 	} else {
-		return nil, fmt.Errorf("invalid value '%v' for EscalationMode: valid values are %v", v, allowedEscalationModeEnumValues)
+		return nil, fmt.Errorf("invalid value '%v' for EscalationMode: valid values are %v", v, AllowedEscalationModeEnumValues)
 	}
 }
 
 // IsValid return true if the value is valid for the enum, false otherwise
 func (v EscalationMode) IsValid() bool {
-	for _, existing := range allowedEscalationModeEnumValues {
+	for _, existing := range AllowedEscalationModeEnumValues {
 		if existing == v {
 			return true
 		}

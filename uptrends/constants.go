@@ -356,7 +356,7 @@ func CheckpointID(input string) string {
 	return input
 }
 
-func DeduplicateCheckpointIDs(input []interface{}) *[]int32 {
+func DeduplicateCheckpointIDs(input []interface{}) []int32 {
 	ids := make([]int32, 0)
 	keys := make(map[int]bool)
 
@@ -368,7 +368,7 @@ func DeduplicateCheckpointIDs(input []interface{}) *[]int32 {
 		}
 	}
 
-	return &ids
+	return ids
 }
 
 func RegionID(idOrName string) string {
@@ -378,7 +378,7 @@ func RegionID(idOrName string) string {
 	return idOrName
 }
 
-func DeduplicateRegionIDs(input []interface{}) *[]int32 {
+func DeduplicateRegionIDs(input []interface{}) []int32 {
 	ids := make([]int32, 0)
 	keys := make(map[int]bool)
 
@@ -390,5 +390,5 @@ func DeduplicateRegionIDs(input []interface{}) *[]int32 {
 		}
 	}
 
-	return &ids
+	return ids
 }

@@ -31,27 +31,27 @@ resource "uptrends_operator_account" "example" {
 
 ### Required
 
-- **email** (String) Set the email of the operator account owner.
-- **full_name** (String) Set the full name of the operator account owner.
-- **password** (String, Sensitive) Specify the corresponding password value here.
+- `email` (String) Set the email of the operator account owner.
+- `full_name` (String) Set the full name of the operator account owner.
+- `password` (String, Sensitive) Specify the corresponding password value here.
 
 ### Optional
 
-- **allow_native_login** (Boolean) Should native login be enabled on the uptrends ui?
-- **allow_single_signon** (Boolean) Should single signon be enabled on the uptrends ui?
-- **backup_email** (String) Set the backup email of the operator account owner.
-- **culture_name** (String) Set the locale which should be used for language, date/time and number.
-- **default_dashboard** (String) Specify the dashboard that will be displayed after login.
-- **id** (String) The ID of this resource.
-- **is_on_duty** (Boolean) Set to true if this account should be on-duty.
-- **mobile_phone** (String) Specify the mobile number of the Operator Account owner. Has to start with (+) followed by country code.
-- **outgoing_phone_number_id** (Number) Define the ID for outgoing phone number which should be used by Phone provider.
-- **sms_provider** (String) Define the sms provider that will be used sending alerts.
-- **time_zone_id** (Number) Define the ID for timezone which should be used for this account.
-- **use_numeric_sender** (Boolean) Define if the sms sender should be numeric.
+- `allow_native_login` (Boolean) Should native login be enabled on the uptrends ui?
+- `allow_single_signon` (Boolean) Should single signon be enabled on the uptrends ui?
+- `backup_email` (String) Set the backup email of the operator account owner.
+- `culture_name` (String) Set the locale which should be used for language, date/time and number.
+- `default_dashboard` (String) Specify the dashboard that will be displayed after login.
+- `is_on_duty` (Boolean) Set to true if this account should be on-duty.
+- `mobile_phone` (String) Specify the mobile number of the Operator Account owner. Has to start with (+) followed by country code.
+- `outgoing_phone_number_id` (Number) Define the ID for outgoing phone number which should be used by Phone provider.
+- `sms_provider` (String) Define the sms provider that will be used sending alerts.
+- `time_zone_id` (Number) Define the ID for timezone which should be used for this account.
+- `use_numeric_sender` (Boolean) Define if the sms sender should be numeric.
 
 ### Read-Only
 
-- **is_account_admin** (Boolean) Indicates whether the operator is account administrator or not.
+- `id` (String) The ID of this resource.
+- `is_account_admin` (Boolean) Indicates whether the operator is account administrator or not.
 
 

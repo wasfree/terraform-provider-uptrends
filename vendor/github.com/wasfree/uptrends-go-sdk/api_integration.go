@@ -12,65 +12,196 @@ package uptrends
 
 import (
 	"bytes"
-	_context "context"
-	_ioutil "io/ioutil"
-	_nethttp "net/http"
-	_neturl "net/url"
+	"context"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
-// Linger please
-var (
-	_ _context.Context
-)
 
 // IntegrationApiService IntegrationApi service
 type IntegrationApiService service
 
-type ApiIntegrationGetAllIntegrationsRequest struct {
-	ctx _context.Context
+type ApiIntegrationCreateAuthorizationForIntegrationRequest struct {
+	ctx context.Context
 	ApiService *IntegrationApiService
+	integrationGuid string
+	integrationAuthorization *IntegrationAuthorization
 }
 
+// Authorization to add
+func (r ApiIntegrationCreateAuthorizationForIntegrationRequest) IntegrationAuthorization(integrationAuthorization IntegrationAuthorization) ApiIntegrationCreateAuthorizationForIntegrationRequest {
+	r.integrationAuthorization = &integrationAuthorization
+	return r
+}
 
-func (r ApiIntegrationGetAllIntegrationsRequest) Execute() ([]Integration, *_nethttp.Response, error) {
-	return r.ApiService.IntegrationGetAllIntegrationsExecute(r)
+func (r ApiIntegrationCreateAuthorizationForIntegrationRequest) Execute() ([]IntegrationAuthorization, *http.Response, error) {
+	return r.ApiService.IntegrationCreateAuthorizationForIntegrationExecute(r)
 }
 
 /*
-IntegrationGetAllIntegrations Gets a list of all integrations.
+IntegrationCreateAuthorizationForIntegration Create authorizations for integration If the wanted authorizations requires other authorizations, these will be added as well
 
- @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- @return ApiIntegrationGetAllIntegrationsRequest
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param integrationGuid The integration GUID
+ @return ApiIntegrationCreateAuthorizationForIntegrationRequest
 */
-func (a *IntegrationApiService) IntegrationGetAllIntegrations(ctx _context.Context) ApiIntegrationGetAllIntegrationsRequest {
-	return ApiIntegrationGetAllIntegrationsRequest{
+func (a *IntegrationApiService) IntegrationCreateAuthorizationForIntegration(ctx context.Context, integrationGuid string) ApiIntegrationCreateAuthorizationForIntegrationRequest {
+	return ApiIntegrationCreateAuthorizationForIntegrationRequest{
 		ApiService: a,
 		ctx: ctx,
+		integrationGuid: integrationGuid,
 	}
 }
 
 // Execute executes the request
-//  @return []Integration
-func (a *IntegrationApiService) IntegrationGetAllIntegrationsExecute(r ApiIntegrationGetAllIntegrationsRequest) ([]Integration, *_nethttp.Response, error) {
+//  @return []IntegrationAuthorization
+func (a *IntegrationApiService) IntegrationCreateAuthorizationForIntegrationExecute(r ApiIntegrationCreateAuthorizationForIntegrationRequest) ([]IntegrationAuthorization, *http.Response, error) {
 	var (
-		localVarHTTPMethod   = _nethttp.MethodGet
+		localVarHTTPMethod   = http.MethodPost
 		localVarPostBody     interface{}
-		localVarFormFileName string
-		localVarFileName     string
-		localVarFileBytes    []byte
-		localVarReturnValue  []Integration
+		formFiles            []formFile
+		localVarReturnValue  []IntegrationAuthorization
 	)
 
-	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationApiService.IntegrationGetAllIntegrations")
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationApiService.IntegrationCreateAuthorizationForIntegration")
 	if err != nil {
-		return localVarReturnValue, nil, GenericOpenAPIError{error: err.Error()}
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
 	}
 
-	localVarPath := localBasePath + "/Integration"
+	localVarPath := localBasePath + "/Integration/{integrationGuid}/Authorizations"
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", url.PathEscape(parameterToString(r.integrationGuid, "")), -1)
 
 	localVarHeaderParams := make(map[string]string)
-	localVarQueryParams := _neturl.Values{}
-	localVarFormParams := _neturl.Values{}
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json", "application/xml"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = r.integrationAuthorization
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiIntegrationDeleteAuthorizationForIntegrationRequest struct {
+	ctx context.Context
+	ApiService *IntegrationApiService
+	integrationGuid string
+	authorizationGuid string
+}
+
+func (r ApiIntegrationDeleteAuthorizationForIntegrationRequest) Execute() (*http.Response, error) {
+	return r.ApiService.IntegrationDeleteAuthorizationForIntegrationExecute(r)
+}
+
+/*
+IntegrationDeleteAuthorizationForIntegration Delete integration authorization for integration
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param integrationGuid The integration GUID
+ @param authorizationGuid The authorization GUID that needs to be deleted
+ @return ApiIntegrationDeleteAuthorizationForIntegrationRequest
+*/
+func (a *IntegrationApiService) IntegrationDeleteAuthorizationForIntegration(ctx context.Context, integrationGuid string, authorizationGuid string) ApiIntegrationDeleteAuthorizationForIntegrationRequest {
+	return ApiIntegrationDeleteAuthorizationForIntegrationRequest{
+		ApiService: a,
+		ctx: ctx,
+		integrationGuid: integrationGuid,
+		authorizationGuid: authorizationGuid,
+	}
+}
+
+// Execute executes the request
+func (a *IntegrationApiService) IntegrationDeleteAuthorizationForIntegrationExecute(r ApiIntegrationDeleteAuthorizationForIntegrationRequest) (*http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodDelete
+		localVarPostBody     interface{}
+		formFiles            []formFile
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationApiService.IntegrationDeleteAuthorizationForIntegration")
+	if err != nil {
+		return nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/Integration/{integrationGuid}/Authorizations/{authorizationGuid}"
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", url.PathEscape(parameterToString(r.integrationGuid, "")), -1)
+	localVarPath = strings.Replace(localVarPath, "{"+"authorizationGuid"+"}", url.PathEscape(parameterToString(r.authorizationGuid, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
 
 	// to determine the Content-Type header
 	localVarHTTPContentTypes := []string{}
@@ -89,7 +220,116 @@ func (a *IntegrationApiService) IntegrationGetAllIntegrationsExecute(r ApiIntegr
 	if localVarHTTPHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
 	}
-	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+			return localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+		}
+		return localVarHTTPResponse, newErr
+	}
+
+	return localVarHTTPResponse, nil
+}
+
+type ApiIntegrationGetAllIntegrationsRequest struct {
+	ctx context.Context
+	ApiService *IntegrationApiService
+}
+
+func (r ApiIntegrationGetAllIntegrationsRequest) Execute() ([]Integration, *http.Response, error) {
+	return r.ApiService.IntegrationGetAllIntegrationsExecute(r)
+}
+
+/*
+IntegrationGetAllIntegrations Gets a list of all integrations.
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @return ApiIntegrationGetAllIntegrationsRequest
+*/
+func (a *IntegrationApiService) IntegrationGetAllIntegrations(ctx context.Context) ApiIntegrationGetAllIntegrationsRequest {
+	return ApiIntegrationGetAllIntegrationsRequest{
+		ApiService: a,
+		ctx: ctx,
+	}
+}
+
+// Execute executes the request
+//  @return []Integration
+func (a *IntegrationApiService) IntegrationGetAllIntegrationsExecute(r ApiIntegrationGetAllIntegrationsRequest) ([]Integration, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  []Integration
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationApiService.IntegrationGetAllIntegrations")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/Integration"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -99,15 +339,15 @@ func (a *IntegrationApiService) IntegrationGetAllIntegrationsExecute(r ApiIntegr
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
-	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
 	localVarHTTPResponse.Body.Close()
-	localVarHTTPResponse.Body = _ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
 	if err != nil {
 		return localVarReturnValue, localVarHTTPResponse, err
 	}
 
 	if localVarHTTPResponse.StatusCode >= 300 {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: localVarHTTPResponse.Status,
 		}
@@ -118,14 +358,137 @@ func (a *IntegrationApiService) IntegrationGetAllIntegrationsExecute(r ApiIntegr
 				newErr.error = err.Error()
 				return localVarReturnValue, localVarHTTPResponse, newErr
 			}
-			newErr.model = v
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
 		}
 		return localVarReturnValue, localVarHTTPResponse, newErr
 	}
 
 	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
 	if err != nil {
-		newErr := GenericOpenAPIError{
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
+type ApiIntegrationGetAuthorizationsOfIntegrationRequest struct {
+	ctx context.Context
+	ApiService *IntegrationApiService
+	integrationGuid string
+}
+
+func (r ApiIntegrationGetAuthorizationsOfIntegrationRequest) Execute() ([]IntegrationAuthorization, *http.Response, error) {
+	return r.ApiService.IntegrationGetAuthorizationsOfIntegrationExecute(r)
+}
+
+/*
+IntegrationGetAuthorizationsOfIntegration Get authorizations of integration
+
+ @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+ @param integrationGuid The intregration GUID
+ @return ApiIntegrationGetAuthorizationsOfIntegrationRequest
+*/
+func (a *IntegrationApiService) IntegrationGetAuthorizationsOfIntegration(ctx context.Context, integrationGuid string) ApiIntegrationGetAuthorizationsOfIntegrationRequest {
+	return ApiIntegrationGetAuthorizationsOfIntegrationRequest{
+		ApiService: a,
+		ctx: ctx,
+		integrationGuid: integrationGuid,
+	}
+}
+
+// Execute executes the request
+//  @return []IntegrationAuthorization
+func (a *IntegrationApiService) IntegrationGetAuthorizationsOfIntegrationExecute(r ApiIntegrationGetAuthorizationsOfIntegrationRequest) ([]IntegrationAuthorization, *http.Response, error) {
+	var (
+		localVarHTTPMethod   = http.MethodGet
+		localVarPostBody     interface{}
+		formFiles            []formFile
+		localVarReturnValue  []IntegrationAuthorization
+	)
+
+	localBasePath, err := a.client.cfg.ServerURLWithContext(r.ctx, "IntegrationApiService.IntegrationGetAuthorizationsOfIntegration")
+	if err != nil {
+		return localVarReturnValue, nil, &GenericOpenAPIError{error: err.Error()}
+	}
+
+	localVarPath := localBasePath + "/Integration/{integrationGuid}/Authorizations"
+	localVarPath = strings.Replace(localVarPath, "{"+"integrationGuid"+"}", url.PathEscape(parameterToString(r.integrationGuid, "")), -1)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json", "application/xml"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	req, err := a.client.prepareRequest(r.ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, formFiles)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(req)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	localVarHTTPResponse.Body = ioutil.NopCloser(bytes.NewBuffer(localVarBody))
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := &GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		if localVarHTTPResponse.StatusCode == 400 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+			return localVarReturnValue, localVarHTTPResponse, newErr
+		}
+		if localVarHTTPResponse.StatusCode == 404 {
+			var v MessageList
+			err = a.client.decode(&v, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHTTPResponse, newErr
+			}
+            		newErr.error = formatErrorMessage(localVarHTTPResponse.Status, &v)
+            		newErr.model = v
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := &GenericOpenAPIError{
 			body:  localVarBody,
 			error: err.Error(),
 		}
