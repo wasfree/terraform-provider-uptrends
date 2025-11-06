@@ -1,15 +1,20 @@
 ---
-page_title: "Uptends Provider"
+page_title: "Uptends Provider (deprecated)"
 subcategory: ""
 description: |-
-  The Uptrends Terraform provider is used to manage monitoring resources via Uptrends API. The provider requires proper configured credentials before it can be used.
+  ⚠️ **Deprecated:** The Uptrends Terraform provider is no longer maintained.  
+  Please use the new [ITRS Uptrends provider](https://registry.terraform.io/providers/ITRS-Group/itrs-uptrends/latest) instead.
 ---
 
-# Uptrends Provider
+# Uptrends Provider (Deprecated)
 
-The Uptrends Terraform provider is used to manage monitoring resources via Uptrends API. The provider requires proper configured credentials before it can be used.
+> ⚠️ **This provider has been deprecated and is no longer maintained.**
 
-Use the navigation to the left to read about the available resources.
+Use the official replacement:  
+👉 [ITRS Uptrends Provider](https://registry.terraform.io/providers/ITRS-Group/itrs-uptrends/latest) provider instead!
+
+The **Uptrends Terraform provider** was originally used to manage monitoring resources through the Uptrends API.  
+To continue managing Uptrends monitors, alerts and more, migrate to the new `itrs-uptrends` provider, which includes active support, compatibility updates, and improvements.
 
 ## Example Usage
 
