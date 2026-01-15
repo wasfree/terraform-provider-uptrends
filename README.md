@@ -1,5 +1,10 @@
 # Terraform Provider for Uptrends
 
+> ⚠️ **This provider has been deprecated and is no longer maintained.**
+
+Use the official replacement:  
+👉 [ITRS Uptrends Provider](https://registry.terraform.io/providers/ITRS-Group/itrs-uptrends/latest) provider instead!
+
 Version 0.x of the Uptrends Provider requires Terraform 0.15.x and later, but 1.x is recommended.
 
 * [Terraform Website](https://www.terraform.io)
